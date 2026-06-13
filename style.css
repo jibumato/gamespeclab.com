@@ -1,0 +1,643 @@
+:root {
+  --bg: #f7f8f3;
+  --card: #fffdf8;
+  --ink: #17201d;
+  --muted: #66736f;
+  --line: #dfe6dd;
+  --soft: #eef4ef;
+  --green: #1f8a78;
+  --red: #d65638;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background: var(--bg);
+  color: var(--ink);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  margin: 0;
+}
+
+a {
+  color: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
+
+button {
+  font: inherit;
+}
+
+.site-header {
+  align-items: center;
+  background: rgba(255, 255, 255, 0.9);
+  border-bottom: 1px solid var(--line);
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  min-height: 68px;
+  padding: 0 32px;
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  backdrop-filter: blur(18px);
+}
+
+.brand {
+  align-items: center;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 17px;
+  font-weight: 800;
+  gap: 10px;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.brand-mark {
+  align-items: center;
+  background: var(--ink);
+  border-radius: 7px;
+  color: white;
+  display: inline-flex;
+  font-size: 12px;
+  height: 34px;
+  justify-content: center;
+  width: 42px;
+}
+
+.site-header nav,
+.site-footer nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.site-header nav a,
+.ghost-link,
+.primary-link,
+.share-preview a,
+.ghost-button {
+  align-items: center;
+  border-radius: 7px;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 14px;
+  font-weight: 700;
+  min-height: 40px;
+  padding: 0 12px;
+  text-decoration: none;
+}
+
+.site-header nav a:hover,
+.ghost-link:hover,
+.ghost-button:hover,
+.share-preview a:hover {
+  background: var(--soft);
+}
+
+.hero-band {
+  align-items: center;
+  background-image: linear-gradient(90deg, rgba(246, 248, 244, 0.98) 0%, rgba(246, 248, 244, 0.88) 38%, rgba(246, 248, 244, 0.12) 72%), url("assets/gamespec-hero.png");
+  background-position: center;
+  background-size: cover;
+  display: flex;
+  min-height: 78svh;
+  padding: 64px 32px;
+}
+
+.hero-copy {
+  max-width: 700px;
+}
+
+.eyebrow,
+.card-label,
+.result-kicker {
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0;
+  margin: 0;
+}
+
+h1,
+h2,
+h3 {
+  color: var(--ink);
+  letter-spacing: 0;
+  margin: 0;
+}
+
+h1 {
+  font-size: clamp(44px, 7vw, 86px);
+  line-height: 0.98;
+  margin-top: 18px;
+  max-width: 790px;
+}
+
+h1 span {
+  display: block;
+}
+
+h2 {
+  font-size: clamp(30px, 4vw, 54px);
+  line-height: 1.05;
+}
+
+h3 {
+  font-size: 25px;
+  line-height: 1.18;
+}
+
+p {
+  line-height: 1.75;
+}
+
+.lead,
+.section-heading p,
+.spread-copy p,
+.result-card p,
+.result-block p,
+.pc-card p,
+.legal-copy p {
+  color: var(--muted);
+  font-size: 16px;
+}
+
+.lead {
+  color: #3e4542;
+  font-size: 18px;
+  margin-top: 20px;
+  max-width: 600px;
+}
+
+.hero-actions,
+.result-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 28px;
+}
+
+.primary-link,
+.primary-button {
+  background: var(--ink);
+  color: white;
+}
+
+.primary-link:hover,
+.primary-button:hover {
+  background: #25312d;
+}
+
+.primary-button,
+.ghost-button {
+  border: 0;
+  border-radius: 7px;
+  cursor: pointer;
+  font-size: 15px;
+  font-weight: 800;
+  min-height: 44px;
+  padding: 0 16px;
+}
+
+.ghost-button {
+  background: white;
+  border: 1px solid var(--line);
+}
+
+.section,
+.detail-band,
+.spread-section,
+.legal-hero,
+.legal-section {
+  padding: 76px 32px;
+}
+
+.section-heading {
+  display: grid;
+  gap: 14px;
+  margin: 0 auto 34px;
+  max-width: 940px;
+  text-align: center;
+}
+
+.section-heading.compact {
+  max-width: 820px;
+}
+
+.quiz-layout {
+  display: grid;
+  gap: 24px;
+  grid-template-columns: minmax(0, 1.25fr) minmax(300px, 0.75fr);
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.quiz-panel,
+.result-panel,
+.share-preview,
+.pc-card,
+.legal-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  box-shadow: 0 22px 55px rgba(28, 35, 32, 0.08);
+}
+
+.quiz-panel {
+  min-height: 490px;
+  padding: 28px;
+}
+
+.quiz-status {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  justify-content: space-between;
+}
+
+.progress-track,
+.mini-track {
+  background: #edf0eb;
+  border-radius: 999px;
+  overflow: hidden;
+}
+
+.progress-track {
+  height: 10px;
+  margin: 14px 0 28px;
+}
+
+.progress-track span,
+.mini-track span {
+  background: linear-gradient(90deg, var(--green), var(--red));
+  display: block;
+  height: 100%;
+  transition: width 180ms ease;
+}
+
+.option-list {
+  display: grid;
+  gap: 12px;
+  margin-top: 22px;
+}
+
+.option-button {
+  align-items: center;
+  background: #fffdf8;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  min-height: 84px;
+  padding: 16px;
+  text-align: left;
+}
+
+.option-button:hover {
+  border-color: var(--green);
+  transform: translateY(-1px);
+}
+
+.option-button strong,
+.option-button small {
+  display: block;
+}
+
+.option-button small {
+  color: var(--muted);
+  font-weight: 600;
+  margin-top: 4px;
+}
+
+.result-panel {
+  display: grid;
+  gap: 16px;
+  padding: 20px;
+}
+
+.result-card,
+.plan-card,
+.affiliate-card {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 22px;
+}
+
+.accent-card {
+  background: var(--soft);
+}
+
+.score-grid {
+  display: grid;
+  gap: 12px;
+}
+
+.score-row {
+  display: grid;
+  gap: 6px;
+}
+
+.score-row span {
+  color: var(--muted);
+  font-size: 13px;
+  font-weight: 800;
+}
+
+.mini-track {
+  height: 8px;
+}
+
+.result-block {
+  display: grid;
+  gap: 14px;
+}
+
+.share-card-visual {
+  background: linear-gradient(135deg, #eef4ef, #fff0e8);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  display: grid;
+  gap: 18px;
+  margin-top: 18px;
+  padding: 22px;
+}
+
+.share-card-topline,
+.share-card-footer {
+  color: var(--muted);
+  display: flex;
+  font-size: 13px;
+  font-weight: 800;
+  justify-content: space-between;
+}
+
+.detail-grid,
+.plan-grid,
+.affiliate-grid,
+.result-link-grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 0 auto;
+  max-width: 1120px;
+}
+
+.plan-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.affiliate-grid,
+.result-link-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-top: 12px;
+}
+
+.tag-list span {
+  background: var(--soft);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 800;
+  padding: 7px 10px;
+}
+
+.result-link-card,
+.affiliate-card a {
+  background: white;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  display: grid;
+  gap: 8px;
+  padding: 18px;
+  text-decoration: none;
+}
+
+.result-link-card:hover,
+.affiliate-card a:hover {
+  border-color: var(--green);
+}
+
+.result-link-card span,
+.affiliate-card small,
+.plan-card p {
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 900;
+  margin: 0;
+}
+
+.result-link-card small,
+.plan-card span {
+  color: var(--muted);
+}
+
+.pc-result-band {
+  display: grid;
+  gap: 20px;
+  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+  margin: 34px auto 0;
+  max-width: 1120px;
+}
+
+.pc-card {
+  padding: 22px;
+}
+
+.spec-grid {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  margin: 16px 0;
+}
+
+.spec-grid div {
+  background: var(--soft);
+  border-radius: 8px;
+  padding: 12px;
+}
+
+.spec-grid span {
+  color: var(--muted);
+  display: block;
+  font-size: 12px;
+  font-weight: 800;
+}
+
+.affiliate-disclosure {
+  color: var(--muted);
+  font-size: 13px;
+  margin: 0 0 12px;
+}
+
+.affiliate-grid {
+  grid-template-columns: 1fr;
+}
+
+.spread-section {
+  align-items: center;
+  display: grid;
+  gap: 26px;
+  grid-template-columns: minmax(0, 1fr) minmax(300px, 440px);
+  margin: 0 auto;
+  max-width: 1184px;
+}
+
+.share-preview {
+  display: grid;
+  gap: 14px;
+  padding: 24px;
+}
+
+.share-preview span {
+  color: var(--red);
+  font-size: 13px;
+  font-weight: 900;
+}
+
+.share-preview strong {
+  font-size: 20px;
+  line-height: 1.45;
+}
+
+.site-footer {
+  align-items: flex-start;
+  border-top: 1px solid var(--line);
+  display: flex;
+  gap: 24px;
+  justify-content: space-between;
+  padding: 36px 32px;
+}
+
+.site-footer p {
+  color: var(--muted);
+  margin-bottom: 0;
+}
+
+.site-footer nav a {
+  color: var(--muted);
+  font-size: 14px;
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.legal-hero {
+  background: var(--soft);
+}
+
+.legal-copy {
+  margin: 0 auto;
+  max-width: 880px;
+}
+
+.legal-section {
+  display: grid;
+  gap: 16px;
+  margin: 0 auto;
+  max-width: 880px;
+}
+
+.legal-card {
+  padding: 24px;
+}
+
+.legal-card ul {
+  color: var(--muted);
+  line-height: 1.8;
+  margin-bottom: 0;
+  padding-left: 20px;
+}
+
+@media (max-width: 920px) {
+  .site-header,
+  .site-footer {
+    align-items: flex-start;
+    flex-direction: column;
+    padding: 18px 20px;
+  }
+
+  .hero-band,
+  .section,
+  .detail-band,
+  .spread-section,
+  .legal-hero,
+  .legal-section {
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .quiz-layout,
+  .pc-result-band,
+  .spread-section {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid,
+  .plan-grid,
+  .affiliate-grid,
+  .result-link-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 560px) {
+  .site-header nav {
+    overflow-x: auto;
+    padding-bottom: 2px;
+    width: 100%;
+  }
+
+  h1 {
+    font-size: 42px;
+  }
+
+  h2 {
+    font-size: 32px;
+  }
+
+  .hero-band {
+    background-image: linear-gradient(180deg, rgba(246, 248, 244, 0.98) 0%, rgba(246, 248, 244, 0.9) 62%, rgba(246, 248, 244, 0.4) 100%), url("assets/gamespec-hero.png");
+    min-height: 72svh;
+  }
+
+  .quiz-panel,
+  .result-panel,
+  .result-card,
+  .pc-card,
+  .plan-card,
+  .affiliate-card,
+  .share-preview,
+  .legal-card {
+    padding: 18px;
+  }
+
+  .spec-grid {
+    grid-template-columns: 1fr;
+  }
+}

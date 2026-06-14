@@ -667,6 +667,18 @@ body.menu-open .menu-backdrop {
   width: 8px;
 }
 
+.card-label {
+  flex-wrap: wrap;
+  line-height: 1.35;
+  min-width: 0;
+  overflow-wrap: normal;
+  word-break: keep-all;
+}
+
+.card-label::before {
+  flex: 0 0 auto;
+}
+
 h1,
 h2,
 h3 {
@@ -855,6 +867,7 @@ p {
   grid-template-columns: minmax(0, 1.22fr) minmax(300px, 0.78fr);
   margin: 0 auto;
   max-width: 1160px;
+  min-width: 0;
 }
 
 .quiz-panel,
@@ -870,6 +883,7 @@ p {
     var(--panel);
   border: 1px solid var(--line);
   box-shadow: 0 24px 80px var(--shadow), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  min-width: 0;
   position: relative;
 }
 
@@ -1010,6 +1024,7 @@ p {
 .card-head > small {
   border: 1px solid rgba(114, 242, 255, 0.2);
   color: var(--cyan);
+  flex: 0 0 auto;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-weight: 900;
@@ -1076,6 +1091,8 @@ p {
 .result-block {
   display: grid;
   gap: 14px;
+  grid-template-columns: minmax(0, 1fr);
+  min-width: 0;
 }
 
 .buddy-panel,
@@ -1127,6 +1144,7 @@ p {
 .buddy-lines {
   display: grid;
   gap: 7px;
+  min-width: 0;
 }
 
 .buddy-lines p {
@@ -1156,6 +1174,15 @@ p {
   padding: 12px;
 }
 
+.pipo-banter {
+  align-items: center;
+  display: grid;
+  gap: 14px;
+  grid-template-columns: 74px minmax(0, 1fr);
+  margin-bottom: 8px;
+  padding: 12px 14px;
+}
+
 .question-dialogue img,
 .result-mina-photo,
 .result-pipo-photo,
@@ -1174,6 +1201,14 @@ p {
 .question-dialogue img {
   height: 58px;
   width: 58px;
+}
+
+.pipo-banter img {
+  border-radius: 18px;
+  height: 74px;
+  object-position: 50% 48%;
+  padding: 4px;
+  width: 74px;
 }
 
 .question-dialogue span,
@@ -1197,12 +1232,44 @@ p {
   margin: 0 0 6px;
 }
 
+.pipo-log-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+  margin-top: 8px;
+}
+
+.pipo-log-chips small {
+  align-items: center;
+  background: rgba(114, 242, 255, 0.07);
+  border: 1px solid rgba(114, 242, 255, 0.18);
+  color: var(--cyan);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 900;
+  gap: 5px;
+  line-height: 1;
+  padding: 6px 8px;
+}
+
+.pipo-log-chips .ui-icon {
+  height: 12px;
+  width: 12px;
+}
+
 .question-dialogue h3 {
   font-size: 22px;
 }
 
 .result-dialogue {
   gap: 18px;
+}
+
+.question-dialogue > div,
+.result-dialogue > div,
+.pipo-banter > div {
+  min-width: 0;
 }
 
 .result-mina-photo,
@@ -1229,6 +1296,7 @@ p {
 .inline-result-detail {
   border-top: 1px solid rgba(114, 242, 255, 0.22);
   margin-top: 18px;
+  min-width: 0;
   padding-top: 22px;
 }
 
@@ -1236,11 +1304,25 @@ p {
   gap: 14px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   max-width: none;
+  min-width: 0;
 }
 
 .inline-result-grid .result-card {
   min-height: 100%;
   padding: 18px;
+}
+
+.inline-result-grid .card-head {
+  align-items: flex-start;
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) auto;
+}
+
+.inline-result-grid .result-card h3 {
+  font-size: clamp(18px, 1.55vw, 24px);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
+  word-break: keep-all;
 }
 
 .result-catch {
@@ -1263,9 +1345,11 @@ p {
 .share-card-footer {
   color: var(--muted);
   display: flex;
+  flex-wrap: wrap;
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 12px;
   font-weight: 900;
+  gap: 8px 14px;
   justify-content: space-between;
 }
 
@@ -1302,6 +1386,11 @@ p {
 .affiliate-grid,
 .result-link-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.detail-grid.inline-result-grid {
+  grid-template-columns: repeat(2, minmax(280px, 1fr));
+  max-width: none;
 }
 
 .tag-list {
@@ -1650,6 +1739,17 @@ p {
     grid-template-columns: 1fr;
   }
 
+  .diagnosis-hero.is-result-mode .quiz-layout,
+  .diagnosis-hero.is-result-mode .quiz-panel,
+  .diagnosis-hero.is-result-mode #quiz-box,
+  .diagnosis-hero.is-result-mode .result-block,
+  .diagnosis-hero.is-result-mode .inline-result-detail,
+  .diagnosis-hero.is-result-mode .inline-result-grid,
+  .diagnosis-hero.is-result-mode .result-card {
+    max-width: 100%;
+    width: 100%;
+  }
+
   .hero-orbit {
     opacity: 0.45;
     right: -160px;
@@ -1671,6 +1771,10 @@ p {
   .plan-grid,
   .affiliate-grid,
   .result-link-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .detail-grid.inline-result-grid {
     grid-template-columns: 1fr;
   }
 }
@@ -1815,6 +1919,15 @@ p {
   .question-dialogue img {
     height: 48px;
     width: 48px;
+  }
+
+  .pipo-banter {
+    grid-template-columns: 58px minmax(0, 1fr);
+  }
+
+  .pipo-banter img {
+    height: 58px;
+    width: 58px;
   }
 
   .result-mina-photo,

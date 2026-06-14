@@ -564,8 +564,13 @@ function pipoBanter(text, label = 'ピポ') {
     <div class="pipo-banter">
       <img src="assets/pipo-gag.png" alt="" loading="lazy" />
       <div>
-        <span>${icon('spark')}${label}</span>
+        <span>${icon('spark')}${label} LOG</span>
         <p>${text}</p>
+        <div class="pipo-log-chips" aria-label="ピポ解析タグ">
+          <small>${icon('link')}SYNC</small>
+          <small>${icon('chat')}VOICE</small>
+          <small>${icon('target')}MOOD</small>
+        </div>
       </div>
     </div>
   `;

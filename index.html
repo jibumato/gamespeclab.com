@@ -4,9 +4,34 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="GameSpec Labは、ゲームパートナー相性、才能タイプ、おすすめゲーム、PC構成を診断できるPCゲーマー向けサービスです。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="GameSpec Lab | ゲーム相性とPC構成診断" />
+    <meta property="og:description" content="ゲームパートナー相性、才能タイプ、おすすめゲーム、PC構成をまとめて診断。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gamespeclab.com/" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="GameSpec Lab | ゲーム相性とPC構成診断" />
+    <meta name="twitter:description" content="ゲームパートナー相性、才能タイプ、おすすめゲーム、PC構成をまとめて診断。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
     <title>GameSpec Lab | ゲーム相性とPC構成診断</title>
+    <link rel="canonical" href="https://gamespeclab.com/" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="style.css?v=sync-bg1" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "WebApplication",
+        "name": "GameSpec Lab",
+        "url": "https://gamespeclab.com/",
+        "applicationCategory": "GameApplication",
+        "operatingSystem": "Any",
+        "description": "PCゲームの相性、才能タイプ、おすすめゲーム、PC構成を診断する静的Webサービスです。",
+        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
+        "creator": { "@type": "Organization", "name": "GameSpec Lab" }
+      }
+    </script>
   </head>
   <body>
     <header class="site-header">
@@ -14,37 +39,40 @@
         <span class="brand-mark">GSL</span>
         <span>GameSpec Lab</span>
       </a>
-      <nav aria-label="サイト内メニュー">
-        <a href="#diagnosis">相性診断</a>
-        <a href="#pc-build">PC構成</a>
-        <a href="#results">結果一覧</a>
-        <a href="affiliate-disclosure.html">広告表記</a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="#diagnosis"><span data-icon="link"></span>相性診断</a>
+        <a href="#pc-build"><span data-icon="cpu"></span>PC構成</a>
+        <a href="#results"><span data-icon="list"></span>結果一覧</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
       </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
 
     <main>
-      <section class="hero-band" id="top">
-        <div class="hero-copy">
-          <p class="eyebrow">PCゲーマー向け診断サービス</p>
-          <h1>
-            <span>ゲーム相性から、</span>
-            <span>勝てる環境まで</span>
-            <span>見える化。</span>
-          </h1>
-          <p class="lead">GameSpec Labは、ゲームパートナー相性診断を入口に、才能タイプ、おすすめゲーム、PC構成までまとめて見られる診断サイトです。</p>
-          <div class="hero-actions">
-            <a class="primary-link" href="#diagnosis">診断をはじめる</a>
-            <a class="ghost-link" href="#pc-build">PC構成診断へ</a>
-            <a class="ghost-link" href="#after-diagnosis">診断後にできること</a>
-          </div>
+      <section class="hero-band diagnosis-hero" id="diagnosis">
+        <div class="hero-orbit" aria-hidden="true">
+          <span>SYNC</span>
+          <span>FPS</span>
+          <span>DUO</span>
+          <span>SPEC</span>
         </div>
-      </section>
-
-      <section class="section" id="diagnosis">
-        <div class="section-heading">
-          <p class="eyebrow">相性をチェック</p>
-          <h2>ゲームパートナー相性診断</h2>
-          <p>一緒に遊ぶ相手との相性、あなたのプレイ傾向、おすすめゲームをまとめて確認できます。</p>
+        <div class="diagnosis-copy">
+          <p class="eyebrow"><span data-icon="link"></span>DUO SYNC SCAN</p>
+          <h1>
+            <span>ゲームパートナー</span>
+            <span>相性診断</span>
+          </h1>
+          <p class="lead">6問で、あなたのプレイ傾向、相性がいい相棒、おすすめゲーム、通話で刺さる一言までまとめて見える化します。</p>
+          <div class="companion-pill" aria-label="ナビAI ミナ">
+            <img class="companion-avatar" src="assets/navi-mina.png" alt="" loading="lazy" />
+            <span><strong>ナビAI ミナ</strong> が相性をやさしくスキャン</span>
+          </div>
+          <div class="hero-metrics" aria-label="診断内容">
+            <span><span data-icon="link"></span>連携タイプ</span>
+            <span><span data-icon="target"></span>才能傾向</span>
+            <span><span data-icon="gamepad"></span>おすすめゲーム</span>
+          </div>
         </div>
         <div class="quiz-layout">
           <section class="quiz-panel" aria-labelledby="quiz-title">
@@ -57,13 +85,28 @@
           </section>
           <aside class="result-panel" aria-label="診断結果プレビュー">
             <div class="result-card accent-card">
-              <p class="card-label">結果プレビュー</p>
+              <p class="card-label"><span data-icon="target"></span>結果プレビュー</p>
               <h3 id="preview-name">クラッチエース型</h3>
-              <p id="preview-catch">一緒に沼る相手は、褒め上手な観戦サポーター。</p>
+            <p id="preview-catch">一緒にハマる相棒は、ナイスを拾ってくれる観戦サポーター。</p>
             </div>
             <div class="score-grid" id="score-preview"></div>
           </aside>
         </div>
+      </section>
+
+      <section class="intro-strip" aria-label="GameSpec Labの特徴">
+        <div class="intro-copy">
+          <p class="eyebrow"><span data-icon="spark"></span>GAME × PARTNER × SPEC ANALYSIS</p>
+          <h2>プレイ傾向から、遊ぶゲームとPC環境までつなげる。</h2>
+          <p>GameSpec Labは、ゲームの連携タイプ診断を入口に、才能傾向、おすすめゲーム、PC構成までまとめて見られる診断サイトです。</p>
+        </div>
+        <aside class="mascot-mini" aria-label="GameSpec Labのナビキャラクター">
+          <img src="assets/navi-mina.png" alt="" loading="lazy" />
+          <div>
+            <strong>ナビAI ミナ</strong>
+            <span>連携タイプもスペックも、やさしくスキャンします。</span>
+          </div>
+        </aside>
       </section>
 
       <section class="detail-band" id="result-detail">
@@ -72,7 +115,7 @@
 
       <section class="section result-directory" id="results">
         <div class="section-heading compact">
-          <p class="eyebrow">結果タイプ別ページ</p>
+          <p class="eyebrow"><span data-icon="list"></span>結果タイプ別ページ</p>
           <h2>結果ごとにシェアできる個別URL</h2>
           <p>診断結果を友だちに共有したり、あとから見返したりしやすいURLを作れます。</p>
         </div>
@@ -81,7 +124,7 @@
 
       <section class="section pc-section" id="pc-build">
         <div class="section-heading">
-          <p class="eyebrow">PCゲーム環境</p>
+          <p class="eyebrow"><span data-icon="monitor"></span>PCゲーム環境</p>
           <h2>PC構成診断</h2>
           <p>予算、遊びたいゲーム、画面環境、配信有無から、あなたに合うPC構成と周辺機器を提案します。</p>
         </div>
@@ -107,24 +150,27 @@
 
       <section class="section after-section" id="after-diagnosis">
         <div class="section-heading compact">
-          <p class="eyebrow">診断後にできること</p>
+          <p class="eyebrow"><span data-icon="chart"></span>診断後にできること</p>
           <h2>相性、PC構成、デバイスをまとめて確認</h2>
           <p>診断結果に合わせて、一緒に遊びやすいゲーム、必要なPC構成、見直したい周辺機器を確認できます。</p>
         </div>
         <div class="plan-grid">
           <article class="plan-card">
+            <div class="card-orb"><span data-icon="link"></span></div>
             <p>まずは診断から</p>
-            <h3>相性タイプを知る</h3>
-            <span>ゲームパートナーとの相性</span>
-            <ul><li>ゲームパートナー相性診断</li><li>相性タイプの可視化</li><li>おすすめゲーム提案</li></ul>
+            <h3>連携タイプを知る</h3>
+            <span>ゲームパートナーとの噛み合い</span>
+            <ul><li>ゲームパートナー連携診断</li><li>プレイタイプの可視化</li><li>おすすめゲーム提案</li></ul>
           </article>
           <article class="plan-card">
+            <div class="card-orb"><span data-icon="cpu"></span></div>
             <p>プレイ環境を整理</p>
             <h3>PC構成を見つける</h3>
             <span>遊びたいゲームに合う構成</span>
             <ul><li>予算別PC構成</li><li>高FPS・高画質の目安</li><li>配信向け環境</li></ul>
           </article>
           <article class="plan-card">
+            <div class="card-orb"><span data-icon="mouse"></span></div>
             <p>必要なものだけ確認</p>
             <h3>デバイスを整える</h3>
             <span>モニターや周辺機器</span>
@@ -135,31 +181,31 @@
 
       <section class="spread-section">
         <div class="spread-copy">
-          <p class="eyebrow">共有しやすい結果</p>
-          <h2>結果名、相性、ゲーム名を1枚で言えるようにする</h2>
-          <p>結果名、相性のよいタイプ、おすすめゲームを短くまとめて、SNSにも投稿しやすい形で表示します。</p>
+          <p class="eyebrow"><span data-icon="share"></span>共有しやすい結果</p>
+          <h2>結果名、連携タイプ、ゲーム名を1枚で言えるようにする</h2>
+          <p>結果名、組みやすいタイプ、おすすめゲームを短くまとめて、SNSにも投稿しやすい形で表示します。</p>
         </div>
         <div class="share-preview">
-          <span>シェア文プレビュー</span>
+          <span><span data-icon="chat"></span>シェア文プレビュー</span>
           <strong id="share-preview-text">GameSpec Labで診断したら「クラッチエース型」でした。</strong>
-          <a id="tweet-link" href="#" target="_blank" rel="noreferrer">Xで投稿する</a>
+          <a id="tweet-link" href="#" target="_blank" rel="noreferrer"><span data-icon="external"></span>Xで投稿する</a>
         </div>
       </section>
     </main>
 
     <footer class="site-footer">
       <div>
-        <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+          <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
         <p>PCゲームの相性、才能タイプ、PC構成を診断するサービスです。</p>
       </div>
       <nav aria-label="運営情報">
-        <a href="affiliate-disclosure.html">広告・アフィリエイト表記</a>
-        <a href="privacy.html">プライバシーポリシー</a>
-        <a href="disclaimer.html">免責事項</a>
-        <a href="about.html">運営者情報</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
+        <a href="disclaimer.html"><span data-icon="check"></span>免責事項</a>
+        <a href="about.html"><span data-icon="user"></span>運営者情報</a>
       </nav>
     </footer>
 
-    <script src="script.js"></script>
+    <script src="script.js?v=sync-bg1"></script>
   </body>
 </html>

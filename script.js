@@ -265,10 +265,13 @@ const profiles = [
   {
     id: 'clutch-ace',
     name: 'クラッチエース型',
-    catchline: '一緒にハマる相棒は、ナイスを拾ってくれる観戦サポーター。',
-    summary: '勝負どころで前に出られるタイプ。ゲーム相性では、あなたの集中モードを邪魔せず、終わったあとにちゃんと盛り上げてくれる相手と噛み合います。',
-    partner: '相性がいいのは「ナイス！」を惜しまない人。あなたが攻め、相手が空気を整える組み合わせが強いです。',
-    chemistry: '通話初回は対戦ゲームより、軽めの協力ゲームを1本挟むと距離が縮まりやすいです。',
+    catchline: '勝負どころで空気を変える、頼れる突破口タイプ。',
+    summary: '大事な場面で一歩前に出られる人です。勢いだけではなく、集中した瞬間に周りを引っ張る力があり、味方に「この人となら勝ち筋が見える」と思わせる魅力があります。',
+    strengthNote: '瞬間判断、手元の精度、場を熱くする推進力が強み。見せ場を作れるので、チームの記憶に残りやすいタイプです。',
+    growthNote: '熱量が高いぶん、試合後に一言だけ振り返るとさらに伸びます。良かった点を拾ってから次の改善を話すと、あなたの勝負強さがもっと伝わります。',
+    syncSignal: '相手が「今のナイス」「次もいける」と短く返してくれるなら好相性。あなたの集中を止めずに、気持ちを上げてくれる相棒です。',
+    partner: '相性がいいのは「ナイス！」を惜しまない人。あなたの前に出る力を肯定しつつ、終わったあとに空気を整えてくれる相手だと、攻めと安心感のバランスが取れます。',
+    chemistry: '初回は短めの対戦か、笑える協力ゲームを1本挟むと自然体が出やすいです。いきなりランクで実力を測るより、褒め合える場面を作るほうが距離が縮まります。',
     games: ['VALORANT', 'Apex Legends', 'THE FINALS', 'Overcooked! 2'],
     gameNotes: [
       ['VALORANT / Apex Legends', '短時間で見せ場が作りやすく、褒め合いのきっかけが増えます。'],
@@ -278,12 +281,12 @@ const profiles = [
     pc: '高FPS重視。144Hz以上のモニター、ミドル以上のGPU、軽いマウスを優先。',
     offer: 'おすすめ環境: ゲーミングPC、144Hz/240Hzモニター、マウス、マウスパッド。',
     gearGuide: ['240Hz前後のモニター', '軽量ワイヤレスマウス', '滑りやすい大型マウスパッド'],
-    risks: '熱くなりすぎると反省会が短くなりがち。相手のテンション確認が鍵。',
-    goodPartner: 'あなたの勝負どころを見逃さず、終わったあとに「今のよかった」と言える人。',
-    toughPartner: '毎回すぐ反省会に入る人や、ミスを細かく詰める人とは熱量がぶつかりやすいです。',
-    firstDuo: '最初はVALORANTのカジュアル、Apexのミックステープ、Overcooked! 2のような短め協力がおすすめ。',
+    risks: 'あなたの熱量は大きな魅力です。だからこそ、負けた直後は「次どうする？」の前に「今の惜しかったね」を挟むと、相手も安心して同じ温度でついてきやすくなります。',
+    goodPartner: 'あなたの勝負どころを見逃さず、結果だけでなく挑戦した姿勢も褒められる人。短い言葉で気持ちを上げてくれる相手だと、あなたの強みが自然に出ます。',
+    toughPartner: '丁寧に振り返りたい相手とは、ペースを先に合わせれば大丈夫。試合直後は軽く、落ち着いてから1つだけ改善点を話す形にすると、お互いの良さが残ります。',
+    firstDuo: '最初はVALORANTのカジュアル、Apexのミックステープ、Overcooked! 2のような短め協力がおすすめ。短時間で成功体験を作るほど、あなたの明るい勝負強さが伝わります。',
     duoMemoTitle: 'テンポよく褒めて、すぐ次へ',
-    duoMemos: ['良かった撃ち合いは短く拾う', '反省会は1ポイントだけにする', '再戦テンポを止めすぎない'],
+    duoMemos: ['良かった撃ち合いは短く拾う', '改善点は1つに絞る', '再戦前に軽い一言で空気を上げる'],
     pipoLine: 'ピポ計算では、ナイスを1回言うごとにチーム温度が2.8度上がります。たぶん。',
     shareLine: '勝負どころで輝くクラッチ型。褒め上手な相棒と組むと一気に伸びる。',
     traits: ['micro', 'competitive'],
@@ -291,10 +294,13 @@ const profiles = [
   {
     id: 'igl-romance',
     name: 'IGL連携参謀型',
-    catchline: '相性がいいのは、作戦会議まで楽しめる相棒。',
-    summary: '盤面を読むのが得意で、勝ち筋を作るタイプ。相性面では、言い合いではなく一緒に考える空気を作れる相手と長続きします。',
-    partner: '相性がいいのは、提案を受け止めつつ自分の意見も返せる人。会話のキャッチボールがそのまま連携力になります。',
-    chemistry: '最初は目的が分かりやすい協力ゲームや戦略ゲームが向いています。',
+    catchline: '勝ち筋を見つけて、チームを前に進める設計者タイプ。',
+    summary: '全体を見て、状況を整理し、次の一手を考えられる人です。あなたの言葉はチームの迷いを減らす力があり、うまく噛み合う相手とは「一緒に考える時間」そのものが楽しくなります。',
+    strengthNote: '盤面理解、準備、言語化が強み。目の前の勝敗だけでなく、次に活かせる経験へ変換できます。',
+    growthNote: '情報量が多いときほど、結論から短く伝えると魅力が伝わります。作戦を押しつけるのではなく、選択肢を渡す形にすると頼もしさが増します。',
+    syncSignal: '相手が「それ試そう」「こっちはこう見るね」と返してくれるなら好相性。作戦会議が会話の楽しさに変わる組み合わせです。',
+    partner: '相性がいいのは、提案を受け止めつつ自分の意見も返せる人。あなたが道筋を作り、相手が現場感を返してくれると、会話のキャッチボールがそのまま連携力になります。',
+    chemistry: '最初は目的が分かりやすい協力ゲームや戦略ゲームが向いています。相談する余白があるゲームほど、あなたの「考える楽しさ」が自然に伝わります。',
     games: ['League of Legends', 'VALORANT', 'Baldur’s Gate 3', 'Monster Hunter: World'],
     gameNotes: [
       ['League of Legends / VALORANT', '作戦を短く共有するほど強みが出ます。反省会まで楽しめる相手向きです。'],
@@ -304,12 +310,12 @@ const profiles = [
     pc: '安定性重視。CPU、メモリ32GB、通話しやすいマイク環境を優先。',
     offer: 'おすすめ環境: BTO PC、CPU/メモリ、ゲーミングヘッドセット、マイク。',
     gearGuide: ['32GBメモリ構成', '聞き取りやすいUSBマイク', '長時間でも疲れにくいヘッドセット'],
-    risks: '説明が長くなると相手が疲れることも。作戦は短く、勝ったら大きく喜ぶのが吉。',
-    goodPartner: '提案を否定せず受け止め、自分の考えも返してくれる会話キャッチボール型。',
-    toughPartner: 'その場のノリだけで動きたい人とは、テンポの違いで疲れやすいです。',
-    firstDuo: 'Baldur’s Gate 3、Monster Hunter、VALORANTのアンレートなど、相談しながら進めるゲームが向いています。',
+    risks: 'あなたの分析力は安心感につながります。さらに「短く共有する」「勝ったらちゃんと喜ぶ」を足すと、知的な頼もしさと遊びの楽しさが両立します。',
+    goodPartner: '提案を否定せず受け止め、自分の考えも返してくれる会話キャッチボール型。勝ち負けよりも、試行錯誤を一緒に面白がれる人が合います。',
+    toughPartner: 'ノリ重視の相手とも、作戦を1つだけに絞れば噛み合います。全部を整えようとせず「今回はこれだけ試そう」にすると、相手の自由さも活きます。',
+    firstDuo: 'Baldur’s Gate 3、Monster Hunter、VALORANTのアンレートなど、相談しながら進めるゲームが向いています。作戦が成功した瞬間を一緒に喜べるタイトルが特におすすめです。',
     duoMemoTitle: '作戦を短く共有すると噛み合う',
-    duoMemos: ['見る場所を先に決める', '合わせるタイミングを言葉にする', '試した作戦は結果より過程を見る'],
+    duoMemos: ['結論を先に言う', '合わせるタイミングを言葉にする', '試した作戦は結果より過程を見る'],
     pipoLine: '作戦ログ、保存完了。長文作戦は圧縮して送ると、味方のCPU使用率にやさしいです。',
     shareLine: '盤面を読んで勝ち筋を作る参謀型。作戦会議まで楽しめる相棒と相性抜群。',
     traits: ['macro', 'competitive'],
@@ -317,10 +323,13 @@ const profiles = [
   {
     id: 'cozy-link',
     name: 'まったり通話リンク型',
-    catchline: 'プレイ相性は、勝敗より会話の温度が近い人。',
-    summary: '場をやわらかくするのが得意。ゲームそのものより「一緒にいる時間」を価値にできるので、初回の誘いやすさが抜群です。',
-    partner: '相性がいいのは、雑談と沈黙の両方を楽しめる人。気楽な通話がそのまま距離感の良さになります。',
-    chemistry: '短時間で笑えるゲームや、のんびり建築できるゲームが向いています。',
+    catchline: '一緒にいる時間を心地よくする、空気づくりタイプ。',
+    summary: '場をやわらかくして、相手が自然体でいられる時間を作れる人です。強い言葉で引っ張るより、気楽さや安心感で関係を続けるのが得意で、「また誘いたい」と思われやすい魅力があります。',
+    strengthNote: '雑談力、受け止める空気、緊張をほどく力が強み。勝敗に関係なく、遊んだあとに気持ちが軽くなるタイプです。',
+    growthNote: 'まったりした良さを大切にしつつ、最初に遊ぶ温度を共有するとさらに安定します。「今日はゆるめで」など一言あるだけで、相手も安心して合わせられます。',
+    syncSignal: '相手が沈黙を急かさず、ちょっとしたハプニングを一緒に笑ってくれるなら好相性。会話の量より、空気の軽さが合図です。',
+    partner: '相性がいいのは、雑談と沈黙の両方を楽しめる人。気楽な通話がそのまま距離感の良さになり、長く遊ぶほど安心できる関係になりやすいです。',
+    chemistry: '短時間で笑えるゲームや、のんびり建築できるゲームが向いています。うまさを見せるより、自然に会話が生まれるタイトルで魅力が伝わります。',
     games: ['Minecraft', 'Stardew Valley', 'PICO PARK', 'Party Animals'],
     gameNotes: [
       ['Minecraft / Stardew Valley', '作業しながら雑談できるので、沈黙も気まずくなりにくいです。'],
@@ -330,23 +339,26 @@ const profiles = [
     pc: '静音と快適性重視。白系デスク、静かなファン、軽めのGPUでも満足度が高い構成。',
     offer: 'おすすめ環境: 入門ゲーミングPC、デスク周り、チェア、ヘッドセット。',
     gearGuide: ['静音キーボード', '白系デスク周り', '軽くて圧迫感の少ないヘッドセット'],
-    risks: '相手がガチ寄りだと温度差が出やすいので、最初に遊び方のテンションを合わせると安定。',
-    goodPartner: '沈黙も雑談も同じくらい気楽に楽しめて、勝敗より一緒にいる時間を大事にする人。',
-    toughPartner: '毎回ランクや効率を最優先する人とは、遊び方の温度差が出やすいです。',
-    firstDuo: 'Minecraft、Stardew Valley、PICO PARKなど、話しながらゆるく遊べるタイトルがぴったり。',
+    risks: 'あなたの穏やかさは大きな魅力です。相手が勝ちにいきたい日でも、最初に「今日はどのくらい本気で遊ぶ？」と聞けると、空気を守りながら楽しめます。',
+    goodPartner: '沈黙も雑談も同じくらい気楽に楽しめて、勝敗より一緒にいる時間を大事にする人。あなたの安心感をちゃんと受け取れる相手です。',
+    toughPartner: 'ランクや効率を大事にする相手とも、遊ぶ日を分けると相性が育ちます。今日はゆるく、次は少し本気で、という切り替えができれば十分噛み合います。',
+    firstDuo: 'Minecraft、Stardew Valley、PICO PARKなど、話しながらゆるく遊べるタイトルがぴったり。最初は失敗しても笑えるゲームのほうが、あなたの空気づくりが光ります。',
     duoMemoTitle: '勝敗より空気の軽さを優先',
-    duoMemos: ['最初に遊ぶ温度を合わせる', '雑談できるゲームを挟む', '面白い事故を拾うと続きやすい'],
+    duoMemos: ['最初に遊ぶ温度を合わせる', '雑談できるゲームを挟む', '面白い事故を拾って安心感に変える'],
     pipoLine: 'ゆるプレイモード起動。勝敗ログより笑いログの保存容量を多めに確保します。',
     shareLine: '勝敗より通話の空気を大事にする癒し型。気楽に誘える相棒と長続きしやすい。',
     traits: ['social', 'chill'],
   },
   {
     id: 'support-hype',
-    name: '沼らせサポート型',
-    catchline: '相性がいいのは、あなたの支えにちゃんと気づく人。',
-    summary: '味方を活かすのが上手いタイプ。ゲーム相性では、派手なプレイより細かい気配りを見てくれる相手と噛み合いやすいです。',
-    partner: '相性がいいのは、ありがとうを言える人。あなたが支え、相手が安心して前に出る関係が強いです。',
-    chemistry: '役割分担がはっきりした協力ゲームで魅力が伝わります。',
+    name: '信頼サポート型',
+    catchline: '気づいたら一緒に遊びたくなる、信頼づくりタイプ。',
+    summary: '味方を活かすのが上手く、相手が動きやすい土台を自然に作れる人です。派手な見せ場だけでなく、細かいフォローや声かけで「この人といると安心する」と思わせる力があります。',
+    strengthNote: '観察力、フォロー、相手の良さを引き出す力が強み。チームの安定感を底上げできる、かなり貴重なタイプです。',
+    growthNote: '支える力が高いぶん、自分の希望も先に出せるとさらに健全です。「今日はこれ遊びたい」と言うことで、優しさが我慢ではなく魅力として伝わります。',
+    syncSignal: '相手が「助かった」「今のありがたい」と返してくれるなら好相性。あなたの見えにくい貢献をちゃんと見てくれる人です。',
+    partner: '相性がいいのは、ありがとうを言える人。あなたが支え、相手が安心して前に出る関係が強く、感謝が循環すると長く続きます。',
+    chemistry: '役割分担がはっきりした協力ゲームで魅力が伝わります。カバー、準備、回復、声かけなど、あなたの細やかさが見える場面が多いほど相性チェックしやすいです。',
     games: ['Overwatch 2', 'Monster Hunter: World', 'It Takes Two', 'Deep Rock Galactic'],
     gameNotes: [
       ['Overwatch 2', 'カバーや回復など、支える上手さが伝わりやすいです。'],
@@ -356,23 +368,26 @@ const profiles = [
     pc: 'ボイスチャットと画面共有重視。安定回線、マイク、2画面環境が満足度を上げます。',
     offer: 'おすすめ環境: マイク、ヘッドセット、サブモニター、Wi-Fi/回線比較。',
     gearGuide: ['ノイズを拾いにくいマイク', 'Discord用サブモニター', '低遅延ヘッドセット'],
-    risks: '合わせすぎると疲れやすいです。自分が遊びたいタイトルも先に出すのが大事。',
-    goodPartner: 'あなたのフォローに気づいて、ちゃんと「助かった」と返してくれる人。',
-    toughPartner: '支えてもらうのが当たり前になりやすい人とは、知らないうちに疲れが溜まります。',
-    firstDuo: 'Overwatch 2、Monster Hunter、It Takes Twoなど、役割が見えやすい協力ゲームが向いています。',
+    risks: 'あなたの優しさは強みです。だからこそ、合わせるだけでなく「自分も楽しむ」選択を入れると、支える力がもっと長持ちします。',
+    goodPartner: 'あなたのフォローに気づいて、ちゃんと「助かった」と返してくれる人。感謝を言葉にできる相手ほど、あなたの安心感がさらに輝きます。',
+    toughPartner: '甘えるのが得意な相手とも、役割を交代できれば大丈夫。支える日と支えてもらう日を作ると、あなたの優しさが消耗ではなく信頼になります。',
+    firstDuo: 'Overwatch 2、Monster Hunter、It Takes Twoなど、役割が見えやすい協力ゲームが向いています。最初から完璧に支えようとせず、交代しながら遊ぶと相性が見えやすいです。',
     duoMemoTitle: 'フォローに気づくほど伸びる',
-    duoMemos: ['助かった場面をちゃんと言う', '役割を片方に寄せすぎない', '次は合わせる側を交代してみる'],
+    duoMemos: ['助かった場面をちゃんと言う', '役割を片方に寄せすぎない', 'あなたの遊びたいゲームも先に出す'],
     pipoLine: 'サポート検知。ありがとう信号を返すと、連携バッテリーが長持ちします。',
-    shareLine: '味方を活かすサポート型。ありがとうを言える相棒と組むと一番輝く。',
+    shareLine: '味方を活かす信頼サポート型。ありがとうを言える相棒と組むと一番輝く。',
     traits: ['support', 'social'],
   },
   {
     id: 'builder-duo',
     name: '共創ビルダー型',
-    catchline: '一緒に積み上げるほどプレイ相性が伸びるタイプ。',
-    summary: '短期決戦より、拠点づくりや育成でじわじわ強くなる相性が得意。長く遊ぶほど関係が深まるタイプです。',
-    partner: '相性がいいのは、急かさず一緒に試行錯誤できる人。小さな達成を共有できる相手がぴったり。',
-    chemistry: '共同作業があるゲームで自然に会話が増えます。',
+    catchline: '小さな進捗を楽しみに変える、共創パートナータイプ。',
+    summary: '短期決戦より、少しずつ形にしていく遊びで魅力が深まる人です。作る、育てる、整える時間を楽しめるので、長く遊ぶほど「一緒に積み上げた思い出」が増えていきます。',
+    strengthNote: '継続力、工夫、共同作業を楽しむ力が強み。目立つ一撃より、関係を長持ちさせる土台づくりが得意です。',
+    growthNote: 'こだわりを言葉にすると、相手も参加しやすくなります。完成形を押しつけるより「ここ一緒に決めたい」と渡すと、共創感が強まります。',
+    syncSignal: '相手が小さな進捗を一緒に喜んでくれるなら好相性。完成前の途中経過まで楽しめる人とは、長く遊べます。',
+    partner: '相性がいいのは、急かさず一緒に試行錯誤できる人。小さな達成を共有できる相手だと、遊ぶたびに関係が少しずつ深まります。',
+    chemistry: '共同作業があるゲームで自然に会話が増えます。役割分担、素材集め、建築、育成など、話すきっかけが多いほどあなたの良さが出ます。',
     games: ['Palworld', 'Minecraft', 'Terraria', 'Satisfactory'],
     gameNotes: [
       ['Palworld / Minecraft', '拠点づくりや探索で、自然に役割分担が生まれます。'],
@@ -382,12 +397,12 @@ const profiles = [
     pc: '長時間快適性重視。冷却、ストレージ、メモリ、座りやすいチェアを優先。',
     offer: 'おすすめ環境: SSD、メモリ、チェア、デスク、長時間向け周辺機器。',
     gearGuide: ['2TBクラスのNVMe SSD', '32GBメモリ', '長時間座れるチェアと広めのデスク'],
-    risks: 'こだわりポイントが違うと作業分担がズレます。最初に役割をゆるく決めると快適。',
-    goodPartner: '急かさず、作業や育成の小さな進捗を一緒に喜べる人。',
-    toughPartner: 'すぐ結果を求める人や、効率だけで進めたい人とはペースが合いにくいです。',
-    firstDuo: 'Palworld、Minecraft、Terraria、Satisfactoryなど、拠点づくりや育成があるゲームが相性良好。',
+    risks: 'あなたのこだわりは、世界観を豊かにする才能です。最初に役割をゆるく決めておくと、そのこだわりが相手にも伝わりやすくなります。',
+    goodPartner: '急かさず、作業や育成の小さな進捗を一緒に喜べる人。完成だけでなく途中の変化を面白がれる相手がぴったりです。',
+    toughPartner: '効率重視の相手とも、担当を分ければ良いチームになります。相手に最短ルートを任せ、あなたは拠点や育成を整えると、お互いの得意が活きます。',
+    firstDuo: 'Palworld、Minecraft、Terraria、Satisfactoryなど、拠点づくりや育成があるゲームが相性良好。最初は小さな共同目標を作ると、自然に会話が増えます。',
     duoMemoTitle: '小さな進捗を一緒に積み上げる',
-    duoMemos: ['今日の目標を小さく決める', '建築・探索・素材集めを分ける', '完成より途中の変化を楽しむ'],
+    duoMemos: ['今日の目標を小さく決める', '建築・探索・素材集めを分ける', '途中経過をスクショして一緒に喜ぶ'],
     pipoLine: '進捗を検出。完成までの道のりもスクリーンショット対象です。ピポ的には全部名場面。',
     shareLine: '一緒に積み上げるほど仲が深まる共創型。長く遊べる相棒とじわじわ強くなる。',
     traits: ['macro', 'chill'],
@@ -618,16 +633,137 @@ function renderShareCard(profile, scores) {
   `;
 }
 
+function renderResultInsight(profile) {
+  const insights = [
+    ['spark', '強みの芯', profile.strengthNote],
+    ['chart', '伸び方', profile.growthNote],
+    ['link', '相性の合図', profile.syncSignal],
+  ];
+  return `
+    <div class="result-insight-grid" aria-label="結果の深掘り">
+      ${insights.map(([insightIcon, label, text]) => `
+        <article class="result-insight-card">
+          <span>${icon(insightIcon)}${label}</span>
+          <p>${text}</p>
+        </article>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderResultSummaryStrip(profile) {
+  const mainTrait = traitLabels[profile.traits[0]] || 'プレイ傾向';
+  return `
+    <div class="result-summary-strip" aria-label="結果サマリー">
+      <span>${icon('spark')}強み: ${mainTrait}</span>
+      <span>${icon('user')}相性: 一緒に伸びる相手</span>
+      <span>${icon('gamepad')}初回: ${profile.games[0]}</span>
+      <span>${icon('monitor')}環境: ${profile.pc.split('。')[0]}</span>
+    </div>
+  `;
+}
+
+function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あなたのタイプ') {
+  return `
+    <div class="result-dialogue">
+      <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+      <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
+      <div>
+        <div class="result-kicker">${icon(kickerIcon)}${kickerText}</div>
+        <h3 id="quiz-title">${profile.name}</h3>
+        <p class="result-catch">${profile.catchline}</p>
+        <p>${profile.summary}</p>
+      </div>
+    </div>
+  `;
+}
+
+function renderResultReveal(profile) {
+  return `
+    <div class="result-reveal-card" aria-hidden="true">
+      <div class="reveal-orb">
+        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+      </div>
+      <div class="reveal-copy">
+        <span>${icon('spark')}DUO SYNC SCAN</span>
+        <strong>相性ログを解析中...</strong>
+        <div class="reveal-bars">
+          <i></i><i></i><i></i>
+        </div>
+      </div>
+      <div class="reveal-type">${profile.name}</div>
+    </div>
+  `;
+}
+
+function renderResultBody(profile, scores, options = {}) {
+  const {
+    kickerIcon = 'trophy',
+    kickerText = 'あなたのタイプ',
+    actions = '',
+  } = options;
+  return `
+    <div class="result-block result-sequence is-revealing">
+      ${renderResultReveal(profile)}
+      <div class="result-content">
+        ${renderResultHero(profile, kickerIcon, kickerText)}
+        ${renderResultSummaryStrip(profile)}
+        ${renderResultInsight(profile)}
+        ${pipoBanter(profile.pipoLine)}
+        <section class="inline-result-detail" aria-label="診断結果の詳細">
+          <div class="detail-grid inline-result-grid">${resultDetailsMarkup(profile)}</div>
+        </section>
+        ${renderShareCard(profile, scores)}
+        ${actions}
+      </div>
+    </div>
+  `;
+}
+
+function activateResultReveal() {
+  const sequence = document.querySelector('.result-sequence');
+  if (!sequence) return;
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  const finish = () => {
+    sequence.classList.remove('is-revealing');
+    sequence.classList.add('is-ready');
+    const reveal = sequence.querySelector('.result-reveal-card');
+    const content = sequence.querySelector('.result-content');
+    if (reveal) {
+      reveal.style.transition = 'none';
+      reveal.style.opacity = '0';
+      reveal.style.maxHeight = '0';
+      reveal.style.minHeight = '0';
+      reveal.style.paddingTop = '0';
+      reveal.style.paddingBottom = '0';
+      reveal.style.marginBottom = '-18px';
+    }
+    if (content) {
+      content.style.transition = 'none';
+      content.style.opacity = '1';
+      content.style.maxHeight = 'none';
+      content.style.overflow = 'visible';
+      content.style.transform = 'none';
+    }
+  };
+  if (reduced) {
+    finish();
+    return;
+  }
+  window.setTimeout(finish, 1450);
+}
+
 function resultDetailsMarkup(profile) {
   return `
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}あなたの強み</p><span>01</span></div><h3>${profile.catchline}</h3><p>${profile.strengthNote}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>02</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>03</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>04</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('shield')}相性を伸ばすコツ</p><span>05</span></div><h3>あなたの良さを守るポイント</h3><p>${profile.risks}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('zap')}ペースが違う相手</p><span>06</span></div><h3>合わせ方のヒント</h3><p>${profile.toughPartner}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>07</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>08</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
+    <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>09</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
   `;
 }
 
@@ -694,29 +830,15 @@ function renderQuiz() {
 
   trackEvent('diagnosis_complete', { result: result.id, name: result.name });
 
-  document.querySelector('#quiz-box').innerHTML = `
-    <div class="result-block">
-      <div class="result-dialogue">
-        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-        <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
-        <div>
-          <div class="result-kicker">${icon('trophy')}あなたのタイプ</div>
-          <h3 id="quiz-title">${result.name}</h3>
-          <p class="result-catch">${result.catchline}</p>
-          <p>${result.summary}</p>
-        </div>
-      </div>
-      ${pipoBanter(result.pipoLine)}
-      ${renderShareCard(result, scores)}
-      <section class="inline-result-detail" aria-label="診断結果の詳細">
-        <div class="detail-grid inline-result-grid">${resultDetailsMarkup(result)}</div>
-      </section>
+  document.querySelector('#quiz-box').innerHTML = renderResultBody(result, scores, {
+    actions: `
       <div class="result-actions">
         <button class="primary-button" type="button" id="share-result">${icon('share')}結果をシェア</button>
         <button class="ghost-button" type="button" id="reset-quiz">${icon('target')}もう一度診断</button>
       </div>
-    </div>
-  `;
+    `,
+  });
+  activateResultReveal();
   document.querySelector('#reset-quiz').addEventListener('click', () => {
     answers = [];
     location.hash = 'diagnosis';
@@ -855,26 +977,12 @@ function applyHashRoute() {
   updateShare(profile);
   document.querySelector('#preview-name').textContent = profile.name;
   document.querySelector('#preview-catch').textContent = profile.catchline;
-  document.querySelector('#quiz-box').innerHTML = `
-    <div class="result-block">
-      <div class="result-dialogue">
-        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-        <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
-        <div>
-          <div class="result-kicker">${icon('link')}共有された診断結果</div>
-          <h3 id="quiz-title">${profile.name}</h3>
-          <p class="result-catch">${profile.catchline}</p>
-          <p>${profile.summary}</p>
-        </div>
-      </div>
-      ${pipoBanter(profile.pipoLine)}
-      ${renderShareCard(profile, scores)}
-      <section class="inline-result-detail" aria-label="診断結果の詳細">
-        <div class="detail-grid inline-result-grid">${resultDetailsMarkup(profile)}</div>
-      </section>
-      <div class="result-actions"><a class="primary-link" href="#diagnosis">${icon('zap')}自分も診断する</a></div>
-    </div>
-  `;
+  document.querySelector('#quiz-box').innerHTML = renderResultBody(profile, scores, {
+    kickerIcon: 'link',
+    kickerText: '共有された診断結果',
+    actions: `<div class="result-actions"><a class="primary-link" href="#diagnosis">${icon('zap')}自分も診断する</a></div>`,
+  });
+  activateResultReveal();
   document.querySelector('#diagnosis').scrollIntoView();
 }
 

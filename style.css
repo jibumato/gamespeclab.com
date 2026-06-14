@@ -390,6 +390,14 @@ body.menu-open .menu-backdrop {
   background: rgba(7, 12, 28, 0.82);
 }
 
+.diagnosis-hero.is-result-mode .quiz-layout {
+  max-width: 1120px;
+}
+
+.diagnosis-hero.is-result-mode .quiz-panel {
+  min-height: auto;
+}
+
 .diagnosis-hero .result-panel {
   display: none;
 }
@@ -1070,6 +1078,124 @@ p {
   gap: 14px;
 }
 
+.question-mina,
+.result-hero-row,
+.share-card-core,
+.link-card-mina,
+.mina-badge {
+  align-items: center;
+  display: flex;
+}
+
+.question-mina {
+  background:
+    linear-gradient(90deg, rgba(114, 242, 255, 0.12), rgba(255, 183, 233, 0.11)),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(114, 242, 255, 0.24);
+  gap: 14px;
+  margin-bottom: 16px;
+  padding: 12px;
+}
+
+.question-mina img,
+.result-mina-photo,
+.share-card-mina,
+.link-card-mina img,
+.mina-badge img {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 183, 233, 0.32), transparent 70%),
+    rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.62);
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(114, 242, 255, 0.18);
+  flex: 0 0 auto;
+  object-fit: cover;
+  object-position: 50% 18%;
+}
+
+.question-mina img {
+  height: 58px;
+  width: 58px;
+}
+
+.question-mina span {
+  align-items: center;
+  color: var(--mint);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  margin-bottom: 5px;
+}
+
+.question-mina h3 {
+  font-size: 22px;
+}
+
+.result-hero-row {
+  gap: 18px;
+}
+
+.result-mina-photo {
+  border-radius: 22px;
+  height: 136px;
+  object-position: 50% 13%;
+  width: 112px;
+}
+
+.inline-result-detail {
+  border-top: 1px solid rgba(114, 242, 255, 0.22);
+  margin-top: 18px;
+  padding-top: 22px;
+}
+
+.inline-result-grid {
+  gap: 14px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: none;
+}
+
+.inline-result-grid .result-card {
+  min-height: 100%;
+  padding: 18px;
+}
+
+.visual-result-card {
+  overflow: hidden;
+}
+
+.mina-badge {
+  background:
+    linear-gradient(90deg, rgba(114, 242, 255, 0.13), rgba(255, 183, 233, 0.11)),
+    rgba(255, 255, 255, 0.045);
+  border: 1px solid rgba(114, 242, 255, 0.22);
+  color: var(--cyan);
+  float: right;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 7px;
+  margin: 0 0 10px 12px;
+  padding: 6px 8px 6px 6px;
+}
+
+.mina-badge img {
+  height: 36px;
+  width: 36px;
+}
+
+.mina-badge-pink {
+  border-color: rgba(255, 183, 233, 0.3);
+  color: var(--soft-pink);
+}
+
+.mina-badge-mint {
+  border-color: rgba(159, 255, 231, 0.28);
+  color: var(--mint);
+}
+
 .result-catch {
   color: var(--cyan);
   font-weight: 800;
@@ -1100,6 +1226,18 @@ p {
   align-items: center;
   display: inline-flex;
   gap: 8px;
+}
+
+.share-card-core {
+  gap: 16px;
+  justify-content: space-between;
+}
+
+.share-card-mina {
+  border-radius: 22px;
+  height: 118px;
+  object-position: 50% 13%;
+  width: 96px;
 }
 
 .share-card-line {
@@ -1234,6 +1372,29 @@ p {
   gap: 8px;
   padding: 18px;
   text-decoration: none;
+}
+
+.link-card-mina {
+  background:
+    linear-gradient(90deg, rgba(255, 183, 233, 0.13), rgba(114, 242, 255, 0.09)),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 183, 233, 0.22);
+  gap: 9px;
+  justify-self: start;
+  padding: 6px 10px 6px 6px;
+}
+
+.link-card-mina img {
+  height: 38px;
+  width: 38px;
+}
+
+.link-card-mina small {
+  color: var(--soft-pink);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  line-height: 1;
 }
 
 .result-link-card:hover,
@@ -1626,6 +1787,33 @@ p {
   .share-preview,
   .legal-card {
     padding: 18px;
+  }
+
+  .question-mina,
+  .result-hero-row,
+  .share-card-core {
+    align-items: flex-start;
+  }
+
+  .question-mina img {
+    height: 48px;
+    width: 48px;
+  }
+
+  .result-mina-photo {
+    height: 108px;
+    width: 88px;
+  }
+
+  .share-card-mina {
+    height: 92px;
+    width: 76px;
+  }
+
+  .mina-badge {
+    float: none;
+    margin: 0 0 10px;
+    width: max-content;
   }
 
   .option-button {

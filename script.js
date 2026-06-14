@@ -554,6 +554,15 @@ function miniGuideList(items, itemIcon = 'check') {
   return `<div class="mini-guide-list">${items.map((item) => `<span>${icon(itemIcon)}${item}</span>`).join('')}</div>`;
 }
 
+function minaBadge(label, mood = 'scan') {
+  return `
+    <div class="mina-badge mina-badge-${mood}">
+      <img src="assets/navi-mina.png" alt="" loading="lazy" />
+      <span>${label}</span>
+    </div>
+  `;
+}
+
 function renderGamePicks(profile) {
   return `
     <div class="game-pick-list">
@@ -582,11 +591,14 @@ function renderShareCard(profile, scores) {
   return `
     <article class="share-card-visual" aria-label="${profile.name}の共有カード">
       <div class="share-card-topline"><span>${icon('spark')}GameSpec Lab</span><span>${icon('link')}Duo Sync</span></div>
-      <div>
-        <p>${icon('target')}あなたのゲームパートナー相性</p>
-        <h3>${profile.name}</h3>
-        <strong>${profile.catchline}</strong>
-        <small class="share-card-line">${profile.shareLine || profile.summary}</small>
+      <div class="share-card-core">
+        <div>
+          <p>${icon('target')}あなたのゲームパートナー相性</p>
+          <h3>${profile.name}</h3>
+          <strong>${profile.catchline}</strong>
+          <small class="share-card-line">${profile.shareLine || profile.summary}</small>
+        </div>
+        <img class="share-card-mina" src="assets/navi-mina.png" alt="" loading="lazy" />
       </div>
       <div class="score-grid">
         ${topTraits.map(([trait, value]) => `<div class="score-row"><span>${traitLabels[trait]}</span><div class="mini-track"><span style="width:${Math.min(100, Math.max(35, value * 11))}%"></span></div></div>`).join('')}
@@ -596,19 +608,23 @@ function renderShareCard(profile, scores) {
   `;
 }
 
+function resultDetailsMarkup(profile) {
+  return `
+    <article class="result-card visual-result-card">${minaBadge('SYNC', 'cyan')}<div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
+    <article class="result-card visual-result-card">${minaBadge('GAME', 'pink')}<div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
+    <article class="result-card visual-result-card">${minaBadge('SPEC', 'mint')}<div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
+    <article class="result-card visual-result-card">${minaBadge('SAFE', 'cyan')}<div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
+    <article class="result-card visual-result-card">${minaBadge('DUO+', 'pink')}<div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
+    <article class="result-card visual-result-card">${minaBadge('CHECK', 'mint')}<div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
+    <article class="result-card visual-result-card">${minaBadge('MEMO', 'cyan')}<div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
+    <article class="result-card visual-result-card">${minaBadge('START', 'pink')}<div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
+  `;
+}
+
 function renderResultDetails(profile) {
   const resultCards = document.querySelector('#result-cards');
   if (!resultCards) return;
-  resultCards.innerHTML = `
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
-  `;
+  resultCards.innerHTML = resultDetailsMarkup(profile);
 }
 
 function updateShare(profile) {
@@ -625,6 +641,8 @@ function renderQuiz() {
   const result = getResult(scores);
   const complete = answers.length === questions.length;
   const progress = Math.round((answers.length / questions.length) * 100);
+  const diagnosisHero = document.querySelector('#diagnosis');
+  diagnosisHero?.classList.toggle('is-result-mode', complete);
 
   document.querySelector('#quiz-step').textContent = complete ? '結果' : `質問 ${answers.length + 1} / ${questions.length}`;
   document.querySelector('#quiz-progress-text').textContent = `${progress}%`;
@@ -638,7 +656,13 @@ function renderQuiz() {
   if (!complete) {
     const question = questions[answers.length];
     document.querySelector('#quiz-box').innerHTML = `
-      <h3 id="quiz-title">${question.title}</h3>
+      <div class="question-mina">
+        <img src="assets/navi-mina.png" alt="" loading="lazy" />
+        <div>
+          <span>${icon('spark')}MINA SCAN</span>
+          <h3 id="quiz-title">${question.title}</h3>
+        </div>
+      </div>
       <div class="option-list">
         ${question.options.map((option, index) => `
           <button class="option-button" type="button" data-answer="${index}">
@@ -661,11 +685,19 @@ function renderQuiz() {
 
   document.querySelector('#quiz-box').innerHTML = `
     <div class="result-block">
-      <div class="result-kicker">${icon('trophy')}あなたのタイプ</div>
-      <h3 id="quiz-title">${result.name}</h3>
-      <p class="result-catch">${result.catchline}</p>
-      <p>${result.summary}</p>
+      <div class="result-hero-row">
+        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+        <div>
+          <div class="result-kicker">${icon('trophy')}あなたのタイプ</div>
+          <h3 id="quiz-title">${result.name}</h3>
+          <p class="result-catch">${result.catchline}</p>
+          <p>${result.summary}</p>
+        </div>
+      </div>
       ${renderShareCard(result, scores)}
+      <section class="inline-result-detail" aria-label="診断結果の詳細">
+        <div class="detail-grid inline-result-grid">${resultDetailsMarkup(result)}</div>
+      </section>
       <div class="result-actions">
         <button class="primary-button" type="button" id="share-result">${icon('share')}結果をシェア</button>
         <button class="ghost-button" type="button" id="reset-quiz">${icon('target')}もう一度診断</button>
@@ -803,6 +835,7 @@ function applyHashRoute() {
   const profile = profiles.find((item) => item.id === match[1]);
   if (!profile) return;
   trackEvent('result_page_open', { result: profile.id, name: profile.name });
+  document.querySelector('#diagnosis')?.classList.add('is-result-mode');
   const scores = Object.fromEntries(Object.keys(traitLabels).map((key) => [key, 0]));
   profile.traits.forEach((trait) => { scores[trait] = 8; });
   renderResultDetails(profile);
@@ -811,11 +844,19 @@ function applyHashRoute() {
   document.querySelector('#preview-catch').textContent = profile.catchline;
   document.querySelector('#quiz-box').innerHTML = `
     <div class="result-block">
-      <div class="result-kicker">${icon('link')}共有された診断結果</div>
-      <h3 id="quiz-title">${profile.name}</h3>
-      <p class="result-catch">${profile.catchline}</p>
-      <p>${profile.summary}</p>
+      <div class="result-hero-row">
+        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+        <div>
+          <div class="result-kicker">${icon('link')}共有された診断結果</div>
+          <h3 id="quiz-title">${profile.name}</h3>
+          <p class="result-catch">${profile.catchline}</p>
+          <p>${profile.summary}</p>
+        </div>
+      </div>
       ${renderShareCard(profile, scores)}
+      <section class="inline-result-detail" aria-label="診断結果の詳細">
+        <div class="detail-grid inline-result-grid">${resultDetailsMarkup(profile)}</div>
+      </section>
       <div class="result-actions"><a class="primary-link" href="#diagnosis">${icon('zap')}自分も診断する</a></div>
     </div>
   `;

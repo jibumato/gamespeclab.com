@@ -18,7 +18,7 @@
     <title>GameSpec Lab | ゲーム相性とPC構成診断</title>
     <link rel="canonical" href="https://gamespeclab.com/" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep10" />
+    <link rel="stylesheet" href="style.css?v=deep11" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -41,9 +41,10 @@
       </a>
       <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
       <nav id="site-menu" aria-label="サイト内メニュー">
-        <a href="#diagnosis"><span data-icon="link"></span>相性診断</a>
-        <a href="#pc-build"><span data-icon="cpu"></span>PC構成</a>
-        <a href="#results"><span data-icon="list"></span>結果一覧</a>
+        <a href="index.html#diagnosis"><span data-icon="link"></span>相性診断</a>
+        <a href="pc-build.html"><span data-icon="cpu"></span>PC構成</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="guide.html"><span data-icon="spark"></span>遊び方ガイド</a>
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
       </nav>
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
@@ -113,84 +114,31 @@
         <div class="detail-grid" id="result-cards"></div>
       </section>
 
-      <section class="section result-directory" id="results">
+      <section class="section link-hub" id="next-content">
         <div class="section-heading compact">
-          <p class="eyebrow"><span data-icon="list"></span>結果タイプ別ページ</p>
-          <h2>結果ごとにシェアできる個別URL</h2>
-          <p>診断結果を友だちに共有したり、あとから見返したりしやすいURLを作れます。</p>
+          <p class="eyebrow"><span data-icon="arrow"></span>NEXT CONTENT</p>
+          <h2>結果の続きは、目的別ページで確認</h2>
+          <p>トップは診断を中心にして、詳しい結果一覧、PC構成、デバイス確認は別ページに分けました。</p>
         </div>
-        <div class="result-link-grid" id="result-links"></div>
-      </section>
-
-      <section class="section pc-section" id="pc-build">
-        <div class="section-heading">
-          <p class="eyebrow"><span data-icon="monitor"></span>PCゲーム環境</p>
-          <h2>PC構成診断</h2>
-          <p>予算、遊びたいゲーム、画面環境、配信有無から、あなたに合うPC構成と周辺機器を提案します。</p>
-        </div>
-        <div class="quiz-layout pc-layout">
-          <section class="quiz-panel" aria-labelledby="pc-quiz-title">
-            <div class="quiz-status">
-              <span id="pc-step">質問 1 / 5</span>
-              <span id="pc-progress-text">0%</span>
-            </div>
-            <div class="progress-track" aria-hidden="true"><span id="pc-progress"></span></div>
-            <div id="pc-quiz-box"></div>
-          </section>
-          <aside class="result-panel" aria-label="PC構成診断結果プレビュー">
-            <div id="pc-preview"></div>
-            <div class="score-grid" id="pc-score-preview"></div>
-          </aside>
-        </div>
-        <div class="pc-result-band">
-          <div id="pc-detail"></div>
-          <div id="affiliate-slots"></div>
+        <div class="result-link-grid">
+          <a class="result-link-card" href="results.html">
+            <span class="card-head"><span><span data-icon="list"></span>結果タイプ一覧</span><small>TYPE</small></span>
+            <strong>全タイプの特徴と共有用リンクを確認</strong>
+            <small><span data-icon="arrow"></span>結果一覧へ</small>
+          </a>
+          <a class="result-link-card" href="pc-build.html">
+            <span class="card-head"><span><span data-icon="cpu"></span>PC構成診断</span><small>SPEC</small></span>
+            <strong>遊びたいゲームに合うPCと周辺機器を診断</strong>
+            <small><span data-icon="arrow"></span>PC構成へ</small>
+          </a>
+          <a class="result-link-card" href="guide.html">
+            <span class="card-head"><span><span data-icon="gamepad"></span>ゲーム・デバイスガイド</span><small>GUIDE</small></span>
+            <strong>おすすめゲーム、デバイス、シェア導線を確認</strong>
+            <small><span data-icon="arrow"></span>ガイドへ</small>
+          </a>
         </div>
       </section>
 
-      <section class="section after-section" id="after-diagnosis">
-        <div class="section-heading compact">
-          <p class="eyebrow"><span data-icon="chart"></span>診断後にできること</p>
-          <h2>相性、PC構成、デバイスをまとめて確認</h2>
-          <p>診断結果に合わせて、一緒に遊びやすいゲーム、必要なPC構成、見直したい周辺機器を確認できます。</p>
-        </div>
-        <div class="plan-grid">
-          <article class="plan-card">
-            <div class="card-orb"><span data-icon="link"></span></div>
-            <p>まずは診断から</p>
-            <h3>連携タイプを知る</h3>
-            <span>ゲームパートナーとの噛み合い</span>
-            <ul><li>ゲームパートナー連携診断</li><li>プレイタイプの可視化</li><li>おすすめゲーム提案</li></ul>
-          </article>
-          <article class="plan-card">
-            <div class="card-orb"><span data-icon="cpu"></span></div>
-            <p>プレイ環境を整理</p>
-            <h3>PC構成を見つける</h3>
-            <span>遊びたいゲームに合う構成</span>
-            <ul><li>予算別PC構成</li><li>高FPS・高画質の目安</li><li>配信向け環境</li></ul>
-          </article>
-          <article class="plan-card">
-            <div class="card-orb"><span data-icon="mouse"></span></div>
-            <p>必要なものだけ確認</p>
-            <h3>デバイスを整える</h3>
-            <span>モニターや周辺機器</span>
-            <ul><li>モニター候補</li><li>マウス・マイク候補</li><li>デスク環境の見直し</li></ul>
-          </article>
-        </div>
-      </section>
-
-      <section class="spread-section">
-        <div class="spread-copy">
-          <p class="eyebrow"><span data-icon="share"></span>共有しやすい結果</p>
-          <h2>結果名、連携タイプ、ゲーム名を1枚で言えるようにする</h2>
-          <p>結果名、組みやすいタイプ、おすすめゲームを短くまとめて、SNSにも投稿しやすい形で表示します。</p>
-        </div>
-        <div class="share-preview">
-          <span><span data-icon="chat"></span>シェア文プレビュー</span>
-          <strong id="share-preview-text">GameSpec Labで診断したら「クラッチエース型」でした。</strong>
-          <a id="tweet-link" href="#" target="_blank" rel="noreferrer"><span data-icon="external"></span>Xで投稿する</a>
-        </div>
-      </section>
     </main>
 
     <footer class="site-footer">
@@ -200,12 +148,14 @@
       </div>
       <nav aria-label="運営情報">
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="pc-build.html"><span data-icon="cpu"></span>PC構成</a>
         <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
         <a href="disclaimer.html"><span data-icon="check"></span>免責事項</a>
         <a href="about.html"><span data-icon="user"></span>運営者情報</a>
       </nav>
     </footer>
 
-    <script src="script.js?v=deep10"></script>
+    <script src="script.js?v=deep11"></script>
   </body>
 </html>

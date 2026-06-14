@@ -284,6 +284,7 @@ const profiles = [
     firstDuo: '最初はVALORANTのカジュアル、Apexのミックステープ、Overcooked! 2のような短め協力がおすすめ。',
     duoMemoTitle: 'テンポよく褒めて、すぐ次へ',
     duoMemos: ['良かった撃ち合いは短く拾う', '反省会は1ポイントだけにする', '再戦テンポを止めすぎない'],
+    pipoLine: 'ピポ計算では、ナイスを1回言うごとにチーム温度が2.8度上がります。たぶん。',
     shareLine: '勝負どころで輝くクラッチ型。褒め上手な相棒と組むと一気に伸びる。',
     traits: ['micro', 'competitive'],
   },
@@ -309,6 +310,7 @@ const profiles = [
     firstDuo: 'Baldur’s Gate 3、Monster Hunter、VALORANTのアンレートなど、相談しながら進めるゲームが向いています。',
     duoMemoTitle: '作戦を短く共有すると噛み合う',
     duoMemos: ['見る場所を先に決める', '合わせるタイミングを言葉にする', '試した作戦は結果より過程を見る'],
+    pipoLine: '作戦ログ、保存完了。長文作戦は圧縮して送ると、味方のCPU使用率にやさしいです。',
     shareLine: '盤面を読んで勝ち筋を作る参謀型。作戦会議まで楽しめる相棒と相性抜群。',
     traits: ['macro', 'competitive'],
   },
@@ -334,6 +336,7 @@ const profiles = [
     firstDuo: 'Minecraft、Stardew Valley、PICO PARKなど、話しながらゆるく遊べるタイトルがぴったり。',
     duoMemoTitle: '勝敗より空気の軽さを優先',
     duoMemos: ['最初に遊ぶ温度を合わせる', '雑談できるゲームを挟む', '面白い事故を拾うと続きやすい'],
+    pipoLine: 'ゆるプレイモード起動。勝敗ログより笑いログの保存容量を多めに確保します。',
     shareLine: '勝敗より通話の空気を大事にする癒し型。気楽に誘える相棒と長続きしやすい。',
     traits: ['social', 'chill'],
   },
@@ -359,6 +362,7 @@ const profiles = [
     firstDuo: 'Overwatch 2、Monster Hunter、It Takes Twoなど、役割が見えやすい協力ゲームが向いています。',
     duoMemoTitle: 'フォローに気づくほど伸びる',
     duoMemos: ['助かった場面をちゃんと言う', '役割を片方に寄せすぎない', '次は合わせる側を交代してみる'],
+    pipoLine: 'サポート検知。ありがとう信号を返すと、連携バッテリーが長持ちします。',
     shareLine: '味方を活かすサポート型。ありがとうを言える相棒と組むと一番輝く。',
     traits: ['support', 'social'],
   },
@@ -384,6 +388,7 @@ const profiles = [
     firstDuo: 'Palworld、Minecraft、Terraria、Satisfactoryなど、拠点づくりや育成があるゲームが相性良好。',
     duoMemoTitle: '小さな進捗を一緒に積み上げる',
     duoMemos: ['今日の目標を小さく決める', '建築・探索・素材集めを分ける', '完成より途中の変化を楽しむ'],
+    pipoLine: '進捗を検出。完成までの道のりもスクリーンショット対象です。ピポ的には全部名場面。',
     shareLine: '一緒に積み上げるほど仲が深まる共創型。長く遊べる相棒とじわじわ強くなる。',
     traits: ['macro', 'chill'],
   },
@@ -554,11 +559,14 @@ function miniGuideList(items, itemIcon = 'check') {
   return `<div class="mini-guide-list">${items.map((item) => `<span>${icon(itemIcon)}${item}</span>`).join('')}</div>`;
 }
 
-function minaBadge(label, mood = 'scan') {
+function pipoBanter(text, label = 'ピポ') {
   return `
-    <div class="mina-badge mina-badge-${mood}">
-      <img src="assets/navi-mina.png" alt="" loading="lazy" />
-      <span>${label}</span>
+    <div class="pipo-banter">
+      <img src="assets/pipo-gag.png" alt="" loading="lazy" />
+      <div>
+        <span>${icon('spark')}${label}</span>
+        <p>${text}</p>
+      </div>
     </div>
   `;
 }
@@ -591,14 +599,11 @@ function renderShareCard(profile, scores) {
   return `
     <article class="share-card-visual" aria-label="${profile.name}の共有カード">
       <div class="share-card-topline"><span>${icon('spark')}GameSpec Lab</span><span>${icon('link')}Duo Sync</span></div>
-      <div class="share-card-core">
-        <div>
-          <p>${icon('target')}あなたのゲームパートナー相性</p>
-          <h3>${profile.name}</h3>
-          <strong>${profile.catchline}</strong>
-          <small class="share-card-line">${profile.shareLine || profile.summary}</small>
-        </div>
-        <img class="share-card-mina" src="assets/navi-mina.png" alt="" loading="lazy" />
+      <div>
+        <p>${icon('target')}あなたのゲームパートナー相性</p>
+        <h3>${profile.name}</h3>
+        <strong>${profile.catchline}</strong>
+        <small class="share-card-line">${profile.shareLine || profile.summary}</small>
       </div>
       <div class="score-grid">
         ${topTraits.map(([trait, value]) => `<div class="score-row"><span>${traitLabels[trait]}</span><div class="mini-track"><span style="width:${Math.min(100, Math.max(35, value * 11))}%"></span></div></div>`).join('')}
@@ -610,14 +615,14 @@ function renderShareCard(profile, scores) {
 
 function resultDetailsMarkup(profile) {
   return `
-    <article class="result-card visual-result-card">${minaBadge('SYNC', 'cyan')}<div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
-    <article class="result-card visual-result-card">${minaBadge('GAME', 'pink')}<div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
-    <article class="result-card visual-result-card">${minaBadge('SPEC', 'mint')}<div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
-    <article class="result-card visual-result-card">${minaBadge('SAFE', 'cyan')}<div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
-    <article class="result-card visual-result-card">${minaBadge('DUO+', 'pink')}<div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
-    <article class="result-card visual-result-card">${minaBadge('CHECK', 'mint')}<div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
-    <article class="result-card visual-result-card">${minaBadge('MEMO', 'cyan')}<div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
-    <article class="result-card visual-result-card">${minaBadge('START', 'pink')}<div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
   `;
 }
 
@@ -656,10 +661,11 @@ function renderQuiz() {
   if (!complete) {
     const question = questions[answers.length];
     document.querySelector('#quiz-box').innerHTML = `
-      <div class="question-mina">
-        <img src="assets/navi-mina.png" alt="" loading="lazy" />
+      <div class="question-dialogue">
+        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
         <div>
-          <span>${icon('spark')}MINA SCAN</span>
+          <span>${icon('spark')}ピポの解析メモ</span>
+          <p>迷ったら直感をクリック。ピポは考えすぎて再起動しがちです。</p>
           <h3 id="quiz-title">${question.title}</h3>
         </div>
       </div>
@@ -685,8 +691,9 @@ function renderQuiz() {
 
   document.querySelector('#quiz-box').innerHTML = `
     <div class="result-block">
-      <div class="result-hero-row">
+      <div class="result-dialogue">
         <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+        <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
         <div>
           <div class="result-kicker">${icon('trophy')}あなたのタイプ</div>
           <h3 id="quiz-title">${result.name}</h3>
@@ -694,6 +701,7 @@ function renderQuiz() {
           <p>${result.summary}</p>
         </div>
       </div>
+      ${pipoBanter(result.pipoLine)}
       ${renderShareCard(result, scores)}
       <section class="inline-result-detail" aria-label="診断結果の詳細">
         <div class="detail-grid inline-result-grid">${resultDetailsMarkup(result)}</div>
@@ -844,8 +852,9 @@ function applyHashRoute() {
   document.querySelector('#preview-catch').textContent = profile.catchline;
   document.querySelector('#quiz-box').innerHTML = `
     <div class="result-block">
-      <div class="result-hero-row">
+      <div class="result-dialogue">
         <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+        <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
         <div>
           <div class="result-kicker">${icon('link')}共有された診断結果</div>
           <h3 id="quiz-title">${profile.name}</h3>
@@ -853,6 +862,7 @@ function applyHashRoute() {
           <p>${profile.summary}</p>
         </div>
       </div>
+      ${pipoBanter(profile.pipoLine)}
       ${renderShareCard(profile, scores)}
       <section class="inline-result-detail" aria-label="診断結果の詳細">
         <div class="detail-grid inline-result-grid">${resultDetailsMarkup(profile)}</div>

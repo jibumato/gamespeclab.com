@@ -227,6 +227,38 @@ const questions = [
       { label: '雑談だけでも成立する人', detail: 'ゲーム外の余白も大事', traits: { chill: 2, social: 2 } },
     ],
   },
+  {
+    title: '通話中のあなたに近いのは？',
+    options: [
+      { label: '必要な情報だけ短く出す', detail: '報告はコンパクトにしてプレイへ集中したい', traits: { micro: 2, competitive: 2 } },
+      { label: '状況を整理して共有する', detail: '味方が動きやすい情報を渡したい', traits: { macro: 3, support: 1 } },
+      { label: '空気を見ながら会話をつなぐ', detail: '沈黙や負けムードを軽くしたい', traits: { social: 3, chill: 1 } },
+    ],
+  },
+  {
+    title: 'チームで役割を選ぶなら？',
+    options: [
+      { label: '前に出て流れを作る', detail: '最初の勝負や突破口を担当したい', traits: { micro: 2, competitive: 2 } },
+      { label: '全体を見て指示や調整をする', detail: '配置、時間、次の一手を考えたい', traits: { macro: 3, support: 1 } },
+      { label: '味方が動きやすい土台を作る', detail: 'カバー、回復、準備、声かけが得意', traits: { support: 3, social: 1 } },
+    ],
+  },
+  {
+    title: '新しいゲームを始めたときは？',
+    options: [
+      { label: 'まず操作を触って慣れる', detail: '細かい手触りや反応を先に掴みたい', traits: { micro: 3, chill: 1 } },
+      { label: '攻略や仕様を調べてから動く', detail: '仕組みを理解して効率よく伸びたい', traits: { macro: 3, competitive: 1 } },
+      { label: '友だちと試しながら覚える', detail: '失敗も含めて一緒に遊ぶ時間を楽しみたい', traits: { social: 2, support: 1, chill: 1 } },
+    ],
+  },
+  {
+    title: '一番しっくりくる遊び方は？',
+    options: [
+      { label: '短時間でも濃く勝負したい', detail: '集中してランクや対戦を回したい', traits: { competitive: 3, micro: 1 } },
+      { label: '予定を合わせてじっくり遊びたい', detail: '作戦や役割を決めて進めたい', traits: { macro: 2, support: 2 } },
+      { label: '気分が合った日にゆるく遊びたい', detail: '誘いやすさと続けやすさを大事にしたい', traits: { chill: 3, social: 1 } },
+    ],
+  },
 ];
 
 const profiles = [

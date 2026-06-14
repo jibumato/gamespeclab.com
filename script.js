@@ -282,8 +282,8 @@ const profiles = [
     goodPartner: 'あなたの勝負どころを見逃さず、終わったあとに「今のよかった」と言える人。',
     toughPartner: '毎回すぐ反省会に入る人や、ミスを細かく詰める人とは熱量がぶつかりやすいです。',
     firstDuo: '最初はVALORANTのカジュアル、Apexのミックステープ、Overcooked! 2のような短め協力がおすすめ。',
-    voiceLine: '「今の判断よかった。次もそのノリでいこ」',
-    conflictTip: '負けが続いたら、原因探しの前に一回だけ良かったプレイを言葉にすると空気が戻ります。',
+    duoMemoTitle: 'テンポよく褒めて、すぐ次へ',
+    duoMemos: ['良かった撃ち合いは短く拾う', '反省会は1ポイントだけにする', '再戦テンポを止めすぎない'],
     shareLine: '勝負どころで輝くクラッチ型。褒め上手な相棒と組むと一気に伸びる。',
     traits: ['micro', 'competitive'],
   },
@@ -307,8 +307,8 @@ const profiles = [
     goodPartner: '提案を否定せず受け止め、自分の考えも返してくれる会話キャッチボール型。',
     toughPartner: 'その場のノリだけで動きたい人とは、テンポの違いで疲れやすいです。',
     firstDuo: 'Baldur’s Gate 3、Monster Hunter、VALORANTのアンレートなど、相談しながら進めるゲームが向いています。',
-    voiceLine: '「その作戦いいね。次は私こっち見るよ」',
-    conflictTip: '説明が長くなりそうな時は、作戦を一言にまとめてから動くと相手が乗りやすくなります。',
+    duoMemoTitle: '作戦を短く共有すると噛み合う',
+    duoMemos: ['見る場所を先に決める', '合わせるタイミングを言葉にする', '試した作戦は結果より過程を見る'],
     shareLine: '盤面を読んで勝ち筋を作る参謀型。作戦会議まで楽しめる相棒と相性抜群。',
     traits: ['macro', 'competitive'],
   },
@@ -332,8 +332,8 @@ const profiles = [
     goodPartner: '沈黙も雑談も同じくらい気楽に楽しめて、勝敗より一緒にいる時間を大事にする人。',
     toughPartner: '毎回ランクや効率を最優先する人とは、遊び方の温度差が出やすいです。',
     firstDuo: 'Minecraft、Stardew Valley、PICO PARKなど、話しながらゆるく遊べるタイトルがぴったり。',
-    voiceLine: '「今日は勝ち負けより、のんびり遊べたらうれしい」',
-    conflictTip: '相手がガチ寄りなら、始める前に「今日はまったり寄りでいい？」と温度合わせをすると安心。',
+    duoMemoTitle: '勝敗より空気の軽さを優先',
+    duoMemos: ['最初に遊ぶ温度を合わせる', '雑談できるゲームを挟む', '面白い事故を拾うと続きやすい'],
     shareLine: '勝敗より通話の空気を大事にする癒し型。気楽に誘える相棒と長続きしやすい。',
     traits: ['social', 'chill'],
   },
@@ -357,8 +357,8 @@ const profiles = [
     goodPartner: 'あなたのフォローに気づいて、ちゃんと「助かった」と返してくれる人。',
     toughPartner: '支えてもらうのが当たり前になりやすい人とは、知らないうちに疲れが溜まります。',
     firstDuo: 'Overwatch 2、Monster Hunter、It Takes Twoなど、役割が見えやすい協力ゲームが向いています。',
-    voiceLine: '「今のカバー助かった。次はこっちも合わせるね」',
-    conflictTip: '合わせすぎる前に、自分がやりたい役割や遊びたいゲームを先に一つ出すとバランスが取れます。',
+    duoMemoTitle: 'フォローに気づくほど伸びる',
+    duoMemos: ['助かった場面をちゃんと言う', '役割を片方に寄せすぎない', '次は合わせる側を交代してみる'],
     shareLine: '味方を活かすサポート型。ありがとうを言える相棒と組むと一番輝く。',
     traits: ['support', 'social'],
   },
@@ -382,8 +382,8 @@ const profiles = [
     goodPartner: '急かさず、作業や育成の小さな進捗を一緒に喜べる人。',
     toughPartner: 'すぐ結果を求める人や、効率だけで進めたい人とはペースが合いにくいです。',
     firstDuo: 'Palworld、Minecraft、Terraria、Satisfactoryなど、拠点づくりや育成があるゲームが相性良好。',
-    voiceLine: '「今日はここまで作れたの、けっこう良くない？」',
-    conflictTip: 'こだわりがぶつかりそうな時は、建築担当、探索担当のように役割をゆるく分けると楽です。',
+    duoMemoTitle: '小さな進捗を一緒に積み上げる',
+    duoMemos: ['今日の目標を小さく決める', '建築・探索・素材集めを分ける', '完成より途中の変化を楽しむ'],
     shareLine: '一緒に積み上げるほど仲が深まる共創型。長く遊べる相棒とじわじわ強くなる。',
     traits: ['macro', 'chill'],
   },
@@ -597,14 +597,16 @@ function renderShareCard(profile, scores) {
 }
 
 function renderResultDetails(profile) {
-  document.querySelector('#result-cards').innerHTML = `
+  const resultCards = document.querySelector('#result-cards');
+  if (!resultCards) return;
+  resultCards.innerHTML = `
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}ゲーム連携・相棒傾向</p><span>01</span></div><h3>${profile.partner}</h3><p>${profile.chemistry}</p></article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめゲーム</p><span>02</span></div><h3>一緒に遊ぶならこのあたり</h3>${renderGamePicks(profile)}</article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('monitor')}推奨PC環境</p><span>03</span></div><h3>${profile.pc}</h3><p>${profile.offer}</p>${miniGuideList(profile.gearGuide, 'spark')}</article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('shield')}相性の注意点</p><span>04</span></div><h3>揉めにくくするコツ</h3><p>${profile.risks}</p></article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('user')}相性がいい相手</p><span>05</span></div><h3>一緒に伸びるタイプ</h3><p>${profile.goodPartner}</p></article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('zap')}すれ違いやすい相手</p><span>06</span></div><h3>先に知っておきたい温度差</h3><p>${profile.toughPartner}</p></article>
-    <article class="result-card"><div class="card-head"><p class="card-label">${icon('chat')}通話で刺さる一言</p><span>07</span></div><h3>${profile.voiceLine}</h3><p>${profile.conflictTip}</p></article>
+    <article class="result-card"><div class="card-head"><p class="card-label">${icon('chat')}DUO取扱メモ</p><span>07</span></div><h3>${profile.duoMemoTitle}</h3>${miniGuideList(profile.duoMemos, 'check')}</article>
     <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}初回デュオ案</p><span>08</span></div><h3>最初に遊ぶなら</h3><p>${profile.firstDuo}</p></article>
   `;
 }
@@ -612,8 +614,10 @@ function renderResultDetails(profile) {
 function updateShare(profile) {
   const shareText = `GameSpec Labで診断したら「${profile.name}」でした。${profile.shareLine || profile.catchline}`;
   const shareUrl = `${location.origin}${location.pathname}#result=${profile.id}`;
-  document.querySelector('#share-preview-text').textContent = shareText;
-  document.querySelector('#tweet-link').href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`;
+  const sharePreview = document.querySelector('#share-preview-text');
+  const tweetLink = document.querySelector('#tweet-link');
+  if (sharePreview) sharePreview.textContent = shareText;
+  if (tweetLink) tweetLink.href = `https://twitter.com/intent/tweet?text=${encodeURIComponent(`${shareText}\n${shareUrl}`)}`;
 }
 
 function renderQuiz() {
@@ -781,8 +785,11 @@ function renderPcQuiz() {
 }
 
 function renderResultLinks() {
-  document.querySelector('#result-links').innerHTML = profiles.map((profile) => `
-    <a class="result-link-card" href="#result=${profile.id}">
+  const resultLinks = document.querySelector('#result-links');
+  if (!resultLinks) return;
+  const base = resultLinks.dataset.base || '';
+  resultLinks.innerHTML = profiles.map((profile) => `
+    <a class="result-link-card" href="${base}#result=${profile.id}">
       <span class="card-head"><span>${icon('trophy')}${profile.name}</span><small>TYPE</small></span>
       <strong>${profile.catchline}</strong>
       <small>${icon('arrow')}結果を表示</small>
@@ -820,10 +827,19 @@ enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
 
+if (document.querySelector('#quiz-box')) {
+  renderQuiz();
+}
+
+if (document.querySelector('#pc-quiz-box')) {
+  renderPcQuiz();
+}
+
 if (document.querySelector('#result-links')) {
   renderResultLinks();
-  renderQuiz();
-  renderPcQuiz();
+}
+
+if (document.querySelector('#diagnosis')) {
   applyHashRoute();
   window.addEventListener('hashchange', applyHashRoute);
 }

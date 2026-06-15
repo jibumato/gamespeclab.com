@@ -829,6 +829,23 @@ p {
   color: var(--ink);
 }
 
+.ghost-link.is-muted {
+  border-color: rgba(184, 195, 224, 0.18);
+  color: rgba(232, 247, 255, 0.72);
+  opacity: 0.78;
+}
+
+.ghost-link.is-muted .ui-icon {
+  color: var(--muted);
+  filter: none;
+}
+
+.ghost-link.is-muted:hover {
+  border-color: rgba(114, 242, 255, 0.34);
+  color: var(--ink);
+  opacity: 1;
+}
+
 .section,
 .detail-band,
 .spread-section,

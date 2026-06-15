@@ -1350,13 +1350,13 @@ function renderResultNextPanel(profile) {
     <section class="result-next-panel" aria-label="診断後に見るコンテンツ">
       <div>
         <span>${icon('arrow')}NEXT SCAN</span>
-        <strong>この結果を、遊び方と環境に落とし込む</strong>
-        <p>${profile.games[0]}のような相性が出やすいゲームから試して、必要ならPC環境も確認できます。</p>
+        <strong>まずは遊び方と相性を深掘り</strong>
+        <p>${profile.games[0]}のような相性が出やすいゲームから試して、必要になった時だけプレイ環境の目安も確認できます。</p>
       </div>
       <div class="result-next-actions">
         <a class="ghost-link" href="results.html">${icon('list')}全タイプを見る</a>
-        <a class="ghost-link" href="guide.html">${icon('gamepad')}相性の見方</a>
-        <a class="primary-link" href="pc-build.html">${icon('cpu')}PC構成を見る</a>
+        <a class="primary-link" href="guide.html">${icon('gamepad')}相性の見方</a>
+        <a class="ghost-link is-muted" href="pc-build.html">${icon('cpu')}環境メモ</a>
       </div>
     </section>
   `;
@@ -1520,7 +1520,7 @@ function renderQuiz() {
 function renderPcCard(build) {
   return `
     <article class="pc-card">
-      <div class="card-head"><p class="card-label">${icon('monitor')}おすすめPC構成</p><span>BUILD</span></div>
+      <div class="card-head"><p class="card-label">${icon('monitor')}環境の目安</p><span>BUILD</span></div>
       <h3>${build.name}</h3>
       <p>${build.catchline}</p>
       <div class="spec-grid">${build.specs.map(([label, value]) => `<div>${icon(specIcons[label] || 'cpu', 'spec-icon')}<span>${label}</span><strong>${value}</strong></div>`).join('')}</div>
@@ -1542,7 +1542,7 @@ function renderAffiliate(build) {
     <div class="affiliate-grid">
       ${build.affiliateSlots.map((slot) => `
         <article class="affiliate-card">
-          <div class="card-head"><p class="card-label">${icon('cart')}おすすめアイテム</p><span>SHOP</span></div>
+          <div class="card-head"><p class="card-label">${icon('cart')}候補アイテム</p><span>SHOP</span></div>
           <h3>${slot.title}</h3>
           <p>${slot.body}</p>
           <a href="${slot.href}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="${slot.id}">
@@ -1608,7 +1608,7 @@ function renderPcQuiz() {
       <p class="result-catch">${build.catchline}</p>
       <p>${build.summary}</p>
       <div class="result-actions">
-        <a class="primary-link" href="#after-diagnosis">${icon('cart')}関連アイテムを見る</a>
+        <a class="primary-link" href="#after-diagnosis">${icon('cart')}候補を下で確認</a>
         <button class="ghost-button" type="button" id="reset-pc-quiz">${icon('target')}もう一度診断</button>
       </div>
     </div>
@@ -1624,8 +1624,8 @@ function renderPcWaitingCard(build) {
     <article class="pc-card pc-waiting-card">
       <div class="card-head"><p class="card-label">${icon('monitor')}診断中プレビュー</p><span>WAIT</span></div>
       <h3>${build.name}</h3>
-      <p>回答に合わせて候補を更新しています。5問すべて回答すると、構成の理由、購入前チェック、関連アイテムをまとめて表示します。</p>
-      <div class="pc-fit-note">${icon('shield')}<span>診断前は候補だけ表示し、購入リンクは完了後に出します。</span></div>
+      <p>回答に合わせて候補を更新しています。5問すべて回答すると、環境の理由、確認ポイント、候補アイテムをまとめて表示します。</p>
+      <div class="pc-fit-note">${icon('shield')}<span>診断前は目安だけ表示し、候補リンクは完了後に控えめに出します。</span></div>
     </article>
   `;
 }
@@ -1633,9 +1633,9 @@ function renderPcWaitingCard(build) {
 function renderAffiliateWaitingCard() {
   return `
     <article class="affiliate-card affiliate-waiting-card">
-      <div class="card-head"><p class="card-label">${icon('cart')}関連アイテム</p><span>LOCK</span></div>
-      <h3>おすすめリンクは診断完了後に表示</h3>
-      <p>先に売り込まず、回答内容に近いPC本体、モニター、デバイスだけを候補として出します。</p>
+      <div class="card-head"><p class="card-label">${icon('cart')}環境候補</p><span>LOCK</span></div>
+      <h3>候補リンクは診断完了後に表示</h3>
+      <p>先に売り込まず、回答内容に近いPC本体、モニター、デバイスだけを補足候補として出します。</p>
       <div class="mini-guide-list">
         <span>${icon('check')}予算と遊びたいゲームから絞り込み</span>
         <span>${icon('check')}高FPS、画質、配信など目的別に整理</span>

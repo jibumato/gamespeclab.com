@@ -1079,7 +1079,7 @@ function renderSenseMatrix(archetype) {
   const matrix = getSenseMatrix(archetype);
   const cards = [
     ['spark', 'あなたの強み', matrix.strength],
-    ['shield', 'やさしい弱点', matrix.softWeakness],
+    ['shield', '克服ポイント', matrix.softWeakness],
     ['trophy', '伸ばし方', matrix.growth],
     ['gamepad', '活きる役割', matrix.role],
   ];
@@ -1088,7 +1088,7 @@ function renderSenseMatrix(archetype) {
       <div class="sense-matrix-head">
         <span>${icon('chart')}SELF MATRIX</span>
         <strong>${archetype.name}の特徴</strong>
-        <p>弱みは才能の裏返しとして扱います。あなたの良さを消すのではなく、使いやすく整えるための読み方です。</p>
+        <p>弱みに見える部分にも、あなたらしいプレイスタイルの種があります。この分析結果は、あなたの良さを残したまま伸ばすためのガイドです。</p>
       </div>
       <div class="sense-matrix-grid">
         ${cards.map(([cardIcon, title, text]) => `
@@ -1099,8 +1099,11 @@ function renderSenseMatrix(archetype) {
         `).join('')}
       </div>
       <div class="sense-affirmation">
-        <span>${icon('spark')}肯定メモ</span>
-        <p>${matrix.affirmation}</p>
+        <img src="assets/navi-mina.png" alt="" loading="lazy" />
+        <div>
+          <span>${icon('spark')}ミナのワンポイントメモ</span>
+          <p>ミナから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
+        </div>
       </div>
     </section>
   `;

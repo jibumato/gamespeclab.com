@@ -2086,6 +2086,30 @@ p {
   padding: 13px;
 }
 
+.sense-affirmation {
+  align-items: center;
+  grid-template-columns: 58px minmax(0, 1fr);
+}
+
+.sense-affirmation img {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 183, 233, 0.28), transparent 68%),
+    rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 18px;
+  box-shadow: 0 0 18px rgba(255, 183, 233, 0.16);
+  height: 58px;
+  object-fit: cover;
+  object-position: 51% 19%;
+  width: 58px;
+}
+
+.sense-affirmation > div {
+  display: grid;
+  gap: 7px;
+  min-width: 0;
+}
+
 .sense-matrix-card:nth-child(2) span {
   color: var(--soft-pink);
 }

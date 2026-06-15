@@ -1560,6 +1560,107 @@ p {
   margin-top: 22px;
 }
 
+.scale-answer {
+  margin-top: 24px;
+}
+
+.scale-caption {
+  align-items: center;
+  color: var(--cyan);
+  display: grid;
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  font-weight: 900;
+  gap: 10px;
+  grid-template-columns: 1fr auto 1fr;
+  letter-spacing: 0;
+  text-transform: uppercase;
+}
+
+.scale-caption span:last-child {
+  color: var(--pink);
+  text-align: right;
+}
+
+.scale-caption small {
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(114, 242, 255, 0.22);
+  color: var(--soft);
+  padding: 6px 10px;
+}
+
+.scale-buttons {
+  background:
+    linear-gradient(90deg, rgba(114, 242, 255, 0.13), rgba(255, 255, 255, 0.04), rgba(255, 77, 210, 0.13)),
+    rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(114, 242, 255, 0.2);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 10px;
+  padding: 10px;
+}
+
+.scale-button {
+  align-items: center;
+  background: rgba(2, 8, 24, 0.52);
+  border: 1px solid rgba(255, 255, 255, 0.11);
+  color: var(--ink);
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 7px;
+  justify-content: center;
+  min-height: 92px;
+  padding: 10px 6px;
+  text-align: center;
+}
+
+.scale-button strong {
+  align-items: center;
+  border: 1px solid currentColor;
+  border-radius: 999px;
+  display: inline-flex;
+  font-family: var(--mono);
+  font-size: 0.85rem;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+
+.scale-button span {
+  color: var(--soft);
+  font-size: clamp(0.66rem, 1.4vw, 0.78rem);
+  font-weight: 900;
+  line-height: 1.35;
+}
+
+.scale-button.is--2,
+.scale-button.is--1 {
+  color: var(--cyan);
+}
+
+.scale-button.is-0 {
+  color: var(--muted);
+}
+
+.scale-button.is-1,
+.scale-button.is-2 {
+  color: var(--pink);
+}
+
+.scale-button:hover {
+  background: rgba(114, 242, 255, 0.11);
+  border-color: currentColor;
+  box-shadow: 0 0 22px rgba(114, 242, 255, 0.12);
+  transform: translateY(-1px);
+}
+
+.scale-button.is-1:hover,
+.scale-button.is-2:hover {
+  box-shadow: 0 0 22px rgba(255, 77, 210, 0.16);
+}
+
 .quiz-nav {
   display: flex;
   justify-content: flex-start;
@@ -4075,6 +4176,35 @@ body.sense-result-ready .post-result-lab {
   .question-dialogue img {
     height: 48px;
     width: 48px;
+  }
+
+  .scale-buttons {
+    gap: 5px;
+    padding: 7px;
+  }
+
+  .scale-button {
+    min-height: 78px;
+    padding: 8px 3px;
+  }
+
+  .scale-button strong {
+    font-size: 0.72rem;
+    height: 28px;
+    width: 28px;
+  }
+
+  .scale-button span {
+    font-size: 0.58rem;
+  }
+
+  .scale-caption {
+    gap: 6px;
+  }
+
+  .scale-caption small {
+    font-size: 0.62rem;
+    padding: 5px 7px;
   }
 
   .pipo-banter {

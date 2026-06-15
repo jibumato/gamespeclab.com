@@ -201,86 +201,80 @@ function setupAffiliateTracking() {
   });
 }
 
+function weightedValues(values = {}, weight = 1) {
+  return Object.fromEntries(Object.entries(values).map(([key, value]) => [key, value * weight]));
+}
+
+function scaleOptions(agreeValues, disagreeValues, neutralValues = {}) {
+  return [
+    { label: '思わない', detail: 'あまり自分には当てはまらない', scale: -2, traits: weightedValues(disagreeValues, 4), mbti: weightedValues(disagreeValues, 4) },
+    { label: 'やや思わない', detail: 'どちらかといえば違う', scale: -1, traits: weightedValues(disagreeValues, 2), mbti: weightedValues(disagreeValues, 2) },
+    { label: 'どちらとも', detail: '場面によって変わる', scale: 0, traits: neutralValues, mbti: neutralValues },
+    { label: 'ややそう思う', detail: 'どちらかといえば近い', scale: 1, traits: weightedValues(agreeValues, 2), mbti: weightedValues(agreeValues, 2) },
+    { label: 'そう思う', detail: 'かなり自分に近い', scale: 2, traits: weightedValues(agreeValues, 4), mbti: weightedValues(agreeValues, 4) },
+  ];
+}
+
 const questions = [
   {
-    title: '初デュオで一番テンションが上がる瞬間は？',
-    options: [
-      { label: '撃ち合いで一気にひっくり返す', detail: '勝負どころで前に出たい', traits: { micro: 3, competitive: 2 } },
-      { label: '作戦がきれいに刺さる', detail: '読み合いと準備で勝ちたい', traits: { macro: 3, support: 1 } },
-      { label: '通話で笑いながら進む', detail: '勝敗より一緒に遊ぶ空気感', traits: { social: 3, chill: 2 } },
-    ],
+    title: '初対面の相手でも、通話しながら遊ぶほうが調子が出る。',
+    axis: '通話温度',
+    options: scaleOptions({ social: 2, support: 1 }, { chill: 2, macro: 1 }),
   },
   {
-    title: '相手にされるとうれしいことは？',
-    options: [
-      { label: 'ナイスをちゃんと言ってくれる', detail: '褒め合いで調子が上がる', traits: { social: 2, micro: 1, support: 1 } },
-      { label: '次の動きを一緒に考えてくれる', detail: '反省会も楽しめる', traits: { macro: 2, competitive: 1, support: 1 } },
-      { label: '負けても空気を重くしない', detail: '長く遊べる相性を大事にする', traits: { chill: 3, social: 1 } },
-    ],
+    title: '勝敗を意識できる相手と組むと、いつもより燃える。',
+    axis: '勝負温度',
+    options: scaleOptions({ competitive: 2, micro: 1 }, { chill: 2, social: 1 }),
   },
   {
-    title: 'ゲーム選びで一番大事なのは？',
-    options: [
-      { label: 'ランクや成長が見える', detail: '上達の手応えがほしい', traits: { competitive: 3, micro: 1 } },
-      { label: '協力してクリアできる', detail: '役割分担があると燃える', traits: { support: 3, social: 1 } },
-      { label: '短時間でも気楽に遊べる', detail: '誘いやすさと続けやすさ重視', traits: { chill: 3, social: 1 } },
-    ],
+    title: '迷った時は、まず自分が前に出て流れを作りたい。',
+    axis: '突破力',
+    options: scaleOptions({ micro: 2, competitive: 1 }, { support: 2, chill: 1 }),
   },
   {
-    title: '負けが続いたときのあなたは？',
-    options: [
-      { label: '原因を探してもう一回', detail: '改善ポイントが見えると楽しい', traits: { macro: 2, competitive: 2 } },
-      { label: '一回ふざけて空気を変える', detail: '流れの悪さを会話でほどく', traits: { social: 3, chill: 1 } },
-      { label: '味方が動きやすいよう支える', detail: '自分の役割を変えて立て直す', traits: { support: 3, macro: 1 } },
-    ],
+    title: '遊ぶ前に、役割や作戦を軽く決めておくと安心する。',
+    axis: '作戦共有',
+    options: scaleOptions({ macro: 2, support: 1 }, { micro: 1, social: 1, chill: 1 }),
   },
   {
-    title: 'あなたの強みを一言でいうと？',
-    options: [
-      { label: '反応速度と手元の精度', detail: '細かい操作に自信あり', traits: { micro: 3, competitive: 1 } },
-      { label: '全体を見る判断力', detail: '盤面と味方の位置を見ている', traits: { macro: 3, support: 1 } },
-      { label: '相手がまた遊びたくなる空気', detail: '誘われやすさが武器', traits: { social: 3, chill: 1 } },
-    ],
+    title: 'カバー、回復、準備など、味方が動きやすい役を選びがちだ。',
+    axis: '支援スタイル',
+    options: scaleOptions({ support: 2, social: 1 }, { micro: 2, competitive: 1 }),
   },
   {
-    title: '理想のゲームパートナーは？',
-    options: [
-      { label: '一緒に勝ちにいける人', detail: '熱量が近いと一気に深まる', traits: { competitive: 3, macro: 1 } },
-      { label: 'お互いを立てられる人', detail: '役割が噛み合うと強い', traits: { support: 3, social: 1 } },
-      { label: '雑談だけでも成立する人', detail: 'ゲーム外の余白も大事', traits: { chill: 2, social: 2 } },
-    ],
+    title: '負けた後は、原因を整理して次の1戦に活かしたい。',
+    axis: '振り返り',
+    options: scaleOptions({ macro: 2, competitive: 1 }, { social: 2, chill: 1 }),
   },
   {
-    title: '通話中のあなたに近いのは？',
-    options: [
-      { label: '必要な情報だけ短く出す', detail: '報告はコンパクトにしてプレイへ集中したい', traits: { micro: 2, competitive: 2 } },
-      { label: '状況を整理して共有する', detail: '味方が動きやすい情報を渡したい', traits: { macro: 3, support: 1 } },
-      { label: '空気を見ながら会話をつなぐ', detail: '沈黙や負けムードを軽くしたい', traits: { social: 3, chill: 1 } },
-    ],
+    title: '沈黙があっても気まずくない相手とは、長く遊べる。',
+    axis: '距離感',
+    options: scaleOptions({ chill: 2, social: 1 }, { competitive: 1, social: 1 }),
   },
   {
-    title: 'チームで役割を選ぶなら？',
-    options: [
-      { label: '前に出て流れを作る', detail: '最初の勝負や突破口を担当したい', traits: { micro: 2, competitive: 2 } },
-      { label: '全体を見て指示や調整をする', detail: '配置、時間、次の一手を考えたい', traits: { macro: 3, support: 1 } },
-      { label: '味方が動きやすい土台を作る', detail: 'カバー、回復、準備、声かけが得意', traits: { support: 3, social: 1 } },
-    ],
+    title: 'ナイスやリアクションを返し合える相手だと、プレイが伸びる。',
+    axis: '褒め合い',
+    options: scaleOptions({ social: 2, micro: 1 }, { macro: 1, chill: 1 }),
   },
   {
-    title: '新しいゲームを始めたときは？',
-    options: [
-      { label: 'まず操作を触って慣れる', detail: '細かい手触りや反応を先に掴みたい', traits: { micro: 3, chill: 1 } },
-      { label: '攻略や仕様を調べてから動く', detail: '仕組みを理解して効率よく伸びたい', traits: { macro: 3, competitive: 1 } },
-      { label: '友だちと試しながら覚える', detail: '失敗も含めて一緒に遊ぶ時間を楽しみたい', traits: { social: 2, support: 1, chill: 1 } },
-    ],
+    title: '短時間の対戦より、役割分担してじっくり協力するゲームが好きだ。',
+    axis: '遊び方',
+    options: scaleOptions({ support: 2, macro: 1, chill: 1 }, { competitive: 2, micro: 1 }),
   },
   {
-    title: '一番しっくりくる遊び方は？',
-    options: [
-      { label: '短時間でも濃く勝負したい', detail: '集中してランクや対戦を回したい', traits: { competitive: 3, micro: 1 } },
-      { label: '予定を合わせてじっくり遊びたい', detail: '作戦や役割を決めて進めたい', traits: { macro: 2, support: 2 } },
-      { label: '気分が合った日にゆるく遊びたい', detail: '誘いやすさと続けやすさを大事にしたい', traits: { chill: 3, social: 1 } },
-    ],
+    title: '新しいゲームでは、触る前に攻略や仕様を少し見ておきたい。',
+    axis: '準備',
+    options: scaleOptions({ macro: 2, competitive: 1 }, { social: 1, chill: 1, micro: 1 }),
+  },
+  {
+    title: '相手に合わせて、自分の役割を変えるのはわりと得意だ。',
+    axis: '適応力',
+    options: scaleOptions({ support: 2, social: 1 }, { competitive: 2, micro: 1 }),
+  },
+  {
+    title: '勝負どころでは、最後は自分が決めたいと思う。',
+    axis: '決定力',
+    options: scaleOptions({ micro: 2, competitive: 2 }, { support: 2, chill: 1 }),
   },
 ];
 
@@ -1044,76 +1038,84 @@ const mbtiAxisPairs = [
 
 const mbtiQuestions = [
   {
-    title: '初めてのゲームで、まずやりがちなことは？',
-    options: [
-      { label: '友だちを誘って一緒に触る', detail: '会話しながら覚えるほうが楽しい', mbti: { E: 2, F: 1, P: 1 } },
-      { label: 'ひとりで設定と操作感を試す', detail: 'まず自分のペースで慣れたい', mbti: { I: 2, S: 1, P: 1 } },
-      { label: '攻略やメタを軽く調べる', detail: '強い型を知ってから入りたい', mbti: { I: 1, N: 1, T: 2, J: 1 } },
-      { label: '目的や役割を決めて始める', detail: '何を目指すかあると動きやすい', mbti: { E: 1, J: 2, T: 1 } },
-    ],
+    title: '通話で声を出しながら遊ぶほど、プレイの調子が上がる。',
+    axis: 'E / I',
+    options: scaleOptions({ E: 1 }, { I: 1 }),
   },
   {
-    title: '負けた直後、頭に浮かびやすいのは？',
-    options: [
-      { label: '今の判断、どこが悪かった？', detail: '原因を切り分けたい', mbti: { T: 2, J: 1, S: 1 } },
-      { label: '次は別の動きを試そう', detail: '同じやり方に固執しない', mbti: { P: 2, N: 1, T: 1 } },
-      { label: '空気が重くならないようにしよう', detail: '次も誘いやすい雰囲気を守りたい', mbti: { F: 2, E: 1, J: 1 } },
-      { label: '一回落ち着いて見返したい', detail: '感情よりログを整理したい', mbti: { I: 2, T: 1, J: 1 } },
-    ],
+    title: '新しいゲームは、まず一人で設定や操作感を確かめたい。',
+    axis: 'I / E',
+    options: scaleOptions({ I: 1 }, { E: 1 }),
   },
   {
-    title: 'チームで自然に取りやすいポジションは？',
-    options: [
-      { label: '前に出てきっかけを作る', detail: '場を動かす役がしっくりくる', mbti: { E: 2, S: 1, P: 1 } },
-      { label: '全体を見て作戦を出す', detail: '勝ち筋を言葉にしたい', mbti: { E: 1, N: 1, T: 1, J: 2 } },
-      { label: '後ろから味方を支える', detail: '安心して動ける土台を作りたい', mbti: { I: 1, F: 2, J: 1 } },
-      { label: '必要な穴をその場で埋める', detail: '足りない役割に合わせられる', mbti: { I: 1, S: 1, P: 2 } },
-    ],
+    title: 'チームの空気が落ちた時、自分から声を出して流れを戻しにいく。',
+    axis: 'E / I',
+    options: scaleOptions({ E: 1 }, { I: 1 }),
   },
   {
-    title: '通話中に言われると刺さる言葉は？',
-    options: [
-      { label: '今の判断めっちゃ良かった', detail: 'プレイの質を見てくれるとうれしい', mbti: { T: 1, S: 1, E: 1 } },
-      { label: '助かった、ありがとう', detail: '見えにくい貢献が伝わるとうれしい', mbti: { F: 2, I: 1, J: 1 } },
-      { label: 'その作戦おもしろい', detail: '発想や読みを拾ってほしい', mbti: { N: 2, E: 1, P: 1 } },
-      { label: '落ち着いてて安心する', detail: '安定感を見てくれるとうれしい', mbti: { I: 1, S: 1, J: 2 } },
-    ],
+    title: '試合後は、みんなで話す前に自分の中で一度整理したい。',
+    axis: 'I / E',
+    options: scaleOptions({ I: 1 }, { E: 1 }),
   },
   {
-    title: '強い武器やキャラが流行った時は？',
-    options: [
-      { label: 'まず使って強さを体感する', detail: '触ってから判断したい', mbti: { S: 2, P: 1, E: 1 } },
-      { label: '数値や解説を見て理解する', detail: 'なぜ強いかが大事', mbti: { T: 2, I: 1, N: 1 } },
-      { label: '自分の役割に合うか考える', detail: 'チームで活きるなら使いたい', mbti: { F: 1, J: 2, S: 1 } },
-      { label: 'メタを逆手に取る方法を探す', detail: 'みんなと違う勝ち方がしたい', mbti: { N: 2, T: 1, P: 1 } },
-    ],
+    title: '判断するときは、今画面に出ている情報を一番信じる。',
+    axis: 'S / N',
+    options: scaleOptions({ S: 1 }, { N: 1 }),
   },
   {
-    title: '味方がミスして空気が揺れた時は？',
-    options: [
-      { label: '次どうするか短く提案する', detail: '立て直しを優先する', mbti: { E: 1, T: 1, J: 2 } },
-      { label: '大丈夫、と声をかける', detail: '気持ちを戻すことが大事', mbti: { F: 2, E: 1, J: 1 } },
-      { label: '黙ってカバーに回る', detail: '言葉よりプレイで支える', mbti: { I: 2, S: 1, F: 1 } },
-      { label: '流れを変える動きを試す', detail: '空気ごと切り替えたい', mbti: { P: 2, N: 1, E: 1 } },
-    ],
+    title: '相手の癖や次の展開を読んで、少し先回りするのが好きだ。',
+    axis: 'N / S',
+    options: scaleOptions({ N: 1 }, { S: 1 }),
   },
   {
-    title: 'あなたのリハイド反応に近いのは？',
-    options: [
-      { label: '一瞬引いて、見えた情報を整理する', detail: '次に出る角度を選びたい', mbti: { I: 1, S: 2, J: 1 } },
-      { label: '相手の癖を読んでタイミングをずらす', detail: '読み合いで勝ちたい', mbti: { N: 2, T: 1, P: 1 } },
-      { label: '味方の位置を見て合わせ直す', detail: '連携を崩さないようにしたい', mbti: { F: 1, S: 1, J: 2 } },
-      { label: 'もう一度ピークして勝負する', detail: 'チャンスがあるなら取り切りたい', mbti: { E: 2, S: 1, P: 1 } },
-    ],
+    title: '強い武器やキャラは、まず触って体感してから判断したい。',
+    axis: 'S / N',
+    options: scaleOptions({ S: 1 }, { N: 1 }),
   },
   {
-    title: '理想の勝ち方に一番近いのは？',
-    options: [
-      { label: '完璧な作戦で相手を詰ませる', detail: '準備した勝ち筋が決まると気持ちいい', mbti: { N: 1, T: 2, J: 2 } },
-      { label: '一瞬の判断で流れを奪う', detail: '脳汁が出る場面が好き', mbti: { E: 1, S: 2, P: 2 } },
-      { label: '全員が気持ちよく噛み合う', detail: 'チームで勝った感がほしい', mbti: { E: 1, F: 2, J: 1 } },
-      { label: '自分だけの型で攻略する', detail: '人と違う勝ち方を見つけたい', mbti: { I: 1, N: 2, P: 1 } },
-    ],
+    title: '目の前の正解より、「この後どうなるか」の読みが当たるとうれしい。',
+    axis: 'N / S',
+    options: scaleOptions({ N: 1 }, { S: 1 }),
+  },
+  {
+    title: 'アドバイスは、感覚よりも「何を直すか」を具体的に言ってほしい。',
+    axis: 'T / F',
+    options: scaleOptions({ T: 1 }, { F: 1 }),
+  },
+  {
+    title: '勝ち負けと同じくらい、通話の空気や相手の気持ちも大事にしたい。',
+    axis: 'F / T',
+    options: scaleOptions({ F: 1 }, { T: 1 }),
+  },
+  {
+    title: 'メタ、数値、効率を調べて、理詰めで強くなるのが好きだ。',
+    axis: 'T / F',
+    options: scaleOptions({ T: 1 }, { F: 1 }),
+  },
+  {
+    title: '味方がミスした時は、まず気持ちを戻す声かけをしたい。',
+    axis: 'F / T',
+    options: scaleOptions({ F: 1 }, { T: 1 }),
+  },
+  {
+    title: '遊ぶ前に今日の目標や役割を決めると、プレイしやすい。',
+    axis: 'J / P',
+    options: scaleOptions({ J: 1 }, { P: 1 }),
+  },
+  {
+    title: '予定通り進めるより、その場の流れで動きを変えるほうが得意だ。',
+    axis: 'P / J',
+    options: scaleOptions({ P: 1 }, { J: 1 }),
+  },
+  {
+    title: 'ランク、練習、装備集めなど、進捗が見える遊び方が好きだ。',
+    axis: 'J / P',
+    options: scaleOptions({ J: 1 }, { P: 1 }),
+  },
+  {
+    title: '定石から外れた奇策や変な構成を試す時間がかなり好きだ。',
+    axis: 'P / J',
+    options: scaleOptions({ P: 1 }, { J: 1 }),
   },
 ];
 
@@ -1492,6 +1494,22 @@ function renderGamerMbtiAxisGrid(scores) {
           </article>
         `;
       }).join('')}
+    </div>
+  `;
+}
+
+function renderScaleOptionList(question, dataAttribute) {
+  return `
+    <div class="scale-answer" aria-label="回答スケール">
+      <div class="scale-caption"><span>思わない</span><small>${question.axis || '直感スキャン'}</small><span>そう思う</span></div>
+      <div class="scale-buttons">
+        ${question.options.map((option, index) => `
+          <button class="scale-button is-${option.scale}" type="button" ${dataAttribute}="${index}" aria-label="${option.label}">
+            <strong>${option.scale === 0 ? '・' : Math.abs(option.scale)}</strong>
+            <span>${option.label}</span>
+          </button>
+        `).join('')}
+      </div>
     </div>
   `;
 }
@@ -2016,17 +2034,11 @@ function renderGamerMbtiQuiz() {
         <img src="assets/pipo-scan.png" alt="" loading="lazy" />
         <div>
           <span>${icon('user')}ピポの性格ログ解析</span>
-          <p>正解はありません。ゲーム中の自分に一番近い選択を選んでください。</p>
+          <p>直感でOKです。左が「思わない」、右が「そう思う」。ピポが16タイプへ変換します。</p>
           <h3 id="mbti-quiz-title">${question.title}</h3>
         </div>
       </div>
-      <div class="option-list">
-        ${question.options.map((option, index) => `
-          <button class="option-button" type="button" data-mbti-answer="${index}">
-            <span class="option-main"><span class="option-icon">${icon(['zap', 'shield', 'chart', 'spark'][index])}</span><span><strong>${option.label}</strong><small>${option.detail}</small></span></span><span class="option-arrow">${icon('arrow')}</span>
-          </button>
-        `).join('')}
-      </div>
+      ${renderScaleOptionList(question, 'data-mbti-answer')}
       <div class="quiz-nav">
         ${gamerMbtiAnswers.length > 0 ? `<button class="ghost-button" type="button" id="back-mbti-quiz">${icon('back')}1つ戻る</button>` : ''}
       </div>
@@ -2311,17 +2323,11 @@ function renderQuiz() {
         <img src="assets/pipo-scan.png" alt="" loading="lazy" />
         <div>
           <span>${icon('spark')}ピポの解析メモ</span>
-          <p>迷ったら直感をクリック。ピポは考えすぎて再起動しがちです。</p>
+          <p>左が「思わない」、右が「そう思う」。深く考えず、普段の遊び方に近い位置を選んでください。</p>
           <h3 id="quiz-title">${question.title}</h3>
         </div>
       </div>
-      <div class="option-list">
-        ${question.options.map((option, index) => `
-          <button class="option-button" type="button" data-answer="${index}">
-            <span class="option-main"><span class="option-icon">${icon(['zap', 'target', 'chat'][index])}</span><span><strong>${option.label}</strong><small>${option.detail}</small></span></span><span class="option-arrow">${icon('arrow')}</span>
-          </button>
-        `).join('')}
-      </div>
+      ${renderScaleOptionList(question, 'data-answer')}
       <div class="quiz-nav">
         ${answers.length > 0 ? `<button class="ghost-button" type="button" id="back-quiz">${icon('back')}1つ戻る</button>` : ''}
       </div>

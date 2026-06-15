@@ -18,7 +18,7 @@
     <title>GameSpec Lab | ゲーム相性とゲームセンス診断</title>
     <link rel="canonical" href="https://gamespeclab.com/" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep32" />
+    <link rel="stylesheet" href="style.css?v=deep33" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -41,6 +41,7 @@
       </a>
       <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
       <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="index.html#diagnosis-chooser"><span data-icon="spark"></span>診断を選ぶ</a>
         <a href="index.html#diagnosis"><span data-icon="link"></span>相性診断</a>
         <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="results.html"><span data-icon="list"></span>結果一覧</a>
@@ -51,6 +52,44 @@
     </header>
 
     <main>
+      <section class="hero-band choice-hero" id="diagnosis-chooser">
+        <div class="hero-orbit" aria-hidden="true">
+          <span>SYNC</span>
+          <span>SENSE</span>
+          <span>DUO</span>
+          <span>SCAN</span>
+        </div>
+        <div class="choice-copy">
+          <p class="eyebrow"><span data-icon="spark"></span>GAME SPEC LAB</p>
+          <h1>
+            <span>2つの診断で、</span>
+            <span>ゲームの自分を知る。</span>
+          </h1>
+          <p class="lead">相性でつながるか、センスを分解するか。今知りたい方向から診断を始められます。</p>
+          <div class="choice-mascots" aria-label="ナビAI ミナと相棒ロボ ピポ">
+            <img src="assets/navi-mina.png" alt="" loading="lazy" />
+            <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+            <span>ミナとピポが、あなたのプレイログをやさしくスキャンします。</span>
+          </div>
+        </div>
+        <div class="diagnosis-choice-grid" aria-label="診断を選ぶ">
+          <a class="diagnosis-choice-card is-sync" href="#diagnosis">
+            <span class="choice-card-top"><span><span data-icon="link"></span>DUO SYNC SCAN</span><small>10 Q</small></span>
+            <strong>ゲームパートナー相性診断</strong>
+            <p>一緒に遊びやすい相棒、誘い方、相性が深まりやすいゲームを見える化。</p>
+            <span class="choice-tags"><span>連携タイプ</span><span>おすすめゲーム</span><span>DUO取扱メモ</span></span>
+            <small class="choice-card-cta"><span data-icon="arrow"></span>相性診断へ</small>
+          </a>
+          <a class="diagnosis-choice-card is-sense" href="gamesense.html">
+            <span class="choice-card-top"><span><span data-icon="chart"></span>GAMESENSE SCAN 8</span><small>24 Q</small></span>
+            <strong>あなたのゲームセンスを科学する</strong>
+            <p>8能力をレーダーチャート化して、得意な勝ち筋と伸びるポイントを確認。</p>
+            <span class="choice-tags"><span>8能力</span><span>レーダー</span><span>アーキタイプ</span></span>
+            <small class="choice-card-cta"><span data-icon="arrow"></span>ゲームセンス診断へ</small>
+          </a>
+        </div>
+      </section>
+
       <section class="hero-band diagnosis-hero" id="diagnosis">
         <div class="hero-orbit" aria-hidden="true">
           <span>SYNC</span>
@@ -109,14 +148,9 @@
         <div class="section-heading compact">
           <p class="eyebrow"><span data-icon="arrow"></span>NEXT CONTENT</p>
           <h2>結果の続きは、目的別ページで確認</h2>
-          <p>トップは診断を中心にして、ゲームセンス診断、詳しい結果一覧、相性の見方は別ページに分けました。</p>
+          <p>診断後に見返したいタイプ一覧、相性の見方、プレイ環境メモは別ページに分けました。</p>
         </div>
         <div class="result-link-grid">
-          <a class="result-link-card" href="gamesense.html">
-            <span class="card-head"><span><span data-icon="chart"></span>GameSense Scan 8</span><small>SENSE</small></span>
-            <strong>24問でゲームセンス8能力をレーダーチャート化</strong>
-            <small><span data-icon="arrow"></span>ゲームセンス診断へ</small>
-          </a>
           <a class="result-link-card" href="results.html">
             <span class="card-head"><span><span data-icon="list"></span>結果タイプ一覧</span><small>TYPE</small></span>
             <strong>全タイプの特徴と相性の見方を確認</strong>
@@ -147,6 +181,6 @@
       </nav>
     </footer>
 
-    <script src="script.js?v=deep32"></script>
+    <script src="script.js?v=deep33"></script>
   </body>
 </html>

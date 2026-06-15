@@ -430,7 +430,18 @@ body.menu-open .menu-backdrop {
 }
 
 .choice-copy h1 {
-  font-size: clamp(40px, 5.8vw, 72px);
+  font-size: clamp(54px, 8vw, 108px);
+  letter-spacing: 0;
+  line-height: 0.9;
+  margin-top: 0;
+  max-width: none;
+  text-transform: none;
+}
+
+.choice-brand-title {
+  color: var(--ink);
+  text-shadow: 0 0 34px rgba(114, 242, 255, 0.22), 0 0 52px rgba(255, 77, 210, 0.14);
+  white-space: nowrap;
 }
 
 .choice-copy .lead {
@@ -2350,7 +2361,7 @@ p {
 }
 
 .site-footer {
-  align-items: flex-start;
+  align-items: center;
   background: rgba(2, 3, 10, 0.78);
   border-top: 1px solid var(--line);
   display: flex;
@@ -2359,9 +2370,28 @@ p {
   padding: 38px 34px;
 }
 
+.site-footer > div {
+  align-items: center;
+  display: flex;
+  flex: 1 1 auto;
+  gap: 14px;
+  min-width: 0;
+}
+
 .site-footer p {
   color: var(--muted);
-  margin-bottom: 0;
+  font-size: 11px;
+  font-weight: 800;
+  line-height: 1.35;
+  margin: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.site-footer nav {
+  flex: 0 1 auto;
+  justify-content: flex-end;
 }
 
 .site-footer nav a {
@@ -2412,6 +2442,10 @@ p {
     align-items: flex-start;
     flex-direction: column;
     padding: 18px 20px;
+  }
+
+  .site-footer > div {
+    flex-wrap: wrap;
   }
 
   .site-header {
@@ -2604,8 +2638,8 @@ p {
   }
 
   .choice-copy h1 {
-    font-size: 40px;
-    line-height: 0.98;
+    font-size: 44px;
+    line-height: 0.94;
   }
 
   .choice-copy .lead {

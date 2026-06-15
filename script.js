@@ -972,10 +972,11 @@ function getMaxScores(questionList, field, keys) {
   return maxScores;
 }
 
-function normalizeScores(scores, maxScores) {
+function normalizeScores(scores, maxScores, options = {}) {
+  const floor = options.floor || 0;
   return Object.fromEntries(Object.keys(scores).map((key) => [
     key,
-    Math.round(((scores[key] || 0) / Math.max(1, maxScores[key] || 1)) * 100),
+    Math.round(floor + (((scores[key] || 0) / Math.max(1, maxScores[key] || 1)) * (100 - floor))),
   ]));
 }
 
@@ -1164,7 +1165,7 @@ function renderSenseQuiz() {
   const keys = Object.keys(senseLabels);
   const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
   const maxScores = getMaxScores(senseQuestions, 'sense', keys);
-  const normalizedScores = normalizeScores(rawScores, maxScores);
+  const normalizedScores = normalizeScores(rawScores, maxScores, { floor: 38 });
   const archetype = getSenseArchetype(normalizedScores);
   const complete = senseAnswers.length === senseQuestions.length;
   const progress = Math.round((senseAnswers.length / senseQuestions.length) * 100);

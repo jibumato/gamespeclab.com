@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ゲーマーMBTIタイプ診断は、ゲーム中の判断、通話、役割、リハイド反応からゲーム内での16タイプを見える化するエンタメ診断です。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="ゲーマーMBTIタイプ診断 | GameSpec Lab" />
+    <meta property="og:description" content="ゲーム内での16タイプを診断。あなたは特攻隊長、戦術家、守護神、ガチIGLのどれ？" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gamespeclab.com/gamermbti.html" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ゲーマーMBTIタイプ診断 | GameSpec Lab" />
+    <meta name="twitter:description" content="ゲーム内での16タイプを診断。あなたのプレイ性格を4文字コードで可視化。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <title>ゲーマーMBTIタイプ診断 | GameSpec Lab</title>
+    <link rel="canonical" href="https://gamespeclab.com/gamermbti.html" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css?v=deep54" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="GameSpec Lab top">
+        <span class="brand-mark">GSL</span>
+        <span>GameSpec Lab</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="index.html"><span data-icon="spark"></span>診断を選ぶ</a>
+        <a href="partner.html"><span data-icon="link"></span>相性診断</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="guide.html"><span data-icon="spark"></span>遊び方ガイド</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+      </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
+    </header>
+
+    <main>
+      <section class="hero-band diagnosis-hero gamer-mbti-hero" id="gamer-mbti">
+        <div class="hero-orbit" aria-hidden="true">
+          <span>TYPE</span>
+          <span>ROLE</span>
+          <span>DUO</span>
+          <span>MBTI</span>
+        </div>
+        <div class="diagnosis-copy">
+          <p class="eyebrow"><span data-icon="user"></span>GAMER MBTI TYPE</p>
+          <h1>
+            <span>ゲーマーMBTI</span>
+            <span>タイプ診断</span>
+          </h1>
+          <p class="lead">8問で、ゲーム中の判断、通話、役割、リハイド反応から「ゲーム内での16タイプ」を見える化します。</p>
+          <div class="buddy-panel" aria-label="ナビAI ミナと相棒ロボ ピポ">
+            <div class="buddy-portraits" aria-hidden="true">
+              <img src="assets/navi-mina.png" alt="" loading="lazy" />
+              <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+            </div>
+            <div class="buddy-lines">
+              <p><strong>ミナ</strong><span>性格そのものより、ゲーム中のふるまいを見ていくね。</span></p>
+              <p><strong>ピポ</strong><span>ピポッ。特攻隊長か、戦術家か、守護神か。タイプログを解析します。</span></p>
+            </div>
+          </div>
+          <div class="mbti-primer" aria-label="ゲーマーMBTIの4軸">
+            <span><b>E / I</b><small>通話と熱量 / 集中と内省</small></span>
+            <span><b>S / N</b><small>現場反応 / 未来構想</small></span>
+            <span><b>T / F</b><small>勝ち筋重視 / 空気重視</small></span>
+            <span><b>J / P</b><small>作戦遂行 / 即興適応</small></span>
+          </div>
+        </div>
+        <div class="quiz-layout">
+          <section class="quiz-panel" aria-labelledby="mbti-quiz-title">
+            <div class="quiz-status">
+              <span id="mbti-step">質問 1 / 8</span>
+              <span id="mbti-progress-text">0%</span>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="mbti-progress"></span></div>
+            <div id="mbti-quiz-box"></div>
+          </section>
+          <aside class="result-panel" aria-label="ゲーマーMBTI診断プレビュー">
+            <div class="result-card accent-card">
+              <p class="card-label"><span data-icon="user"></span>推定タイプ</p>
+              <div class="preview-mbti-code" id="mbti-preview-code">----</div>
+              <h3 id="mbti-preview-name">スキャン待機中</h3>
+              <p id="mbti-preview-catch">回答するとゲーム内での16タイプを推定します。</p>
+            </div>
+            <div id="mbti-score-preview"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section link-hub">
+        <div class="section-heading compact">
+          <p class="eyebrow"><span data-icon="shield"></span>NOTE</p>
+          <h2>これはゲーム内タイプのエンタメ診断です</h2>
+          <p>一般的なMBTIの正式検査ではありません。ゲーム中の動き方、通話の温度、チーム内の役割をわかりやすく楽しむための分類です。</p>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+        <p>PCゲームの相性、ゲームセンス、才能タイプを診断するサービスです。</p>
+      </div>
+      <nav aria-label="運営情報">
+        <a href="partner.html"><span data-icon="link"></span>相性診断</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
+      </nav>
+    </footer>
+
+    <script src="script.js?v=deep54"></script>
+  </body>
+</html>

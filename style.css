@@ -410,10 +410,14 @@ body.menu-open .menu-backdrop {
 }
 
 .choice-hero {
-  align-items: center;
-  grid-template-columns: minmax(0, 0.86fr) minmax(320px, 1.14fr);
-  min-height: calc(92svh - 72px);
-  padding-bottom: 54px;
+  align-content: center;
+  gap: 28px;
+  grid-template-columns: minmax(0, 1fr);
+  justify-items: center;
+  min-height: calc(100svh - 72px);
+  padding-bottom: 44px;
+  padding-top: 58px;
+  text-align: center;
 }
 
 .choice-hero > * {
@@ -426,55 +430,25 @@ body.menu-open .menu-backdrop {
 }
 
 .choice-copy h1 {
-  font-size: clamp(46px, 7.4vw, 94px);
+  font-size: clamp(40px, 5.8vw, 72px);
 }
 
 .choice-copy .lead {
   color: #dbeaff;
   font-size: 17px;
   line-height: 1.75;
+  margin-left: auto;
+  margin-right: auto;
   margin-top: 20px;
   max-width: 620px;
-}
-
-.choice-mascots {
-  align-items: center;
-  background:
-    linear-gradient(110deg, rgba(114, 242, 255, 0.12), rgba(255, 183, 233, 0.1)),
-    rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 183, 233, 0.28);
-  display: inline-flex;
-  gap: 0;
-  margin-top: 24px;
-  max-width: 560px;
-  padding: 10px 14px 10px 10px;
-}
-
-.choice-mascots img {
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.62);
-  border-radius: 50%;
-  height: 48px;
-  object-fit: cover;
-  width: 48px;
-}
-
-.choice-mascots img + img {
-  margin-left: -12px;
-}
-
-.choice-mascots span {
-  color: var(--muted);
-  font-size: 13px;
-  font-weight: 800;
-  line-height: 1.55;
-  margin-left: 12px;
 }
 
 .diagnosis-choice-grid {
   display: grid;
   gap: 16px;
   grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 900px;
+  width: min(100%, 900px);
 }
 
 .diagnosis-choice-card {
@@ -486,11 +460,12 @@ body.menu-open .menu-backdrop {
   color: var(--ink);
   display: grid;
   gap: 16px;
-  min-height: 360px;
+  min-height: 320px;
   overflow: hidden;
   padding: 22px;
   position: relative;
   text-decoration: none;
+  text-align: left;
 }
 
 .diagnosis-choice-card::before {
@@ -2476,10 +2451,6 @@ p {
     margin-right: auto;
   }
 
-  .choice-mascots {
-    justify-content: center;
-  }
-
   .diagnosis-choice-grid {
     grid-template-columns: 1fr;
     justify-self: center;
@@ -2641,16 +2612,6 @@ p {
     font-size: 14px;
     line-height: 1.65;
     margin-top: 14px;
-  }
-
-  .choice-mascots {
-    align-items: flex-start;
-    text-align: left;
-  }
-
-  .choice-mascots img {
-    height: 42px;
-    width: 42px;
   }
 
   .diagnosis-choice-card {

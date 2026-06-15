@@ -1,0 +1,134 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="GameSpec Labのゲームパートナー相性診断。10問でプレイ傾向、組みやすい相棒、おすすめゲームを見える化します。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="ゲームパートナー相性診断 | GameSpec Lab" />
+    <meta property="og:description" content="10問で、あなたのプレイ傾向、組みやすい相棒、おすすめゲームを診断。" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://gamespeclab.com/partner.html" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ゲームパートナー相性診断 | GameSpec Lab" />
+    <meta name="twitter:description" content="10問で、あなたのプレイ傾向、組みやすい相棒、おすすめゲームを診断。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <title>ゲームパートナー相性診断 | GameSpec Lab</title>
+    <link rel="canonical" href="https://gamespeclab.com/partner.html" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="stylesheet" href="style.css?v=deep34" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html" aria-label="GameSpec Lab top">
+        <span class="brand-mark">GSL</span>
+        <span>GameSpec Lab</span>
+      </a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="index.html"><span data-icon="spark"></span>診断を選ぶ</a>
+        <a href="partner.html"><span data-icon="link"></span>相性診断</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="guide.html"><span data-icon="spark"></span>遊び方ガイド</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+      </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
+    </header>
+
+    <main>
+      <section class="hero-band diagnosis-hero" id="diagnosis">
+        <div class="hero-orbit" aria-hidden="true">
+          <span>SYNC</span>
+          <span>FPS</span>
+          <span>DUO</span>
+          <span>SPEC</span>
+        </div>
+        <div class="diagnosis-copy">
+          <p class="eyebrow"><span data-icon="link"></span>DUO SYNC SCAN</p>
+          <h1>
+            <span>ゲームパートナー</span>
+            <span>相性診断</span>
+          </h1>
+          <p class="lead">10問で、あなたのプレイ傾向、組みやすい相棒、おすすめゲーム、DUO取扱メモまでまとめて見える化します。</p>
+          <div class="companion-pill" aria-label="ナビAI ミナ">
+            <img class="companion-avatar" src="assets/navi-mina.png" alt="" loading="lazy" />
+            <span><strong>ナビAI ミナ</strong> が相性をやさしくスキャン</span>
+          </div>
+          <div class="buddy-panel" aria-label="ナビAI ミナと相棒ロボ ピポ">
+            <div class="buddy-portraits" aria-hidden="true">
+              <img src="assets/navi-mina.png" alt="" loading="lazy" />
+              <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+            </div>
+            <div class="buddy-lines">
+              <p><strong>ミナ</strong><span>あなたの遊び方、いっしょに見ていくね。</span></p>
+              <p><strong>ピポ</strong><span>ピポッ。相性ログを解析中。結果が良いとボクのLEDも光ります。</span></p>
+            </div>
+          </div>
+          <div class="hero-metrics" aria-label="診断内容">
+            <span><span data-icon="link"></span>連携タイプ</span>
+            <span><span data-icon="target"></span>才能傾向</span>
+            <span><span data-icon="gamepad"></span>おすすめゲーム</span>
+          </div>
+        </div>
+        <div class="quiz-layout">
+          <section class="quiz-panel" aria-labelledby="quiz-title">
+            <div class="quiz-status">
+              <span id="quiz-step">質問 1 / 10</span>
+              <span id="quiz-progress-text">0%</span>
+            </div>
+            <div class="progress-track" aria-hidden="true"><span id="quiz-progress"></span></div>
+            <div id="quiz-box"></div>
+          </section>
+          <aside class="result-panel" aria-label="診断結果プレビュー">
+            <div class="result-card accent-card">
+              <p class="card-label"><span data-icon="target"></span>結果プレビュー</p>
+              <h3 id="preview-name">クラッチエース型</h3>
+              <p id="preview-catch">一緒にハマる相棒は、ナイスを拾ってくれる観戦サポーター。</p>
+            </div>
+            <div class="score-grid" id="score-preview"></div>
+          </aside>
+        </div>
+      </section>
+
+      <section class="section link-hub" id="next-content">
+        <div class="section-heading compact">
+          <p class="eyebrow"><span data-icon="arrow"></span>NEXT CONTENT</p>
+          <h2>結果の続きは、目的別ページで確認</h2>
+          <p>診断後に見返したいタイプ一覧、相性の見方、プレイ環境メモは別ページに分けました。</p>
+        </div>
+        <div class="result-link-grid">
+          <a class="result-link-card" href="results.html">
+            <span class="card-head"><span><span data-icon="list"></span>結果タイプ一覧</span><small>TYPE</small></span>
+            <strong>全タイプの特徴と相性の見方を確認</strong>
+            <small><span data-icon="arrow"></span>結果一覧へ</small>
+          </a>
+          <a class="result-link-card" href="guide.html">
+            <span class="card-head"><span><span data-icon="gamepad"></span>ゲーム・デバイスガイド</span><small>GUIDE</small></span>
+            <strong>おすすめゲーム、相性の合わせ方、デバイスを確認</strong>
+            <small><span data-icon="arrow"></span>ガイドへ</small>
+          </a>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+        <p>PCゲームの相性、ゲームセンス、才能タイプを診断するサービスです。</p>
+      </div>
+      <nav aria-label="運営情報">
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="pc-build.html"><span data-icon="cpu"></span>プレイ環境メモ</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
+        <a href="disclaimer.html"><span data-icon="check"></span>免責事項</a>
+        <a href="about.html"><span data-icon="user"></span>運営者情報</a>
+      </nav>
+    </footer>
+
+    <script src="script.js?v=deep34"></script>
+  </body>
+</html>

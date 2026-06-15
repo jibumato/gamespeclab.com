@@ -1702,6 +1702,10 @@ if (document.querySelector('#result-links')) {
   renderResultLinks();
 }
 
+if (!document.querySelector('#diagnosis') && /^#result=([\w-]+)/.test(location.hash)) {
+  location.replace(`partner.html${location.hash}`);
+}
+
 if (document.querySelector('#diagnosis')) {
   applyHashRoute();
   window.addEventListener('hashchange', applyHashRoute);

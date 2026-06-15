@@ -1052,6 +1052,41 @@ function renderRadarChart(scores, labels, icons) {
   `;
 }
 
+function renderTopSenseAbilities(scores) {
+  const rankLabels = ['MAIN CORE', 'SECOND CORE', 'THIRD EDGE'];
+  const ranked = rankScores(scores).slice(0, 3);
+  return `
+    <section class="top-ability-panel" aria-label="上位3つのゲームセンス能力">
+      <div class="top-ability-head">
+        <span>${icon('spark')}TOP 3 ABILITIES</span>
+        <strong>レーダーで強く出た能力</strong>
+        <p>1位と2位があなたのアーキタイプを作る主軸です。3位は、勝ち方に個性を足すサブ武器として見てください。</p>
+      </div>
+      <div class="top-ability-grid">
+        ${ranked.map(([key, value], index) => {
+          const profile = senseAbilityProfiles[key];
+          const rank = index + 1;
+          return `
+            <article class="top-ability-card rank-${rank}">
+              <div class="top-ability-rank">
+                <span>${String(rank).padStart(2, '0')}</span>
+                <small>${rankLabels[index]}</small>
+                <b>${value}</b>
+              </div>
+              <h3>${icon(senseIcons[key] || 'target')}${senseLabels[key]}</h3>
+              <p>${profile.gift}</p>
+              <div class="top-ability-tip">
+                <strong>伸ばすなら</strong>
+                <span>${profile.growth}</span>
+              </div>
+            </article>
+          `;
+        }).join('')}
+      </div>
+    </section>
+  `;
+}
+
 function renderSenseTheoryNote() {
   return `
     <div class="theory-note">
@@ -1116,8 +1151,19 @@ function renderSenseResult(archetype, normalizedScores) {
   return `
     <div class="result-block sense-result-block">
       <div class="result-dialogue">
-        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-        <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
+        <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
+          <div class="sense-core-orb is-primary">
+            <small>01</small>
+            ${icon(senseIcons[archetype.primary] || 'target')}
+            <strong>${primaryLabel}</strong>
+          </div>
+          <span class="sense-core-link">×</span>
+          <div class="sense-core-orb is-secondary">
+            <small>02</small>
+            ${icon(senseIcons[archetype.secondary] || 'spark')}
+            <strong>${secondaryLabel}</strong>
+          </div>
+        </div>
         <div>
           <div class="result-kicker">${icon('chart')}GameSense Archetype</div>
           <h3 id="sense-quiz-title">${archetype.name}</h3>
@@ -1126,6 +1172,7 @@ function renderSenseResult(archetype, normalizedScores) {
         </div>
       </div>
       ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
+      ${renderTopSenseAbilities(normalizedScores)}
       ${renderSenseMatrix(archetype)}
       <div class="sense-result-grid">
         <article class="result-insight-card">

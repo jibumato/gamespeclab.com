@@ -18,7 +18,7 @@
     <title>GameSense Scan 8 | GameSpec Lab</title>
     <link rel="canonical" href="https://gamespeclab.com/gamesense.html" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep48" />
+    <link rel="stylesheet" href="style.css?v=deep50" />
   </head>
   <body>
     <header class="site-header">
@@ -100,8 +100,15 @@
             <div class="certificate-preview" aria-label="SNS用リザルトカードのプレビュー">
               <div class="certificate-grid" aria-hidden="true"></div>
               <span>GAME SENSE CERTIFIED</span>
+              <small class="certificate-rank" id="post-result-rank">RANK A</small>
               <strong id="post-result-type">SCAN COMPLETE</strong>
               <p id="post-result-core">あなたの上位能力を認定証風に表示します。</p>
+              <div class="certificate-stat-row" aria-label="リザルトカードに入る上位能力">
+                <span id="post-result-top1">01 --</span>
+                <span id="post-result-top2">02 --</span>
+                <span id="post-result-top3">03 --</span>
+              </div>
+              <p class="certificate-weapon" id="post-result-weapon">あなたの武器を一言で表示します。</p>
               <small>GameSpec Lab</small>
             </div>
             <button class="primary-button" type="button" id="post-share-result"><span data-icon="share"></span>画像をシェアする</button>
@@ -189,6 +196,6 @@
       </nav>
     </footer>
 
-    <script src="script.js?v=deep48"></script>
+    <script src="script.js?v=deep50"></script>
   </body>
 </html>

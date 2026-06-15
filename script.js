@@ -988,6 +988,10 @@ function getSenseArchetype(normalizedScores) {
   const ranked = rankScores(normalizedScores);
   const primary = ranked[0]?.[0] || 'awareness';
   const secondary = ranked.find(([key]) => key !== primary)?.[0] || 'prediction';
+  return getSenseArchetypeFromKeys(primary, secondary);
+}
+
+function getSenseArchetypeFromKeys(primary, secondary) {
   const preset = senseArchetypes[`${primary}_${secondary}`];
   if (preset) {
     return {
@@ -1211,6 +1215,32 @@ function senseGameSuggestions(primary, secondary) {
   return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 4);
 }
 
+function getSenseShareMeta(archetype, normalizedScores) {
+  const ranked = rankScores(normalizedScores);
+  const topThree = ranked.slice(0, 3);
+  const lowest = [...ranked].sort((a, b) => a[1] - b[1])[0] || ['awareness', 0];
+  const average = Math.round(ranked.reduce((sum, [, value]) => sum + value, 0) / ranked.length);
+  const topAverage = Math.round(topThree.reduce((sum, [, value]) => sum + value, 0) / topThree.length);
+  const peakGap = (topThree[0]?.[1] || 0) - (topThree[1]?.[1] || 0);
+  const rank = topAverage >= 92 ? 'S+' : topAverage >= 84 ? 'S' : topAverage >= 76 ? 'A+' : topAverage >= 66 ? 'A' : 'B+';
+  const style = peakGap >= 12 ? '一点突破型' : peakGap <= 4 ? '万能バランス型' : '二刀流コア型';
+  const primaryLabel = senseLabels[archetype.primary] || '上位能力';
+  const secondaryLabel = senseLabels[archetype.secondary] || 'サブ能力';
+  const lowestLabel = senseLabels[lowest[0]] || '伸びしろ';
+
+  return {
+    rank,
+    style,
+    average,
+    topAverage,
+    topThree,
+    lowest,
+    weapon: `${primaryLabel}で流れを掴み、${secondaryLabel}で勝ち筋を伸ばす。`,
+    flexLine: `認定ランク ${rank} / ${style} / 総合${average}`,
+    growthLine: `伸びしろ: ${lowestLabel}を磨くと、さらに完成度が上がります。`,
+  };
+}
+
 function updatePostResultLab(archetype, normalizedScores) {
   const lab = document.querySelector('#post-result-lab');
   if (!lab) return;
@@ -1219,14 +1249,35 @@ function updatePostResultLab(archetype, normalizedScores) {
   const primaryLabel = senseLabels[archetype.primary] || '上位能力';
   const secondaryLabel = senseLabels[archetype.secondary] || 'サブ能力';
   const lowestLabel = senseLabels[lowest] || '状況認識';
+  const shareMeta = getSenseShareMeta(archetype, normalizedScores);
   const resultType = document.querySelector('#post-result-type');
   const resultCore = document.querySelector('#post-result-core');
+  const resultRank = document.querySelector('#post-result-rank');
+  const resultWeapon = document.querySelector('#post-result-weapon');
   const trainingTitle = document.querySelector('#training-title');
   const trainingCopy = document.querySelector('#training-copy');
   const communityCopy = document.querySelector('#community-type-copy');
 
+  lab.dataset.cardType = archetype.name;
+  lab.dataset.cardCatch = archetype.catchline;
+  lab.dataset.cardRank = shareMeta.rank;
+  lab.dataset.cardStyle = shareMeta.style;
+  lab.dataset.cardAverage = String(shareMeta.average);
+  lab.dataset.cardTopAverage = String(shareMeta.topAverage);
+  lab.dataset.cardWeapon = shareMeta.weapon;
+  lab.dataset.cardGrowth = shareMeta.growthLine;
+  shareMeta.topThree.forEach(([key, value], index) => {
+    lab.dataset[`cardTop${index + 1}`] = `${senseLabels[key]} ${value}`;
+  });
+
   if (resultType) resultType.textContent = archetype.name;
-  if (resultCore) resultCore.textContent = `上位能力: ${primaryLabel} × ${secondaryLabel}`;
+  if (resultCore) resultCore.textContent = `${shareMeta.flexLine} / ${primaryLabel} × ${secondaryLabel}`;
+  if (resultRank) resultRank.textContent = `RANK ${shareMeta.rank}`;
+  if (resultWeapon) resultWeapon.textContent = shareMeta.weapon;
+  shareMeta.topThree.forEach(([key, value], index) => {
+    const node = document.querySelector(`#post-result-top${index + 1}`);
+    if (node) node.textContent = `${String(index + 1).padStart(2, '0')} ${senseLabels[key]} ${value}`;
+  });
   if (trainingTitle) trainingTitle.textContent = `あなたの${lowestLabel}を高める1分間トレーニング`;
   if (trainingCopy) trainingCopy.textContent = `${lowestLabel}は、短い反復で感覚を掴みやすい能力です。光ったパネルを追って、変化に気づく回路を温めます。`;
   if (communityCopy) communityCopy.textContent = `あなたは「${primaryLabel} × ${secondaryLabel}」の組み合わせ。相性診断で、噛み合いやすい相棒タイプも見つけられます。`;
@@ -1733,6 +1784,44 @@ function renderResultLinks() {
   `).join('');
 }
 
+function buildSenseScoresForPair(primary, secondary) {
+  const keys = Object.keys(senseLabels);
+  const scores = Object.fromEntries(keys.map((key, index) => [key, Math.max(42, 58 - (index * 2))]));
+  scores[primary] = 92;
+  scores[secondary] = 82;
+  return scores;
+}
+
+function getAllSenseTypeLinks() {
+  const keys = Object.keys(senseLabels);
+  return keys.flatMap((primary) => keys
+    .filter((secondary) => secondary !== primary)
+    .map((secondary) => {
+      const archetype = getSenseArchetypeFromKeys(primary, secondary);
+      return {
+        id: `${primary}_${secondary}`,
+        ...archetype,
+        primaryLabel: senseLabels[primary],
+        secondaryLabel: senseLabels[secondary],
+      };
+    }));
+}
+
+function renderSenseResultLinks() {
+  const resultLinks = document.querySelector('#sense-result-links');
+  if (!resultLinks) return;
+  const base = resultLinks.dataset.base || 'gamesense.html';
+  const types = getAllSenseTypeLinks();
+  resultLinks.innerHTML = types.map((type) => `
+    <a class="result-link-card sense-type-card" href="${base}#sense=${type.id}">
+      <span class="card-head"><span>${icon(senseIcons[type.primary] || 'chart')}${type.name}</span><small>G8</small></span>
+      <strong>${type.catchline}</strong>
+      <span class="result-link-meta">${icon(senseIcons[type.secondary] || 'spark')}${type.primaryLabel} × ${type.secondaryLabel}</span>
+      <small>${icon('arrow')}結果を表示</small>
+    </a>
+  `).join('');
+}
+
 function drawWrappedCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 3) {
   const chars = [...text];
   const lines = [];
@@ -1754,8 +1843,16 @@ function drawWrappedCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines =
 }
 
 function createSenseResultCardBlob() {
+  const lab = document.querySelector('#post-result-lab');
   const type = document.querySelector('#post-result-type')?.textContent || 'GameSense Scan 8';
-  const core = document.querySelector('#post-result-core')?.textContent || '上位能力をスキャンしました';
+  const rank = lab?.dataset.cardRank || 'A';
+  const style = lab?.dataset.cardStyle || '二刀流コア型';
+  const average = lab?.dataset.cardAverage || '--';
+  const topAverage = lab?.dataset.cardTopAverage || '--';
+  const catchline = lab?.dataset.cardCatch || 'あなたのゲームセンスをスキャンしました。';
+  const weapon = lab?.dataset.cardWeapon || document.querySelector('#post-result-core')?.textContent || '上位能力をスキャンしました';
+  const growth = lab?.dataset.cardGrowth || '伸びしろもあなたらしいプレイスタイルの一部です。';
+  const topStats = [lab?.dataset.cardTop1, lab?.dataset.cardTop2, lab?.dataset.cardTop3].filter(Boolean);
   const canvas = document.createElement('canvas');
   canvas.width = 1080;
   canvas.height = 1080;
@@ -1810,17 +1907,45 @@ function createSenseResultCardBlob() {
   ctx.textAlign = 'center';
   ctx.fillText('GAME SENSE CERTIFIED', 540, 210);
 
-  ctx.fillStyle = '#f8fbff';
-  ctx.font = '900 74px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-  drawWrappedCanvasText(ctx, type, 540, 392, 780, 88, 3);
+  ctx.fillStyle = 'rgba(255, 77, 210, 0.96)';
+  ctx.font = '900 48px Menlo, monospace';
+  ctx.fillText(`RANK ${rank}`, 540, 282);
 
-  ctx.fillStyle = 'rgba(248, 251, 255, 0.82)';
-  ctx.font = '800 32px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-  drawWrappedCanvasText(ctx, core, 540, 690, 760, 46, 2);
+  ctx.fillStyle = '#f8fbff';
+  ctx.font = '900 68px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, type, 540, 382, 820, 78, 3);
+
+  ctx.fillStyle = 'rgba(114, 242, 255, 0.92)';
+  ctx.font = '900 30px Menlo, monospace';
+  ctx.fillText(`${style} / GSL SCORE ${average} / CORE ${topAverage}`, 540, 610);
+
+  const statX = 190;
+  const statY = 674;
+  const statWidth = 700;
+  ctx.textAlign = 'left';
+  topStats.forEach((stat, index) => {
+    const y = statY + (index * 66);
+    ctx.fillStyle = index === 0 ? 'rgba(255, 77, 210, 0.22)' : 'rgba(114, 242, 255, 0.12)';
+    ctx.fillRect(statX, y - 34, statWidth, 46);
+    ctx.strokeStyle = index === 0 ? 'rgba(255, 77, 210, 0.64)' : 'rgba(114, 242, 255, 0.38)';
+    ctx.strokeRect(statX, y - 34, statWidth, 46);
+    ctx.fillStyle = '#f8fbff';
+    ctx.font = '900 30px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+    ctx.fillText(stat, statX + 22, y - 2);
+  });
+
+  ctx.textAlign = 'center';
+  ctx.fillStyle = 'rgba(248, 251, 255, 0.9)';
+  ctx.font = '800 29px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, weapon, 540, 852, 760, 38, 2);
+
+  ctx.fillStyle = 'rgba(248, 251, 255, 0.68)';
+  ctx.font = '700 23px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, catchline, 540, 928, 760, 32, 2);
 
   ctx.fillStyle = '#ff4dd2';
-  ctx.font = '900 28px Menlo, monospace';
-  ctx.fillText('GameSpec Lab / GameSense Scan 8', 540, 890);
+  ctx.font = '900 24px Menlo, monospace';
+  drawWrappedCanvasText(ctx, growth, 540, 990, 820, 30, 2);
 
   return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
 }
@@ -1912,6 +2037,50 @@ function setupPostResultActions() {
   startButton.addEventListener('click', startTraining);
 }
 
+function applySenseHashRoute() {
+  const match = location.hash.match(/^#sense=([a-z]+)_([a-z]+)$/);
+  if (!match) return false;
+  const [, primary, secondary] = match;
+  if (!senseLabels[primary] || !senseLabels[secondary] || primary === secondary) return false;
+  const archetype = getSenseArchetypeFromKeys(primary, secondary);
+  const normalizedScores = buildSenseScoresForPair(primary, secondary);
+
+  senseAnswers = Array.from({ length: senseQuestions.length }, () => 0);
+  document.body.classList.add('sense-result-ready');
+  document.querySelector('#sense-step').textContent = '結果';
+  document.querySelector('#sense-progress-text').textContent = '100%';
+  document.querySelector('#sense-progress').style.width = '100%';
+  document.querySelector('#sense-preview-name').textContent = archetype.name;
+  document.querySelector('#sense-preview-catch').textContent = archetype.catchline;
+  document.querySelector('#sense-score-preview').innerHTML = renderScoreGrid(normalizedScores, senseLabels);
+  document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
+  updatePostResultLab(archetype, normalizedScores);
+  document.querySelector('#reset-sense-quiz')?.addEventListener('click', () => {
+    senseAnswers = [];
+    location.hash = 'gamesense';
+    renderSenseQuiz();
+  });
+  document.querySelector('#share-sense-result')?.addEventListener('click', async () => {
+    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${location.origin}${location.pathname}`;
+    trackEvent('sense_share_click', { archetype: archetype.name, source: 'type_directory' });
+    const shareButton = document.querySelector('#share-sense-result');
+    try {
+      if (navigator.share) {
+        await navigator.share({ title: 'GameSense Scan 8', text });
+        return;
+      }
+      await navigator.clipboard.writeText(text);
+      shareButton.innerHTML = `${icon('check')}コピーしました`;
+    } catch (error) {
+      if (error?.name === 'AbortError') return;
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    }
+  });
+  document.querySelector('#gamesense')?.scrollIntoView();
+  trackEvent('sense_type_page_open', { archetype: archetype.name, primary, secondary });
+  return true;
+}
+
 function applyHashRoute() {
   const match = location.hash.match(/^#result=([\w-]+)/);
   if (!match) return;
@@ -1949,11 +2118,21 @@ if (document.querySelector('#pc-quiz-box')) {
 }
 
 if (document.querySelector('#sense-quiz-box')) {
-  renderSenseQuiz();
+  if (!applySenseHashRoute()) renderSenseQuiz();
+  window.addEventListener('hashchange', () => {
+    if (!applySenseHashRoute()) {
+      senseAnswers = [];
+      renderSenseQuiz();
+    }
+  });
 }
 
 if (document.querySelector('#result-links')) {
   renderResultLinks();
+}
+
+if (document.querySelector('#sense-result-links')) {
+  renderSenseResultLinks();
 }
 
 if (!document.querySelector('#diagnosis') && /^#result=([\w-]+)/.test(location.hash)) {

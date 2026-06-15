@@ -3032,7 +3032,7 @@ body.sense-result-ready .post-result-lab {
   isolation: isolate;
   min-height: 220px;
   overflow: hidden;
-  padding: 22px;
+  padding: 20px;
   place-content: center;
   position: relative;
   text-align: center;
@@ -3053,24 +3053,58 @@ body.sense-result-ready .post-result-lab {
 .certificate-preview small {
   color: var(--aqua);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11px;
+  font-size: 10px;
   font-weight: 900;
   letter-spacing: 0.08em;
 }
 
+.certificate-rank {
+  border: 1px solid rgba(255, 77, 210, 0.46);
+  color: var(--pink) !important;
+  justify-self: center;
+  margin-top: 8px;
+  padding: 5px 10px;
+}
+
 .certificate-preview strong {
   color: var(--ink);
-  font-size: clamp(24px, 2.4vw, 38px);
+  font-size: clamp(22px, 2.1vw, 34px);
   line-height: 1.08;
-  margin: 14px 0 10px;
+  margin: 12px 0 9px;
   text-shadow: 0 0 22px rgba(114, 242, 255, 0.34);
 }
 
 .certificate-preview p {
   color: rgba(248, 251, 255, 0.84);
-  font-size: 13px;
+  font-size: 12px;
   font-weight: 800;
-  line-height: 1.55;
+  line-height: 1.45;
+}
+
+.certificate-stat-row {
+  display: grid;
+  gap: 6px;
+  margin: 12px 0;
+  width: 100%;
+}
+
+.certificate-stat-row span {
+  background: rgba(114, 242, 255, 0.08);
+  border: 1px solid rgba(114, 242, 255, 0.2);
+  color: var(--ink);
+  font-size: 10px;
+  padding: 7px 8px;
+}
+
+.certificate-stat-row span:first-child {
+  background: rgba(255, 77, 210, 0.14);
+  border-color: rgba(255, 77, 210, 0.36);
+}
+
+.certificate-preview .certificate-weapon {
+  color: rgba(255, 255, 255, 0.92);
+  font-size: 12px;
+  margin-bottom: 10px;
 }
 
 .training-game {

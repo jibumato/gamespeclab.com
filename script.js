@@ -1211,6 +1211,27 @@ function senseGameSuggestions(primary, secondary) {
   return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 4);
 }
 
+function updatePostResultLab(archetype, normalizedScores) {
+  const lab = document.querySelector('#post-result-lab');
+  if (!lab) return;
+  const sorted = Object.entries(normalizedScores).sort((a, b) => b[1] - a[1]);
+  const lowest = [...sorted].sort((a, b) => a[1] - b[1])[0]?.[0] || 'awareness';
+  const primaryLabel = senseLabels[archetype.primary] || '上位能力';
+  const secondaryLabel = senseLabels[archetype.secondary] || 'サブ能力';
+  const lowestLabel = senseLabels[lowest] || '状況認識';
+  const resultType = document.querySelector('#post-result-type');
+  const resultCore = document.querySelector('#post-result-core');
+  const trainingTitle = document.querySelector('#training-title');
+  const trainingCopy = document.querySelector('#training-copy');
+  const communityCopy = document.querySelector('#community-type-copy');
+
+  if (resultType) resultType.textContent = archetype.name;
+  if (resultCore) resultCore.textContent = `上位能力: ${primaryLabel} × ${secondaryLabel}`;
+  if (trainingTitle) trainingTitle.textContent = `あなたの${lowestLabel}を高める1分間トレーニング`;
+  if (trainingCopy) trainingCopy.textContent = `${lowestLabel}は、短い反復で感覚を掴みやすい能力です。光ったパネルを追って、変化に気づく回路を温めます。`;
+  if (communityCopy) communityCopy.textContent = `あなたは「${primaryLabel} × ${secondaryLabel}」の組み合わせ。相性診断で、噛み合いやすい相棒タイプも見つけられます。`;
+}
+
 function renderSenseQuiz() {
   const keys = Object.keys(senseLabels);
   const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
@@ -1219,6 +1240,7 @@ function renderSenseQuiz() {
   const archetype = getSenseArchetype(normalizedScores);
   const complete = senseAnswers.length === senseQuestions.length;
   const progress = Math.round((senseAnswers.length / senseQuestions.length) * 100);
+  document.body.classList.toggle('sense-result-ready', complete);
 
   document.querySelector('#sense-step').textContent = complete ? '結果' : `質問 ${senseAnswers.length + 1} / ${senseQuestions.length}`;
   document.querySelector('#sense-progress-text').textContent = `${progress}%`;
@@ -1265,6 +1287,7 @@ function renderSenseQuiz() {
 
   trackEvent('sense_diagnosis_complete', { archetype: archetype.name, primary: archetype.primary, secondary: archetype.secondary });
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
+  updatePostResultLab(archetype, normalizedScores);
   document.querySelector('#reset-sense-quiz').addEventListener('click', () => {
     senseAnswers = [];
     renderSenseQuiz();
@@ -1710,6 +1733,185 @@ function renderResultLinks() {
   `).join('');
 }
 
+function drawWrappedCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 3) {
+  const chars = [...text];
+  const lines = [];
+  let line = '';
+  chars.forEach((char) => {
+    const next = line + char;
+    if (ctx.measureText(next).width > maxWidth && line) {
+      lines.push(line);
+      line = char;
+      return;
+    }
+    line = next;
+  });
+  if (line) lines.push(line);
+  lines.slice(0, maxLines).forEach((item, index) => {
+    ctx.fillText(item, x, y + (index * lineHeight));
+  });
+  return y + (Math.min(lines.length, maxLines) * lineHeight);
+}
+
+function createSenseResultCardBlob() {
+  const type = document.querySelector('#post-result-type')?.textContent || 'GameSense Scan 8';
+  const core = document.querySelector('#post-result-core')?.textContent || '上位能力をスキャンしました';
+  const canvas = document.createElement('canvas');
+  canvas.width = 1080;
+  canvas.height = 1080;
+  const ctx = canvas.getContext('2d');
+  const bg = ctx.createLinearGradient(0, 0, 1080, 1080);
+  bg.addColorStop(0, '#050715');
+  bg.addColorStop(0.52, '#121a3a');
+  bg.addColorStop(1, '#25143b');
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  ctx.strokeStyle = 'rgba(114, 242, 255, 0.12)';
+  ctx.lineWidth = 2;
+  for (let x = 80; x <= 1000; x += 54) {
+    ctx.beginPath();
+    ctx.moveTo(x, 80);
+    ctx.lineTo(x, 1000);
+    ctx.stroke();
+  }
+  for (let y = 80; y <= 1000; y += 54) {
+    ctx.beginPath();
+    ctx.moveTo(80, y);
+    ctx.lineTo(1000, y);
+    ctx.stroke();
+  }
+
+  const glowA = ctx.createRadialGradient(260, 220, 0, 260, 220, 360);
+  glowA.addColorStop(0, 'rgba(255, 77, 210, 0.34)');
+  glowA.addColorStop(1, 'rgba(255, 77, 210, 0)');
+  ctx.fillStyle = glowA;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  const glowB = ctx.createRadialGradient(820, 820, 0, 820, 820, 360);
+  glowB.addColorStop(0, 'rgba(114, 242, 255, 0.34)');
+  glowB.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  ctx.fillStyle = glowB;
+  ctx.fillRect(0, 0, 1080, 1080);
+
+  ctx.strokeStyle = 'rgba(114, 242, 255, 0.62)';
+  ctx.lineWidth = 4;
+  ctx.strokeRect(86, 86, 908, 908);
+  ctx.strokeStyle = 'rgba(255, 77, 210, 0.62)';
+  ctx.beginPath();
+  ctx.moveTo(86, 86);
+  ctx.lineTo(250, 86);
+  ctx.moveTo(994, 994);
+  ctx.lineTo(830, 994);
+  ctx.stroke();
+
+  ctx.fillStyle = '#72f2ff';
+  ctx.font = '900 34px Menlo, monospace';
+  ctx.textAlign = 'center';
+  ctx.fillText('GAME SENSE CERTIFIED', 540, 210);
+
+  ctx.fillStyle = '#f8fbff';
+  ctx.font = '900 74px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, type, 540, 392, 780, 88, 3);
+
+  ctx.fillStyle = 'rgba(248, 251, 255, 0.82)';
+  ctx.font = '800 32px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, core, 540, 690, 760, 46, 2);
+
+  ctx.fillStyle = '#ff4dd2';
+  ctx.font = '900 28px Menlo, monospace';
+  ctx.fillText('GameSpec Lab / GameSense Scan 8', 540, 890);
+
+  return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
+}
+
+function setupPostResultActions() {
+  const postShareButton = document.querySelector('#post-share-result');
+  postShareButton?.addEventListener('click', async () => {
+    trackEvent('sense_post_share_click');
+    const type = document.querySelector('#post-result-type')?.textContent || 'GameSense Scan 8';
+    const text = `GameSpec LabのGameSense Scan 8で「${type}」でした。\n${location.origin}${location.pathname}`;
+    try {
+      const blob = await createSenseResultCardBlob();
+      if (!blob) throw new Error('image generation failed');
+      const file = new File([blob], 'gamesense-result-card.png', { type: 'image/png' });
+      if (navigator.canShare?.({ files: [file] })) {
+        await navigator.share({ title: 'GameSense Scan 8', text, files: [file] });
+        return;
+      }
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement('a');
+      link.href = url;
+      link.download = 'gamesense-result-card.png';
+      document.body.appendChild(link);
+      link.click();
+      link.remove();
+      window.setTimeout(() => URL.revokeObjectURL(url), 800);
+      postShareButton.innerHTML = `${icon('check')}画像を保存しました`;
+    } catch (error) {
+      const shareButton = document.querySelector('#share-sense-result');
+      if (shareButton) {
+        shareButton.click();
+        return;
+      }
+      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
+    }
+  });
+
+  const startButton = document.querySelector('#training-start');
+  const cells = [...document.querySelectorAll('[data-training-cell]')];
+  const timerNode = document.querySelector('#training-timer');
+  const scoreNode = document.querySelector('#training-score');
+  if (!startButton || cells.length === 0 || !timerNode || !scoreNode) return;
+
+  let score = 0;
+  let timeLeft = 60;
+  let activeIndex = -1;
+  let timerId = null;
+
+  const setActiveCell = () => {
+    cells.forEach((cell) => cell.classList.remove('is-active'));
+    activeIndex = Math.floor(Math.random() * cells.length);
+    cells[activeIndex].classList.add('is-active');
+  };
+
+  const finishTraining = () => {
+    window.clearInterval(timerId);
+    timerId = null;
+    activeIndex = -1;
+    cells.forEach((cell) => cell.classList.remove('is-active'));
+    startButton.innerHTML = `${icon('check')}もう一度トレーニング`;
+    trackEvent('sense_training_complete', { score });
+  };
+
+  const startTraining = () => {
+    window.clearInterval(timerId);
+    score = 0;
+    timeLeft = 60;
+    scoreNode.textContent = String(score);
+    timerNode.textContent = String(timeLeft);
+    startButton.innerHTML = `${icon('target')}トレーニング中`;
+    setActiveCell();
+    trackEvent('sense_training_start');
+    timerId = window.setInterval(() => {
+      timeLeft -= 1;
+      timerNode.textContent = String(Math.max(0, timeLeft));
+      if (timeLeft <= 0) finishTraining();
+    }, 1000);
+  };
+
+  cells.forEach((cell, index) => {
+    cell.addEventListener('click', () => {
+      if (!timerId || index !== activeIndex) return;
+      score += 1;
+      scoreNode.textContent = String(score);
+      setActiveCell();
+    });
+  });
+
+  startButton.addEventListener('click', startTraining);
+}
+
 function applyHashRoute() {
   const match = location.hash.match(/^#result=([\w-]+)/);
   if (!match) return;
@@ -1736,6 +1938,7 @@ hydrateStaticIcons();
 enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
+setupPostResultActions();
 
 if (document.querySelector('#quiz-box')) {
   renderQuiz();

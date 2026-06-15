@@ -454,6 +454,87 @@ body.menu-open .menu-backdrop {
   max-width: 620px;
 }
 
+.choice-guides {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  max-width: 820px;
+  width: min(100%, 820px);
+}
+
+.choice-guide {
+  align-items: center;
+  background:
+    linear-gradient(120deg, rgba(114, 242, 255, 0.11), rgba(255, 183, 233, 0.1)),
+    rgba(6, 11, 25, 0.7);
+  border: 1px solid rgba(114, 242, 255, 0.22);
+  box-shadow: 0 18px 48px rgba(0, 0, 0, 0.22), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  display: grid;
+  gap: 12px;
+  grid-template-columns: 70px minmax(0, 1fr);
+  margin: 0;
+  overflow: hidden;
+  padding: 10px 14px 10px 10px;
+  position: relative;
+  text-align: left;
+}
+
+.choice-guide::before {
+  background: linear-gradient(180deg, var(--cyan), transparent);
+  content: "";
+  height: 70%;
+  left: 0;
+  position: absolute;
+  top: 15%;
+  width: 3px;
+}
+
+.choice-guide.is-pipo::before {
+  background: linear-gradient(180deg, var(--pink), transparent);
+}
+
+.choice-guide img {
+  background:
+    radial-gradient(circle at 50% 24%, rgba(255, 183, 233, 0.28), transparent 68%),
+    rgba(255, 255, 255, 0.07);
+  border: 1px solid rgba(255, 255, 255, 0.5);
+  border-radius: 20px;
+  box-shadow: 0 0 22px rgba(114, 242, 255, 0.14);
+  height: 70px;
+  object-fit: contain;
+  object-position: 50% 14%;
+  padding: 3px;
+  width: 70px;
+}
+
+.choice-guide.is-pipo img {
+  object-position: 50% 48%;
+}
+
+.choice-guide figcaption {
+  display: grid;
+  gap: 4px;
+  min-width: 0;
+}
+
+.choice-guide strong {
+  color: var(--mint);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  letter-spacing: 0.12em;
+}
+
+.choice-guide.is-mina strong {
+  color: var(--soft-pink);
+}
+
+.choice-guide span {
+  color: #dbe7ff;
+  font-size: 13px;
+  font-weight: 800;
+  line-height: 1.55;
+}
+
 .diagnosis-choice-grid {
   display: grid;
   gap: 16px;
@@ -553,6 +634,11 @@ body.menu-open .menu-backdrop {
 .diagnosis-choice-card strong {
   font-size: clamp(24px, 2.5vw, 34px);
   line-height: 1.15;
+}
+
+.diagnosis-choice-card.is-sense strong {
+  font-size: clamp(22px, 2.15vw, 29px);
+  line-height: 1.18;
 }
 
 .diagnosis-choice-card p {
@@ -2492,6 +2578,11 @@ p {
     width: 100%;
   }
 
+  .choice-guides {
+    grid-template-columns: 1fr;
+    max-width: 680px;
+  }
+
   .diagnosis-choice-card {
     min-height: 280px;
     text-align: left;
@@ -2648,6 +2739,26 @@ p {
     margin-top: 14px;
   }
 
+  .choice-guides {
+    gap: 9px;
+  }
+
+  .choice-guide {
+    grid-template-columns: 58px minmax(0, 1fr);
+    padding: 9px 11px 9px 9px;
+  }
+
+  .choice-guide img {
+    border-radius: 17px;
+    height: 58px;
+    width: 58px;
+  }
+
+  .choice-guide span {
+    font-size: 12px;
+    line-height: 1.45;
+  }
+
   .diagnosis-choice-card {
     gap: 13px;
     min-height: 0;
@@ -2667,9 +2778,22 @@ p {
     font-size: 24px;
   }
 
+  .diagnosis-choice-card.is-sense strong {
+    font-size: 22px;
+  }
+
   .diagnosis-copy h1 {
     font-size: 38px;
     line-height: 0.98;
+  }
+
+  .sense-hero .diagnosis-copy h1 {
+    font-size: 32px;
+    line-height: 1.02;
+  }
+
+  .sense-hero .diagnosis-copy h1 span {
+    white-space: nowrap;
   }
 
   .diagnosis-copy .lead {

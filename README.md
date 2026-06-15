@@ -13,6 +13,7 @@ GitHubにこのフォルダ内のファイルをアップロードし、Cloudfla
 ## ファイル
 
 - `index.html`: トップページと診断本体
+- `gamesense.html`: 24問で8能力を可視化するGameSense Scan 8
 - `style.css`: デザイン
 - `script.js`: 診断ロジック、Amazonリンク、簡易イベント記録
 - `assets/`: 画像

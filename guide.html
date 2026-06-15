@@ -3,18 +3,18 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="GameSpec Labの診断後に確認したいゲーム、PC構成、デバイスのガイドです。" />
+    <meta name="description" content="GameSpec Labの診断後に確認したいゲーム、相性の見方、PC構成、デバイスのガイドです。" />
     <meta name="theme-color" content="#04050d" />
     <meta property="og:site_name" content="GameSpec Lab" />
     <meta property="og:title" content="ゲーム・デバイスガイド | GameSpec Lab" />
-    <meta property="og:description" content="診断後に確認したいおすすめゲーム、PC構成、デバイスの見方を整理。" />
+    <meta property="og:description" content="診断後に確認したいおすすめゲーム、相性の見方、PC構成、デバイスの見方を整理。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gamespeclab.com/guide.html" />
     <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
     <title>ゲーム・デバイスガイド | GameSpec Lab</title>
     <link rel="canonical" href="https://gamespeclab.com/guide.html" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep26" />
+    <link rel="stylesheet" href="style.css?v=deep31" />
   </head>
   <body>
     <header class="site-header">
@@ -22,6 +22,7 @@
       <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
       <nav id="site-menu" aria-label="サイト内メニュー">
         <a href="index.html#diagnosis"><span data-icon="link"></span>相性診断</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="pc-build.html"><span data-icon="cpu"></span>PC構成</a>
         <a href="results.html"><span data-icon="list"></span>結果一覧</a>
         <a href="guide.html"><span data-icon="spark"></span>遊び方ガイド</a>
@@ -34,7 +35,7 @@
         <div class="legal-copy">
           <p class="eyebrow"><span data-icon="gamepad"></span>PLAY GUIDE</p>
           <h1><span>ゲーム・デバイスガイド</span></h1>
-          <p class="lead">診断後に確認したいゲーム選び、PC構成、デバイス見直しの入口です。</p>
+          <p class="lead">診断後に確認したいゲーム選び、タイプ相性、PC構成、デバイス見直しの入口です。</p>
         </div>
       </section>
       <section class="section after-section" id="after-diagnosis">
@@ -69,14 +70,24 @@
       </section>
       <section class="spread-section">
         <div class="spread-copy">
-          <p class="eyebrow"><span data-icon="share"></span>共有しやすい結果</p>
-          <h2>結果名、連携タイプ、ゲーム名を1枚で言えるようにする</h2>
-          <p>結果名、組みやすいタイプ、おすすめゲームを短くまとめて、SNSにも投稿しやすい形で表示します。</p>
+          <p class="eyebrow"><span data-icon="link"></span>TYPE COMPATIBILITY</p>
+          <h2>タイプ相性を、誘い方と遊び方に落とし込む</h2>
+          <p>診断結果は性格を決めつけるものではなく、楽しく遊び始めるためのヒントです。自分の強みが出やすい相手と、最初に合わせるポイントを見ていきます。</p>
         </div>
-        <div class="share-preview">
-          <span><span data-icon="chat"></span>シェア文プレビュー</span>
-          <strong id="share-preview-text">GameSpec Labで診断したら「クラッチエース型」でした。</strong>
-          <a id="tweet-link" href="index.html#diagnosis" target="_blank" rel="noreferrer"><span data-icon="external"></span>診断して投稿する</a>
+        <div class="compatibility-preview" aria-label="タイプ相性の見方">
+          <span><span data-icon="spark"></span>相性の読み方</span>
+          <div class="compatibility-row">
+            <strong>近いタイプ</strong>
+            <p>盛り上がるポイントが似ているので、初回から空気を作りやすい相手。反面、熱くなる場面も似やすいので休憩の合図が効きます。</p>
+          </div>
+          <div class="compatibility-row">
+            <strong>補完タイプ</strong>
+            <p>自分にない良さを持つ相手。片方が攻め、片方が整えるなど役割が自然に分かれると、自己肯定感が上がりやすい関係になります。</p>
+          </div>
+          <div class="compatibility-row">
+            <strong>ペース差のあるタイプ</strong>
+            <p>合わない相手ではなく、最初のルール作りが大事な相手。遊ぶ時間、VCの量、勝ち負けの温度感を先に軽く合わせると続きやすくなります。</p>
+          </div>
         </div>
       </section>
     </main>
@@ -92,6 +103,6 @@
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
       </nav>
     </footer>
-    <script src="script.js?v=deep26"></script>
+    <script src="script.js?v=deep31"></script>
   </body>
 </html>

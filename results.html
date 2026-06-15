@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="GameSpec Labの診断結果タイプ一覧。タイプ別の特徴と共有用リンクを確認できます。" />
+    <meta name="description" content="GameSpec Labの診断結果タイプ一覧。タイプ別の特徴とゲームパートナー相性の見方を確認できます。" />
     <meta name="theme-color" content="#04050d" />
     <meta property="og:site_name" content="GameSpec Lab" />
     <meta property="og:title" content="結果タイプ一覧 | GameSpec Lab" />
@@ -14,7 +14,7 @@
     <title>結果タイプ一覧 | GameSpec Lab</title>
     <link rel="canonical" href="https://gamespeclab.com/results.html" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep26" />
+    <link rel="stylesheet" href="style.css?v=deep31" />
   </head>
   <body>
     <header class="site-header">
@@ -22,6 +22,7 @@
       <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
       <nav id="site-menu" aria-label="サイト内メニュー">
         <a href="index.html#diagnosis"><span data-icon="link"></span>相性診断</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="pc-build.html"><span data-icon="cpu"></span>PC構成</a>
         <a href="results.html"><span data-icon="list"></span>結果一覧</a>
         <a href="guide.html"><span data-icon="spark"></span>遊び方ガイド</a>
@@ -34,12 +35,12 @@
         <div class="legal-copy">
           <p class="eyebrow"><span data-icon="list"></span>RESULT TYPE</p>
           <h1><span>結果タイプ一覧</span></h1>
-          <p class="lead">診断結果のタイプを一覧で確認できます。友だちに共有したいときは、各カードから個別結果を開けます。</p>
+          <p class="lead">診断結果のタイプを一覧で確認できます。自分の強みが出やすい相手や、遊び方の噛み合いも見比べられます。</p>
         </div>
       </section>
       <section class="section result-directory" id="results">
         <div class="section-heading compact">
-          <p class="eyebrow"><span data-icon="trophy"></span>SHAREABLE RESULT</p>
+          <p class="eyebrow"><span data-icon="trophy"></span>RESULT TYPE</p>
           <h2>タイプごとの特徴を見る</h2>
           <p>結果名、相性の傾向、おすすめゲームを見比べやすい一覧です。</p>
         </div>
@@ -47,14 +48,24 @@
       </section>
       <section class="spread-section">
         <div class="spread-copy">
-          <p class="eyebrow"><span data-icon="share"></span>共有しやすい結果</p>
-          <h2>結果名、連携タイプ、ゲーム名を1枚で言えるようにする</h2>
-          <p>診断後は、結果名、組みやすいタイプ、おすすめゲームを短くまとめてSNSに投稿できます。</p>
+          <p class="eyebrow"><span data-icon="link"></span>TYPE COMPATIBILITY</p>
+          <h2>自分のタイプと、組みやすい相棒を知る</h2>
+          <p>相性は「同じタイプなら正解」ではなく、熱量、通話ペース、役割の重なり方で変わります。自分のタイプを起点に、楽しく続きやすい組み合わせを見つけられます。</p>
         </div>
-        <div class="share-preview">
-          <span><span data-icon="chat"></span>シェア文プレビュー</span>
-          <strong id="share-preview-text">GameSpec Labで診断したら「クラッチエース型」でした。</strong>
-          <a id="tweet-link" href="index.html#diagnosis" target="_blank" rel="noreferrer"><span data-icon="external"></span>診断して投稿する</a>
+        <div class="compatibility-preview" aria-label="タイプ相性の見方">
+          <span><span data-icon="spark"></span>相性の読み方</span>
+          <div class="compatibility-row">
+            <strong>クラッチエース型 × 信頼サポート型</strong>
+            <p>勝負どころで前に出る人と、安心して挑戦できる土台を作る人。短い声かけが噛み合うほど、いい流れを作れます。</p>
+          </div>
+          <div class="compatibility-row">
+            <strong>IGL連携参謀型 × 共創ビルダー型</strong>
+            <p>作戦を考える人と、積み上げる時間を楽しめる人。目的を小さく決めると、練習も雑談も続きやすい組み合わせです。</p>
+          </div>
+          <div class="compatibility-row">
+            <strong>まったり通話リンク型 × クラッチエース型</strong>
+            <p>熱量をやわらかく受け止める人と、見せ場を作る人。最初は短めの協力ゲームを挟むと自然に距離が縮まります。</p>
+          </div>
         </div>
       </section>
     </main>
@@ -70,6 +81,6 @@
         <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
       </nav>
     </footer>
-    <script src="script.js?v=deep26"></script>
+    <script src="script.js?v=deep31"></script>
   </body>
 </html>

@@ -2419,6 +2419,7 @@ p {
   border: 1px solid rgba(114, 242, 255, 0.18);
   display: grid;
   gap: 8px;
+  align-content: start;
   min-width: 0;
   padding: 13px;
 }
@@ -2957,8 +2958,17 @@ p {
 }
 
 .sense-result-grid {
+  align-items: start;
   display: grid;
   gap: 10px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.sense-result-grid .result-insight-card:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
+.sense-result-grid .game-pick-list {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
 
@@ -4184,6 +4194,12 @@ body.sense-result-ready .post-result-lab {
   .top-ability-grid,
   .sense-result-grid,
   .sense-matrix-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .sense-result-grid .result-insight-card:nth-child(3),
+  .sense-result-grid .game-pick-list {
+    grid-column: auto;
     grid-template-columns: 1fr;
   }
 

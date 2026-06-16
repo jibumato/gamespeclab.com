@@ -1129,7 +1129,7 @@ const gamerMbtiTypes = {
     role: 'アンカー、サポート、ローテ管理、終盤の資源管理',
     partner: '勢いのあるアタッカーや、感謝を言葉にできるサポート型と好相性。',
     caution: '即興タイプの味方には、全部を管理しようとせず「ここだけ守ろう」と伝えると噛み合います。あなたの堅実さは、相手を縛るためではなく、自由に動ける足場を作るために使うと一番輝きます。',
-    games: ['VALORANT', 'Monster Hunter', 'Civilization'],
+    games: ['VALORANT', 'Civilization VI', 'RimWorld', 'Against the Storm', 'Monster Hunter: World'],
   },
   ISFJ: {
     title: '誓約の守護騎士型',
@@ -1140,7 +1140,7 @@ const gamerMbtiTypes = {
     role: 'ヒーラー、カバー役、後衛サポート、協力ゲームの調整役',
     partner: '前に出るタイプや、ありがとうを返せる人と組むと強みが伝わります。',
     caution: '強い言い方のT型とは、アドバイスを責めではなく改善案として受け取る合図を作ると楽です。あなたは傷つきやすいのではなく、場の温度を丁寧に受け取れる人です。',
-    games: ['Overwatch 2', 'It Takes Two', 'Deep Rock Galactic'],
+    games: ['Overwatch 2', 'Deep Rock Galactic', 'Helldivers 2', 'It Takes Two', 'PlateUp!'],
   },
   INFJ: {
     title: '静かな預言者型',
@@ -1151,7 +1151,7 @@ const gamerMbtiTypes = {
     role: 'サポート、IGL補佐、雰囲気調整、長期固定チームの潤滑油',
     partner: '冷静なT型や勢いのあるE型と組むと、あなたの調整力が活きます。',
     caution: '空気を読みすぎて疲れたら、今日は軽めに遊ぶと先に共有すると長続きします。あなたが無理をしないことも、チームを守る行動の一つです。',
-    games: ['Final Fantasy XIV', 'Monster Hunter', 'Baldur’s Gate 3'],
+    games: ['Final Fantasy XIV', 'Baldur’s Gate 3', 'Disco Elysium', 'Stardew Valley', 'Phasmophobia'],
   },
   INTJ: {
     title: '冷静沈着の軍師型',
@@ -1162,7 +1162,7 @@ const gamerMbtiTypes = {
     role: 'スナイパー、戦術担当、構成設計、終盤の判断役',
     partner: 'ENFPやESTPのような動けるタイプを後ろから活かすと強いです。',
     caution: 'F型の味方には、改善点の前に良かった点を一つ置くと一気に神コンビになります。あなたの分析は、相手を否定するためではなく勝てる形へ連れていくためのものです。',
-    games: ['VALORANT', 'Teamfight Tactics', 'League of Legends'],
+    games: ['VALORANT', 'Teamfight Tactics', 'League of Legends', 'Crusader Kings III', 'Factorio'],
   },
   ISTP: {
     title: '無言の剣豪型',
@@ -1173,7 +1173,7 @@ const gamerMbtiTypes = {
     role: 'フレックス、クラッチ役、斥候、サブアタッカー',
     partner: '報告や作戦を補ってくれるEJタイプと組むと、動きやすさが増します。',
     caution: '無言が不安に見える相手には「集中してるだけ」と先に伝えると安心されます。あなたの静けさは距離ではなく、精度を上げるためのモードです。',
-    games: ['Apex Legends', 'Escape from Tarkov', 'Street Fighter 6'],
+    games: ['Apex Legends', 'Escape from Tarkov', 'Street Fighter 6', 'Risk of Rain 2', 'Dead Cells'],
   },
   ISFP: {
     title: '自由なる吟遊詩人型',
@@ -1184,7 +1184,7 @@ const gamerMbtiTypes = {
     role: 'フランカー、クリエイティブ役、カジュアル協力、魅せプレイ',
     partner: '急かさず見守ってくれるタイプや、ナイスを拾ってくれる人と好相性。',
     caution: '効率重視の相手とは、遊ぶモードを先に合わせるとあなたらしさが守れます。「今日は気楽に」「今日は勝ちに行く」を分けるだけで、自由さと信頼が両立します。',
-    games: ['Splatoon', 'Minecraft', 'Party Animals'],
+    games: ['Minecraft', 'Terraria', 'Party Animals', 'Dave the Diver', 'DREDGE'],
   },
   INFP: {
     title: '夢見る巡礼者型',
@@ -1195,7 +1195,7 @@ const gamerMbtiTypes = {
     role: 'ヒーラー、ストーリー協力、探索、まったり通話の相棒',
     partner: '守ってくれるタイプや、世界観を一緒に味わえる人と相性が良いです。',
     caution: 'T型の率直な指摘で凹みやすい時は、まず共感がほしいと伝えると関係が整います。あなたは打たれ弱いのではなく、言葉の温度まで受け取れる人です。',
-    games: ['Stardew Valley', 'Baldur’s Gate 3', 'Final Fantasy XIV'],
+    games: ['Stardew Valley', 'Baldur’s Gate 3', 'Final Fantasy XIV', 'Spiritfarer', 'No Man’s Sky'],
   },
   INTP: {
     title: '孤高の研究者型',
@@ -1206,7 +1206,7 @@ const gamerMbtiTypes = {
     role: 'ビルド研究、構成分析、後衛火力、攻略共有',
     partner: '行動力のあるE型や、作戦を試してくれる人と組むと研究が活きます。',
     caution: 'F型には「ダメ」より「こうするともっと良くなる」と伝えると、分析が優しさとして届きます。あなたの理屈は冷たさではなく、より良くしたい気持ちの表現です。',
-    games: ['Slay the Spire', 'Teamfight Tactics', 'League of Legends'],
+    games: ['Slay the Spire', 'Balatro', 'Teamfight Tactics', 'Factorio', 'Oxygen Not Included'],
   },
   ESTP: {
     title: '電撃アサルト型',
@@ -1217,7 +1217,7 @@ const gamerMbtiTypes = {
     role: 'エントリー、アタッカー、クラッチ役、前線の起点',
     partner: 'INTJやISFJのように後ろを固めてくれるタイプと相性抜群です。',
     caution: '慎重派の味方には、全部を勢いで決めず「次だけ行く」と宣言すると安心されます。あなたの速さは、共有された瞬間にチーム全体の武器になります。',
-    games: ['Apex Legends', 'VALORANT', 'THE FINALS'],
+    games: ['Apex Legends', 'VALORANT', 'THE FINALS', 'Helldivers 2', 'Risk of Rain 2'],
   },
   ESFP: {
     title: '祝祭の先陣役型',
@@ -1228,7 +1228,7 @@ const gamerMbtiTypes = {
     role: 'アタッカー、パーティーゲーム担当、通話の盛り上げ役',
     partner: '落ち着いて受け止めてくれるI型や、ノリを返してくれるE型と好相性。',
     caution: '静かな相手にも、リアクションが少ないだけで楽しんでいる人がいると知ると噛み合います。あなたの明るさは、相手のペースを照らすように使うとさらに魅力的です。',
-    games: ['Party Animals', 'Overcooked! 2', 'Apex Legends'],
+    games: ['Party Animals', 'Overcooked! 2', 'Content Warning', 'PICO PARK', 'Apex Legends'],
   },
   ENFP: {
     title: 'ひらめき冒険家型',
@@ -1239,7 +1239,7 @@ const gamerMbtiTypes = {
     role: 'フランカー、奇策担当、協力ゲームの企画役、初回デュオの空気づくり',
     partner: 'INTJやISTJのように、発想を形にしてくれるタイプと相性が良いです。',
     caution: '計画派の相手には、途中で方針を変える理由を一言添えると安心されます。あなたの自由さは、共有されると周りを置いていく力ではなく、連れていく力になります。',
-    games: ['Minecraft', 'Apex Legends', 'Baldur’s Gate 3'],
+    games: ['Minecraft', 'Baldur’s Gate 3', 'Valheim', 'Lethal Company', 'Apex Legends'],
   },
   ENTP: {
     title: 'メタ破壊の革命家型',
@@ -1250,7 +1250,7 @@ const gamerMbtiTypes = {
     role: '奇策担当、読み合い役、メタ対策、構成の実験台',
     partner: '実行力のあるESTPや、作戦を整理してくれるJ型と組むと強いです。',
     caution: '安定派の相手には、毎回実験せず「今回は一回だけ試す」と決めると信頼が残ります。あなたの破壊力は、チームが安心できる範囲を作るほど強く刺さります。',
-    games: ['League of Legends', 'Street Fighter 6', 'Among Us'],
+    games: ['League of Legends', 'Street Fighter 6', 'Among Us', 'Inscryption', 'Goose Goose Duck'],
   },
   ESTJ: {
     title: '規律の実戦指揮官型',
@@ -1261,7 +1261,7 @@ const gamerMbtiTypes = {
     role: 'IGL、タンク、目標管理、ランクの進行役',
     partner: '柔らかく空気を整えるF型や、実行力のあるS型と噛み合います。',
     caution: '自由に動きたいP型には、全部を決めずに任せる範囲を残すと力を出してくれます。あなたの規律は、相手を小さくするためではなく、チームを勝ちやすくするための土台です。',
-    games: ['VALORANT', 'Overwatch 2', 'League of Legends'],
+    games: ['VALORANT', 'Overwatch 2', 'League of Legends', 'Factorio', 'Civilization VI'],
   },
   ESFJ: {
     title: '陽だまりの宮廷官型',
@@ -1272,7 +1272,7 @@ const gamerMbtiTypes = {
     role: 'サポート、固定PTの調整役、協力ゲームの進行、通話のホスト',
     partner: '不器用だけど誠実なT型や、楽しく盛り上がるE型と好相性です。',
     caution: '返事が淡いI型も、楽しんでいないとは限りません。反応の量で判断しすぎないと楽になります。あなたの気配りは、相手の静かな楽しみ方も信じられるとさらに深くなります。',
-    games: ['Final Fantasy XIV', 'Monster Hunter', 'PICO PARK'],
+    games: ['Final Fantasy XIV', 'Monster Hunter: World', 'PICO PARK', 'PlateUp!', 'Deep Rock Galactic'],
   },
   ENFJ: {
     title: '鼓舞する旗手型',
@@ -1283,7 +1283,7 @@ const gamerMbtiTypes = {
     role: 'IGL、サポートリーダー、固定チームの進行、モチベ管理',
     partner: '冷静な分析型や、前に出るアタッカーを乗せると強みが光ります。',
     caution: '静かな相手に熱量を押し込みすぎず、必要な時だけ声をかけると信頼が増えます。あなたの熱さは、相手の温度に合わせて届いた時に一番強く響きます。',
-    games: ['Overwatch 2', 'VALORANT', 'Monster Hunter'],
+    games: ['Overwatch 2', 'VALORANT', 'Monster Hunter: World', 'Helldivers 2', 'Keep Talking and Nobody Explodes'],
   },
   ENTJ: {
     title: '覇道コマンダー型',
@@ -1294,7 +1294,7 @@ const gamerMbtiTypes = {
     role: 'メインIGL、構成決め、ランクの勝率管理、タンク・司令塔',
     partner: '空気を整えるF型や、現場で動けるS型と組むとチームが完成します。',
     caution: 'F型には「責めたいわけではなく勝ち筋を合わせたい」と一言添えるだけで伝わり方が変わります。あなたの覇道は、仲間を置いていくものではなく、同じ方向へ連れていく力です。',
-    games: ['League of Legends', 'VALORANT', 'Teamfight Tactics'],
+    games: ['League of Legends', 'VALORANT', 'Teamfight Tactics', 'Dota 2', 'Crusader Kings III'],
   },
 };
 
@@ -1451,6 +1451,93 @@ function getResult(scores) {
     .sort((a, b) => b.score - a.score)[0].profile;
 }
 
+const sensePartnerTraitMap = {
+  awareness: ['macro', 'social'],
+  prediction: ['macro', 'competitive'],
+  pattern: ['macro', 'chill'],
+  spatial: ['micro', 'support'],
+  speed: ['micro', 'competitive'],
+  resource: ['support', 'macro'],
+  mindgame: ['social', 'competitive'],
+  adaptation: ['support', 'chill'],
+};
+
+const mbtiPartnerTraitMap = {
+  E: ['social', 'competitive'],
+  I: ['chill', 'support'],
+  S: ['micro', 'support'],
+  N: ['macro', 'social'],
+  T: ['competitive', 'macro'],
+  F: ['social', 'support'],
+  J: ['macro', 'support'],
+  P: ['micro', 'chill'],
+};
+
+function buildPartnerWeights(groups, baseWeight = 3) {
+  const weights = {};
+  groups.forEach((group, index) => {
+    const weight = Math.max(1, baseWeight - index);
+    (group || []).forEach((trait) => {
+      weights[trait] = (weights[trait] || 0) + weight;
+    });
+  });
+  return weights;
+}
+
+function getTopCompatiblePartnerTypes(weights, limit = 3) {
+  return profiles
+    .map((profile) => {
+      const score = profile.traits.reduce((sum, trait) => sum + (weights[trait] || 0), 0);
+      const matchedTraits = profile.traits.filter((trait) => weights[trait]);
+      return { profile, score, matchedTraits };
+    })
+    .sort((a, b) => b.score - a.score || profiles.indexOf(a.profile) - profiles.indexOf(b.profile))
+    .slice(0, limit);
+}
+
+function getSenseCompatiblePartners(archetype) {
+  const weights = buildPartnerWeights([
+    sensePartnerTraitMap[archetype.primary],
+    sensePartnerTraitMap[archetype.secondary],
+  ], 4);
+  return getTopCompatiblePartnerTypes(weights);
+}
+
+function getMbtiCompatiblePartners(code) {
+  const weights = buildPartnerWeights([...code].map((letter) => mbtiPartnerTraitMap[letter]), 3);
+  return getTopCompatiblePartnerTypes(weights);
+}
+
+function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果') {
+  return `
+    <section class="compat-partner-panel" aria-label="相性のいい相手タイプTOP3">
+      <div class="compat-partner-head">
+        <span>${icon('link')}PARTNER MATCH TOP 3</span>
+        <strong>相性のいい相手タイプ</strong>
+        <p>${sourceLabel}から、プレイ温度・通話ペース・役割の噛み合いやすさを見ています。恋愛判定ではなく、ゲーム中に組みやすい相棒傾向です。</p>
+      </div>
+      <div class="compat-partner-grid">
+        ${matches.map(({ profile }, index) => `
+          <article class="compat-partner-card rank-${index + 1}">
+            <div class="compat-partner-rank">
+              <span>${String(index + 1).padStart(2, '0')}</span>
+              <small>${profile.syncCode}</small>
+            </div>
+            <div>
+              <h3>${profile.name}</h3>
+              <p>${profile.catchline}</p>
+              <div class="compat-partner-meta">
+                <span>${icon('spark')}相性軸: ${profile.traits.map((trait) => traitLabels[trait] || trait).join(' × ')}</span>
+                <span>${icon('gamepad')}${profile.games.slice(0, 2).join(' / ')}</span>
+              </div>
+            </div>
+          </article>
+        `).join('')}
+      </div>
+    </section>
+  `;
+}
+
 function getPcBuild(scores) {
   return pcBuilds
     .map((build) => ({ build, score: build.needs.reduce((sum, need) => sum + scores[need], 0) }))
@@ -1515,10 +1602,11 @@ function renderScaleOptionList(question, dataAttribute) {
 }
 
 function renderGamerMbtiResult(type, scores) {
+  const compatiblePartners = getMbtiCompatiblePartners(type.code);
   return `
     <div class="result-block result-sequence is-revealing gamer-mbti-result">
       ${renderResultReveal({
-        name: `${type.code} / ${type.title}`,
+        name: type.title,
         revealLabel: 'GAMER TYPE SCAN',
         revealHeadline: 'プレイ人格ログを照合中...',
         revealImage: 'assets/navi-mina.png',
@@ -1529,12 +1617,11 @@ function renderGamerMbtiResult(type, scores) {
           <img class="result-pipo-photo" src="assets/pipo-scan.png" alt="" loading="lazy" />
           <div>
             <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
-            <div class="mbti-code-badge" aria-label="ゲーマーMBTIコード">
-              <span>YOUR GAMER TYPE</span>
-              <strong>${type.code}</strong>
-              <small>${type.title}</small>
-            </div>
             <h3 id="mbti-quiz-title">${type.title}</h3>
+            <div class="mbti-code-note" aria-label="ゲーマータイプ補足コード">
+              <span>${icon('tag')}参考コード</span>
+              <strong>${type.code}</strong>
+            </div>
             <p class="result-catch">${type.catchline}</p>
             <p>${type.summary}</p>
           </div>
@@ -1544,10 +1631,11 @@ function renderGamerMbtiResult(type, scores) {
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('trophy')}克服ポイント</p><span>02</span></div><h3>弱みに見える才能の使い方</h3><p>${type.growth}</p></article>
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめロール</p><span>03</span></div><h3>${type.role}</h3><p>あなたの判断基準とプレイ温度が出やすいポジションです。</p></article>
-          <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性の良い相手</p><span>04</span></div><h3>組むと噛み合いやすいタイプ</h3><p>${type.partner}</p></article>
+          <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性傾向</p><span>04</span></div><h3>組むと噛み合いやすい相手</h3><p>${type.partner}</p></article>
           <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
-          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}刺さりやすいゲーム</p><span>06</span></div><h3>${type.games.join(' / ')}</h3><p>このタイプの気持ちよさが出やすいタイトルです。上手さより「どの場面で楽しいか」の目安として見てください。</p></article>
+          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}刺さりやすいゲーム</p><span>06</span></div><h3>Steam/PCで探すならこのあたり</h3><p>このタイプの気持ちよさが出やすいタイトルです。上手さより「どの場面で楽しいか」の目安として見てください。</p>${renderGameSuggestionList(type.games)}</article>
         </section>
+        ${renderCompatiblePartnersPanel(compatiblePartners, type.title)}
         <div class="mbti-compat-note">
           <span>${icon('chat')}MBTI風相性メモ</span>
           <p>T型は改善案を愛として出しがちで、F型はまず共感を求めがちです。違いを責めるより、「今は共感」「次に改善」と順番を分けると、ゲームの空気が一気に整います。</p>
@@ -1558,7 +1646,6 @@ function renderGamerMbtiResult(type, scores) {
         </div>
         <div class="result-actions">
           <button class="primary-button" type="button" id="share-mbti-result">${icon('share')}結果をシェア</button>
-          <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
           <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
           <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>
         </div>
@@ -1599,6 +1686,79 @@ function renderGamePicks(profile) {
         <div class="game-pick">
           <strong>${icon('gamepad')}${title}</strong>
           <small>${reason}</small>
+        </div>
+      `).join('')}
+    </div>
+  `;
+}
+
+const gameGenreLabels = {
+  'VALORANT': 'タクティカルFPS',
+  'Apex Legends': 'バトロワFPS',
+  'THE FINALS': '破壊系FPS',
+  'Overwatch 2': 'チームシューター',
+  'Marvel Rivals': 'ヒーローシューター',
+  'Escape from Tarkov': '脱出シューター',
+  'Rainbow Six Siege': '戦術FPS',
+  'Street Fighter 6': '格闘',
+  'Rocket League': 'スポーツ対戦',
+  'League of Legends': 'MOBA',
+  'Dota 2': 'MOBA',
+  'Teamfight Tactics': 'オートバトラー',
+  'Civilization VI': '4X戦略',
+  'Crusader Kings III': '歴史ストラテジー',
+  'Against the Storm': 'ローグライト都市建設',
+  'RimWorld': 'コロニーシム',
+  'Factorio': '工場自動化',
+  'Satisfactory': '3D工場クラフト',
+  'Dyson Sphere Program': '宇宙工場',
+  'Oxygen Not Included': '基地運営シム',
+  'Minecraft': 'サンドボックス',
+  'Terraria': '2Dサンドボックス',
+  'Valheim': 'サバイバルクラフト',
+  'Palworld': 'サバイバルクラフト',
+  'No Man’s Sky': '探索サバイバル',
+  'Stardew Valley': 'スローライフ',
+  'Spiritfarer': '物語/癒し',
+  'Dave the Diver': '探索/経営',
+  'DREDGE': '探索アドベンチャー',
+  'Baldur’s Gate 3': 'TRPG/RPG',
+  'Disco Elysium': 'ナラティブRPG',
+  'Final Fantasy XIV': 'MMORPG',
+  'Monster Hunter: World': '協力アクション',
+  'Monster Hunter Wilds': '協力アクション',
+  'Deep Rock Galactic': '協力FPS',
+  'Helldivers 2': '協力TPS',
+  'It Takes Two': '協力アドベンチャー',
+  'PICO PARK': '協力パズル',
+  'Overcooked! 2': '協力カオス',
+  'PlateUp!': '協力経営',
+  'Unrailed!': '協力アクション',
+  'Party Animals': 'パーティー',
+  'Lethal Company': '協力ホラー',
+  'Phasmophobia': '協力ホラー',
+  'Content Warning': '協力ホラー',
+  'Among Us': '正体隠匿',
+  'Goose Goose Duck': '正体隠匿',
+  'Town of Salem 2': '心理戦',
+  'Slay the Spire': 'カードローグライト',
+  'Balatro': 'ポーカーローグライト',
+  'Hades': 'アクションローグライト',
+  'Risk of Rain 2': '協力ローグライト',
+  'Vampire Survivors': 'サバイバー系',
+  'Dead Cells': 'アクションローグライト',
+  'The Binding of Isaac: Rebirth': 'ローグライク',
+  'Inscryption': 'カード/心理戦',
+  'Keep Talking and Nobody Explodes': '通話協力',
+};
+
+function renderGameSuggestionList(games) {
+  return `
+    <div class="game-pick-list">
+      ${games.map((game) => `
+        <div class="game-pick">
+          <strong>${icon('gamepad')}${game}</strong>
+          <small>${gameGenreLabels[game] || 'PC/Steam候補'}として、タイプの強みが出やすいタイトルです。</small>
         </div>
       `).join('')}
     </div>
@@ -1805,6 +1965,7 @@ function renderSenseResult(archetype, normalizedScores) {
   const primaryLabel = senseLabels[archetype.primary];
   const secondaryLabel = senseLabels[archetype.secondary];
   const topGames = senseGameSuggestions(archetype.primary, archetype.secondary);
+  const compatiblePartners = getSenseCompatiblePartners(archetype);
   return `
     <div class="result-block result-sequence is-revealing sense-result-block">
       ${renderResultReveal({
@@ -1849,13 +2010,14 @@ function renderSenseResult(archetype, normalizedScores) {
           </article>
           <article class="result-insight-card">
             <span>${icon('gamepad')}向きやすいゲーム</span>
-            <p>${topGames.join(' / ')} のように、判断や学習の手応えが出るゲームと相性が良いです。</p>
+            <p>判断や学習の手応えが出るゲームと相性が良いです。対戦だけでなく、Steamで探しやすい協力・戦略・ローグライト系も候補に入れています。</p>
+            ${renderGameSuggestionList(topGames)}
           </article>
         </div>
+        ${renderCompatiblePartnersPanel(compatiblePartners, `${primaryLabel} × ${secondaryLabel}`)}
         ${renderSenseTheoryNote()}
         <div class="result-actions">
           <button class="primary-button" type="button" id="share-sense-result">${icon('share')}結果をシェア</button>
-          <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
           <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
           <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
         </div>
@@ -1866,16 +2028,16 @@ function renderSenseResult(archetype, normalizedScores) {
 
 function senseGameSuggestions(primary, secondary) {
   const buckets = {
-    awareness: ['VALORANT', 'Apex Legends', 'League of Legends'],
-    prediction: ['VALORANT', 'Teamfight Tactics', 'Apex Legends'],
-    pattern: ['Street Fighter 6', 'Slay the Spire', 'League of Legends'],
-    spatial: ['Apex Legends', 'Fortnite', 'Monster Hunter'],
-    speed: ['VALORANT', 'Overwatch 2', 'Street Fighter 6'],
-    resource: ['League of Legends', 'Civilization', 'Minecraft'],
-    mindgame: ['Street Fighter 6', 'Among Us', 'VALORANT'],
-    adaptation: ['Rocket League', 'Apex Legends', 'Slay the Spire'],
+    awareness: ['VALORANT', 'Phasmophobia', 'Deep Rock Galactic', 'Rainbow Six Siege'],
+    prediction: ['Teamfight Tactics', 'Against the Storm', 'Apex Legends', 'Slay the Spire'],
+    pattern: ['Balatro', 'Slay the Spire', 'Street Fighter 6', 'Inscryption'],
+    spatial: ['Apex Legends', 'Valheim', 'Monster Hunter: World', 'Satisfactory'],
+    speed: ['VALORANT', 'Overwatch 2', 'Street Fighter 6', 'Risk of Rain 2'],
+    resource: ['Factorio', 'Civilization VI', 'RimWorld', 'Oxygen Not Included'],
+    mindgame: ['Among Us', 'Goose Goose Duck', 'Town of Salem 2', 'Street Fighter 6'],
+    adaptation: ['Hades', 'Risk of Rain 2', 'Rocket League', 'Vampire Survivors'],
   };
-  return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 4);
+  return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 6);
 }
 
 function getSenseShareMeta(archetype, normalizedScores) {
@@ -1902,6 +2064,14 @@ function getSenseShareMeta(archetype, normalizedScores) {
   };
 }
 
+function getSenseGearReasons(primaryLabel, secondaryLabel, lowestLabel) {
+  return {
+    monitor: `${primaryLabel}が強く出たあなたは、画面上の小さな変化を拾えるほど判断が活きます。高リフレッシュのモニターは、敵の出入りや味方の位置変化を見逃しにくくするための土台です。`,
+    mouse: `${secondaryLabel}をプレイに反映するには、思った方向へすぐ動かせる入力環境が大事です。軽量マウスは、判断から操作までのズレを減らし、あなたの反応をそのまま動きに乗せやすくします。`,
+    mousepad: `${lowestLabel}は「同じ動きを再現する」練習で伸ばしやすい能力です。大型マウスパッドは、振り向きや追いエイムの動き幅を確保して、感覚を安定させる助けになります。`,
+  };
+}
+
 function updatePostResultLab(archetype, normalizedScores) {
   const lab = document.querySelector('#post-result-lab');
   if (!lab) return;
@@ -1915,6 +2085,9 @@ function updatePostResultLab(archetype, normalizedScores) {
   const resultCore = document.querySelector('#post-result-core');
   const resultStyle = document.querySelector('#post-result-style');
   const resultWeapon = document.querySelector('#post-result-weapon');
+  const gearReasonMonitor = document.querySelector('#gear-reason-monitor');
+  const gearReasonMouse = document.querySelector('#gear-reason-mouse');
+  const gearReasonMousepad = document.querySelector('#gear-reason-mousepad');
   const trainingTitle = document.querySelector('#training-title');
   const trainingCopy = document.querySelector('#training-copy');
   const communityCopy = document.querySelector('#community-type-copy');
@@ -1934,13 +2107,17 @@ function updatePostResultLab(archetype, normalizedScores) {
   if (resultCore) resultCore.textContent = shareMeta.flexLine;
   if (resultStyle) resultStyle.textContent = shareMeta.style;
   if (resultWeapon) resultWeapon.textContent = shareMeta.weapon;
+  const gearReasons = getSenseGearReasons(primaryLabel, secondaryLabel, lowestLabel);
+  if (gearReasonMonitor) gearReasonMonitor.textContent = gearReasons.monitor;
+  if (gearReasonMouse) gearReasonMouse.textContent = gearReasons.mouse;
+  if (gearReasonMousepad) gearReasonMousepad.textContent = gearReasons.mousepad;
   shareMeta.topThree.forEach(([key, value], index) => {
     const node = document.querySelector(`#post-result-top${index + 1}`);
     if (node) node.textContent = `${String(index + 1).padStart(2, '0')} ${senseLabels[key]} ${value}`;
   });
   if (trainingTitle) trainingTitle.textContent = `あなたの${lowestLabel}を高める1分間トレーニング`;
   if (trainingCopy) trainingCopy.textContent = `${lowestLabel}は、短い反復で感覚を掴みやすい能力です。光ったパネルを追って、変化に気づく回路を温めます。`;
-  if (communityCopy) communityCopy.textContent = `あなたは「${primaryLabel} × ${secondaryLabel}」の組み合わせ。相性診断で、噛み合いやすい相棒タイプも見つけられます。`;
+  if (communityCopy) communityCopy.textContent = `あなたは「${primaryLabel} × ${secondaryLabel}」の組み合わせ。結果画面の相性TOP3から、噛み合いやすい相棒タイプを見つけられます。`;
 }
 
 function renderSenseQuiz() {
@@ -2035,6 +2212,7 @@ function renderGamerMbtiQuiz() {
   const previewScores = previewReady ? scores : { E: 1, I: 1, S: 1, N: 1, T: 1, F: 1, J: 1, P: 1 };
   const complete = gamerMbtiAnswers.length === mbtiQuestions.length;
   const progress = Math.round((gamerMbtiAnswers.length / mbtiQuestions.length) * 100);
+  document.body.classList.toggle('gamer-mbti-result-ready', complete);
 
   document.querySelector('#mbti-step').textContent = complete ? '結果' : `質問 ${gamerMbtiAnswers.length + 1} / ${mbtiQuestions.length}`;
   document.querySelector('#mbti-progress-text').textContent = `${progress}%`;
@@ -2079,10 +2257,11 @@ function renderGamerMbtiQuiz() {
   activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
+    document.body.classList.remove('gamer-mbti-result-ready');
     renderGamerMbtiQuiz();
   });
   document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.code} / ${type.title}」でした。${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
+    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
     const shareButton = document.querySelector('#share-mbti-result');
     trackEvent('gamer_mbti_share_click', { code: type.code });
     try {
@@ -2424,6 +2603,29 @@ function renderPcCard(build) {
   `;
 }
 
+function getAffiliateReason(slot, build) {
+  const title = `${slot.id} ${slot.title}`;
+  if (/bto|ゲーミングPC| PC|PC$/i.test(title)) {
+    return `${build.name}は、あなたの回答で重視された遊び方を安定して動かすための土台です。先にPC本体の余裕を確保しておくと、あとからモニターやデバイスを足した時にも性能を活かしやすくなります。`;
+  }
+  if (/monitor|モニター/i.test(title)) {
+    return `${build.name}では、PC本体の性能を画面で体感できるかが満足度に直結します。高リフレッシュやWQHDなど、遊び方に合う表示環境を合わせると、構成の良さが見えやすくなります。`;
+  }
+  if (/mouse|マウス|device|デバイス/i.test(title)) {
+    return `${build.name}を選ぶ人は、操作の軽さや疲れにくさでも体感差が出やすいです。マウスや周辺機器を整えると、PC性能だけでは埋めにくい「動かしやすさ」を補えます。`;
+  }
+  if (/mic|マイク|headset|ヘッドセット|quiet|静音/i.test(title)) {
+    return `${build.name}は通話や長時間プレイの快適さも大事です。声の聞こえ方、入力音、装着感を整えると、ゲーム以外のストレスが減って遊び続けやすくなります。`;
+  }
+  if (/desk|チェア|デスク/i.test(title)) {
+    return `${build.name}は部屋への馴染みや長時間の快適さも重視する方向けです。デスクやチェアまで整えると、見た目だけでなく集中しやすさにもつながります。`;
+  }
+  if (/SSD|メモリ|parts|パーツ|ストレージ/i.test(title)) {
+    return `${build.name}では、ゲームを複数入れる余裕や読み込みの快適さが効いてきます。ストレージやメモリを見ておくと、あとから不足しにくい構成にしやすいです。`;
+  }
+  return `${build.name}の方向性に合わせて、PC本体だけではなく周辺環境まで整えるための候補です。あなたの遊び方で体感しやすい部分から優先すると選びやすくなります。`;
+}
+
 function renderAffiliate(build) {
   return `
     <p class="affiliate-disclosure">当サイトはAmazonアソシエイトとして、適格販売により収入を得ています。</p>
@@ -2433,6 +2635,10 @@ function renderAffiliate(build) {
           <div class="card-head"><p class="card-label">${icon('cart')}候補アイテム</p><span>SHOP</span></div>
           <h3>${slot.title}</h3>
           <p>${slot.body}</p>
+          <div class="affiliate-reason">
+            <strong>${icon('spark')}なぜあなた向け？</strong>
+            <p>${getAffiliateReason(slot, build)}</p>
+          </div>
           <a href="${slot.href}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="${slot.id}">
             <span>${icon('external')}${slot.cta}</span>
             <small>${icon('link')}Amazon.co.jpで確認</small>
@@ -2592,8 +2798,8 @@ function renderGamerMbtiTypeLinks() {
   const base = resultLinks.dataset.base || 'gamermbti.html';
   resultLinks.innerHTML = Object.entries(gamerMbtiTypes).map(([code, type]) => `
     <a class="result-link-card mbti-type-card" href="${base}#mbti=${code}">
-      <span class="card-head"><span>${icon('user')}${code}</span><small>MBTI</small></span>
-      <strong>${type.title}</strong>
+      <span class="card-head"><span>${icon('user')}${type.title}</span><small>${code}</small></span>
+      <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon('gamepad')}${type.role}</span>
       <small>${icon('arrow')}結果を表示</small>
     </a>
@@ -2881,6 +3087,7 @@ function applyGamerMbtiHashRoute() {
   const scores = buildGamerMbtiScoresForCode(code);
 
   gamerMbtiAnswers = Array.from({ length: mbtiQuestions.length }, () => 0);
+  document.body.classList.add('gamer-mbti-result-ready');
   document.querySelector('#mbti-step').textContent = '結果';
   document.querySelector('#mbti-progress-text').textContent = '100%';
   document.querySelector('#mbti-progress').style.width = '100%';
@@ -2892,11 +3099,12 @@ function applyGamerMbtiHashRoute() {
   activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
+    document.body.classList.remove('gamer-mbti-result-ready');
     location.hash = 'gamer-mbti';
     renderGamerMbtiQuiz();
   });
   document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.code} / ${type.title}」でした。${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
+    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
     const shareButton = document.querySelector('#share-mbti-result');
     trackEvent('gamer_mbti_share_click', { code: type.code, source: 'type_directory' });
     try {
@@ -2982,10 +3190,6 @@ if (document.querySelector('#sense-result-links')) {
 
 if (document.querySelector('#mbti-result-links')) {
   renderGamerMbtiTypeLinks();
-}
-
-if (!document.querySelector('#diagnosis') && /^#result=([\w-]+)/.test(location.hash)) {
-  location.replace(`partner.html${location.hash}`);
 }
 
 if (!document.querySelector('#gamer-mbti') && /^#mbti=([IE][SN][TF][JP])$/.test(location.hash)) {

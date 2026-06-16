@@ -207,11 +207,11 @@ function weightedValues(values = {}, weight = 1) {
 
 function scaleOptions(agreeValues, disagreeValues, neutralValues = {}) {
   return [
-    { label: '思わない', detail: 'あまり自分には当てはまらない', scale: -2, traits: weightedValues(disagreeValues, 4), mbti: weightedValues(disagreeValues, 4) },
-    { label: 'やや思わない', detail: 'どちらかといえば違う', scale: -1, traits: weightedValues(disagreeValues, 2), mbti: weightedValues(disagreeValues, 2) },
-    { label: 'どちらとも', detail: '場面によって変わる', scale: 0, traits: neutralValues, mbti: neutralValues },
-    { label: 'ややそう思う', detail: 'どちらかといえば近い', scale: 1, traits: weightedValues(agreeValues, 2), mbti: weightedValues(agreeValues, 2) },
     { label: 'そう思う', detail: 'かなり自分に近い', scale: 2, traits: weightedValues(agreeValues, 4), mbti: weightedValues(agreeValues, 4) },
+    { label: '少しそう思う', detail: 'どちらかといえば近い', scale: 1, traits: weightedValues(agreeValues, 2), mbti: weightedValues(agreeValues, 2) },
+    { label: 'わからない', detail: '迷った時の中立回答', scale: 0, traits: neutralValues, mbti: neutralValues },
+    { label: 'あまり思わない', detail: 'どちらかといえば違う', scale: -1, traits: weightedValues(disagreeValues, 2), mbti: weightedValues(disagreeValues, 2) },
+    { label: '思わない', detail: 'あまり自分には当てはまらない', scale: -2, traits: weightedValues(disagreeValues, 4), mbti: weightedValues(disagreeValues, 4) },
   ];
 }
 
@@ -1121,7 +1121,7 @@ const mbtiQuestions = [
 
 const gamerMbtiTypes = {
   ISTJ: {
-    title: 'ログ管理の堅実キャプテン',
+    title: '鉄壁の記録官型',
     catchline: '勝ち筋を崩さない、安定感のある実務派ゲーマー。',
     summary: '情報、手順、役割を丁寧に積み上げるタイプです。派手に場を荒らすより、ミスを減らしてチームの土台を固めることで勝率を上げます。',
     strength: 'リプレイ確認、定番ルート、役割遂行に強く、同じ事故を減らす力があります。',
@@ -1132,7 +1132,7 @@ const gamerMbtiTypes = {
     games: ['VALORANT', 'Monster Hunter', 'Civilization'],
   },
   ISFJ: {
-    title: '味方を守るセーフティサポーター',
+    title: '誓約の守護騎士型',
     catchline: '気づいたらチームを助けている、安心感の守護役。',
     summary: '味方の状態や空気に気づきやすく、必要なフォローを自然に出せるタイプです。誰かが崩れそうな時ほど価値が出ます。',
     strength: '回復、カバー、救助、声かけが丁寧で、チームの継続力を支えます。',
@@ -1143,7 +1143,7 @@ const gamerMbtiTypes = {
     games: ['Overwatch 2', 'It Takes Two', 'Deep Rock Galactic'],
   },
   INFJ: {
-    title: 'チームの空気を読む守護神',
+    title: '静かな預言者型',
     catchline: '勝ち筋と空気の両方を見て、チームを静かに整えるタイプ。',
     summary: '場の空気、味方の気持ち、次に崩れそうなポイントを察知できます。ギスギスしそうな場面を自然にやわらげる力があります。',
     strength: '人の変化に敏感で、戦術だけでなく関係性まで含めてチームを見られます。',
@@ -1154,7 +1154,7 @@ const gamerMbtiTypes = {
     games: ['Final Fantasy XIV', 'Monster Hunter', 'Baldur’s Gate 3'],
   },
   INTJ: {
-    title: '冷静な勝ち筋設計士',
+    title: '冷静沈着の軍師型',
     catchline: '試合の先を見て、勝つための構造を組み立てるタイプ。',
     summary: '目の前のノリより、長期的な勝ち筋や構成の完成度を重視します。少ない言葉でも判断の筋が通っているので、ハマる相手にはかなり頼られます。',
     strength: 'メタ理解、作戦設計、リスク管理が強く、勝率を構造から上げられます。',
@@ -1165,7 +1165,7 @@ const gamerMbtiTypes = {
     games: ['VALORANT', 'Teamfight Tactics', 'League of Legends'],
   },
   ISTP: {
-    title: '無言で決めるクラッチ職人',
+    title: '無言の剣豪型',
     catchline: '説明よりプレイで見せる、現場対応のソロエース。',
     summary: '状況を見て、必要な操作を淡々と実行できるタイプです。通話で盛り上げるより、勝負どころで結果を出すことで存在感が出ます。',
     strength: '細かい操作、リハイド、咄嗟の切り返しに強く、少人数戦で輝きます。',
@@ -1176,7 +1176,7 @@ const gamerMbtiTypes = {
     games: ['Apex Legends', 'Escape from Tarkov', 'Street Fighter 6'],
   },
   ISFP: {
-    title: '感覚で魅せるフィーリングアーティスト',
+    title: '自由なる吟遊詩人型',
     catchline: '気持ちよく動ける時に、独自のセンスが爆発するタイプ。',
     summary: '自分の感覚や気分の流れを大事にしながら、自然体で良いプレイを出せます。型に縛られすぎない柔らかさが魅力です。',
     strength: '直感的な操作、雰囲気づくり、自由な発想で見せ場を作れます。',
@@ -1187,7 +1187,7 @@ const gamerMbtiTypes = {
     games: ['Splatoon', 'Minecraft', 'Party Animals'],
   },
   INFP: {
-    title: '世界観没入のやさしい冒険者',
+    title: '夢見る巡礼者型',
     catchline: 'ゲームの物語と仲間の気持ちを大事にする、共感型プレイヤー。',
     summary: '勝つことだけでなく、体験の意味や一緒に遊ぶ心地よさを重視します。長く遊ぶほど、相手に安心感を残すタイプです。',
     strength: '共感力、没入感、やさしい言葉選びで、遊びの時間をあたたかくできます。',
@@ -1198,7 +1198,7 @@ const gamerMbtiTypes = {
     games: ['Stardew Valley', 'Baldur’s Gate 3', 'Final Fantasy XIV'],
   },
   INTP: {
-    title: 'データ重視の孤高の戦術家',
+    title: '孤高の研究者型',
     catchline: 'メタ、仕様、強行動を理詰めで読み解く分析ゲーマー。',
     summary: '感情論より、なぜ強いのかを理解して戦いたいタイプです。ビルド、武器、キャラ相性を調べるほど精度が上がります。',
     strength: '仕様理解、メタ分析、例外処理に強く、独自の攻略ルートを作れます。',
@@ -1209,7 +1209,7 @@ const gamerMbtiTypes = {
     games: ['Slay the Spire', 'Teamfight Tactics', 'League of Legends'],
   },
   ESTP: {
-    title: 'アドレナリン中毒の特攻隊長',
+    title: '電撃アサルト型',
     catchline: '前線で流れを奪う、脳汁系アタッカー。',
     summary: '目の前のチャンスに素早く反応し、場を動かすタイプです。キルログやクラッチの瞬間に一番テンションが上がります。',
     strength: '反応速度、勝負勘、度胸が強く、停滞した試合に突破口を作れます。',
@@ -1220,7 +1220,7 @@ const gamerMbtiTypes = {
     games: ['Apex Legends', 'VALORANT', 'THE FINALS'],
   },
   ESFP: {
-    title: '場を沸かせるムードアタッカー',
+    title: '祝祭の先陣役型',
     catchline: '勝っても負けても場を明るくする、通話映えタイプ。',
     summary: 'リアクションと勢いでチームの温度を上げられます。ハプニングも笑いに変えられるので、初回通話でも距離を縮めやすいタイプです。',
     strength: '盛り上げ、リアクション、瞬間的な行動力でチームに勢いを出せます。',
@@ -1231,7 +1231,7 @@ const gamerMbtiTypes = {
     games: ['Party Animals', 'Overcooked! 2', 'Apex Legends'],
   },
   ENFP: {
-    title: 'ひらめき突撃のパーティーメイカー',
+    title: 'ひらめき冒険家型',
     catchline: 'アイデアと勢いで、遊び方そのものを楽しくするタイプ。',
     summary: '面白そうな作戦や新しい遊び方を見つけるのが得意です。うまくいっても失敗しても、場に物語を作れるタイプです。',
     strength: '発想力、誘いやすさ、前向きな切り替えでチームを動かせます。',
@@ -1242,7 +1242,7 @@ const gamerMbtiTypes = {
     games: ['Minecraft', 'Apex Legends', 'Baldur’s Gate 3'],
   },
   ENTP: {
-    title: 'メタを壊す奇策デバッガー',
+    title: 'メタ破壊の革命家型',
     catchline: '常識の穴を見つけて、相手の想定をずらすタイプ。',
     summary: '強いと言われている型をそのまま使うだけでは満足しません。なぜ強いか、どこが弱いかを見つけて、違う勝ち方を試したくなります。',
     strength: '発想、検証、心理戦に強く、相手が嫌がる選択肢を作れます。',
@@ -1253,7 +1253,7 @@ const gamerMbtiTypes = {
     games: ['League of Legends', 'Street Fighter 6', 'Among Us'],
   },
   ESTJ: {
-    title: '勝利へ整列させる実戦司令官',
+    title: '規律の実戦指揮官型',
     catchline: '目的、役割、次の行動をはっきりさせる勝率管理タイプ。',
     summary: '何をすれば勝てるかを明確にし、チームを前へ進めます。曖昧な時間を減らせるので、ランクや固定チームで頼られやすいタイプです。',
     strength: '指示、役割分担、実行力が強く、チームの迷いを減らせます。',
@@ -1264,7 +1264,7 @@ const gamerMbtiTypes = {
     games: ['VALORANT', 'Overwatch 2', 'League of Legends'],
   },
   ESFJ: {
-    title: '連携を温めるチームホスト',
+    title: '陽だまりの宮廷官型',
     catchline: 'みんなが遊びやすい場を作る、コミュニティ型サポーター。',
     summary: '誘う、褒める、フォローする、空気を整えるのが得意です。勝ち負けだけでなく、また集まりたくなる場を作れます。',
     strength: '連絡、雰囲気作り、感謝の循環が得意で、固定メンバーの接着剤になれます。',
@@ -1275,7 +1275,7 @@ const gamerMbtiTypes = {
     games: ['Final Fantasy XIV', 'Monster Hunter', 'PICO PARK'],
   },
   ENFJ: {
-    title: '味方を乗せるモチベIGL',
+    title: '鼓舞する旗手型',
     catchline: '勝ち筋とテンションを同時に作る、熱いチームリーダー。',
     summary: '人を見ながらチームを動かせるタイプです。指示だけでなく、味方が前向きに動ける言葉を選べるので、固定チームで強みが出ます。',
     strength: '声かけ、作戦共有、モチベ管理が強く、負け試合でも立て直しやすいです。',
@@ -1286,7 +1286,7 @@ const gamerMbtiTypes = {
     games: ['Overwatch 2', 'VALORANT', 'Monster Hunter'],
   },
   ENTJ: {
-    title: '勝利至上主義のガチIGL',
+    title: '覇道コマンダー型',
     catchline: '勝つための判断を恐れない、司令塔タイプ。',
     summary: '勝利条件を見抜き、必要な行動をはっきり出せます。熱くなると圧が出ることもありますが、本質はチームを勝たせたい責任感です。',
     strength: '決断力、戦術設計、チームの方向づけが強く、厳しい場面でも迷いません。',
@@ -1501,7 +1501,7 @@ function renderGamerMbtiAxisGrid(scores) {
 function renderScaleOptionList(question, dataAttribute) {
   return `
     <div class="scale-answer" aria-label="回答スケール">
-      <div class="scale-caption"><span>思わない</span><small>${question.axis || '直感スキャン'}</small><span>そう思う</span></div>
+      <div class="scale-caption"><span>そう思う</span><small>${question.axis || '直感スキャン'}</small><span>思わない</span></div>
       <div class="scale-buttons">
         ${question.options.map((option, index) => `
           <button class="scale-button is-${option.scale}" type="button" ${dataAttribute}="${index}" aria-label="${option.label}">
@@ -2034,7 +2034,7 @@ function renderGamerMbtiQuiz() {
         <img src="assets/pipo-scan.png" alt="" loading="lazy" />
         <div>
           <span>${icon('user')}ピポの性格ログ解析</span>
-          <p>直感でOKです。左が「思わない」、右が「そう思う」。ピポが16タイプへ変換します。</p>
+          <p>直感でOKです。左が「そう思う」、右が「思わない」。迷ったら中央の「わからない」を選べます。</p>
           <h3 id="mbti-quiz-title">${question.title}</h3>
         </div>
       </div>
@@ -2323,7 +2323,7 @@ function renderQuiz() {
         <img src="assets/pipo-scan.png" alt="" loading="lazy" />
         <div>
           <span>${icon('spark')}ピポの解析メモ</span>
-          <p>左が「思わない」、右が「そう思う」。深く考えず、普段の遊び方に近い位置を選んでください。</p>
+          <p>左が「そう思う」、右が「思わない」。深く考えず、普段の遊び方に近い位置を選んでください。</p>
           <h3 id="quiz-title">${question.title}</h3>
         </div>
       </div>

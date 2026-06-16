@@ -1578,8 +1578,12 @@ p {
 }
 
 .scale-caption span:last-child {
-  color: var(--pink);
+  color: var(--cyan);
   text-align: right;
+}
+
+.scale-caption span:first-child {
+  color: var(--pink);
 }
 
 .scale-caption small {

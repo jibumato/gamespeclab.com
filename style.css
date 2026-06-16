@@ -3568,7 +3568,7 @@ body.sense-result-ready .post-result-lab {
   letter-spacing: 0.08em;
 }
 
-.certificate-rank {
+.certificate-style {
   border: 1px solid rgba(255, 77, 210, 0.46);
   color: var(--pink) !important;
   justify-self: center;

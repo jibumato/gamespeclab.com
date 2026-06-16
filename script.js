@@ -1516,44 +1516,52 @@ function renderScaleOptionList(question, dataAttribute) {
 
 function renderGamerMbtiResult(type, scores) {
   return `
-    <div class="result-block gamer-mbti-result">
-      <div class="result-dialogue">
-        <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-        <img class="result-pipo-photo" src="assets/pipo-scan.png" alt="" loading="lazy" />
-        <div>
-          <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
-          <div class="mbti-code-badge" aria-label="ゲーマーMBTIコード">
-            <span>YOUR GAMER TYPE</span>
-            <strong>${type.code}</strong>
-            <small>${type.title}</small>
+    <div class="result-block result-sequence is-revealing gamer-mbti-result">
+      ${renderResultReveal({
+        name: `${type.code} / ${type.title}`,
+        revealLabel: 'GAMER TYPE SCAN',
+        revealHeadline: 'プレイ人格ログを照合中...',
+        revealImage: 'assets/navi-mina.png',
+      })}
+      <div class="result-content">
+        <div class="result-dialogue">
+          <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
+          <img class="result-pipo-photo" src="assets/pipo-scan.png" alt="" loading="lazy" />
+          <div>
+            <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
+            <div class="mbti-code-badge" aria-label="ゲーマーMBTIコード">
+              <span>YOUR GAMER TYPE</span>
+              <strong>${type.code}</strong>
+              <small>${type.title}</small>
+            </div>
+            <h3 id="mbti-quiz-title">${type.title}</h3>
+            <p class="result-catch">${type.catchline}</p>
+            <p>${type.summary}</p>
           </div>
-          <h3 id="mbti-quiz-title">${type.title}</h3>
-          <p class="result-catch">${type.catchline}</p>
-          <p>${type.summary}</p>
         </div>
-      </div>
-      ${renderGamerMbtiAxisGrid(scores)}
-      <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
-        <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
-        <article class="result-card"><div class="card-head"><p class="card-label">${icon('trophy')}克服ポイント</p><span>02</span></div><h3>弱みに見える才能の使い方</h3><p>${type.growth}</p></article>
-        <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめロール</p><span>03</span></div><h3>${type.role}</h3><p>あなたの判断基準とプレイ温度が出やすいポジションです。</p></article>
-        <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性の良い相手</p><span>04</span></div><h3>組むと噛み合いやすいタイプ</h3><p>${type.partner}</p></article>
-        <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
-        <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}刺さりやすいゲーム</p><span>06</span></div><h3>${type.games.join(' / ')}</h3><p>このタイプの気持ちよさが出やすいタイトルです。上手さより「どの場面で楽しいか」の目安として見てください。</p></article>
-      </section>
-      <div class="mbti-compat-note">
-        <span>${icon('chat')}MBTI風相性メモ</span>
-        <p>T型は改善案を愛として出しがちで、F型はまず共感を求めがちです。違いを責めるより、「今は共感」「次に改善」と順番を分けると、ゲームの空気が一気に整います。</p>
-      </div>
-      <div class="theory-note">
-        <span>${icon('shield')}ENTERTAINMENT DIAGNOSIS</span>
-        <p>この診断はMBTI風の分類をゲーム内の行動傾向へ翻訳したエンタメ診断です。公式なMBTI検査や心理検査ではありません。</p>
-      </div>
-      <div class="result-actions">
-        <button class="primary-button" type="button" id="share-mbti-result">${icon('share')}結果をシェア</button>
-        <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
-        <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
-        <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>
+        ${renderGamerMbtiAxisGrid(scores)}
+        <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
+          <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
+          <article class="result-card"><div class="card-head"><p class="card-label">${icon('trophy')}克服ポイント</p><span>02</span></div><h3>弱みに見える才能の使い方</h3><p>${type.growth}</p></article>
+          <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめロール</p><span>03</span></div><h3>${type.role}</h3><p>あなたの判断基準とプレイ温度が出やすいポジションです。</p></article>
+          <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性の良い相手</p><span>04</span></div><h3>組むと噛み合いやすいタイプ</h3><p>${type.partner}</p></article>
+          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
+          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}刺さりやすいゲーム</p><span>06</span></div><h3>${type.games.join(' / ')}</h3><p>このタイプの気持ちよさが出やすいタイトルです。上手さより「どの場面で楽しいか」の目安として見てください。</p></article>
+        </section>
+        <div class="mbti-compat-note">
+          <span>${icon('chat')}MBTI風相性メモ</span>
+          <p>T型は改善案を愛として出しがちで、F型はまず共感を求めがちです。違いを責めるより、「今は共感」「次に改善」と順番を分けると、ゲームの空気が一気に整います。</p>
+        </div>
+        <div class="theory-note">
+          <span>${icon('shield')}ENTERTAINMENT DIAGNOSIS</span>
+          <p>この診断はMBTI風の分類をゲーム内の行動傾向へ翻訳したエンタメ診断です。公式なMBTI検査や心理検査ではありません。</p>
+        </div>
+        <div class="result-actions">
+          <button class="primary-button" type="button" id="share-mbti-result">${icon('share')}結果をシェア</button>
+          <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
+          <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
+          <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>
+        </div>
       </div>
     </div>
   `;
@@ -1798,51 +1806,59 @@ function renderSenseResult(archetype, normalizedScores) {
   const secondaryLabel = senseLabels[archetype.secondary];
   const topGames = senseGameSuggestions(archetype.primary, archetype.secondary);
   return `
-    <div class="result-block sense-result-block">
-      <div class="result-dialogue">
-        <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
-          <div class="sense-core-orb is-primary">
-            <small>01</small>
-            ${icon(senseIcons[archetype.primary] || 'target')}
-            <strong>${primaryLabel}</strong>
+    <div class="result-block result-sequence is-revealing sense-result-block">
+      ${renderResultReveal({
+        name: archetype.name,
+        revealLabel: 'GAMESENSE SCAN 8',
+        revealHeadline: '8能力のシグナルを解析中...',
+        revealImage: 'assets/pipo-scan.png',
+      })}
+      <div class="result-content">
+        <div class="result-dialogue">
+          <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
+            <div class="sense-core-orb is-primary">
+              <small>01</small>
+              ${icon(senseIcons[archetype.primary] || 'target')}
+              <strong>${primaryLabel}</strong>
+            </div>
+            <span class="sense-core-link">×</span>
+            <div class="sense-core-orb is-secondary">
+              <small>02</small>
+              ${icon(senseIcons[archetype.secondary] || 'spark')}
+              <strong>${secondaryLabel}</strong>
+            </div>
           </div>
-          <span class="sense-core-link">×</span>
-          <div class="sense-core-orb is-secondary">
-            <small>02</small>
-            ${icon(senseIcons[archetype.secondary] || 'spark')}
-            <strong>${secondaryLabel}</strong>
+          <div>
+            <div class="result-kicker">${icon('chart')}GameSense Archetype</div>
+            <h3 id="sense-quiz-title">${archetype.name}</h3>
+            <p class="result-catch">${archetype.catchline}</p>
+            <p>${archetype.summary}</p>
           </div>
         </div>
-        <div>
-          <div class="result-kicker">${icon('chart')}GameSense Archetype</div>
-          <h3 id="sense-quiz-title">${archetype.name}</h3>
-          <p class="result-catch">${archetype.catchline}</p>
-          <p>${archetype.summary}</p>
+        ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
+        ${renderTopSenseAbilities(normalizedScores)}
+        ${renderSenseMatrix(archetype)}
+        <div class="sense-result-grid">
+          <article class="result-insight-card">
+            <span>${icon(senseIcons[archetype.primary])}コア才能</span>
+            <p>${primaryLabel}が一番強い軸です。画面上の情報、展開、勝ち筋のどこに意識が向きやすいかを表します。</p>
+          </article>
+          <article class="result-insight-card">
+            <span>${icon(senseIcons[archetype.secondary])}戦い方のクセ</span>
+            <p>${secondaryLabel}がサブ武器です。コア才能をどう使うか、どんな場面で強みが出るかを決めます。</p>
+          </article>
+          <article class="result-insight-card">
+            <span>${icon('gamepad')}向きやすいゲーム</span>
+            <p>${topGames.join(' / ')} のように、判断や学習の手応えが出るゲームと相性が良いです。</p>
+          </article>
         </div>
-      </div>
-      ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
-      ${renderTopSenseAbilities(normalizedScores)}
-      ${renderSenseMatrix(archetype)}
-      <div class="sense-result-grid">
-        <article class="result-insight-card">
-          <span>${icon(senseIcons[archetype.primary])}コア才能</span>
-          <p>${primaryLabel}が一番強い軸です。画面上の情報、展開、勝ち筋のどこに意識が向きやすいかを表します。</p>
-        </article>
-        <article class="result-insight-card">
-          <span>${icon(senseIcons[archetype.secondary])}戦い方のクセ</span>
-          <p>${secondaryLabel}がサブ武器です。コア才能をどう使うか、どんな場面で強みが出るかを決めます。</p>
-        </article>
-        <article class="result-insight-card">
-          <span>${icon('gamepad')}向きやすいゲーム</span>
-          <p>${topGames.join(' / ')} のように、判断や学習の手応えが出るゲームと相性が良いです。</p>
-        </article>
-      </div>
-      ${renderSenseTheoryNote()}
-      <div class="result-actions">
-        <button class="primary-button" type="button" id="share-sense-result">${icon('share')}結果をシェア</button>
-        <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
-        <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
-        <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
+        ${renderSenseTheoryNote()}
+        <div class="result-actions">
+          <button class="primary-button" type="button" id="share-sense-result">${icon('share')}結果をシェア</button>
+          <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
+          <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
+          <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
+        </div>
       </div>
     </div>
   `;
@@ -1869,21 +1885,19 @@ function getSenseShareMeta(archetype, normalizedScores) {
   const average = Math.round(ranked.reduce((sum, [, value]) => sum + value, 0) / ranked.length);
   const topAverage = Math.round(topThree.reduce((sum, [, value]) => sum + value, 0) / topThree.length);
   const peakGap = (topThree[0]?.[1] || 0) - (topThree[1]?.[1] || 0);
-  const rank = topAverage >= 92 ? 'S+' : topAverage >= 84 ? 'S' : topAverage >= 76 ? 'A+' : topAverage >= 66 ? 'A' : 'B+';
   const style = peakGap >= 12 ? '一点突破型' : peakGap <= 4 ? '万能バランス型' : '二刀流コア型';
   const primaryLabel = senseLabels[archetype.primary] || '上位能力';
   const secondaryLabel = senseLabels[archetype.secondary] || 'サブ能力';
   const lowestLabel = senseLabels[lowest[0]] || '伸びしろ';
 
   return {
-    rank,
     style,
     average,
     topAverage,
     topThree,
     lowest,
     weapon: `${primaryLabel}で流れを掴み、${secondaryLabel}で勝ち筋を伸ばす。`,
-    flexLine: `認定ランク ${rank} / ${style} / 総合${average}`,
+    flexLine: `${style} / ${primaryLabel} × ${secondaryLabel} / バランス${average}`,
     growthLine: `伸びしろ: ${lowestLabel}を磨くと、さらに完成度が上がります。`,
   };
 }
@@ -1899,7 +1913,7 @@ function updatePostResultLab(archetype, normalizedScores) {
   const shareMeta = getSenseShareMeta(archetype, normalizedScores);
   const resultType = document.querySelector('#post-result-type');
   const resultCore = document.querySelector('#post-result-core');
-  const resultRank = document.querySelector('#post-result-rank');
+  const resultStyle = document.querySelector('#post-result-style');
   const resultWeapon = document.querySelector('#post-result-weapon');
   const trainingTitle = document.querySelector('#training-title');
   const trainingCopy = document.querySelector('#training-copy');
@@ -1907,7 +1921,6 @@ function updatePostResultLab(archetype, normalizedScores) {
 
   lab.dataset.cardType = archetype.name;
   lab.dataset.cardCatch = archetype.catchline;
-  lab.dataset.cardRank = shareMeta.rank;
   lab.dataset.cardStyle = shareMeta.style;
   lab.dataset.cardAverage = String(shareMeta.average);
   lab.dataset.cardTopAverage = String(shareMeta.topAverage);
@@ -1918,8 +1931,8 @@ function updatePostResultLab(archetype, normalizedScores) {
   });
 
   if (resultType) resultType.textContent = archetype.name;
-  if (resultCore) resultCore.textContent = `${shareMeta.flexLine} / ${primaryLabel} × ${secondaryLabel}`;
-  if (resultRank) resultRank.textContent = `RANK ${shareMeta.rank}`;
+  if (resultCore) resultCore.textContent = shareMeta.flexLine;
+  if (resultStyle) resultStyle.textContent = shareMeta.style;
   if (resultWeapon) resultWeapon.textContent = shareMeta.weapon;
   shareMeta.topThree.forEach(([key, value], index) => {
     const node = document.querySelector(`#post-result-top${index + 1}`);
@@ -1986,6 +1999,7 @@ function renderSenseQuiz() {
   trackEvent('sense_diagnosis_complete', { archetype: archetype.name, primary: archetype.primary, secondary: archetype.secondary });
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
   updatePostResultLab(archetype, normalizedScores);
+  activateResultReveal();
   document.querySelector('#reset-sense-quiz').addEventListener('click', () => {
     senseAnswers = [];
     renderSenseQuiz();
@@ -2062,6 +2076,7 @@ function renderGamerMbtiQuiz() {
 
   trackEvent('gamer_mbti_complete', { code: type.code, title: type.title });
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
+  activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     renderGamerMbtiQuiz();
@@ -2157,14 +2172,17 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
 }
 
 function renderResultReveal(profile) {
+  const label = profile.revealLabel || 'DUO SYNC SCAN';
+  const headline = profile.revealHeadline || '相性ログを解析中...';
+  const image = profile.revealImage || 'assets/pipo-scan.png';
   return `
     <div class="result-reveal-card" aria-hidden="true">
       <div class="reveal-orb">
-        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+        <img src="${image}" alt="" loading="lazy" />
       </div>
       <div class="reveal-copy">
-        <span>${icon('spark')}DUO SYNC SCAN</span>
-        <strong>相性ログを解析中...</strong>
+        <span>${icon('spark')}${label}</span>
+        <strong>${headline}</strong>
         <div class="reveal-bars">
           <i></i><i></i><i></i>
         </div>
@@ -2605,7 +2623,6 @@ function drawWrappedCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines =
 function createSenseResultCardBlob() {
   const lab = document.querySelector('#post-result-lab');
   const type = document.querySelector('#post-result-type')?.textContent || 'GameSense Scan 8';
-  const rank = lab?.dataset.cardRank || 'A';
   const style = lab?.dataset.cardStyle || '二刀流コア型';
   const average = lab?.dataset.cardAverage || '--';
   const topAverage = lab?.dataset.cardTopAverage || '--';
@@ -2665,22 +2682,30 @@ function createSenseResultCardBlob() {
   ctx.fillStyle = '#72f2ff';
   ctx.font = '900 34px Menlo, monospace';
   ctx.textAlign = 'center';
-  ctx.fillText('GAME SENSE CERTIFIED', 540, 210);
+  ctx.fillText('GAME SENSE PROFILE', 540, 188);
 
+  ctx.fillStyle = 'rgba(255, 77, 210, 0.16)';
+  ctx.strokeStyle = 'rgba(255, 77, 210, 0.58)';
+  ctx.lineWidth = 3;
+  ctx.fillRect(310, 222, 460, 62);
+  ctx.strokeRect(310, 222, 460, 62);
   ctx.fillStyle = 'rgba(255, 77, 210, 0.96)';
-  ctx.font = '900 48px Menlo, monospace';
-  ctx.fillText(`RANK ${rank}`, 540, 282);
+  ctx.font = '900 28px Menlo, monospace';
+  ctx.fillText('CORE STYLE', 540, 249);
+  ctx.fillStyle = '#f8fbff';
+  ctx.font = '900 30px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  ctx.fillText(style, 540, 278);
 
   ctx.fillStyle = '#f8fbff';
   ctx.font = '900 68px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-  drawWrappedCanvasText(ctx, type, 540, 382, 820, 78, 3);
+  drawWrappedCanvasText(ctx, type, 540, 380, 820, 78, 3);
 
   ctx.fillStyle = 'rgba(114, 242, 255, 0.92)';
-  ctx.font = '900 30px Menlo, monospace';
-  ctx.fillText(`${style} / GSL SCORE ${average} / CORE ${topAverage}`, 540, 610);
+  ctx.font = '900 27px Menlo, monospace';
+  ctx.fillText(`TOP CORE ${topAverage}  /  BALANCE ${average}`, 540, 596);
 
   const statX = 190;
-  const statY = 674;
+  const statY = 666;
   const statWidth = 700;
   ctx.textAlign = 'left';
   topStats.forEach((stat, index) => {
@@ -2697,15 +2722,20 @@ function createSenseResultCardBlob() {
   ctx.textAlign = 'center';
   ctx.fillStyle = 'rgba(248, 251, 255, 0.9)';
   ctx.font = '800 29px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-  drawWrappedCanvasText(ctx, weapon, 540, 852, 760, 38, 2);
+  drawWrappedCanvasText(ctx, weapon, 540, 846, 760, 38, 2);
 
-  ctx.fillStyle = 'rgba(248, 251, 255, 0.68)';
-  ctx.font = '700 23px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
-  drawWrappedCanvasText(ctx, catchline, 540, 928, 760, 32, 2);
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.strokeStyle = 'rgba(184, 255, 106, 0.32)';
+  ctx.lineWidth = 2;
+  ctx.fillRect(158, 906, 764, 64);
+  ctx.strokeRect(158, 906, 764, 64);
+  ctx.fillStyle = 'rgba(248, 251, 255, 0.78)';
+  ctx.font = '800 22px system-ui, -apple-system, BlinkMacSystemFont, sans-serif';
+  drawWrappedCanvasText(ctx, catchline, 540, 932, 700, 28, 2);
 
   ctx.fillStyle = '#ff4dd2';
-  ctx.font = '900 24px Menlo, monospace';
-  drawWrappedCanvasText(ctx, growth, 540, 990, 820, 30, 2);
+  ctx.font = '900 22px Menlo, monospace';
+  drawWrappedCanvasText(ctx, growth, 540, 1004, 820, 28, 2);
 
   return new Promise((resolve) => canvas.toBlob(resolve, 'image/png', 0.95));
 }
@@ -2815,6 +2845,7 @@ function applySenseHashRoute() {
   document.querySelector('#sense-score-preview').innerHTML = renderScoreGrid(normalizedScores, senseLabels);
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
   updatePostResultLab(archetype, normalizedScores);
+  activateResultReveal();
   document.querySelector('#reset-sense-quiz')?.addEventListener('click', () => {
     senseAnswers = [];
     location.hash = 'gamesense';
@@ -2858,6 +2889,7 @@ function applyGamerMbtiHashRoute() {
   document.querySelector('#mbti-preview-catch').textContent = type.catchline;
   document.querySelector('#mbti-score-preview').innerHTML = renderGamerMbtiAxisGrid(scores);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
+  activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     location.hash = 'gamer-mbti';

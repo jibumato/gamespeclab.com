@@ -4543,6 +4543,33 @@ body.sense-result-ready .post-result-lab {
     grid-template-columns: 86px 18px 78px;
   }
 
+  .sense-result-block .result-dialogue {
+    align-items: stretch;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  .sense-result-block .result-dialogue > div:last-child {
+    width: 100%;
+  }
+
+  .sense-result-block .result-kicker {
+    justify-content: flex-start;
+  }
+
+  .sense-result-block #sense-quiz-title {
+    font-size: clamp(30px, 9.6vw, 40px);
+    line-height: 1.08;
+    margin-top: 8px;
+    overflow-wrap: anywhere;
+  }
+
+  .sense-result-block .result-catch,
+  .sense-result-block .result-dialogue p:not(.result-catch) {
+    font-size: 15px;
+    line-height: 1.75;
+  }
+
   .sense-core-orb {
     border-radius: 22px;
     gap: 5px;

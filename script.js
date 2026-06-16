@@ -1451,85 +1451,117 @@ function getResult(scores) {
     .sort((a, b) => b.score - a.score)[0].profile;
 }
 
-const sensePartnerTraitMap = {
-  awareness: ['macro', 'social'],
-  prediction: ['macro', 'competitive'],
-  pattern: ['macro', 'chill'],
-  spatial: ['micro', 'support'],
-  speed: ['micro', 'competitive'],
-  resource: ['support', 'macro'],
-  mindgame: ['social', 'competitive'],
-  adaptation: ['support', 'chill'],
+const senseAbilitySynergyMap = {
+  awareness: ['prediction', 'resource', 'adaptation', 'spatial'],
+  prediction: ['awareness', 'mindgame', 'pattern', 'resource'],
+  pattern: ['adaptation', 'prediction', 'mindgame', 'speed'],
+  spatial: ['speed', 'awareness', 'prediction', 'pattern'],
+  speed: ['spatial', 'adaptation', 'mindgame', 'resource'],
+  resource: ['awareness', 'prediction', 'adaptation', 'speed'],
+  mindgame: ['prediction', 'pattern', 'awareness', 'speed'],
+  adaptation: ['pattern', 'awareness', 'resource', 'speed'],
 };
 
-const mbtiPartnerTraitMap = {
-  E: ['social', 'competitive'],
-  I: ['chill', 'support'],
-  S: ['micro', 'support'],
-  N: ['macro', 'social'],
-  T: ['competitive', 'macro'],
-  F: ['social', 'support'],
-  J: ['macro', 'support'],
-  P: ['micro', 'chill'],
+const mbtiCompatibilityMap = {
+  ISTJ: ['ESTP', 'ENFP', 'ISFJ'],
+  ISFJ: ['ESTP', 'ENTJ', 'ESFP'],
+  INFJ: ['INTJ', 'ENFP', 'ESTP'],
+  INTJ: ['ENFP', 'ESTP', 'INFJ'],
+  ISTP: ['ESTJ', 'ENFJ', 'ENTP'],
+  ISFP: ['ESFJ', 'ENFP', 'ISTJ'],
+  INFP: ['ENFJ', 'INTJ', 'ISFJ'],
+  INTP: ['ENTP', 'ENFP', 'ESTJ'],
+  ESTP: ['INTJ', 'ISFJ', 'ENFJ'],
+  ESFP: ['ISFJ', 'ISTJ', 'ENFP'],
+  ENFP: ['INTJ', 'ISTJ', 'INFJ'],
+  ENTP: ['ESTP', 'INTJ', 'ESTJ'],
+  ESTJ: ['ISFP', 'ENFP', 'ISTP'],
+  ESFJ: ['INTP', 'ISTP', 'ESFP'],
+  ENFJ: ['INTP', 'ESTP', 'INFJ'],
+  ENTJ: ['INFP', 'ISFP', 'ESTP'],
 };
-
-function buildPartnerWeights(groups, baseWeight = 3) {
-  const weights = {};
-  groups.forEach((group, index) => {
-    const weight = Math.max(1, baseWeight - index);
-    (group || []).forEach((trait) => {
-      weights[trait] = (weights[trait] || 0) + weight;
-    });
-  });
-  return weights;
-}
-
-function getTopCompatiblePartnerTypes(weights, limit = 3) {
-  return profiles
-    .map((profile) => {
-      const score = profile.traits.reduce((sum, trait) => sum + (weights[trait] || 0), 0);
-      const matchedTraits = profile.traits.filter((trait) => weights[trait]);
-      return { profile, score, matchedTraits };
-    })
-    .sort((a, b) => b.score - a.score || profiles.indexOf(a.profile) - profiles.indexOf(b.profile))
-    .slice(0, limit);
-}
 
 function getSenseCompatiblePartners(archetype) {
-  const weights = buildPartnerWeights([
-    sensePartnerTraitMap[archetype.primary],
-    sensePartnerTraitMap[archetype.secondary],
-  ], 4);
-  return getTopCompatiblePartnerTypes(weights);
+  const sourcePair = `${archetype.primary}_${archetype.secondary}`;
+  const primarySynergy = senseAbilitySynergyMap[archetype.primary] || [];
+  const secondarySynergy = senseAbilitySynergyMap[archetype.secondary] || [];
+  const senseKeys = Object.keys(senseLabels);
+  return senseKeys
+    .flatMap((primary) => senseKeys
+      .filter((secondary) => secondary !== primary)
+      .map((secondary) => {
+        const id = `${primary}_${secondary}`;
+        const candidate = getSenseArchetypeFromKeys(primary, secondary);
+        const score =
+          (primarySynergy.includes(primary) ? 5 : 0) +
+          (secondarySynergy.includes(primary) ? 4 : 0) +
+          (primarySynergy.includes(secondary) ? 3 : 0) +
+          (secondarySynergy.includes(secondary) ? 2 : 0) +
+          (primary === archetype.secondary ? 2 : 0) +
+          (secondary === archetype.primary ? 1 : 0);
+        return {
+          id,
+          score,
+          order: senseKeys.indexOf(primary) * 10 + senseKeys.indexOf(secondary),
+          title: candidate.name,
+          badge: 'G8',
+          catchline: candidate.catchline,
+          reason: `${senseLabels[archetype.primary]}で拾った情報を、${senseLabels[primary]}の視点で受け止めてくれる相手。判断の抜けを補い合いやすい組み合わせです。`,
+          meta: `${senseLabels[primary]} × ${senseLabels[secondary]}`,
+          subMeta: 'GameSense Scan 8内の相性タイプ',
+          href: `gamesense.html#sense=${id}`,
+          iconName: senseIcons[primary] || 'chart',
+        };
+      }))
+    .filter((match) => match.id !== sourcePair)
+    .sort((a, b) => b.score - a.score || a.order - b.order)
+    .slice(0, 3);
 }
 
 function getMbtiCompatiblePartners(code) {
-  const weights = buildPartnerWeights([...code].map((letter) => mbtiPartnerTraitMap[letter]), 3);
-  return getTopCompatiblePartnerTypes(weights);
+  const codes = mbtiCompatibilityMap[code] || Object.keys(gamerMbtiTypes).filter((candidateCode) => candidateCode !== code).slice(0, 3);
+  return codes.map((candidateCode) => {
+    const type = gamerMbtiTypes[candidateCode];
+    return {
+      title: type.title,
+      badge: candidateCode,
+      catchline: type.catchline,
+      reason: `${code}のプレイ人格に対して、${candidateCode}は役割や温度感を補いやすい相手です。片方が作る流れを、もう片方が形にしやすい組み合わせです。`,
+      meta: type.role,
+      subMeta: 'ゲーマーMBTI内の相性タイプ',
+      href: `gamermbti.html#mbti=${candidateCode}`,
+      iconName: 'user',
+    };
+  });
 }
 
-function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果') {
+function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果', options = {}) {
+  const title = options.title || '相性のいい相手タイプ';
+  const eyebrow = options.eyebrow || 'MATCH TOP 3';
+  const description = options.description || `${sourceLabel}から、プレイ温度・通話ペース・役割の噛み合いやすさを見ています。恋愛判定ではなく、ゲーム中に組みやすい相棒傾向です。`;
   return `
     <section class="compat-partner-panel" aria-label="相性のいい相手タイプTOP3">
       <div class="compat-partner-head">
-        <span>${icon('link')}PARTNER MATCH TOP 3</span>
-        <strong>相性のいい相手タイプ</strong>
-        <p>${sourceLabel}から、プレイ温度・通話ペース・役割の噛み合いやすさを見ています。恋愛判定ではなく、ゲーム中に組みやすい相棒傾向です。</p>
+        <span>${icon('link')}${eyebrow}</span>
+        <strong>${title}</strong>
+        <p>${description}</p>
       </div>
       <div class="compat-partner-grid">
-        ${matches.map(({ profile }, index) => `
+        ${matches.map((match, index) => `
           <article class="compat-partner-card rank-${index + 1}">
             <div class="compat-partner-rank">
               <span>${String(index + 1).padStart(2, '0')}</span>
-              <small>${profile.syncCode}</small>
+              <small>${match.badge}</small>
             </div>
             <div>
-              <h3>${profile.name}</h3>
-              <p>${profile.catchline}</p>
+              <h3>${match.title}</h3>
+              <p>${match.catchline}</p>
+              <p class="compat-partner-reason">${match.reason}</p>
               <div class="compat-partner-meta">
-                <span>${icon('spark')}相性軸: ${profile.traits.map((trait) => traitLabels[trait] || trait).join(' × ')}</span>
-                <span>${icon('gamepad')}${profile.games.slice(0, 2).join(' / ')}</span>
+                <span>${icon(match.iconName || 'spark')}${match.meta}</span>
+                <span>${icon('gamepad')}${match.subMeta}</span>
               </div>
+              ${match.href ? `<a class="compat-partner-link" href="${match.href}">${icon('arrow')}このタイプを見る</a>` : ''}
             </div>
           </article>
         `).join('')}

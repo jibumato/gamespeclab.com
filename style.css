@@ -956,6 +956,48 @@ body.menu-open .menu-backdrop {
   right: 50px;
 }
 
+.type-visual {
+  justify-content: center;
+}
+
+.type-visual img {
+  filter: drop-shadow(0 0 18px rgba(255, 183, 233, 0.28));
+  height: 112px;
+  object-fit: cover;
+  object-position: 50% 18%;
+  position: relative;
+  transform: scale(1.45) translateY(18px);
+  width: 112px;
+  z-index: 3;
+}
+
+.type-code {
+  background: rgba(4, 5, 13, 0.78);
+  border: 1px solid rgba(255, 183, 233, 0.36);
+  color: #ffd8f6;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 0.78rem;
+  font-weight: 900;
+  padding: 7px 9px;
+  position: absolute;
+  z-index: 4;
+}
+
+.type-code.code-a {
+  left: 22px;
+  top: 22px;
+}
+
+.type-code.code-b {
+  bottom: 18px;
+  left: 50px;
+}
+
+.type-code.code-c {
+  right: 38px;
+  top: 54px;
+}
+
 .diagnosis-choice-card strong {
   font-size: clamp(24px, 2.5vw, 34px);
   line-height: 1.15;

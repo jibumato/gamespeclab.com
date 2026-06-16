@@ -1551,6 +1551,7 @@ function renderGamerMbtiResult(type, scores) {
       </div>
       <div class="result-actions">
         <button class="primary-button" type="button" id="share-mbti-result">${icon('share')}結果をシェア</button>
+        <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
         <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
         <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>
       </div>
@@ -1839,6 +1840,8 @@ function renderSenseResult(archetype, normalizedScores) {
       ${renderSenseTheoryNote()}
       <div class="result-actions">
         <button class="primary-button" type="button" id="share-sense-result">${icon('share')}結果をシェア</button>
+        <a class="ghost-link" href="partner.html">${icon('link')}相性のいい相棒を見る</a>
+        <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
         <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
       </div>
     </div>

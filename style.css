@@ -2968,8 +2968,9 @@ p {
   grid-column: 1 / -1;
 }
 
+.result-card-wide .game-pick-list,
 .sense-result-grid .game-pick-list {
-  grid-template-columns: repeat(3, minmax(0, 1fr));
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .top-ability-panel {
@@ -4197,6 +4198,7 @@ body.sense-result-ready .post-result-lab {
     grid-template-columns: 1fr;
   }
 
+  .result-card-wide .game-pick-list,
   .sense-result-grid .result-insight-card:nth-child(3),
   .sense-result-grid .game-pick-list {
     grid-column: auto;

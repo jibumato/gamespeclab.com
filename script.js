@@ -1665,7 +1665,7 @@ function renderGamerMbtiResult(type, scores) {
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめロール</p><span>03</span></div><h3>${type.role}</h3><p>あなたの判断基準とプレイ温度が出やすいポジションです。</p></article>
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性傾向</p><span>04</span></div><h3>組むと噛み合いやすい相手</h3><p>${type.partner}</p></article>
           <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
-          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}刺さりやすいゲーム</p><span>06</span></div><h3>Steam/PCで探すならこのあたり</h3><p>このタイプの気持ちよさが出やすいタイトルです。上手さより「どの場面で楽しいか」の目安として見てください。</p>${renderGameSuggestionList(type.games)}</article>
+          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}ゲーム紹介</p><span>06</span></div><h3>気軽にチェックするならこの4本</h3><p>診断結果に近い雰囲気のゲームを、軽い紹介としてまとめています。気になるジャンルを探す入口として見てください。</p>${renderGameSuggestionList(type.games)}</article>
         </section>
         ${renderCompatiblePartnersPanel(compatiblePartners, type.title)}
         <div class="mbti-compat-note">
@@ -1784,13 +1784,28 @@ const gameGenreLabels = {
   'Keep Talking and Nobody Explodes': '通話協力',
 };
 
+function getLightGameIntro(game) {
+  const genre = gameGenreLabels[game] || 'PC/Steam候補';
+  if (genre.includes('FPS') || genre.includes('シューター')) return `${genre}。撃ち合いとチーム連携を短い試合で味わいやすいタイトルです。`;
+  if (genre.includes('MOBA') || genre.includes('オートバトラー')) return `${genre}。役割、構成、集団戦の読み合いをじっくり楽しめます。`;
+  if (genre.includes('戦略') || genre.includes('ストラテジー') || genre.includes('シム') || genre.includes('工場') || genre.includes('基地') || genre.includes('都市')) return `${genre}。考える時間が楽しい、PCゲームらしいじっくり系です。`;
+  if (genre.includes('協力') || genre.includes('通話')) return `${genre}。フレンドと声をかけながら遊びやすいタイトルです。`;
+  if (genre.includes('ローグ') || genre.includes('サバイバー')) return `${genre}。1プレイごとの変化と試行錯誤を楽しめます。`;
+  if (genre.includes('サンド') || genre.includes('サバイバル') || genre.includes('クラフト') || genre.includes('スロー') || genre.includes('探索')) return `${genre}。自分のペースで寄り道や探索を楽しめるタイトルです。`;
+  if (genre.includes('格闘') || genre.includes('スポーツ')) return `${genre}。短い対戦で上達や駆け引きが見えやすいタイトルです。`;
+  if (genre.includes('正体') || genre.includes('心理')) return `${genre}。通話や読み合いで盛り上がりやすいパーティー系です。`;
+  if (genre.includes('RPG') || genre.includes('MMO') || genre.includes('物語') || genre.includes('ナラティブ')) return `${genre}。物語や世界観をじっくり味わえるタイトルです。`;
+  if (genre.includes('パーティー') || genre.includes('パズル') || genre.includes('カオス')) return `${genre}。初回でも笑いが起きやすく、軽く遊びやすいタイトルです。`;
+  return `${genre}。気になった時にストアで雰囲気を見てみる候補です。`;
+}
+
 function renderGameSuggestionList(games) {
   return `
     <div class="game-pick-list">
-      ${games.map((game) => `
+      ${games.slice(0, 4).map((game) => `
         <div class="game-pick">
           <strong>${icon('gamepad')}${game}</strong>
-          <small>${gameGenreLabels[game] || 'PC/Steam候補'}として、タイプの強みが出やすいタイトルです。</small>
+          <small>${getLightGameIntro(game)}</small>
         </div>
       `).join('')}
     </div>
@@ -2041,8 +2056,8 @@ function renderSenseResult(archetype, normalizedScores) {
             <p>${secondaryLabel}がサブ武器です。コア才能をどう使うか、どんな場面で強みが出るかを決めます。</p>
           </article>
           <article class="result-insight-card">
-            <span>${icon('gamepad')}向きやすいゲーム</span>
-            <p>判断や学習の手応えが出るゲームと相性が良いです。対戦だけでなく、Steamで探しやすい協力・戦略・ローグライト系も候補に入れています。</p>
+            <span>${icon('gamepad')}ゲーム紹介</span>
+            <p>診断結果に近い雰囲気のゲームを4本だけ軽く紹介します。おすすめの断定ではなく、次に遊ぶ候補を探すメモとして見てください。</p>
             ${renderGameSuggestionList(topGames)}
           </article>
         </div>
@@ -2069,7 +2084,7 @@ function senseGameSuggestions(primary, secondary) {
     mindgame: ['Among Us', 'Goose Goose Duck', 'Town of Salem 2', 'Street Fighter 6'],
     adaptation: ['Hades', 'Risk of Rain 2', 'Rocket League', 'Vampire Survivors'],
   };
-  return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 6);
+  return [...new Set([...(buckets[primary] || []), ...(buckets[secondary] || [])])].slice(0, 4);
 }
 
 function getSenseShareMeta(archetype, normalizedScores) {

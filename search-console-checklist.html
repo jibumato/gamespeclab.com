@@ -1,0 +1,146 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="GameSpec Lab公開後にSearch Consoleで確認する項目をまとめた運営チェックリスト。検索流入1000PVに向けて、インデックス、検索クエリ、CTR、改善順を整理します。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="Search Console運用チェックリスト | GameSpec Lab" />
+    <meta property="og:description" content="公開後に見るべき検索クエリ、CTR、インデックス、改善順を整理。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gamespeclab.com/search-console-checklist.html" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Search Console運用チェックリスト | GameSpec Lab" />
+    <meta name="twitter:description" content="検索流入1000PVに向けて、公開後に見るべき項目を整理。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <title>Search Console運用チェックリスト | GameSpec Lab</title>
+    <link rel="canonical" href="https://gamespeclab.com/search-console-checklist.html" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
+    <link rel="stylesheet" href="style.css?v=deep78" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "Search Console運用チェックリスト",
+            "url": "https://gamespeclab.com/search-console-checklist.html",
+            "description": "GameSpec Lab公開後にSearch Consoleで確認する項目をまとめた運営チェックリストです。",
+            "author": { "@type": "Organization", "name": "GameSpec Lab" },
+            "publisher": { "@type": "Organization", "name": "GameSpec Lab" },
+            "dateModified": "2026-06-18"
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              { "@type": "Question", "name": "公開後まずSearch Consoleで何を確認しますか？", "acceptedAnswer": { "@type": "Answer", "text": "サイトマップ送信、インデックス登録、検索クエリ、表示回数、CTR、掲載順位を確認します。" } },
+              { "@type": "Question", "name": "月間検索流入1000PVに向けて最初に改善する項目は？", "acceptedAnswer": { "@type": "Answer", "text": "表示回数が出ているのにCTRが低いページのtitleとdescription、掲載順位が近いページの内部リンク、インデックス未登録ページを優先します。" } },
+              { "@type": "Question", "name": "公開後に最優先で監視するURLはどれですか？", "acceptedAnswer": { "@type": "Answer", "text": "トップ、ゲームセンス診断、ゲーマーMBTI診断、自分に向いてるゲーム診断、FPSに向いてる人診断、Steamおすすめゲーム診断、結果一覧を最優先で監視します。" } }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "GameSpec Lab", "item": "https://gamespeclab.com/" },
+              { "@type": "ListItem", "position": 2, "name": "Search Console運用チェックリスト", "item": "https://gamespeclab.com/search-console-checklist.html" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="articles.html"><span data-icon="spark"></span>読み物ガイド</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+      </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
+    </header>
+    <main>
+      <section class="legal-hero article-hero">
+        <div class="legal-copy">
+          <p class="eyebrow"><span data-icon="chart"></span>SEARCH OPERATIONS</p>
+          <h1><span>Search Console運用チェックリスト</span><span>検索流入1000PVに向けて見る項目</span></h1>
+          <p class="lead">公開後は、作ったページが検索に出ているか、どの言葉で見られているか、どこから直すべきかをSearch Consoleで確認します。</p>
+        </div>
+      </section>
+      <section class="section article-section">
+        <article class="article-body">
+          <div class="article-card">
+            <p class="article-kicker">公開直後</p>
+            <h2>まず確認すること</h2>
+            <ul class="article-list">
+              <li><strong>サイトマップ送信</strong><span><code>https://gamespeclab.com/sitemap.xml</code> をSearch Consoleに送信します。</span></li>
+              <li><strong>インデックス登録</strong><span>トップ、GameSense、ゲーマーMBTI、検索入口ページ、タイプ別ページが登録対象になっているか確認します。</span></li>
+              <li><strong>robots確認</strong><span><code>robots.txt</code> がクロールを止めていないか確認します。</span></li>
+            </ul>
+          </div>
+          <div class="article-grid">
+            <section class="article-card">
+              <h2>週1回見る数字</h2>
+              <ul class="article-list">
+                <li><strong>検索クエリ</strong><span>ゲームセンス診断、ゲーマーMBTI、向いてるゲーム診断、FPSに向いてる人、Steamおすすめゲームなどで表示されているか。</span></li>
+                <li><strong>表示回数</strong><span>表示回数が増えているページは、検索ニーズに触れています。順位が低くても内部リンク強化の候補です。</span></li>
+                <li><strong>CTR</strong><span>表示回数があるのにクリックが弱いページは、titleとdescriptionを優先して調整します。</span></li>
+                <li><strong>掲載順位</strong><span>11〜30位のページは、本文追記、FAQ追加、関連ページからのリンクで伸ばしやすい候補です。</span></li>
+              </ul>
+            </section>
+            <aside class="article-card article-side">
+              <p class="eyebrow"><span data-icon="spark"></span>PRIORITY</p>
+              <h2>改善の優先順位</h2>
+              <p>検索流入1000PVを狙うなら、まずは「表示回数が出ているページ」を伸ばすのが近道です。ゼロから新規記事を増やすより、反応のあるページを磨きます。</p>
+              <a class="primary-link" href="articles.html"><span data-icon="arrow"></span>記事ハブを見る</a>
+            </aside>
+          </div>
+          <div class="article-card">
+            <h2>ページ別に見るポイント</h2>
+            <div class="article-pair-grid">
+              <div><strong><a href="gamesense.html">ゲームセンス診断</a></strong><p>「ゲームセンス 診断」「ゲーム 上手さ 診断」の表示回数とCTRを見る。</p></div>
+              <div><strong><a href="gamermbti.html">ゲーマーMBTI診断</a></strong><p>「ゲーマー MBTI」「ゲーム MBTI 診断」の表示回数を見る。</p></div>
+              <div><strong><a href="game-aptitude-diagnosis.html">自分に向いてるゲーム診断</a></strong><p>「自分に向いてるゲーム」「向いてるゲーム診断」の順位を見る。</p></div>
+              <div><strong><a href="fps-aptitude-diagnosis.html">FPSに向いてる人診断</a></strong><p>「FPS 向いてる人」「FPS 適性 診断」のクエリを確認する。</p></div>
+              <div><strong><a href="steam-recommendation-diagnosis.html">Steamおすすめゲーム診断</a></strong><p>「Steam おすすめ 診断」「Steam ゲーム 選び方」の反応を見る。</p></div>
+              <div><strong><a href="results.html">結果タイプ一覧</a></strong><p>タイプ名で表示されているページを、個別ページへ内部リンクで送る。</p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <h2>優先監視URL一覧</h2>
+            <p>公開直後は、全部のページを同じ熱量で見るより、検索流入を作りやすい入口ページから順番に見たほうが伸ばしやすいです。</p>
+            <div class="article-pair-grid">
+              <div><strong>最優先</strong><p><a href="index.html">トップ</a> / <a href="gamesense.html">ゲームセンス診断</a> / <a href="gamermbti.html">ゲーマーMBTI診断</a> / <a href="results.html">結果一覧</a></p></div>
+              <div><strong>検索入口</strong><p><a href="game-aptitude-diagnosis.html">自分に向いてるゲーム診断</a> / <a href="fps-aptitude-diagnosis.html">FPSに向いてる人診断</a> / <a href="steam-recommendation-diagnosis.html">Steamおすすめゲーム診断</a></p></div>
+              <div><strong>深掘り候補</strong><p><a href="game-sense-guide.html">ゲームセンスとは</a> / <a href="gamer-mbti-compatibility.html">ゲーマーMBTI相性</a> / <a href="fps-sense-type.html">FPSに向いている人</a> / <a href="moba-role-type.html">MOBAに向いている人</a></p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <h2>数字が出た時の次アクション</h2>
+            <div class="article-pair-grid">
+              <div><strong>表示回数はあるがCTRが低い</strong><p>title と description を先に調整し、記事一覧や結果一覧からの導線も足します。</p></div>
+              <div><strong>掲載順位が11〜30位</strong><p>FAQ追加、関連ガイド追記、内部リンク強化で押し上げやすい帯です。</p></div>
+              <div><strong>順位はあるが滞在が弱そう</strong><p>記事末尾に診断導線や関連ガイドを足して、次のページへ流します。</p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <h2>月間1000PVまでの目安</h2>
+            <p>最初の目標は、検索表示回数が出るページを10〜20本作り、そのうちCTRの高いページを診断へ流すことです。月間1000PVは、1日30〜40PV程度の検索流入で届きます。</p>
+            <p>公開後は「表示されているのにクリックされないページ」と「11〜30位で止まっているページ」を優先して直すと、少ない作業で伸びやすくなります。</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div><a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a><p>PCゲームのゲームセンス、ゲーマータイプ、相性を診断するサービスです。</p></div>
+      <nav aria-label="運営情報"><a href="articles.html"><span data-icon="spark"></span>読み物ガイド</a><a href="sitemap.xml"><span data-icon="list"></span>XMLサイトマップ</a><a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a><a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a><a href="site-map.html"><span data-icon="list"></span>サイトマップ</a></nav>
+    </footer>
+    <script src="script.js?v=deep78"></script>
+  </body>
+</html>

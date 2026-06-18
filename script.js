@@ -187,6 +187,15 @@ function trackEvent(name, detail = {}) {
   window.dispatchEvent(new CustomEvent('gamespec:event', { detail: event }));
 }
 
+function setResultHash(hash) {
+  if (location.hash === hash) return;
+  history.replaceState(null, '', `${location.pathname}${location.search}${hash}`);
+}
+
+function resultUrl(hash) {
+  return `${location.origin}${location.pathname}${hash}`;
+}
+
 function setupAffiliateTracking() {
   document.querySelectorAll('[data-affiliate]').forEach((link) => {
     if (link.dataset.tracked === 'true') return;
@@ -2221,15 +2230,18 @@ function renderSenseQuiz() {
   }
 
   trackEvent('sense_diagnosis_complete', { archetype: archetype.name, primary: archetype.primary, secondary: archetype.secondary });
+  const senseResultHash = `#sense=${archetype.primary}_${archetype.secondary}`;
+  setResultHash(senseResultHash);
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
   updatePostResultLab(archetype, normalizedScores);
   activateResultReveal();
   document.querySelector('#reset-sense-quiz').addEventListener('click', () => {
     senseAnswers = [];
+    setResultHash('#gamesense');
     renderSenseQuiz();
   });
   document.querySelector('#share-sense-result').addEventListener('click', async () => {
-    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${location.origin}${location.pathname}`;
+    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${resultUrl(senseResultHash)}`;
     trackEvent('sense_share_click', { archetype: archetype.name });
     const shareButton = document.querySelector('#share-sense-result');
     try {
@@ -2300,15 +2312,18 @@ function renderGamerMbtiQuiz() {
   }
 
   trackEvent('gamer_mbti_complete', { code: type.code, title: type.title });
+  const mbtiResultHash = `#mbti=${type.code}`;
+  setResultHash(mbtiResultHash);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
   activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     document.body.classList.remove('gamer-mbti-result-ready');
+    setResultHash('#gamer-mbti');
     renderGamerMbtiQuiz();
   });
   document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
+    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${resultUrl(mbtiResultHash)}`;
     const shareButton = document.querySelector('#share-mbti-result');
     trackEvent('gamer_mbti_share_click', { code: type.code });
     try {
@@ -2539,7 +2554,7 @@ function renderResultDetails(profile) {
 
 function updateShare(profile) {
   const shareText = `GameSpec Labで診断したら「${profile.syncCode} / ${profile.name}」でした。${profile.shareLine || profile.catchline}`;
-  const shareUrl = `${location.origin}${location.pathname}#result=${profile.id}`;
+  const shareUrl = resultUrl(`#result=${profile.id}`);
   const sharePreview = document.querySelector('#share-preview-text');
   const tweetLink = document.querySelector('#tweet-link');
   if (sharePreview) sharePreview.textContent = shareText;
@@ -2594,6 +2609,8 @@ function renderQuiz() {
   }
 
   trackEvent('diagnosis_complete', { result: result.id, name: result.name });
+  const partnerResultHash = `#result=${result.id}`;
+  setResultHash(partnerResultHash);
 
   document.querySelector('#quiz-box').innerHTML = renderResultBody(result, scores, {
     actions: `
@@ -2606,11 +2623,11 @@ function renderQuiz() {
   activateResultReveal();
   document.querySelector('#reset-quiz').addEventListener('click', () => {
     answers = [];
-    location.hash = 'diagnosis';
+    setResultHash('#diagnosis');
     renderQuiz();
   });
   document.querySelector('#share-result').addEventListener('click', async () => {
-    const text = `GameSpec Labで「${result.syncCode} / ${result.name}」でした。${result.syncCodeLabel}\n${location.origin}${location.pathname}#result=${result.id}`;
+    const text = `GameSpec Labで「${result.syncCode} / ${result.name}」でした。${result.syncCodeLabel}\n${resultUrl(partnerResultHash)}`;
     trackEvent('share_click', { result: result.id, name: result.name, method: navigator.share ? 'native' : 'clipboard' });
     const shareButton = document.querySelector('#share-result');
     try {
@@ -3101,11 +3118,11 @@ function applySenseHashRoute() {
   activateResultReveal();
   document.querySelector('#reset-sense-quiz')?.addEventListener('click', () => {
     senseAnswers = [];
-    location.hash = 'gamesense';
+    setResultHash('#gamesense');
     renderSenseQuiz();
   });
   document.querySelector('#share-sense-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${location.origin}${location.pathname}`;
+    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${resultUrl(`#sense=${primary}_${secondary}`)}`;
     trackEvent('sense_share_click', { archetype: archetype.name, source: 'type_directory' });
     const shareButton = document.querySelector('#share-sense-result');
     try {
@@ -3147,11 +3164,11 @@ function applyGamerMbtiHashRoute() {
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     document.body.classList.remove('gamer-mbti-result-ready');
-    location.hash = 'gamer-mbti';
+    setResultHash('#gamer-mbti');
     renderGamerMbtiQuiz();
   });
   document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${location.origin}${location.pathname}#mbti=${type.code}`;
+    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${resultUrl(`#mbti=${type.code}`)}`;
     const shareButton = document.querySelector('#share-mbti-result');
     trackEvent('gamer_mbti_share_click', { code: type.code, source: 'type_directory' });
     try {
@@ -3180,6 +3197,9 @@ function applyHashRoute() {
   document.querySelector('#diagnosis')?.classList.add('is-result-mode');
   const scores = Object.fromEntries(Object.keys(traitLabels).map((key) => [key, 0]));
   profile.traits.forEach((trait) => { scores[trait] = 8; });
+  document.querySelector('#quiz-step').textContent = '結果';
+  document.querySelector('#quiz-progress-text').textContent = '100%';
+  document.querySelector('#quiz-progress').style.width = '100%';
   renderResultDetails(profile);
   updateShare(profile);
   document.querySelector('#preview-name').textContent = profile.name;

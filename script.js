@@ -1,5 +1,37 @@
 const AMAZON_ASSOCIATE_TAG = 'jbmt-22';
 const ANALYTICS_KEY = 'gamespecLabEvents';
+const QUIZ_STATE_PREFIX = 'gamespecLabQuizState:';
+
+function readSavedAnswers(key, expectedLength) {
+  try {
+    const raw = localStorage.getItem(`${QUIZ_STATE_PREFIX}${key}`);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    if (!Array.isArray(parsed)) return [];
+    return parsed
+      .map((value) => Number(value))
+      .filter((value) => Number.isInteger(value) && value >= 0)
+      .slice(0, expectedLength);
+  } catch (error) {
+    return [];
+  }
+}
+
+function saveQuizAnswers(key, values) {
+  try {
+    localStorage.setItem(`${QUIZ_STATE_PREFIX}${key}`, JSON.stringify(values));
+  } catch (error) {
+    // 保存できない環境でも診断自体はそのまま使えるようにします。
+  }
+}
+
+function clearQuizAnswers(key) {
+  try {
+    localStorage.removeItem(`${QUIZ_STATE_PREFIX}${key}`);
+  } catch (error) {
+    // 保存クリアに失敗しても表示処理を止めないための保険です。
+  }
+}
 
 const traitLabels = {
   micro: 'ミクロ',
@@ -194,6 +226,18 @@ function setResultHash(hash) {
 
 function resultUrl(hash) {
   return `${location.origin}${location.pathname}${hash}`;
+}
+
+function restoreResultScroll(selector, force = false) {
+  const hasResultHash = /^#(?:result=|sense=|mbti=)/.test(location.hash);
+  if (!force && !hasResultHash) return;
+  const target = document.querySelector(selector);
+  if (!target) return;
+  requestAnimationFrame(() => {
+    requestAnimationFrame(() => {
+      target.scrollIntoView({ block: 'start' });
+    });
+  });
 }
 
 function setupAffiliateTracking() {
@@ -1438,10 +1482,34 @@ const pcBuilds = [
   },
 ];
 
-let answers = [];
-let pcAnswers = [];
-let senseAnswers = [];
-let gamerMbtiAnswers = [];
+let answers = readSavedAnswers('partner', questions.length);
+let pcAnswers = readSavedAnswers('pc', pcQuestions.length);
+let senseAnswers = readSavedAnswers('sense', senseQuestions.length);
+let gamerMbtiAnswers = readSavedAnswers('mbti', mbtiQuestions.length);
+
+function savedPartnerHashMatches() {
+  if (answers.length !== questions.length) return false;
+  if (!location.hash) return true;
+  const scores = getScores(answers, questions, 'traits', Object.keys(traitLabels));
+  return location.hash === `#result=${getResult(scores).id}`;
+}
+
+function savedSenseHashMatches() {
+  if (senseAnswers.length !== senseQuestions.length) return false;
+  if (!location.hash) return true;
+  const keys = Object.keys(senseLabels);
+  const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
+  const maxScores = getMaxScores(senseQuestions, 'sense', keys);
+  const archetype = getSenseArchetype(normalizeScores(rawScores, maxScores, { floor: 38 }));
+  return location.hash === `#sense=${archetype.primary}_${archetype.secondary}`;
+}
+
+function savedGamerMbtiHashMatches() {
+  if (gamerMbtiAnswers.length !== mbtiQuestions.length) return false;
+  if (!location.hash) return true;
+  const scores = getScores(gamerMbtiAnswers, mbtiQuestions, 'mbti', Object.keys(mbtiAxisLabels));
+  return location.hash === `#mbti=${getGamerMbtiResult(scores).code}`;
+}
 
 function getScores(items, questionList, field, keys) {
   const scores = Object.fromEntries(keys.map((key) => [key, 0]));
@@ -1650,12 +1718,12 @@ function renderGamerMbtiResult(type, scores) {
         name: type.title,
         revealLabel: 'GAMER TYPE SCAN',
         revealHeadline: 'プレイ人格ログを照合中...',
-        revealImage: 'assets/navi-mina.png',
+        revealImage: 'assets/navi-mina.webp',
       })}
       <div class="result-content">
         <div class="result-dialogue">
-          <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-          <img class="result-pipo-photo" src="assets/pipo-scan.png" alt="" loading="lazy" />
+          <img class="result-mina-photo" src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
+          <img class="result-pipo-photo" src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
           <div>
             <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
             <h3 id="mbti-quiz-title">${type.title}</h3>
@@ -1706,7 +1774,7 @@ function miniGuideList(items, itemIcon = 'check') {
 function pipoBanter(text, label = 'ピポ') {
   return `
     <div class="pipo-banter">
-      <img src="assets/pipo-gag.png" alt="" loading="lazy" />
+      <img src="assets/pipo-gag.webp" alt="" width="960" height="640" loading="lazy" decoding="async" />
       <div>
         <span>${icon('spark')}${label} LOG</span>
         <p>${text}</p>
@@ -2007,7 +2075,7 @@ function renderSenseMatrix(archetype) {
         `).join('')}
       </div>
       <div class="sense-affirmation">
-        <img src="assets/navi-mina.png" alt="" loading="lazy" />
+        <img src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
         <div>
           <span>${icon('spark')}ミナのワンポイントメモ</span>
           <p>ミナから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
@@ -2028,7 +2096,7 @@ function renderSenseResult(archetype, normalizedScores) {
         name: archetype.name,
         revealLabel: 'GAMESENSE SCAN 8',
         revealHeadline: '8能力のシグナルを解析中...',
-        revealImage: 'assets/pipo-scan.png',
+        revealImage: 'assets/pipo-scan.webp',
       })}
       <div class="result-content">
         <div class="result-dialogue">
@@ -2197,7 +2265,7 @@ function renderSenseQuiz() {
     const question = senseQuestions[senseAnswers.length];
     document.querySelector('#sense-quiz-box').innerHTML = `
       <div class="question-dialogue">
-        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+        <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
         <div>
           <span>${icon('chart')}ピポの認知スキャン</span>
           <p>24問でゲーム中の認知スキルを分解します。直感に近い選択をどうぞ。</p>
@@ -2219,17 +2287,20 @@ function renderSenseQuiz() {
       button.addEventListener('click', () => {
         if (senseAnswers.length === 0) trackEvent('sense_diagnosis_start');
         senseAnswers.push(Number(button.dataset.senseAnswer));
+        saveQuizAnswers('sense', senseAnswers);
         renderSenseQuiz();
       });
     });
     document.querySelector('#back-sense-quiz')?.addEventListener('click', () => {
       senseAnswers.pop();
+      saveQuizAnswers('sense', senseAnswers);
       renderSenseQuiz();
     });
     return;
   }
 
   trackEvent('sense_diagnosis_complete', { archetype: archetype.name, primary: archetype.primary, secondary: archetype.secondary });
+  saveQuizAnswers('sense', senseAnswers);
   const senseResultHash = `#sense=${archetype.primary}_${archetype.secondary}`;
   setResultHash(senseResultHash);
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
@@ -2237,6 +2308,7 @@ function renderSenseQuiz() {
   activateResultReveal();
   document.querySelector('#reset-sense-quiz').addEventListener('click', () => {
     senseAnswers = [];
+    clearQuizAnswers('sense');
     setResultHash('#gamesense');
     renderSenseQuiz();
   });
@@ -2285,7 +2357,7 @@ function renderGamerMbtiQuiz() {
     const question = mbtiQuestions[gamerMbtiAnswers.length];
     document.querySelector('#mbti-quiz-box').innerHTML = `
       <div class="question-dialogue">
-        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+        <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
         <div>
           <span>${icon('user')}ピポの性格ログ解析</span>
           <p>直感でOKです。左が「そう思う」、右が「思わない」。迷ったら中央の「わからない」を選べます。</p>
@@ -2301,23 +2373,27 @@ function renderGamerMbtiQuiz() {
       button.addEventListener('click', () => {
         if (gamerMbtiAnswers.length === 0) trackEvent('gamer_mbti_start');
         gamerMbtiAnswers.push(Number(button.dataset.mbtiAnswer));
+        saveQuizAnswers('mbti', gamerMbtiAnswers);
         renderGamerMbtiQuiz();
       });
     });
     document.querySelector('#back-mbti-quiz')?.addEventListener('click', () => {
       gamerMbtiAnswers.pop();
+      saveQuizAnswers('mbti', gamerMbtiAnswers);
       renderGamerMbtiQuiz();
     });
     return;
   }
 
   trackEvent('gamer_mbti_complete', { code: type.code, title: type.title });
+  saveQuizAnswers('mbti', gamerMbtiAnswers);
   const mbtiResultHash = `#mbti=${type.code}`;
   setResultHash(mbtiResultHash);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
   activateResultReveal();
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
+    clearQuizAnswers('mbti');
     document.body.classList.remove('gamer-mbti-result-ready');
     setResultHash('#gamer-mbti');
     renderGamerMbtiQuiz();
@@ -2395,8 +2471,8 @@ function renderResultSummaryStrip(profile) {
 function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あなたのタイプ') {
   return `
     <div class="result-dialogue">
-      <img class="result-mina-photo" src="assets/navi-mina.png" alt="" loading="lazy" />
-      <img class="result-pipo-photo" src="assets/pipo-result.png" alt="" loading="lazy" />
+      <img class="result-mina-photo" src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
+      <img class="result-pipo-photo" src="assets/pipo-result.webp" alt="" width="960" height="640" loading="lazy" decoding="async" />
       <div>
         <div class="result-kicker">${icon(kickerIcon)}${kickerText}</div>
         <div class="sync-code-badge" aria-label="GSL SYNC CODE">
@@ -2415,7 +2491,7 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
 function renderResultReveal(profile) {
   const label = profile.revealLabel || 'DUO SYNC SCAN';
   const headline = profile.revealHeadline || '相性ログを解析中...';
-  const image = profile.revealImage || 'assets/pipo-scan.png';
+  const image = profile.revealImage || 'assets/pipo-scan.webp';
   return `
     <div class="result-reveal-card" aria-hidden="true">
       <div class="reveal-orb">
@@ -2582,7 +2658,7 @@ function renderQuiz() {
     const question = questions[answers.length];
     document.querySelector('#quiz-box').innerHTML = `
       <div class="question-dialogue">
-        <img src="assets/pipo-scan.png" alt="" loading="lazy" />
+        <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
         <div>
           <span>${icon('spark')}ピポの解析メモ</span>
           <p>左が「そう思う」、右が「思わない」。深く考えず、普段の遊び方に近い位置を選んでください。</p>
@@ -2598,17 +2674,20 @@ function renderQuiz() {
       button.addEventListener('click', () => {
         if (answers.length === 0) trackEvent('diagnosis_start');
         answers.push(Number(button.dataset.answer));
+        saveQuizAnswers('partner', answers);
         renderQuiz();
       });
     });
     document.querySelector('#back-quiz')?.addEventListener('click', () => {
       answers.pop();
+      saveQuizAnswers('partner', answers);
       renderQuiz();
     });
     return;
   }
 
   trackEvent('diagnosis_complete', { result: result.id, name: result.name });
+  saveQuizAnswers('partner', answers);
   const partnerResultHash = `#result=${result.id}`;
   setResultHash(partnerResultHash);
 
@@ -2623,6 +2702,7 @@ function renderQuiz() {
   activateResultReveal();
   document.querySelector('#reset-quiz').addEventListener('click', () => {
     answers = [];
+    clearQuizAnswers('partner');
     setResultHash('#diagnosis');
     renderQuiz();
   });
@@ -2747,17 +2827,20 @@ function renderPcQuiz() {
       button.addEventListener('click', () => {
         if (pcAnswers.length === 0) trackEvent('pc_diagnosis_start');
         pcAnswers.push(Number(button.dataset.pcAnswer));
+        saveQuizAnswers('pc', pcAnswers);
         renderPcQuiz();
       });
     });
     document.querySelector('#back-pc-quiz')?.addEventListener('click', () => {
       pcAnswers.pop();
+      saveQuizAnswers('pc', pcAnswers);
       renderPcQuiz();
     });
     return;
   }
 
   trackEvent('pc_diagnosis_complete', { build: build.id, name: build.name });
+  saveQuizAnswers('pc', pcAnswers);
 
   document.querySelector('#pc-quiz-box').innerHTML = `
     <div class="result-block">
@@ -2773,6 +2856,7 @@ function renderPcQuiz() {
   `;
   document.querySelector('#reset-pc-quiz').addEventListener('click', () => {
     pcAnswers = [];
+    clearQuizAnswers('pc');
     renderPcQuiz();
   });
 }
@@ -2859,9 +2943,9 @@ function renderSenseResultLinks() {
 function renderGamerMbtiTypeLinks() {
   const resultLinks = document.querySelector('#mbti-result-links');
   if (!resultLinks) return;
-  const base = resultLinks.dataset.base || 'gamermbti.html';
+  const base = resultLinks.dataset.base || '';
   resultLinks.innerHTML = Object.entries(gamerMbtiTypes).map(([code, type]) => `
-    <a class="result-link-card mbti-type-card" href="${base}#mbti=${code}">
+    <a class="result-link-card mbti-type-card" href="${base}gamer-mbti-${code.toLowerCase()}.html">
       <span class="card-head"><span>${icon('user')}${type.title}</span><small>${code}</small></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon('gamepad')}${type.role}</span>
@@ -3105,7 +3189,7 @@ function applySenseHashRoute() {
   const archetype = getSenseArchetypeFromKeys(primary, secondary);
   const normalizedScores = buildSenseScoresForPair(primary, secondary);
 
-  senseAnswers = Array.from({ length: senseQuestions.length }, () => 0);
+  senseAnswers = [];
   document.body.classList.add('sense-result-ready');
   document.querySelector('#sense-step').textContent = '結果';
   document.querySelector('#sense-progress-text').textContent = '100%';
@@ -3150,7 +3234,7 @@ function applyGamerMbtiHashRoute() {
   if (!type?.title) return false;
   const scores = buildGamerMbtiScoresForCode(code);
 
-  gamerMbtiAnswers = Array.from({ length: mbtiQuestions.length }, () => 0);
+  gamerMbtiAnswers = [];
   document.body.classList.add('gamer-mbti-result-ready');
   document.querySelector('#mbti-step').textContent = '結果';
   document.querySelector('#mbti-progress-text').textContent = '100%';
@@ -3220,28 +3304,54 @@ setupMenuDrawer();
 setupPostResultActions();
 
 if (document.querySelector('#quiz-box')) {
+  const restoredPartnerResult = answers.length === questions.length && savedPartnerHashMatches();
   renderQuiz();
+  if (restoredPartnerResult) restoreResultScroll('#diagnosis', true);
 }
 
 if (document.querySelector('#pc-quiz-box')) {
+  const restoredPcResult = pcAnswers.length === pcQuestions.length;
   renderPcQuiz();
+  if (restoredPcResult) restoreResultScroll('#pc-build', true);
 }
 
 if (document.querySelector('#sense-quiz-box')) {
-  if (!applySenseHashRoute()) renderSenseQuiz();
+  const restoredSenseResult = savedSenseHashMatches();
+  if (restoredSenseResult) {
+    renderSenseQuiz();
+    restoreResultScroll('#gamesense', true);
+  } else if (!applySenseHashRoute()) {
+    if (senseAnswers.length === senseQuestions.length) {
+      senseAnswers = [];
+      clearQuizAnswers('sense');
+    }
+    renderSenseQuiz();
+  }
   window.addEventListener('hashchange', () => {
     if (!applySenseHashRoute()) {
       senseAnswers = [];
+      clearQuizAnswers('sense');
       renderSenseQuiz();
     }
   });
 }
 
 if (document.querySelector('#mbti-quiz-box')) {
-  if (!applyGamerMbtiHashRoute()) renderGamerMbtiQuiz();
+  const restoredGamerMbtiResult = savedGamerMbtiHashMatches();
+  if (restoredGamerMbtiResult) {
+    renderGamerMbtiQuiz();
+    restoreResultScroll('#gamer-mbti', true);
+  } else if (!applyGamerMbtiHashRoute()) {
+    if (gamerMbtiAnswers.length === mbtiQuestions.length) {
+      gamerMbtiAnswers = [];
+      clearQuizAnswers('mbti');
+    }
+    renderGamerMbtiQuiz();
+  }
   window.addEventListener('hashchange', () => {
     if (!applyGamerMbtiHashRoute()) {
       gamerMbtiAnswers = [];
+      clearQuizAnswers('mbti');
       renderGamerMbtiQuiz();
     }
   });
@@ -3264,6 +3374,6 @@ if (!document.querySelector('#gamer-mbti') && /^#mbti=([IE][SN][TF][JP])$/.test(
 }
 
 if (document.querySelector('#diagnosis')) {
-  applyHashRoute();
+  if (!savedPartnerHashMatches()) applyHashRoute();
   window.addEventListener('hashchange', applyHashRoute);
 }

@@ -3,34 +3,123 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="GameSpec Labは、ゲームセンスとゲーマータイプを診断し、診断後に相性のいいゲームパートナーまで見つけられるPCゲーマー向けサービスです。" />
+    <meta name="description" content="無料のゲームセンス診断とゲーマーMBTI診断で、PCゲームの強み、向いてる役割、相性のいい相手タイプを可視化できます。" />
     <meta name="theme-color" content="#04050d" />
     <meta property="og:site_name" content="GameSpec Lab" />
-    <meta property="og:title" content="GameSpec Lab | ゲームセンスとゲーマータイプ診断" />
-    <meta property="og:description" content="ゲームセンスとゲーマータイプを診断。自分を知った後に、相性のいいゲームパートナーも見つけられます。" />
+    <meta property="og:title" content="無料ゲームセンス診断・ゲーマーMBTI｜GameSpec Lab" />
+    <meta property="og:description" content="PCゲームの強み、向いてる役割、ゲーマータイプ、相性のいい相手を無料で診断できます。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gamespeclab.com/" />
     <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="GameSpec Lab | ゲームセンスとゲーマータイプ診断" />
-    <meta name="twitter:description" content="ゲームセンスとゲーマータイプを診断。自分を知った後に、相性のいいゲームパートナーも見つけられます。" />
+    <meta name="twitter:title" content="無料ゲームセンス診断・ゲーマーMBTI｜GameSpec Lab" />
+    <meta name="twitter:description" content="PCゲームの強み、向いてる役割、ゲーマータイプ、相性のいい相手を無料で診断できます。" />
     <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
-    <title>GameSpec Lab | ゲームセンスとゲーマータイプ診断</title>
+    <title>無料ゲームセンス診断・ゲーマーMBTI｜GameSpec Lab</title>
     <link rel="canonical" href="https://gamespeclab.com/" />
     <link rel="icon" href="favicon.svg" />
-    <link rel="stylesheet" href="style.css?v=deep76" />
+    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/navi-mina.webp" type="image/webp" />
+    <link rel="preload" as="image" href="assets/pipo-gag.webp" type="image/webp" />
+    <link rel="stylesheet" href="style.css?v=deep78" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "WebApplication",
-        "name": "GameSpec Lab",
-        "url": "https://gamespeclab.com/",
-        "applicationCategory": "GameApplication",
-        "operatingSystem": "Any",
-        "description": "PCゲームのゲームセンスとゲーマータイプを診断し、結果内で相性のいい相棒候補を見つける静的Webサービスです。",
-        "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY" },
-        "creator": { "@type": "Organization", "name": "GameSpec Lab" }
-      }
+        "@graph": [
+                {
+                        "@type": "WebSite",
+                        "name": "GameSpec Lab",
+                        "url": "https://gamespeclab.com/",
+                        "inLanguage": "ja",
+                        "description": "無料のゲームセンス診断とゲーマーMBTI診断で、PCゲームの強み、向いてる役割、相性のいい相手タイプを可視化できます。",
+                        "publisher": {
+                                "@id": "https://gamespeclab.com/#organization"
+                        }
+                },
+                {
+                        "@id": "https://gamespeclab.com/#organization",
+                        "@type": "Organization",
+                        "name": "GameSpec Lab",
+                        "url": "https://gamespeclab.com/",
+                        "logo": "https://gamespeclab.com/favicon.svg"
+                },
+                {
+                        "@type": "WebApplication",
+                        "name": "GameSpec Lab",
+                        "url": "https://gamespeclab.com/",
+                        "applicationCategory": "GameApplication",
+                        "operatingSystem": "Any",
+                        "description": "PCゲームのゲームセンス診断とゲーマーMBTIで、強み・向いてるゲーム・相性のいい相手タイプを無料で可視化できます。",
+                        "offers": {
+                                "@type": "Offer",
+                                "price": "0",
+                                "priceCurrency": "JPY"
+                        },
+                        "creator": {
+                                "@type": "Organization",
+                                "name": "GameSpec Lab"
+                        },
+                        "about": [
+                                { "@type": "Thing", "name": "ゲームセンス診断" },
+                                { "@type": "Thing", "name": "ゲーマーMBTI" },
+                                { "@type": "Thing", "name": "ゲーム適性診断" }
+                        ],
+                        "hasPart": [
+                                {
+                                        "@type": "WebApplication",
+                                        "name": "GameSense Scan 8",
+                                        "url": "https://gamespeclab.com/gamesense.html",
+                                        "description": "24問でゲームセンスを構成する8能力を可視化する診断です。"
+                                },
+                                {
+                                        "@type": "WebApplication",
+                                        "name": "ゲーマーMBTIタイプ診断",
+                                        "url": "https://gamespeclab.com/gamermbti.html",
+                                        "description": "ゲーム中の判断、通話、役割からゲーム内での16タイプを見える化する診断です。"
+                                },
+                                {
+                                        "@type": "CollectionPage",
+                                        "name": "読み物ガイド一覧",
+                                        "url": "https://gamespeclab.com/articles.html"
+                                },
+                                {
+                                        "@type": "CollectionPage",
+                                        "name": "結果タイプ一覧",
+                                        "url": "https://gamespeclab.com/results.html"
+                                }
+                        ]
+                },
+                {
+                        "@type": "FAQPage",
+                        "mainEntity": [
+                                {
+                                        "@type": "Question",
+                                        "name": "GameSpec Labでは何を診断できますか？",
+                                        "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "GameSense Scan 8でゲームセンスの8能力を可視化し、ゲーマーMBTIでゲーム中の判断や役割の傾向を16タイプで確認できます。"
+                                        }
+                                },
+                                {
+                                        "@type": "Question",
+                                        "name": "診断は無料で使えますか？",
+                                        "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "どちらの診断も無料で利用できます。結果ページ内には広告リンクを含む場合があります。"
+                                        }
+                                },
+                                {
+                                        "@type": "Question",
+                                        "name": "診断結果から次に何を見ればいいですか？",
+                                        "acceptedAnswer": {
+                                                "@type": "Answer",
+                                                "text": "結果一覧、読み物ガイド、各タイプの個別解説ページへ進むと、向いている役割や相性のいい相手をさらに深く確認できます。"
+                                        }
+                                }
+                        ]
+                }
+        ]
+}
     </script>
   </head>
   <body>
@@ -60,19 +149,19 @@
           <span>SCAN</span>
         </div>
         <div class="choice-copy">
-          <h1 class="choice-brand-title">GameSpec Lab</h1>
-          <p class="lead">まずは自分の強みとプレイ人格をスキャン。診断後に、相性のいいゲームパートナーまで自然につなげます。</p>
+          <h1 class="choice-brand-title"><span>GameSpec Lab</span><small>無料ゲームセンス診断とゲーマーMBTI</small></h1>
+          <p class="lead">ゲームセンス診断とゲーマーMBTI診断から、PCゲームでの強み、向いてる役割、相性のいい相手タイプまで順番に見つけられます。</p>
         </div>
         <div class="choice-guides" aria-label="ナビAIミナとピポからの案内">
           <figure class="choice-guide is-mina">
-            <span class="choice-guide-avatar"><img src="assets/navi-mina.png" alt="ナビAIミナ" /></span>
+            <span class="choice-guide-avatar"><img src="assets/navi-mina.webp" alt="ナビAIミナ" width="1448" height="1086" decoding="async" fetchpriority="high" /></span>
             <figcaption>
               <strong>ミナ</strong>
               <span>まずはあなた自身をスキャンしよう。強みとタイプが見えると、相性のいい相棒も探しやすくなるよ。</span>
             </figcaption>
           </figure>
           <figure class="choice-guide is-pipo">
-            <span class="choice-guide-avatar"><img src="assets/pipo-gag.png" alt="ピポ" /></span>
+            <span class="choice-guide-avatar"><img src="assets/pipo-gag.webp" alt="ピポ" width="960" height="640" decoding="async" fetchpriority="high" /></span>
             <figcaption>
               <strong>ピポ</strong>
               <span>ピポ計算中。能力ログとタイプログを照合して、あなたの勝ち筋を発見します。</span>
@@ -84,7 +173,7 @@
             <span class="choice-card-top"><span><span data-icon="chart"></span>GAMESENSE SCAN 8</span><small>24 Q</small></span>
             <span class="choice-card-visual scan-visual" aria-hidden="true">
               <span class="visual-grid"></span>
-              <img src="assets/pipo-scan.png" alt="" />
+              <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
               <span class="scan-ring ring-a"></span>
               <span class="scan-ring ring-b"></span>
               <span class="scan-line"></span>
@@ -99,7 +188,7 @@
             <span class="choice-card-top"><span><span data-icon="user"></span>GAMER TYPE SCAN</span><small>16 Q</small></span>
             <span class="choice-card-visual type-visual" aria-hidden="true">
               <span class="visual-grid"></span>
-              <img src="assets/navi-mina.png" alt="" />
+              <img src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
               <span class="type-code code-a">ENTP</span>
               <span class="type-code code-b">INTJ</span>
               <span class="type-code code-c">ESTP</span>
@@ -124,14 +213,16 @@
       </div>
       <nav aria-label="運営情報">
         <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>読み物ガイド</a>
         <a href="pc-build.html"><span data-icon="cpu"></span>プレイ環境メモ</a>
         <a href="privacy.html"><span data-icon="shield"></span>プライバシーポリシー</a>
         <a href="disclaimer.html"><span data-icon="check"></span>免責事項</a>
         <a href="about.html"><span data-icon="user"></span>運営者情報</a>
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記</a>
-      </nav>
+        <a href="search-console-checklist.html"><span data-icon="chart"></span>運用チェック</a>
+      <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a></nav>
     </footer>
 
-    <script src="script.js?v=deep76"></script>
+    <script src="script.js?v=deep78"></script>
   </body>
 </html>

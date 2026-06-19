@@ -1724,8 +1724,6 @@ function renderGamerMbtiResult(type, scores) {
       <div class="result-content">
         ${renderTypeSpotlight(`assets/types/${type.code.toLowerCase()}.png`, type.code, type.title)}
         <div class="result-dialogue">
-          <img class="result-mina-photo" src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
-          <img class="result-pipo-photo" src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
           <div>
             <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
             <h3 id="mbti-quiz-title">${type.title}</h3>

@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep82"
+VER = "deep87"
 TODAY = "2026-06-19"
 URL = "https://gamespeclab.com/gaming-monitor-guide.html"
 
@@ -176,11 +176,11 @@ def build():
     <meta property="og:description" content="{desc}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{URL}" />
-    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/og/gaming-monitor-guide.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="ゲーミングモニターおすすめ｜用途別の選び方と本命モデル" />
     <meta name="twitter:description" content="{desc}" />
-    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/og/gaming-monitor-guide.png" />
     <title>{title}</title>
     <link rel="canonical" href="{URL}" />
     <link rel="icon" href="favicon.svg" />
@@ -252,6 +252,18 @@ def build():
       </section>
       <section class="section article-section">
         <article class="article-body">
+          <div class="article-card">
+            <p class="article-kicker">DEVICE GUIDES</p>
+            <h2>デバイス別ガイド</h2>
+            <div class="article-pair-grid">
+              <div><strong>モニター（このページ）</strong><p>高Hz・解像度・パネルで選ぶ</p></div>
+              <div><strong><a href="gaming-mouse-guide.html">マウスガイド</a></strong><p>重量・センサー・形状で選ぶ</p></div>
+              <div><strong><a href="gaming-keyboard-guide.html">キーボードガイド</a></strong><p>磁気軸・ラピッドトリガーで選ぶ</p></div>
+              <div><strong><a href="gaming-headset-guide.html">ヘッドセットガイド</a></strong><p>定位・装着感・接続で選ぶ</p></div>
+              <div><strong><a href="gaming-mousepad-guide.html">マウスパッドガイド</a></strong><p>素材・タイプ・サイズで選ぶ</p></div>
+              <div><strong><a href="gaming-controller-guide.html">コントローラーガイド</a></strong><p>スティック方式・背面ボタンで選ぶ</p></div>
+            </div>
+          </div>
           <div class="article-card">
             <p class="article-kicker">HOW TO CHOOSE</p>
             <h2>まず押さえる3つの軸</h2>

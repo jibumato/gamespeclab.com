@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep86"
+VER = "deep87"
 TODAY = "2026-06-19"
 BASE = "https://gamespeclab.com"
 
@@ -609,11 +609,11 @@ def build(dev):
     <meta property="og:description" content="{dev['desc']}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{url}" />
-    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/og/{dev['slug']}.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{dev['h1']}｜詳細スペック比較" />
     <meta name="twitter:description" content="{dev['desc']}" />
-    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/og/{dev['slug']}.png" />
     <title>{dev['title']}</title>
     <link rel="canonical" href="{url}" />
     <link rel="icon" href="favicon.svg" />

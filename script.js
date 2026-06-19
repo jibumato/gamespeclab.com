@@ -1718,9 +1718,11 @@ function renderGamerMbtiResult(type, scores) {
         name: type.title,
         revealLabel: 'GAMER TYPE SCAN',
         revealHeadline: 'プレイ人格ログを照合中...',
-        revealImage: 'assets/navi-mina.webp',
+        revealImage: `assets/types/${type.code.toLowerCase()}.png`,
+        revealPixel: true,
       })}
       <div class="result-content">
+        ${renderTypeSpotlight(`assets/types/${type.code.toLowerCase()}.png`, type.code, type.title)}
         <div class="result-dialogue">
           <img class="result-mina-photo" src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
           <img class="result-pipo-photo" src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
@@ -2096,9 +2098,11 @@ function renderSenseResult(archetype, normalizedScores) {
         name: archetype.name,
         revealLabel: 'GAMESENSE SCAN 8',
         revealHeadline: '8能力のシグナルを解析中...',
-        revealImage: 'assets/pipo-scan.webp',
+        revealImage: `assets/types/sense-${archetype.primary}-guide.png`,
+        revealPixel: true,
       })}
       <div class="result-content">
+        ${renderTypeSpotlight(`assets/types/sense-${archetype.primary}-guide.png`, primaryLabel, archetype.name)}
         <div class="result-dialogue">
           <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
             <div class="sense-core-orb is-primary">
@@ -2488,6 +2492,18 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
   `;
 }
 
+function renderTypeSpotlight(image, code, title) {
+  return `
+    <div class="result-type-spotlight" aria-label="${title}のキャラクター">
+      <div class="type-spotlight-orb">
+        <img class="type-spotlight-char" src="${image}" alt="${title}のドット絵キャラクター" width="200" height="220" loading="lazy" decoding="async" />
+      </div>
+      <span class="type-spotlight-badge">${icon('spark')}YOUR TYPE${code ? ` · ${code}` : ''}</span>
+      <strong class="type-spotlight-name">${title}</strong>
+    </div>
+  `;
+}
+
 function renderResultReveal(profile) {
   const label = profile.revealLabel || 'DUO SYNC SCAN';
   const headline = profile.revealHeadline || '相性ログを解析中...';
@@ -2495,7 +2511,7 @@ function renderResultReveal(profile) {
   return `
     <div class="result-reveal-card" aria-hidden="true">
       <div class="reveal-orb">
-        <img src="${image}" alt="" loading="lazy" />
+        <img src="${image}" alt=""${profile.revealPixel ? ' class="reveal-orb-pixel"' : ''} loading="lazy" />
       </div>
       <div class="reveal-copy">
         <span>${icon('spark')}${label}</span>

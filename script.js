@@ -228,6 +228,62 @@ function resultUrl(hash) {
   return `${location.origin}${location.pathname}${hash}`;
 }
 
+// シェア用URLはタイプ別の静的ページを指す。
+// クローラはハッシュを無視するため、ここで該当ページの og:image
+// (タイプ別ドット絵OGPカード) がSNSプレビューに表示される。
+function typeShareUrl(path) {
+  return `${location.origin}/${path}`;
+}
+
+function xShareIntent(text, url, hashtags) {
+  const params = new URLSearchParams({ text, url });
+  if (hashtags) params.set('hashtags', hashtags);
+  return `https://twitter.com/intent/tweet?${params.toString()}`;
+}
+
+function lineShareIntent(url) {
+  return `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
+}
+
+function renderShareButtons(kind) {
+  return `
+    <button class="primary-button" type="button" id="share-${kind}-result">${icon('share')}結果をシェア</button>
+    <button class="share-chip share-chip-x" type="button" id="share-${kind}-x" aria-label="Xでポストする">${icon('x')}Xでポスト</button>
+    <button class="share-chip share-chip-line" type="button" id="share-${kind}-line" aria-label="LINEで送る">${icon('chat')}LINEで送る</button>
+  `;
+}
+
+function attachShareHandlers(kind, { text, url, hashtags, title, track = {} }) {
+  const fullText = `${text}\n${url}`;
+  const native = document.querySelector(`#share-${kind}-result`);
+  if (native) {
+    const original = native.innerHTML;
+    native.addEventListener('click', async () => {
+      trackEvent(`${kind}_share_click`, track);
+      try {
+        if (navigator.share) {
+          await navigator.share({ title, text, url });
+          return;
+        }
+        await navigator.clipboard.writeText(fullText);
+        native.innerHTML = `${icon('check')}コピーしました`;
+        setTimeout(() => { native.innerHTML = original; }, 2000);
+      } catch (error) {
+        if (error?.name === 'AbortError') return;
+        window.open(xShareIntent(text, url, hashtags), '_blank', 'noopener,noreferrer');
+      }
+    });
+  }
+  document.querySelector(`#share-${kind}-x`)?.addEventListener('click', () => {
+    trackEvent(`${kind}_share_x`, track);
+    window.open(xShareIntent(text, url, hashtags), '_blank', 'noopener,noreferrer');
+  });
+  document.querySelector(`#share-${kind}-line`)?.addEventListener('click', () => {
+    trackEvent(`${kind}_share_line`, track);
+    window.open(lineShareIntent(url), '_blank', 'noopener,noreferrer');
+  });
+}
+
 function restoreResultScroll(selector, force = false) {
   const hasResultHash = /^#(?:result=|sense=|mbti=)/.test(location.hash);
   if (!force && !hasResultHash) return;
@@ -1754,7 +1810,7 @@ function renderGamerMbtiResult(type, scores) {
           <p>この診断はMBTI風の分類をゲーム内の行動傾向へ翻訳したエンタメ診断です。公式なMBTI検査や心理検査ではありません。</p>
         </div>
         <div class="result-actions">
-          <button class="primary-button" type="button" id="share-mbti-result">${icon('share')}結果をシェア</button>
+          ${renderShareButtons('mbti')}
           <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
           <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>
         </div>
@@ -2143,7 +2199,7 @@ function renderSenseResult(archetype, normalizedScores) {
         ${renderCompatiblePartnersPanel(compatiblePartners, `${primaryLabel} × ${secondaryLabel}`)}
         ${renderSenseTheoryNote()}
         <div class="result-actions">
-          <button class="primary-button" type="button" id="share-sense-result">${icon('share')}結果をシェア</button>
+          ${renderShareButtons('sense')}
           <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
           <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
         </div>
@@ -2314,21 +2370,12 @@ function renderSenseQuiz() {
     setResultHash('#gamesense');
     renderSenseQuiz();
   });
-  document.querySelector('#share-sense-result').addEventListener('click', async () => {
-    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${resultUrl(senseResultHash)}`;
-    trackEvent('sense_share_click', { archetype: archetype.name });
-    const shareButton = document.querySelector('#share-sense-result');
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'GameSense Scan 8', text });
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      shareButton.innerHTML = `${icon('check')}コピーしました`;
-    } catch (error) {
-      if (error?.name === 'AbortError') return;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-    }
+  attachShareHandlers('sense', {
+    text: `GameSense Scan 8で「${archetype.name}」でした！${archetype.catchline}`,
+    url: typeShareUrl(`sense-${archetype.primary}-guide.html`),
+    hashtags: 'GameSenseScan,GameSpecLab',
+    title: 'GameSense Scan 8',
+    track: { archetype: archetype.name },
   });
 }
 
@@ -2400,21 +2447,12 @@ function renderGamerMbtiQuiz() {
     setResultHash('#gamer-mbti');
     renderGamerMbtiQuiz();
   });
-  document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${resultUrl(mbtiResultHash)}`;
-    const shareButton = document.querySelector('#share-mbti-result');
-    trackEvent('gamer_mbti_share_click', { code: type.code });
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'ゲーマーMBTIタイプ診断', text });
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      shareButton.innerHTML = `${icon('check')}コピーしました`;
-    } catch (error) {
-      if (error?.name === 'AbortError') return;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-    }
+  attachShareHandlers('mbti', {
+    text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！${type.catchline}`,
+    url: typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`),
+    hashtags: 'ゲーマーMBTI,GameSpecLab',
+    title: 'ゲーマーMBTIタイプ診断',
+    track: { code: type.code },
   });
 }
 
@@ -3219,21 +3257,12 @@ function applySenseHashRoute() {
     setResultHash('#gamesense');
     renderSenseQuiz();
   });
-  document.querySelector('#share-sense-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのGameSense Scan 8で「${archetype.name}」でした。${archetype.catchline}\n${resultUrl(`#sense=${primary}_${secondary}`)}`;
-    trackEvent('sense_share_click', { archetype: archetype.name, source: 'type_directory' });
-    const shareButton = document.querySelector('#share-sense-result');
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'GameSense Scan 8', text });
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      shareButton.innerHTML = `${icon('check')}コピーしました`;
-    } catch (error) {
-      if (error?.name === 'AbortError') return;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-    }
+  attachShareHandlers('sense', {
+    text: `GameSense Scan 8で「${archetype.name}」でした！${archetype.catchline}`,
+    url: typeShareUrl(`sense-${primary}-guide.html`),
+    hashtags: 'GameSenseScan,GameSpecLab',
+    title: 'GameSense Scan 8',
+    track: { archetype: archetype.name, source: 'type_directory' },
   });
   document.querySelector('#gamesense')?.scrollIntoView();
   trackEvent('sense_type_page_open', { archetype: archetype.name, primary, secondary });
@@ -3265,21 +3294,12 @@ function applyGamerMbtiHashRoute() {
     setResultHash('#gamer-mbti');
     renderGamerMbtiQuiz();
   });
-  document.querySelector('#share-mbti-result')?.addEventListener('click', async () => {
-    const text = `GameSpec LabのゲーマーMBTIタイプ診断で「${type.title}」でした。参考コード: ${type.code}\n${type.catchline}\n${resultUrl(`#mbti=${type.code}`)}`;
-    const shareButton = document.querySelector('#share-mbti-result');
-    trackEvent('gamer_mbti_share_click', { code: type.code, source: 'type_directory' });
-    try {
-      if (navigator.share) {
-        await navigator.share({ title: 'ゲーマーMBTIタイプ診断', text });
-        return;
-      }
-      await navigator.clipboard.writeText(text);
-      shareButton.innerHTML = `${icon('check')}コピーしました`;
-    } catch (error) {
-      if (error?.name === 'AbortError') return;
-      window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}`, '_blank', 'noopener,noreferrer');
-    }
+  attachShareHandlers('mbti', {
+    text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！${type.catchline}`,
+    url: typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`),
+    hashtags: 'ゲーマーMBTI,GameSpecLab',
+    title: 'ゲーマーMBTIタイプ診断',
+    track: { code: type.code, source: 'type_directory' },
   });
   document.querySelector('#gamer-mbti')?.scrollIntoView();
   trackEvent('gamer_mbti_type_page_open', { code: type.code, title: type.title });

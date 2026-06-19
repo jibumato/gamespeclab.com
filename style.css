@@ -1505,6 +1505,50 @@ p {
   color: var(--ink);
 }
 
+.share-chip {
+  align-items: center;
+  border: 1px solid transparent;
+  border-radius: 0;
+  cursor: pointer;
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 900;
+  gap: 7px;
+  justify-content: center;
+  letter-spacing: 0.04em;
+  min-height: 46px;
+  padding: 0 16px;
+  text-decoration: none;
+}
+
+.type-share-card .type-share-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 6px;
+}
+
+.share-chip-x {
+  background: #000;
+  border-color: rgba(255, 255, 255, 0.5);
+  color: #fff;
+}
+
+.share-chip-x:hover {
+  background: #15171a;
+  border-color: #fff;
+}
+
+.share-chip-line {
+  background: #06c755;
+  color: #042b14;
+}
+
+.share-chip-line:hover {
+  filter: brightness(1.07);
+}
+
 .ghost-link.is-muted {
   border-color: rgba(184, 195, 224, 0.18);
   color: rgba(232, 247, 255, 0.72);

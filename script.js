@@ -2984,6 +2984,7 @@ function renderSenseResultLinks() {
   const types = getAllSenseTypeLinks();
   resultLinks.innerHTML = types.map((type) => `
     <a class="result-link-card sense-type-card" href="${base}#sense=${type.id}">
+      <span class="sense-type-thumb-wrap"><img class="sense-type-thumb" src="assets/types/sense-${type.primary}-guide.png" alt="${type.primaryLabel}のドット絵キャラクター" width="64" height="70" loading="lazy" decoding="async" /></span>
       <span class="card-head"><span>${icon(senseIcons[type.primary] || 'chart')}${type.name}</span><small>G8</small></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon(senseIcons[type.secondary] || 'spark')}${type.primaryLabel} × ${type.secondaryLabel}</span>

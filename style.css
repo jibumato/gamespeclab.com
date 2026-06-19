@@ -3604,6 +3604,32 @@ p {
   line-height: 1.5;
 }
 
+.sense-type-thumb-wrap {
+  align-items: center;
+  background:
+    radial-gradient(circle at 50% 32%, rgba(114, 242, 255, 0.16), transparent 70%),
+    rgba(7, 12, 27, 0.55);
+  border: 1px solid rgba(114, 242, 255, 0.22);
+  border-radius: 16px;
+  display: inline-flex;
+  justify-content: center;
+  justify-self: start;
+  padding: 6px 12px;
+}
+
+.sense-type-thumb {
+  display: block;
+  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
+  height: auto;
+  image-rendering: pixelated;
+  transition: transform 0.2s ease;
+  width: 56px;
+}
+
+.sense-type-card:hover .sense-type-thumb {
+  transform: translateY(-3px);
+}
+
 .static-type-summary {
   margin: 42px auto 0;
   max-width: 1160px;

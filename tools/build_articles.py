@@ -12,6 +12,19 @@ import os
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 VER = "deep88"
 TODAY = "2026-06-19"
+
+GTM_HEAD = """    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TVV88Q6L');</script>
+    <!-- End Google Tag Manager -->"""
+GTM_NOSCRIPT = """
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TVV88Q6L"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->"""
 BASE = "https://gamespeclab.com"
 
 
@@ -565,6 +578,7 @@ def build(a):
     page = f"""<!doctype html>
 <html lang="ja">
   <head>
+{GTM_HEAD}
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <meta name="description" content="{a['desc']}" />
@@ -615,7 +629,7 @@ def build(a):
       }}
     </script>
   </head>
-  <body>
+  <body>{GTM_NOSCRIPT}
     <header class="site-header">
       <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
       <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>

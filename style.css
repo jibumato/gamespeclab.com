@@ -4070,6 +4070,43 @@ body.sense-result-ready .post-result-lab {
   gap: 8px;
 }
 
+.type-hero {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 32px;
+  justify-content: center;
+}
+
+.type-hero .legal-copy {
+  flex: 1 1 440px;
+  margin: 0;
+  max-width: 640px;
+}
+
+.type-hero-art {
+  flex: 0 0 auto;
+  height: auto;
+  image-rendering: pixelated;
+  width: 200px;
+  filter: drop-shadow(0 12px 24px rgba(0, 0, 0, 0.45));
+  animation: type-hero-float 4s ease-in-out infinite;
+}
+
+@keyframes type-hero-float {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-8px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type-hero-art { animation: none; }
+}
+
+@media (max-width: 720px) {
+  .type-hero { gap: 16px; }
+  .type-hero-art { width: 132px; }
+}
+
 .article-section {
   padding-top: 56px;
 }

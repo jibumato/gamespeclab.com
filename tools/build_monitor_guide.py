@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep87"
+VER = "deep88"
 TODAY = "2026-06-19"
 URL = "https://gamespeclab.com/gaming-monitor-guide.html"
 
@@ -34,9 +34,9 @@ CATEGORIES = [
             ("BenQ ZOWIE XL2566K", "BenQ ZOWIE XL2566K",
              "24.5型 / フルHD / 360Hz / TNパネル / DyAc⁺",
              "プロFPSシーンの定番。DyAc⁺で激しい動きでも残像が出にくく、リコイル制御や敵の視認がしやすい。Black eQualizerで暗所も見やすく、競技特化なら筆頭候補。"),
-            ("ASUS TUF Gaming VG259QM5A", "ASUS TUF Gaming VG259QM5A 240Hz",
-             "24.5型前後 / フルHD / Fast IPS / 240Hz超 / 0.3ms",
-             "Fast IPSで色と視認性を保ちつつ240Hz超の滑らかさ。G-Sync/FreeSync対応で、競技入門〜中級のコスパ鉄板。"),
+            ("ASUS TUF Gaming VG249QML5A", "ASUS TUF Gaming VG249QML5A 240Hz",
+             "23.8型 / フルHD / Fast IPS / 240Hz / 0.3ms",
+             "Fast IPSで色と視認性を保ちつつ240Hzの滑らかさ。G-Sync/FreeSync対応で、競技入門〜中級の定番コスパ機。"),
             ("IODATA GigaCrysta EX-GD251UH", "IODATA GigaCrysta 240Hz",
              "24.5型 / フルHD / 240Hz",
              "国内サポートと長期保証で安心の240Hz。海外メーカーが不安な人の現実的な選択肢。"),
@@ -63,7 +63,7 @@ CATEGORIES = [
         "kicker": "OLED + SPEED",
         "h2": "③ 映像美＋高速（WQHD 有機EL / 240Hz）",
         "lead": "有機ELの「黒の締まり」と240Hzの速さを両立するハイエンド主流帯。"
-                "競技の反応速度も、RPGや配信での映像美も妥協したくない人の決定版です。",
+                "競技の反応速度も、RPGや配信での映像美も両立したい人に向く本命帯です。",
         "items": [
             ("LG UltraGear 27GS95QE-B", "LG UltraGear 27GS95QE-B OLED",
              "26.5型 / WQHD / 有機EL(WOLED) / 240Hz / 0.03ms",
@@ -90,12 +90,12 @@ CATEGORIES = [
     {
         "kicker": "FLAGSHIP 4K OLED",
         "h2": "⑤ 最上位4K OLED（4K / 240Hz QD-OLED）",
-        "lead": "解像度・速度・映像美を一切妥協しない最上位帯。ハイエンドPCを持っていて、"
+        "lead": "解像度・速度・映像美をできるだけ妥協したくない最上位帯。ハイエンドPCを持っていて、"
                 "一台で全部叶えたい人向けの構成です。",
         "items": [
             ("ASUS ROG Swift OLED PG32UCDM", "ASUS ROG Swift OLED PG32UCDM",
              "31.5型 / 4K / QD-OLED / 240Hz / 0.03ms",
-             "4K・240Hz・QD-OLEDを全部入りで叶える現状最強格。99% DCI-P3の広色域で、競技速度も映像美も両立したい人の決定版。"),
+             "4K・240Hz・QD-OLEDを全部入りで叶える現行トップクラスの一台。99% DCI-P3の広色域で、競技速度も映像美も両立したい人に向く。"),
             ("4K OLED 各社モデル", "4K OLED ゲーミングモニター 240Hz",
              "32型前後 / 4K / QD-OLED・WOLED / 240Hz",
              "LGやDell、MSIなども4K OLEDを展開。価格と在庫を見比べて選びたい人向けの一覧。"),
@@ -288,7 +288,7 @@ def build():
                 <h2>パネル</h2>
                 <ul class="article-list">
                   <li><strong>Fast IPS</strong><span>色・視野角・速度のバランスが良い万能型。</span></li>
-                  <li><strong>有機EL</strong><span>黒の締まりと応答速度が随一。映像美重視。</span></li>
+                  <li><strong>有機EL</strong><span>黒の締まりと応答速度が屈指。映像美重視。</span></li>
                   <li><strong>TN / VA</strong><span>TNは最速・安価、VAはコントラスト重視。</span></li>
                 </ul>
               </section>

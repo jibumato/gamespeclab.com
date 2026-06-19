@@ -3511,6 +3511,20 @@ p {
   position: relative;
 }
 
+.static-type-grid .type-thumb {
+  filter: drop-shadow(0 4px 8px rgba(0, 0, 0, 0.4));
+  height: auto;
+  image-rendering: pixelated;
+  justify-self: center;
+  margin-bottom: 2px;
+  transition: transform 0.2s ease;
+  width: 72px;
+}
+
+.static-type-grid article:hover .type-thumb {
+  transform: translateY(-4px);
+}
+
 .static-type-grid article::after {
   border-right: 1px solid rgba(255, 77, 210, 0.5);
   border-top: 1px solid rgba(255, 77, 210, 0.5);

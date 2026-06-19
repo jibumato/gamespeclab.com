@@ -4953,6 +4953,19 @@ body.sense-result-ready .post-result-lab {
     margin-left: -38px;
   }
 
+  .gamer-mbti-result .result-dialogue {
+    flex-wrap: wrap;
+  }
+
+  .gamer-mbti-result .result-dialogue > div {
+    flex: 1 1 100%;
+  }
+
+  .gamer-mbti-result .result-pipo-photo {
+    transform: scale(0.88);
+    transform-origin: top center;
+  }
+
   .option-button {
     min-height: 90px;
   }

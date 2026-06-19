@@ -237,8 +237,9 @@ def build():
       <nav id="site-menu" aria-label="サイト内メニュー">
         <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
-        <a href="articles.html"><span data-icon="spark"></span>読み物ガイド</a>
         <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
       </nav>
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
@@ -326,9 +327,11 @@ def build():
         <p>PCゲームのゲームセンス、ゲーマータイプ、相性を診断するサービスです。</p>
       </div>
       <nav aria-label="運営情報">
-        <a href="gamesense.html"><span data-icon="chart"></span>GameSense診断</a>
-        <a href="pc-build.html"><span data-icon="cpu"></span>PCの選び方</a>
-        <a href="articles.html"><span data-icon="spark"></span>読み物ガイド</a>
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシー</a>
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>

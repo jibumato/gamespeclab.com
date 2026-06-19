@@ -4326,6 +4326,15 @@ body.sense-result-ready .post-result-lab {
   font-size: 14px;
 }
 
+.article-list strong a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+.article-list strong a:hover {
+  text-decoration: underline;
+}
+
 .article-pair-grid a {
   color: var(--ink);
   text-decoration: none;

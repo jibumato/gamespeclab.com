@@ -368,6 +368,46 @@ def wp_mic(cv, pal):
     cv.rect(30, 25, 3, 3, hx("#8a8f9c"))
 
 
+def wp_magnifier(cv, pal):
+    ring = hx("#cfd6e2")
+    cv.rect(28, 23, 6, 1, ring)
+    cv.rect(28, 28, 6, 1, ring)
+    cv.vline(27, 24, 4, ring)
+    cv.vline(34, 24, 4, ring)
+    cv.rect(29, 24, 4, 4, pal["accent"])   # レンズ
+    cv.rect(29, 24, 2, 2, hx("#ffffff"))   # 反射
+    cv.rect(33, 28, 2, 6, hx("#8a6b3a"))   # 柄
+
+
+def wp_radar(cv, pal):
+    c = pal["accent"]
+    cv.rect(29, 23, 6, 1, c)
+    cv.rect(29, 30, 6, 1, c)
+    cv.vline(28, 24, 6, c)
+    cv.vline(35, 24, 6, c)
+    cv.rect(31, 26, 1, 2, c)               # 中心
+    cv.rect(32, 24, 2, 2, shade(c, 1.2))   # スイープ
+    cv.rect(33, 23, 1, 1, hx("#ffffff"))
+
+
+def wp_coin(cv, pal):
+    g = hx("#ffd24a")
+    gs = hx("#caa64a")
+    for i, y in enumerate((31, 28, 25)):
+        cv.rect(29, y, 5, 2, g)
+        cv.rect(29, y + 1, 5, 1, gs)
+        cv.p(31, y, hx("#fff2bf"))
+
+
+def wp_mask(cv, pal):
+    c = hx("#f4efe2")
+    cv.rect(28, 24, 7, 5, c)
+    cv.rect(28, 28, 7, 1, shade(c, 0.8))
+    cv.rect(29, 26, 2, 2, (40, 40, 55, 255))   # 目穴
+    cv.rect(32, 26, 2, 2, (40, 40, 55, 255))
+    cv.rect(30, 22, 3, 2, pal["accent"])       # 飾り
+
+
 HEADGEAR = {
     "hood": hg_hood, "glasses": hg_glasses, "crown": hg_crown, "spiky": hg_spiky,
     "wizard": hg_wizard, "travelhood": hg_travelhood, "plume": hg_plume,
@@ -380,12 +420,20 @@ WEAPON = {
     "stafforb": wp_stafforb, "lantern": wp_lantern, "banner": wp_banner, "map": wp_map,
     "ledger": wp_ledger, "shield": wp_shield, "sword": wp_sword, "fan": wp_fan,
     "katana": wp_katana, "lute": wp_lute, "torch": wp_torch, "mic": wp_mic,
+    "magnifier": wp_magnifier, "radar": wp_radar, "coin": wp_coin, "mask": wp_mask,
 }
 
 SKIN = "#f0c8a0"
 
-# code, archetype, group-jp, palette, headgear, weapon
-TYPES = [
+
+def rec(slug, big, arche, outfit, hair, accent, hg, wp, group):
+    return {"slug": slug, "big": big, "arche": arche, "outfit": outfit,
+            "hair": hair, "accent": accent, "hg": hg, "wp": wp, "group": group}
+
+
+_MBTI = "ゲーマーMBTI 16タイプ"
+# slug, archetype, outfit, hair, accent, headgear, weapon
+_MBTI_DEF = [
     ("intj", "冷静沈着の軍師型",   "#3b2f6b", "#2a2440", "#9d8be0", "hood",       "scroll"),
     ("intp", "孤高の研究者型",     "#4a3b7a", "#6b5a3a", "#a594e6", "glasses",    "book"),
     ("entj", "覇道コマンダー型",   "#5b3a7a", "#1f1a30", "#e0b94a", "crown",      "scepter"),
@@ -404,23 +452,40 @@ TYPES = [
     ("esfp", "祝祭の先陣役型",     "#c44a6b", "#d9a52a", "#ffe07a", "party",      "torch"),
 ]
 
+_SCAN = "GameSense Scan 8"
+# slug(=sense-<slug>-guide), 大見出し(英), 和名, outfit, hair, accent, headgear, weapon
+_SENSE_DEF = [
+    ("awareness",  "AWARENESS",  "状況認識力", "#2f9fc4", "#26323a", "#7fe0f0", "goggles",  "radar"),
+    ("prediction", "FORESIGHT",  "未来予測力", "#5a4fb0", "#2a2438", "#b3a7ff", "wizard",   "stafforb"),
+    ("pattern",    "PATTERN",    "パターン認識", "#2f8b7a", "#2a2438", "#7fe0c4", "glasses",  "magnifier"),
+    ("spatial",    "SPATIAL",    "空間把握力", "#3a6bc4", "#36363f", "#9bc0ff", "feather",  "map"),
+    ("speed",      "TEMPO",      "判断速度",   "#d9772a", "#26262e", "#ffd24a", "headband", "spark"),
+    ("resource",   "RESOURCE",   "リソース管理", "#b8932a", "#3a2e1a", "#ffe07a", "cap",      "coin"),
+    ("mindgame",   "MINDGAME",   "心理戦",     "#9c3a8b", "#26262e", "#ff9bd6", "hood",     "mask"),
+    ("adaptation", "ADAPT",      "学習適応力", "#3a9152", "#3a2a18", "#a7e8b0", "beret",    "book"),
+]
 
-def build_sprite(t):
-    code, _, outfit, hair, accent, hg, wp = t
-    pal = {"skin": hx(SKIN), "outfit": hx(outfit), "hair": hx(hair), "accent": hx(accent)}
+RECORDS = [rec(d[0], d[0].upper(), d[1], d[2], d[3], d[4], d[5], d[6], _MBTI)
+           for d in _MBTI_DEF]
+RECORDS += [rec(f"sense-{d[0]}-guide", d[1], d[2], d[3], d[4], d[5], d[6], d[7], _SCAN)
+            for d in _SENSE_DEF]
+
+
+def build_sprite(r):
+    pal = {"skin": hx(SKIN), "outfit": hx(r["outfit"]),
+           "hair": hx(r["hair"]), "accent": hx(r["accent"])}
     cv = Canvas()
-    WEAPON[wp](cv, pal)         # 武器は背面寄りに先描き
+    WEAPON[r["wp"]](cv, pal)    # 武器は背面寄りに先描き
     draw_body(cv, pal)
-    HEADGEAR[hg](cv, pal)
+    HEADGEAR[r["hg"]](cv, pal)
     add_outline(cv)
     return cv.img
 
 
-def save_sprite(t, scale=12):
-    img = build_sprite(t)
+def save_sprite(r, scale=12):
+    img = build_sprite(r)
     big = img.resize((W * scale, H * scale), Image.NEAREST)
-    path = os.path.join(OUT, f"{t[0]}.png")
-    big.save(path)
+    big.save(os.path.join(OUT, f"{r['slug']}.png"))
     return big
 
 
@@ -431,8 +496,9 @@ def load_font(path, size):
         return ImageFont.load_default()
 
 
-def build_ogp(t, sprite_big):
-    code, arche, outfit, hair, accent = t[0], t[1], t[2], t[3], t[4]
+def build_ogp(r, sprite_big):
+    slug, big_text, arche = r["slug"], r["big"], r["arche"]
+    outfit, accent, group = r["outfit"], r["accent"], r["group"]
     Wd, Hd = 1200, 630
     base = (10, 11, 24)
     img = Image.new("RGB", (Wd, Hd), base)
@@ -441,10 +507,10 @@ def build_ogp(t, sprite_big):
     oc = hx(outfit)
     for y in range(Hd):
         f = y / Hd
-        r = int(base[0] + (oc[0] * 0.35 - base[0]) * f)
-        g = int(base[1] + (oc[1] * 0.35 - base[1]) * f)
-        b = int(base[2] + (oc[2] * 0.35 - base[2]) * f)
-        d.line([(0, y), (Wd, y)], fill=(r, g, b))
+        rr = int(base[0] + (oc[0] * 0.35 - base[0]) * f)
+        gg = int(base[1] + (oc[1] * 0.35 - base[1]) * f)
+        bb = int(base[2] + (oc[2] * 0.35 - base[2]) * f)
+        d.line([(0, y), (Wd, y)], fill=(rr, gg, bb))
     # ドット格子の装飾
     for gy in range(0, Hd, 40):
         for gx in range(0, Wd, 40):
@@ -456,39 +522,52 @@ def build_ogp(t, sprite_big):
     sp = sprite_big.resize((W * 10, H * 10), Image.NEAREST)
     img.paste(sp, (int(60 + (460 - sp.width) / 2), int(560 - sp.height - 24)), sp)
 
-    # テキスト
-    f_code = load_font(LATIN_FONT, 150)
-    f_arche = load_font(JP_FONT, 70)
+    # テキスト(横幅に収まるよう自動縮小)
+    def fit(path, text, max_w, start):
+        size = start
+        while size > 24:
+            fnt = load_font(path, size)
+            if d.textlength(text, font=fnt) <= max_w:
+                return fnt
+            size -= 4
+        return load_font(path, 24)
+
+    tx, max_w = 580, 1200 - 580 - 40
+    f_big = fit(LATIN_FONT, big_text, max_w, 150)
+    f_arche = fit(JP_FONT, arche, max_w, 76)
     f_brand = load_font(JP_FONT, 34)
     f_tag = load_font(JP_FONT, 30)
-    tx = 580
-    d.text((tx, 120), code.upper(), font=f_code, fill=hx(accent)[:3])
-    d.text((tx + 4, 300), arche, font=f_arche, fill=(255, 255, 255))
-    # アクセント下線
-    d.rectangle([tx + 4, 290, tx + 4 + 360, 296], fill=hx(accent)[:3])
-    d.text((tx + 4, 470), "ゲーマーMBTI 16タイプ", font=f_tag, fill=(200, 205, 225))
+    d.text((tx, 130), big_text, font=f_big, fill=hx(accent)[:3])
+    aw = d.textlength(arche, font=f_arche)
+    d.rectangle([tx + 4, 296, tx + 4 + aw, 302], fill=hx(accent)[:3])
+    d.text((tx + 4, 312), arche, font=f_arche, fill=(255, 255, 255))
+    d.text((tx + 4, 470), group, font=f_tag, fill=(200, 205, 225))
     d.text((tx + 4, 520), "GameSpec Lab", font=f_brand, fill=hx(accent)[:3])
 
-    path = os.path.join(OUT, f"{code}-ogp.png")
-    img.save(path)
+    img.save(os.path.join(OUT, f"{slug}-ogp.png"))
     return img
+
+
+def contact_sheet(records, name):
+    cols = 8
+    cell = W * 6
+    rows = (len(records) + cols - 1) // cols
+    sheet = Image.new("RGBA", (cols * cell, rows * (cell + 18)), (20, 22, 40, 255))
+    for i, r in enumerate(records):
+        s = build_sprite(r).resize((cell, H * 6), Image.NEAREST)
+        sheet.paste(s, ((i % cols) * cell, (i // cols) * (cell + 18)), s)
+    sheet.save(os.path.join(OUT, name))
 
 
 def main():
     os.makedirs(OUT, exist_ok=True)
-    for t in TYPES:
-        big = save_sprite(t)
-        build_ogp(t, big)
-        print("generated", t[0])
+    for r in RECORDS:
+        big = save_sprite(r)
+        build_ogp(r, big)
+        print("generated", r["slug"])
     # コンタクトシート(確認用、コミットしない)
-    cols = 8
-    cell = W * 6
-    rows = (len(TYPES) + cols - 1) // cols
-    sheet = Image.new("RGBA", (cols * cell, rows * (cell + 18)), (20, 22, 40, 255))
-    for i, t in enumerate(TYPES):
-        s = build_sprite(t).resize((cell, H * 6), Image.NEAREST)
-        sheet.paste(s, ((i % cols) * cell, (i // cols) * (cell + 18)), s)
-    sheet.save(os.path.join(OUT, "_contact_sheet.png"))
+    contact_sheet([r for r in RECORDS if r["group"] == _MBTI], "_contact_mbti.png")
+    contact_sheet([r for r in RECORDS if r["group"] == _SCAN], "_contact_sense.png")
 
 
 if __name__ == "__main__":

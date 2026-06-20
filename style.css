@@ -5273,3 +5273,115 @@ body.sense-result-ready .post-result-lab {
     animation: none;
   }
 }
+
+/* ===== 図解コンポーネント(記事・ガイド用) ===== */
+.gsl-figure {
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(114, 242, 255, 0.16);
+  margin: 14px 0 4px;
+  padding: 16px;
+}
+
+.gsl-figure-cap {
+  align-items: center;
+  color: var(--mint);
+  display: flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  margin-bottom: 12px;
+}
+
+.gsl-figure-cap .ui-icon { height: 14px; width: 14px; }
+
+.gsl-flow {
+  align-items: stretch;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.gsl-node {
+  align-items: center;
+  background:
+    linear-gradient(145deg, rgba(114, 242, 255, 0.10), rgba(255, 77, 210, 0.07)),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(114, 242, 255, 0.28);
+  color: var(--ink);
+  display: flex;
+  flex: 1 1 0;
+  font-size: 13px;
+  font-weight: 800;
+  gap: 8px;
+  justify-content: center;
+  line-height: 1.3;
+  min-width: 104px;
+  padding: 12px 14px;
+  position: relative;
+  text-align: center;
+}
+
+.gsl-node b {
+  align-items: center;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+  border-radius: 50%;
+  color: #02030a;
+  display: inline-flex;
+  flex: 0 0 auto;
+  font-size: 11px;
+  font-weight: 900;
+  height: 20px;
+  justify-content: center;
+  width: 20px;
+}
+
+.gsl-flow.is-sequence .gsl-node:not(:last-child)::after {
+  color: var(--cyan);
+  content: "›";
+  font-size: 20px;
+  font-weight: 900;
+  position: absolute;
+  right: -10px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 2;
+}
+
+.concept-formula {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.cf-box {
+  background: rgba(114, 242, 255, 0.08);
+  border: 1px solid rgba(114, 242, 255, 0.28);
+  color: var(--ink);
+  font-size: 14px;
+  font-weight: 900;
+  padding: 11px 16px;
+}
+
+.cf-box.cf-result {
+  background: linear-gradient(90deg, rgba(114, 242, 255, 0.18), rgba(255, 77, 210, 0.16));
+  border-color: var(--cyan);
+}
+
+.cf-op { color: var(--cyan); font-size: 16px; font-weight: 900; }
+
+.octagon-figure { display: grid; justify-items: center; }
+.octagon-figure svg { height: auto; max-width: 460px; width: 100%; }
+
+@media (max-width: 560px) {
+  .gsl-flow { flex-direction: column; }
+  .gsl-flow.is-sequence .gsl-node:not(:last-child)::after {
+    bottom: -13px;
+    content: "⌄";
+    right: 50%;
+    top: auto;
+    transform: translateX(50%);
+  }
+}

@@ -73,6 +73,60 @@ def cta(href, text, label):
 P = "            <p>{}</p>"
 
 
+def fig(cap, inner):
+    return ('          <div class="gsl-figure">\n'
+            f'            <p class="gsl-figure-cap"><span data-icon="chart"></span>{cap}</p>\n'
+            f'{inner}\n'
+            '          </div>')
+
+
+def flow(nodes, sequence=True):
+    cls = "gsl-flow is-sequence" if sequence else "gsl-flow"
+    if sequence:
+        ns = "".join(f'<div class="gsl-node"><b>{i + 1}</b>{n}</div>'
+                     for i, n in enumerate(nodes))
+    else:
+        ns = "".join(f'<div class="gsl-node">{n}</div>' for n in nodes)
+    return f'            <div class="{cls}">{ns}</div>'
+
+
+def formula(parts, result):
+    boxes = '<span class="cf-op">＋</span>'.join(
+        f'<span class="cf-box">{p}</span>' for p in parts)
+    return ('            <div class="concept-formula">'
+            f'{boxes}<span class="cf-op">＝</span>'
+            f'<span class="cf-box cf-result">{result}</span></div>')
+
+
+# slug -> 図解HTML(OVERVIEW直後に挿入)
+DIAGRAMS = {
+    "game-skill-traits": fig("上手い人に共通する5つ", flow(
+        ["状況認識", "先読み", "判断の速さ", "振り返り", "メンタル"], sequence=False)),
+    "fps-improve-guide": fig("上達の5ステップ", flow(
+        ["設定を固定", "クロスヘアを置く", "音で索敵", "有利な1vs1", "デス分析"])),
+    "aim-training-guide": fig("エイム練習の流れ", flow(
+        ["感度を固定", "エイトレ10分", "プリエイム", "高さを揃える"])),
+    "reaction-speed-guide": fig("反応速度の正体", formula(
+        ["知覚", "判断", "操作"], "反応速度")),
+    "valorant-improve-guide": fig("ランク上げの5コツ", flow(
+        ["プリエイム", "スキルを合わせる", "音で索敵", "無理しない", "ミニマップ"])),
+    "apex-improve-guide": fig("勝率を上げる5コツ", flow(
+        ["漁夫を警戒", "高所・遮蔽", "連携", "安置を読む", "無理しない"])),
+    "cant-win-games-guide": fig("負けが続く5つの原因", flow(
+        ["情報不足", "無理な交戦", "振り返り不足", "環境の遅延", "連戦疲れ"], sequence=False)),
+    "voice-chat-tips": fig("VC克服の流れ", flow(
+        ["定型コール", "情報だけ短く", "リアクション", "マイク環境"])),
+    "game-sickness-guide": fig("酔いを防ぐポイント", flow(
+        ["FOVを広げる", "ブラーをOFF", "フレーム安定", "距離と休憩"], sequence=False)),
+    "gamer-partner-tips": fig("ケンカにしない流れ", flow(
+        ["タイミングを選ぶ", "主語を『私』に", "一緒に遊ぶ", "ルールを決める"])),
+    "gamer-couple-compatibility": fig("長続きの3つ", flow(
+        ["勝敗を持ち込まない", "一緒も別々も尊重", "違いを楽しむ"], sequence=False)),
+    "online-game-romance": fig("安全に進める4つ", flow(
+        ["個人情報は段階的", "金銭はNG", "会うのは慎重に", "温度差を確認"], sequence=False)),
+}
+
+
 ARTICLES = [
     {
         "slug": "game-skill-traits",
@@ -582,7 +636,11 @@ def faq_visible(faqs):
 
 def build(a):
     url = f"{BASE}/{a['slug']}.html"
-    body = render_body(a["body"]) + "\n" + faq_visible(a["faqs"])
+    blocks = list(a["body"])
+    dia = DIAGRAMS.get(a["slug"])
+    if dia and blocks:
+        blocks = [blocks[0], dia] + blocks[1:]
+    body = render_body(blocks) + "\n" + faq_visible(a["faqs"])
     page = f"""<!doctype html>
 <html lang="ja">
   <head>

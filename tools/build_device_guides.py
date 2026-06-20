@@ -568,6 +568,39 @@ def render_category(cat, start_idx, dev_icon):
           </div>""", start_idx + len(cat["items"])
 
 
+def _flow(nodes, sequence=True):
+    cls = "gsl-flow is-sequence" if sequence else "gsl-flow"
+    if sequence:
+        ns = "".join(f'<div class="gsl-node"><b>{i + 1}</b>{n}</div>'
+                     for i, n in enumerate(nodes))
+    else:
+        ns = "".join(f'<div class="gsl-node">{n}</div>' for n in nodes)
+    return f'            <div class="{cls}">{ns}</div>'
+
+
+def _fig(cap, inner):
+    return ('          <div class="gsl-figure">\n'
+            f'            <p class="gsl-figure-cap"><span data-icon="chart"></span>{cap}</p>\n'
+            f'{inner}\n'
+            '          </div>')
+
+
+DIA = {
+    "gaming-monitor-guide": _fig("選ぶ順番", _flow(
+        ["用途を決める", "リフレッシュレート", "解像度", "パネル"])),
+    "gaming-mouse-guide": _fig("マウス選びの4点", _flow(
+        ["重量", "形状(持ち方)", "センサー", "接続"], sequence=False)),
+    "gaming-keyboard-guide": _fig("キーボード選びの軸", _flow(
+        ["スイッチ方式", "ラピッドトリガー", "サイズ", "静音性"], sequence=False)),
+    "gaming-headset-guide": _fig("ヘッドセット選びの軸", _flow(
+        ["定位", "装着感", "接続", "マイク"], sequence=False)),
+    "gaming-mousepad-guide": _fig("選ぶ順番", _flow(
+        ["素材", "タイプ(止め/滑り)", "サイズ"])),
+    "gaming-controller-guide": _fig("コントローラー選びの軸", _flow(
+        ["スティック方式", "背面ボタン", "接続"], sequence=False)),
+}
+
+
 def render_axes(axes):
     cols = []
     for title, rows in axes:
@@ -612,6 +645,7 @@ def build(dev):
         cats_html.append(html)
     categories = "\n".join(cats_html)
     axes = render_axes(dev["axes"])
+    diagram = DIA.get(dev["slug"], "")
     nav = render_nav(dev["slug"])
     sense_rows = "\n".join(
         f"              <div><strong>{a}</strong><p>{b}</p></div>"
@@ -708,6 +742,7 @@ def build(dev):
 {axes}
             </div>
           </div>
+{diagram}
 {categories}
           <div class="article-card">
             <p class="article-kicker">MATCH WITH YOUR SCAN</p>

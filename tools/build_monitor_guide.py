@@ -170,6 +170,16 @@ def render_category(cat, start_idx):
           </div>""", start_idx + len(cat["items"])
 
 
+def _monitor_diagram():
+    nodes = ["用途を決める", "リフレッシュレート", "解像度", "パネル"]
+    ns = "".join(f'<div class="gsl-node"><b>{i + 1}</b>{n}</div>'
+                 for i, n in enumerate(nodes))
+    return ('          <div class="gsl-figure">\n'
+            '            <p class="gsl-figure-cap"><span data-icon="chart"></span>選ぶ順番</p>\n'
+            f'            <div class="gsl-flow is-sequence">{ns}</div>\n'
+            '          </div>')
+
+
 def build():
     cats_html = []
     idx = 1
@@ -177,6 +187,7 @@ def build():
         html, idx = render_category(cat, idx)
         cats_html.append(html)
     categories = "\n".join(cats_html)
+    diagram = _monitor_diagram()
 
     sense_rows = "\n".join(
         f'              <div><strong>{a}</strong><p>{b}</p></div>'
@@ -317,6 +328,7 @@ def build():
               </section>
             </div>
           </div>
+{diagram}
 {categories}
           <div class="article-card">
             <p class="article-kicker">MATCH WITH YOUR SCAN</p>

@@ -5449,3 +5449,58 @@ body.sense-result-ready .post-result-lab {
   font-weight: 700;
   margin-left: 6px;
 }
+
+/* 対応図(強み→ロール/ジャンル) */
+.gsl-map {
+  display: grid;
+  gap: 8px;
+  margin-top: 4px;
+}
+
+.gsl-map-row {
+  align-items: center;
+  display: grid;
+  gap: 10px;
+  grid-template-columns: minmax(0, 0.9fr) auto minmax(0, 1.25fr);
+}
+
+.gsl-map-from,
+.gsl-map-to {
+  border-radius: 10px;
+  font-size: 12.5px;
+  font-weight: 800;
+  line-height: 1.35;
+  padding: 10px 12px;
+}
+
+.gsl-map-from {
+  background:
+    linear-gradient(145deg, rgba(114, 242, 255, 0.16), rgba(114, 242, 255, 0.06)),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(114, 242, 255, 0.34);
+  color: var(--ink);
+  text-align: center;
+}
+
+.gsl-map-to {
+  background: rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(255, 77, 210, 0.26);
+  color: var(--muted);
+}
+
+.gsl-map-arrow {
+  color: var(--cyan);
+  font-size: 18px;
+  font-weight: 900;
+  text-align: center;
+}
+
+@media (max-width: 540px) {
+  .gsl-map-row {
+    gap: 4px 8px;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+  .gsl-map-to {
+    grid-column: 1 / -1;
+  }
+}

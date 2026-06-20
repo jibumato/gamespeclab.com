@@ -4328,6 +4328,17 @@ body.sense-result-ready .post-result-lab {
   animation: type-hero-float 4s ease-in-out infinite;
 }
 
+/* AIイラスト差し替え時の表示モード(ドット絵のpixelatedを解除) */
+.type-hero-art.is-illustration {
+  image-rendering: auto;
+  width: 248px;
+  border-radius: 18px;
+}
+
+@media (max-width: 720px) {
+  .type-hero-art.is-illustration { width: 168px; }
+}
+
 @keyframes type-hero-float {
   0%, 100% { transform: translateY(0); }
   50% { transform: translateY(-8px); }

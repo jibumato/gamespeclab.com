@@ -5385,3 +5385,67 @@ body.sense-result-ready .post-result-lab {
     transform: translateX(50%);
   }
 }
+
+/* ===== デバイス比較表 ===== */
+.compare-wrap {
+  -webkit-overflow-scrolling: touch;
+  border: 1px solid rgba(114, 242, 255, 0.18);
+  overflow-x: auto;
+}
+
+.compare-table {
+  border-collapse: collapse;
+  font-size: 13px;
+  min-width: 580px;
+  width: 100%;
+}
+
+.compare-table th,
+.compare-table td {
+  border: 1px solid rgba(114, 242, 255, 0.12);
+  padding: 10px 12px;
+  text-align: center;
+  white-space: nowrap;
+}
+
+.compare-table thead th {
+  background:
+    linear-gradient(145deg, rgba(114, 242, 255, 0.16), rgba(255, 77, 210, 0.10)),
+    rgba(7, 12, 27, 0.96);
+  color: var(--ink);
+  font-size: 12px;
+  font-weight: 900;
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.compare-table tbody th {
+  background: rgba(7, 12, 27, 0.96);
+  color: var(--mint);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  left: 0;
+  letter-spacing: 0.03em;
+  position: sticky;
+  text-align: left;
+  z-index: 1;
+}
+
+.compare-table thead th:first-child {
+  left: 0;
+  z-index: 2;
+}
+
+.compare-table tbody tr:nth-child(even) td {
+  background: rgba(114, 242, 255, 0.035);
+}
+
+.compare-table td { color: var(--ink); }
+
+.compare-hint {
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 700;
+  margin-left: 6px;
+}

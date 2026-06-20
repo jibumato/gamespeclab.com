@@ -170,6 +170,27 @@ def render_category(cat, start_idx):
           </div>""", start_idx + len(cat["items"])
 
 
+def _monitor_compare():
+    headers = ["ZOWIE XL2566K", "TUF VG27AQ5A", "LG 27GS95QE", "GIGABYTE M28U", "ROG PG32UCDM"]
+    rows = [
+        ("用途", ["競技FPS", "主流バランス", "映像美+高速", "高精細4K", "最上位4K"]),
+        ("サイズ", ["24.5型", "27型", "26.5型", "28型", "31.5型"]),
+        ("解像度", ["フルHD", "WQHD", "WQHD", "4K", "4K"]),
+        ("リフレッシュ", ["360Hz", "180Hz前後", "240Hz", "144Hz", "240Hz"]),
+        ("パネル", ["TN", "Fast IPS", "有機EL", "IPS", "QD-OLED"]),
+    ]
+    ths = "".join(f"<th>{h}</th>" for h in headers)
+    body = "".join(
+        "<tr><th>" + lbl + "</th>" + "".join(f"<td>{v}</td>" for v in vals) + "</tr>"
+        for lbl, vals in rows)
+    return ('          <div class="gsl-figure">\n'
+            '            <p class="gsl-figure-cap"><span data-icon="list"></span>主要モデルを比較'
+            '<span class="compare-hint">（横スクロールで比較）</span></p>\n'
+            '            <div class="compare-wrap"><table class="compare-table">'
+            f'<thead><tr><th></th>{ths}</tr></thead><tbody>{body}</tbody></table></div>\n'
+            '          </div>')
+
+
 def _monitor_diagram():
     nodes = ["用途を決める", "リフレッシュレート", "解像度", "パネル"]
     ns = "".join(f'<div class="gsl-node"><b>{i + 1}</b>{n}</div>'
@@ -188,6 +209,7 @@ def build():
         cats_html.append(html)
     categories = "\n".join(cats_html)
     diagram = _monitor_diagram()
+    compare = _monitor_compare()
 
     sense_rows = "\n".join(
         f'              <div><strong>{a}</strong><p>{b}</p></div>'
@@ -329,6 +351,7 @@ def build():
             </div>
           </div>
 {diagram}
+{compare}
 {categories}
           <div class="article-card">
             <p class="article-kicker">MATCH WITH YOUR SCAN</p>

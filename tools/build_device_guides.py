@@ -601,6 +601,62 @@ DIA = {
 }
 
 
+def compare_table(caption, headers, rows):
+    ths = "".join(f"<th>{h}</th>" for h in headers)
+    body = ""
+    for label, vals in rows:
+        tds = "".join(f"<td>{v}</td>" for v in vals)
+        body += f"<tr><th>{label}</th>{tds}</tr>"
+    return ('          <div class="gsl-figure">\n'
+            f'            <p class="gsl-figure-cap"><span data-icon="list"></span>{caption}'
+            '<span class="compare-hint">（横スクロールで比較）</span></p>\n'
+            '            <div class="compare-wrap"><table class="compare-table">'
+            f'<thead><tr><th></th>{ths}</tr></thead><tbody>{body}</tbody></table></div>\n'
+            '          </div>')
+
+
+COMPARE = {
+    "gaming-mouse-guide": compare_table("主要モデルを比較",
+        ["GPX2", "Viper V3 Pro", "DeathAdder V3 Pro", "Harpe Ace", "G304"], [
+            ("重量", ["約60g", "約54g", "約63g", "54/49g", "約99g"]),
+            ("形状", ["左右対称", "左右対称", "エルゴ", "小型左右対称", "左右対称"]),
+            ("センサー", ["HERO 2", "Focus Pro 35K", "Focus Pro", "AimPoint Pro", "HERO"]),
+            ("接続", ["無線2.4G", "無線/8K", "無線/8K", "無線/BT/有線", "無線2.4G"]),
+            ("バッテリー", ["95h", "95h", "90h", "—", "250h(単三)"]),
+        ]),
+    "gaming-keyboard-guide": compare_table("主要モデルを比較",
+        ["Wooting 60HE/80HE", "Apex Pro TKL G3", "Huntsman V3 Pro", "G PRO X TKL"], [
+            ("スイッチ", ["磁気軸", "磁気軸", "アナログ光学", "メカニカル"]),
+            ("ラピッドトリガー", ["○ 先駆け", "○ 40段階", "○", "×"]),
+            ("サイズ", ["60%/80%", "TKL", "TKL", "TKL"]),
+            ("接続", ["有線", "有線", "有線", "無線/BT/有線"]),
+        ]),
+    "gaming-headset-guide": compare_table("主要モデルを比較",
+        ["BlackShark V2 Pro", "G PRO X2", "Cloud III WL", "Nova Pro WL"], [
+            ("ドライバー", ["50mm チタン", "50mm グラフェン", "53mm", "—"]),
+            ("重量", ["約320g", "—", "約330g", "—"]),
+            ("接続", ["2.4G/BT", "2.4G/BT", "2.4G(USB)", "2.4G/BT"]),
+            ("バッテリー", ["70h", "50h", "120h", "ホットスワップ"]),
+            ("強み", ["定位", "バランス/マイク", "装着感/電池", "最上位/ANC"]),
+        ]),
+    "gaming-mousepad-guide": compare_table("主要モデルを比較",
+        ["Artisan 零", "QcK Heavy", "Artisan 疾風甲", "Gigantus V2", "Superglide 2"], [
+            ("素材", ["布", "布", "布", "布", "ガラス"]),
+            ("タイプ", ["コントロール", "コントロール", "バランス", "バランス", "スピード"]),
+            ("特徴", ["3硬度", "厚手・安定", "高耐久", "均一な滑り", "半永久"]),
+            ("サイズ", ["M/L/XL", "M〜3XL", "複数", "4サイズ", "定形"]),
+        ]),
+    "gaming-controller-guide": compare_table("主要モデルを比較",
+        ["Xbox WL", "DualSense", "Cyclone 2", "Elite 2", "DualSense Edge"], [
+            ("重量", ["約287g", "約280g", "約227g", "約345g", "約325g"]),
+            ("スティック", ["通常", "通常", "TMR", "通常", "通常(交換)"]),
+            ("背面ボタン", ["—", "—", "4", "4(パドル)", "2"]),
+            ("接続", ["BT/無線/有線", "BT/有線", "2.4G/BT/有線", "BT/無線/有線", "BT/有線"]),
+            ("対応", ["PC/Xbox", "PC/PS5", "PC/Switch", "PC/Xbox", "PC/PS5"]),
+        ]),
+}
+
+
 def render_axes(axes):
     cols = []
     for title, rows in axes:
@@ -646,6 +702,7 @@ def build(dev):
     categories = "\n".join(cats_html)
     axes = render_axes(dev["axes"])
     diagram = DIA.get(dev["slug"], "")
+    compare = COMPARE.get(dev["slug"], "")
     nav = render_nav(dev["slug"])
     sense_rows = "\n".join(
         f"              <div><strong>{a}</strong><p>{b}</p></div>"
@@ -743,6 +800,7 @@ def build(dev):
             </div>
           </div>
 {diagram}
+{compare}
 {categories}
           <div class="article-card">
             <p class="article-kicker">MATCH WITH YOUR SCAN</p>

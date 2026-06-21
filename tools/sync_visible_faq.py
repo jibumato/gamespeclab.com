@@ -81,7 +81,7 @@ def main():
             continue
         path = os.path.join(ROOT, fn)
         s = open(path, encoding="utf-8").read()
-        if '"@type": "FAQPage"' not in s:
+        if '"FAQPage"' not in s:
             continue
         if "よくある質問" in s:
             continue  # 既に可視FAQあり

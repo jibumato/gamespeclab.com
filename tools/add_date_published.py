@@ -29,19 +29,22 @@ def main():
             continue
         path = os.path.join(ROOT, fn)
         s = open(path, encoding="utf-8").read()
-        if '"@type": "Article"' not in s:
+        if not re.search(r'"@type"\s*:\s*"Article"', s):
             continue
         if '"datePublished"' in s:
             continue
         date = git_created(fn)
-        # 最初の dateModified 行の直前に同じインデントで挿入
-        m = re.search(r'\n([ \t]*)"dateModified": "', s)
-        if not m:
-            print("  WARN no dateModified:", fn)
-            continue
-        ind = m.group(1)
-        ins = f'\n{ind}"datePublished": "{date}",'
-        s = s[:m.start()] + ins + s[m.start():]
+        # 整形JSON(改行+インデント)を優先、なければコンパクトJSONに対応
+        m = re.search(r'\n([ \t]*)"dateModified":\s*"', s)
+        if m:
+            ind = m.group(1)
+            s = s[:m.start()] + f'\n{ind}"datePublished": "{date}",' + s[m.start():]
+        else:
+            idx = s.find('"dateModified":"')
+            if idx == -1:
+                print("  WARN no dateModified:", fn)
+                continue
+            s = s[:idx] + f'"datePublished":"{date}",' + s[idx:]
         open(path, "w", encoding="utf-8").write(s)
         print(f"  +datePublished {date}:", fn)
         n += 1

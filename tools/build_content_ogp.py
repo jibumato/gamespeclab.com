@@ -39,6 +39,17 @@ PAGES = [
     ("gamer-couple-compatibility", "COUPLE", "ゲーム好きカップルの相性", "#ff9bc0"),
     ("gamer-partner-tips", "PARTNER", "ゲーマー彼氏・彼女と楽しむコツ", "#ff9bc0"),
     ("online-game-romance", "ONLINE ROMANCE", "オンラインゲームの恋愛", "#ff9bc0"),
+    ("index", "GAMESPEC LAB", "無料ゲームセンス診断とゲーマーMBTI", "#72f2ff"),
+    ("gamesense", "GAMESENSE SCAN 8", "無料ゲームセンス診断", "#72f2ff"),
+    ("gamermbti", "GAMER MBTI", "ゲーマーMBTI診断", "#9d8be0"),
+    ("articles", "READ GUIDE", "ゲーム診断・読み物ガイド一覧", "#72f2ff"),
+    ("results", "TYPE LIST", "診断結果タイプ一覧", "#ff7fae"),
+    ("guide", "PLAY GUIDE", "ゲーム・デバイスガイド", "#7fe0c4"),
+    ("game-aptitude-diagnosis", "GAME APTITUDE", "自分に向いてるゲーム診断", "#7fe0c4"),
+    ("fps-aptitude-diagnosis", "FPS APTITUDE", "FPSに向いてる人診断", "#72f2ff"),
+    ("steam-recommendation-diagnosis", "STEAM PICK", "Steamおすすめゲーム診断", "#7fe0c4"),
+    ("partner", "DUO SYNC", "ゲームパートナー相性診断", "#ff9bc0"),
+    ("pc-build", "PC BUILD", "ゲーミングPCの選び方", "#e0b94a"),
 ]
 
 

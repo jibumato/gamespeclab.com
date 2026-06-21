@@ -1,0 +1,208 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TVV88Q6L');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZRP7SHMG7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZRP7SHMG7');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ゲーマー向けにDiscordの使い方を解説。サーバーへの参加、ボイスチャット（VC）の入り方、マイク・入力感度・ノイズ抑制の設定、フレンド追加、ゲーム中に役立つ機能まで、初心者がつまずかないポイントをまとめます。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="Discordの使い方・設定｜ゲーマー向け入門ガイド | GameSpec Lab" />
+    <meta property="og:description" content="サーバー参加、VCの入り方、マイク・入力感度・ノイズ抑制の設定、フレンド追加まで。初心者がつまずかないDiscordの基本をまとめます。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gamespeclab.com/discord-setup-guide.html" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/og/discord-setup-guide.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Discordの使い方・設定｜ゲーマー向け入門ガイド" />
+    <meta name="twitter:description" content="サーバー参加、VCの入り方、マイク・入力感度・ノイズ抑制の設定、フレンド追加まで。初心者向けの基本。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/og/discord-setup-guide.png" />
+    <title>Discordの使い方・設定｜ゲーマー向け入門ガイド | GameSpec Lab</title>
+    <link rel="canonical" href="https://gamespeclab.com/discord-setup-guide.html" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
+    <link rel="stylesheet" href="style.css?v=deep96" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "Discordの使い方・設定｜ゲーマー向け入門ガイド | GameSpec Lab",
+            "url": "https://gamespeclab.com/discord-setup-guide.html",
+            "description": "ゲーマー向けにDiscordの使い方を解説。サーバーへの参加、ボイスチャット（VC）の入り方、マイク・入力感度・ノイズ抑制の設定、フレンド追加、ゲーム中に役立つ機能まで、初心者がつまずかないポイントをまとめます。",
+            "author": { "@type": "Organization", "name": "GameSpec Lab" },
+            "publisher": { "@type": "Organization", "name": "GameSpec Lab" },
+            "datePublished": "2026-06-21",
+            "dateModified": "2026-06-21"
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "Discordのマイクが相手に聞こえないときは？",
+                "acceptedAnswer": { "@type": "Answer", "text": "まず「音声・ビデオ」設定で入力デバイスが正しいマイクになっているか確認します。入力感度が高すぎて音を拾えていない場合は、自動調整をオフにして手動でしきい値を下げると改善します。PC側の入力デバイスやミュート、Discordへのマイク許可も確認しましょう。" }
+              },
+              {
+                "@type": "Question",
+                "name": "プッシュトゥトークと音声検出はどっちがいい？",
+                "acceptedAnswer": { "@type": "Answer", "text": "生活音やキーボード音を拾わせたくないなら、キーを押している間だけ送話する「プッシュトゥトーク」が確実です。手を離さず話したいなら「音声検出」にして入力感度を調整します。FPSなど両手がふさがる場面では音声検出＋ノイズ抑制が便利です。" }
+              },
+              {
+                "@type": "Question",
+                "name": "Discordは無料で使えますか？",
+                "acceptedAnswer": { "@type": "Answer", "text": "通話・チャット・サーバー参加などの基本機能はすべて無料で使えます。画面共有の高画質化やカスタム絵文字の拡張などの追加機能を使いたい場合のみ、有料のNitroという選択肢があります。" }
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "GameSpec Lab", "item": "https://gamespeclab.com/" },
+              { "@type": "ListItem", "position": 2, "name": "読み物ガイド", "item": "https://gamespeclab.com/articles.html" },
+              { "@type": "ListItem", "position": 3, "name": "Discordの使い方・設定", "item": "https://gamespeclab.com/discord-setup-guide.html" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TVV88Q6L"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header class="site-header">
+      <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+      </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
+    </header>
+    <main>
+      <section class="legal-hero article-hero">
+        <div class="legal-copy">
+          <p class="eyebrow"><span data-icon="chat"></span>DISCORD GUIDE</p>
+          <h1><span>Discordの使い方・設定</span><span>ゲーマー向け入門ガイド</span></h1>
+          <p class="lead">ゲーマー向けにDiscordの使い方を解説。サーバーへの参加、ボイスチャット（VC）の入り方、マイク・入力感度・ノイズ抑制の設定、フレンド追加、ゲーム中に役立つ機能まで、初心者がつまずかないポイントをまとめます。</p>
+        </div>
+      </section>
+      <section class="section article-section">
+        <article class="article-body">
+          <div class="article-card">
+            <p class="article-kicker">OVERVIEW</p>
+            <h2>Discordは「ゲーマーの集合場所」</h2>
+            <p>Discordは、テキストチャット・通話・画面共有をまとめてこなせる無料アプリです。フレンドと固定の部屋（サーバー）に集まり、ゲーム中はVC（ボイスチャット）でやり取りするのが定番の使い方。最初の設定さえ済ませれば、あとはワンクリックで通話に入れます。ここでは「参加 → VC → 設定 → トラブル対処」の順に、つまずきやすい所だけを押さえます。</p>
+          </div>
+          <div class="gsl-figure">
+            <p class="gsl-figure-cap"><span data-icon="chart"></span>使い始めの4ステップ</p>
+            <div class="gsl-flow"><div class="gsl-node">アカウント作成</div><div class="gsl-node">サーバー参加</div><div class="gsl-node">マイク設定</div><div class="gsl-node">VCに入る</div></div>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 1 / JOIN</p>
+            <h2>サーバーへの参加とフレンド追加</h2>
+            <ul class="article-list">
+              <li><strong>サーバーに入る</strong><span>招待リンク（discord.gg/〜）を開くか、左の「＋」からコミュニティを探す。</span></li>
+              <li><strong>フレンド追加</strong><span>相手のユーザー名で検索して申請。共通サーバーからも追加できる。</span></li>
+              <li><strong>チャンネルの種類</strong><span>「#」がテキスト、スピーカー型アイコンがボイスチャンネル。</span></li>
+              <li><strong>通知の整理</strong><span>サーバーを右クリックでミュート設定。荒れ防止に通知は絞るのが快適。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 2 / VOICE</p>
+            <h2>ボイスチャット（VC）の入り方</h2>
+            <p>ボイスチャンネル名をクリックするだけで通話に参加できます。退出は画面左下の通話パネルから。まずは少人数のサーバーで一度試すと安心です。</p>
+            <div class="article-pair-grid">
+              <div><strong>プッシュトゥトーク</strong><p>決めたキーを押している間だけ送話。生活音やキー音を拾わせたくない人向け。</p></div>
+              <div><strong>音声検出</strong><p>声を出すと自動で送話。手を離して話せるが、入力感度の調整が必要。</p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 3 / SETTINGS</p>
+            <h2>マイクまわりの基本設定</h2>
+            <ul class="article-list">
+              <li><strong>入力デバイス</strong><span>「音声・ビデオ」で使うマイクを正しく選ぶ。複数ある人は要確認。</span></li>
+              <li><strong>入力感度</strong><span>自動調整で拾えないときは手動に切り替え、しきい値を調整する。</span></li>
+              <li><strong>ノイズ抑制</strong><span>キーボード音やファン音を抑える機能をオンにすると相手に優しい。</span></li>
+              <li><strong>エコー・自動ゲイン</strong><span>声が割れる・小さいときはこの2つを見直すと改善しやすい。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">TROUBLE</p>
+            <h2>よくあるトラブルと対処</h2>
+            <ul class="article-list">
+              <li><strong>声が聞こえない</strong><span>入力デバイス・ミュート・PC側の許可、相手の音量設定を順に確認。</span></li>
+              <li><strong>自分の声だけ大きい/小さい</strong><span>相手側で個別音量を調整できる。自動ゲインのオフも有効。</span></li>
+              <li><strong>ゲーム音を共有したい</strong><span>画面共有時に「音声を含める」をオンに。一部ゲームは設定が必要。</span></li>
+              <li><strong>VCが重い</strong><span>同時に重いゲーム＋配信をしていないか、回線が混んでいないかを確認。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">SCAN</p>
+            <h2>VCで強みが出る人・出にくい人</h2>
+            <p>同じVCでも、報告が得意な人、盛り上げ役、聞き役と役割は分かれます。自分のタイプを知っておくと、無理なく心地よい立ち位置でチームに貢献できます。</p>
+            <a class="primary-link" href="gamermbti.html"><span data-icon="arrow"></span>ゲーマーMBTI診断で自分のタイプを知る</a>
+          </div>
+          <div class="article-card">
+            <h2>次に読みたい関連ページ</h2>
+            <div class="article-pair-grid">
+              <div><strong><a href="voice-chat-tips.html">VCが苦手な人へ</a></strong><p>何を話す・参加のコツ・マイク設定。</p></div>
+              <div><strong><a href="gaming-headset-guide.html">ゲーミングヘッドセットおすすめ</a></strong><p>声を拾うマイク選びの参考に。</p></div>
+              <div><strong><a href="gaming-earphone-guide.html">ゲーミングイヤホンの選び方</a></strong><p>軽さ重視のVC環境づくりに。</p></div>
+              <div><strong><a href="coop-game-compatibility.html">協力ゲームで相性がいい人</a></strong><p>役割分担で楽しく続ける。</p></div>
+              <div><strong><a href="game-streaming-start-guide.html">ゲーム配信の始め方</a></strong><p>話すスキルは配信にも活きる。</p></div>
+              <div><strong><a href="gamer-mbti-compatibility.html">ゲーマーMBTI相性ガイド</a></strong><p>通話の温度が合う相手を知る。</p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">FAQ</p>
+            <h2>よくある質問</h2>
+            <div class="article-pair-grid">
+              <div><strong>Discordのマイクが相手に聞こえないときは？</strong><p>まず「音声・ビデオ」設定で入力デバイスが正しいマイクになっているか確認します。入力感度が高すぎて音を拾えていない場合は、自動調整をオフにして手動でしきい値を下げると改善します。PC側の入力デバイスやミュート、Discordへのマイク許可も確認しましょう。</p></div>
+              <div><strong>プッシュトゥトークと音声検出はどっちがいい？</strong><p>生活音やキーボード音を拾わせたくないなら、キーを押している間だけ送話する「プッシュトゥトーク」が確実です。手を離さず話したいなら「音声検出」にして入力感度を調整します。FPSなど両手がふさがる場面では音声検出＋ノイズ抑制が便利です。</p></div>
+              <div><strong>Discordは無料で使えますか？</strong><p>通話・チャット・サーバー参加などの基本機能はすべて無料で使えます。画面共有の高画質化やカスタム絵文字の拡張などの追加機能を使いたい場合のみ、有料のNitroという選択肢があります。</p></div>
+            </div>
+          </div>
+          <div class="article-card affiliate-disclosure">
+            <p><span data-icon="ad"></span>本ページはDiscordを使い始めるための一般的な解説です。関連ガイドにはAmazonアソシエイトのリンクを含む場合があります。詳しくは<a href="affiliate-disclosure.html">広告表記</a>をご覧ください。</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+        <p>PCゲームのゲームセンス、ゲーマータイプ、相性を診断するサービスです。</p>
+      </div>
+      <nav aria-label="運営情報">
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシー</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+        <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
+      </nav>
+    </footer>
+    <script src="script.js?v=deep96"></script>
+  </body>
+</html>

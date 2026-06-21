@@ -3662,14 +3662,52 @@ p {
 
 .static-type-grid article {
   background:
-    linear-gradient(145deg, rgba(114, 242, 255, 0.08), rgba(255, 77, 210, 0.045)),
+    linear-gradient(145deg, rgb(var(--type-accent, 114 242 255) / 0.10), rgba(255, 77, 210, 0.045)),
     rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(114, 242, 255, 0.2);
+  border: 1px solid rgb(var(--type-accent, 114 242 255) / 0.22);
   display: grid;
   gap: 8px;
   min-height: 172px;
   padding: 16px;
   position: relative;
+}
+
+/* 図鑑サムネのステージ(ヒーローと同じ台座+グロー) */
+.type-thumb-stage {
+  position: relative;
+  justify-self: center;
+  display: grid;
+  place-items: center;
+  width: 100px;
+  height: 92px;
+  margin-bottom: 2px;
+  border-radius: 16px;
+  background:
+    radial-gradient(92% 72% at 50% 20%, rgb(var(--type-accent, 114 242 255) / 0.18), transparent 64%),
+    rgba(7, 12, 27, 0.45);
+  border: 1px solid rgb(var(--type-accent, 114 242 255) / 0.30);
+  transition: border-color 0.2s ease;
+}
+
+.type-thumb-glow {
+  position: absolute;
+  bottom: 8px;
+  width: 64px;
+  height: 14px;
+  border-radius: 50%;
+  background: radial-gradient(closest-side, rgb(var(--type-accent, 114 242 255) / 0.55), transparent);
+  filter: blur(1px);
+  pointer-events: none;
+}
+
+.type-thumb-stage .type-thumb {
+  position: relative;
+  z-index: 2;
+  margin: 0;
+}
+
+.static-type-grid article:hover .type-thumb-stage {
+  border-color: rgb(var(--type-accent, 114 242 255) / 0.55);
 }
 
 .static-type-grid .type-thumb {

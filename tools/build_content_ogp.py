@@ -51,6 +51,8 @@ PAGES = [
     ("partner", "DUO SYNC", "ゲームパートナー相性診断", "#ff9bc0"),
     ("pc-build", "PC BUILD", "ゲーミングPCの選び方", "#e0b94a"),
     ("gaming-desk-setup-guide", "DESK SETUP", "ゲーミングデスク環境の作り方", "#5fd0e0"),
+    ("pro-gamer-practice-guide", "PRO PRACTICE", "プロゲーマーの練習方法・共通点", "#e0b94a"),
+    ("gaming-chair-guide", "GAMING CHAIR", "ゲーミングチェアの選び方", "#ff9bc0"),
 ]
 
 

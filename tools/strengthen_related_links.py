@@ -64,6 +64,15 @@ RELATED = {
                            "online-game-romance", "coop-game-compatibility"],
     "online-game-romance": ["gamer-couple-compatibility", "gamer-partner-tips",
                             "coop-game-compatibility", "gamer-mbti-compatibility"],
+    # クロスクラスタ橋渡し: センス能力 → 対応する上達記事
+    "sense-speed-guide": ["reaction-speed-guide", "game-skill-traits"],
+    "sense-awareness-guide": ["game-skill-traits", "fps-sense-type"],
+    "sense-spatial-guide": ["fps-sense-type", "aim-training-guide"],
+    "sense-prediction-guide": ["fps-improve-guide", "apex-improve-guide"],
+    "sense-mindgame-guide": ["valorant-improve-guide", "game-skill-traits"],
+    "sense-adaptation-guide": ["cant-win-games-guide", "game-skill-traits"],
+    "sense-pattern-guide": ["game-skill-traits", "fps-improve-guide"],
+    "sense-resource-guide": ["moba-role-type", "game-skill-traits"],
 }
 
 GRID_RE = re.compile(

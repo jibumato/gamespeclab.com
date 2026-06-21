@@ -27,6 +27,9 @@ LINK = {
     "voice-chat-tips": ("VCが苦手な人へ", "短い定型コールとマイク設定。"),
     "gamer-mbti-compatibility": ("ゲーマーMBTI相性の見方", "通話の温度と判断基準で相性を読む。"),
     "coop-game-compatibility": ("協力ゲームで相性がいい人", "役割分担で楽しく続く。"),
+    "gamer-couple-compatibility": ("ゲーマーカップルの相性", "一緒に遊ぶ二人の続け方。"),
+    "gamer-partner-tips": ("ゲーマー彼氏・彼女と楽しむコツ", "温度差をなくす関わり方。"),
+    "online-game-romance": ("オンラインゲームの恋愛", "ゲーム友達から発展する時の注意点。"),
 }
 
 # 各記事に補強する兄弟記事(優先順)
@@ -50,10 +53,22 @@ RELATED = {
     "voice-chat-tips": ["cant-win-games-guide", "gamer-mbti-compatibility",
                         "coop-game-compatibility"],
     "game-sickness-guide": ["fps-improve-guide", "reaction-speed-guide"],
+    # 恋愛・相性クラスタ
+    "gamer-mbti-compatibility": ["coop-game-compatibility", "gamer-couple-compatibility",
+                                 "gamer-partner-tips"],
+    "coop-game-compatibility": ["gamer-mbti-compatibility", "gamer-couple-compatibility",
+                                "online-game-romance"],
+    "gamer-couple-compatibility": ["gamer-partner-tips", "gamer-mbti-compatibility",
+                                   "online-game-romance", "coop-game-compatibility"],
+    "gamer-partner-tips": ["gamer-couple-compatibility", "gamer-mbti-compatibility",
+                           "online-game-romance", "coop-game-compatibility"],
+    "online-game-romance": ["gamer-couple-compatibility", "gamer-partner-tips",
+                            "coop-game-compatibility", "gamer-mbti-compatibility"],
 }
 
 GRID_RE = re.compile(
-    r'(次に読みたい関連ページ</h2>\n\s*<div class="article-pair-grid">\n)'
+    r'(次に読みたい関連(?:ページ|ガイド)</h2>\n(?: *<p>.*?</p>\n)?\s*'
+    r'<div class="article-pair-grid">\n)'
     r'(.*?)'
     r'(\n {12}</div>)', re.DOTALL)
 

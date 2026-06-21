@@ -1,0 +1,209 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <!-- Google Tag Manager -->
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-TVV88Q6L');</script>
+    <!-- End Google Tag Manager -->
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-FZRP7SHMG7"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-FZRP7SHMG7');
+    </script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="ゲーム配信の始め方を初心者向けに解説。必要な機材（PC・マイク・キャプチャ）、OBSの基本設定、YouTubeとTwitchの選び方、画質・ビットレートの目安、最初の一歩までをまとめます。" />
+    <meta name="theme-color" content="#04050d" />
+    <meta property="og:site_name" content="GameSpec Lab" />
+    <meta property="og:title" content="ゲーム配信の始め方｜機材・OBS設定・配信先の選び方 | GameSpec Lab" />
+    <meta property="og:description" content="必要な機材、OBSの基本設定、YouTubeとTwitchの選び方、画質・ビットレートの目安まで。初心者がつまずかない最初の一歩をまとめます。" />
+    <meta property="og:type" content="article" />
+    <meta property="og:url" content="https://gamespeclab.com/game-streaming-start-guide.html" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/og/game-streaming-start-guide.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="ゲーム配信の始め方｜機材・OBS設定・配信先の選び方" />
+    <meta name="twitter:description" content="必要な機材、OBSの基本設定、配信先の選び方、画質・ビットレートの目安。初心者の最初の一歩。" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/og/game-streaming-start-guide.png" />
+    <title>ゲーム配信の始め方｜機材・OBS設定・配信先の選び方 | GameSpec Lab</title>
+    <link rel="canonical" href="https://gamespeclab.com/game-streaming-start-guide.html" />
+    <link rel="icon" href="favicon.svg" />
+    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
+    <link rel="stylesheet" href="style.css?v=deep96" />
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@graph": [
+          {
+            "@type": "Article",
+            "headline": "ゲーム配信の始め方｜機材・OBS設定・配信先の選び方 | GameSpec Lab",
+            "url": "https://gamespeclab.com/game-streaming-start-guide.html",
+            "description": "ゲーム配信の始め方を初心者向けに解説。必要な機材（PC・マイク・キャプチャ）、OBSの基本設定、YouTubeとTwitchの選び方、画質・ビットレートの目安、最初の一歩までをまとめます。",
+            "author": { "@type": "Organization", "name": "GameSpec Lab" },
+            "publisher": { "@type": "Organization", "name": "GameSpec Lab" },
+            "datePublished": "2026-06-21",
+            "dateModified": "2026-06-21"
+          },
+          {
+            "@type": "FAQPage",
+            "mainEntity": [
+              {
+                "@type": "Question",
+                "name": "ゲーム配信に高性能なPCは必要ですか？",
+                "acceptedAnswer": { "@type": "Answer", "text": "プレイと配信（エンコード）を1台でこなすため、普段のプレイより少し余裕のあるスペックが安心です。最近のGPUにはハードウェアエンコーダーが載っているので、これを使えば負荷を抑えられます。重い場合は画質設定を下げる、別PCやキャプチャボードを使う方法もあります。" }
+              },
+              {
+                "@type": "Question",
+                "name": "配信先はYouTubeとTwitchどちらがいいですか？",
+                "acceptedAnswer": { "@type": "Answer", "text": "アーカイブが残り検索からも見られやすいのがYouTube、ゲーム配信のコミュニティ機能やリアルタイムの盛り上がりに強いのがTwitchです。まずは両方に同時配信せず、続けやすい方を1つ選んで慣れるのがおすすめです。" }
+              },
+              {
+                "@type": "Question",
+                "name": "ビットレートはどのくらいに設定すればいい？",
+                "acceptedAnswer": { "@type": "Answer", "text": "1080p60なら6000kbps前後が目安です。上り回線が細い場合は720p・3000〜4500kbps程度に下げると安定します。まずカクつかない設定で始め、安定してから画質を上げていきましょう。" }
+              }
+            ]
+          },
+          {
+            "@type": "BreadcrumbList",
+            "itemListElement": [
+              { "@type": "ListItem", "position": 1, "name": "GameSpec Lab", "item": "https://gamespeclab.com/" },
+              { "@type": "ListItem", "position": 2, "name": "読み物ガイド", "item": "https://gamespeclab.com/articles.html" },
+              { "@type": "ListItem", "position": 3, "name": "ゲーム配信の始め方", "item": "https://gamespeclab.com/game-streaming-start-guide.html" }
+            ]
+          }
+        ]
+      }
+    </script>
+  </head>
+  <body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TVV88Q6L"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    <header class="site-header">
+      <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+      <button class="menu-toggle" type="button" aria-label="メニューを開く" aria-expanded="false" aria-controls="site-menu"><span data-icon="menu"></span><span>MENU</span></button>
+      <nav id="site-menu" aria-label="サイト内メニュー">
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+      </nav>
+      <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
+    </header>
+    <main>
+      <section class="legal-hero article-hero">
+        <div class="legal-copy">
+          <p class="eyebrow"><span data-icon="spark"></span>GAME STREAMING</p>
+          <h1><span>ゲーム配信の始め方</span><span>機材・OBS設定・配信先の選び方</span></h1>
+          <p class="lead">ゲーム配信の始め方を初心者向けに解説。必要な機材（PC・マイク・キャプチャ）、OBSの基本設定、YouTubeとTwitchの選び方、画質・ビットレートの目安、最初の一歩までをまとめます。</p>
+        </div>
+      </section>
+      <section class="section article-section">
+        <article class="article-body">
+          <div class="article-card">
+            <p class="article-kicker">OVERVIEW</p>
+            <h2>まずは「小さく始めて続ける」が正解</h2>
+            <p>配信は機材を完璧に揃えてから始めるより、手持ちのPCとマイクで一度配信してみて、足りないところを足していく方が挫折しにくいです。最初に必要なのは高価な機材ではなく、配信ソフト（OBS）と配信先のアカウント、そして「とりあえず1回やってみる」という一歩です。ここでは最短ルートと、つまずきやすいポイントを順に解説します。</p>
+          </div>
+          <div class="gsl-figure">
+            <p class="gsl-figure-cap"><span data-icon="chart"></span>配信開始までの4ステップ</p>
+            <div class="gsl-flow"><div class="gsl-node">機材を確認</div><div class="gsl-node">OBSを設定</div><div class="gsl-node">配信先を連携</div><div class="gsl-node">テスト配信</div></div>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 1 / GEAR</p>
+            <h2>最低限そろえる機材</h2>
+            <ul class="article-list">
+              <li><strong>PC</strong><span>プレイ＋配信を1台でやるなら、普段より少し余裕のあるスペックが安心。GPUのハードウェアエンコーダーを使うと負荷を抑えられる。</span></li>
+              <li><strong>マイク</strong><span>声の聞き取りやすさは視聴維持に直結。USBマイクやヘッドセットのマイクから始めてOK。</span></li>
+              <li><strong>安定したネット回線</strong><span>重要なのは「上り（アップロード）」。有線接続だと安定しやすい。</span></li>
+              <li><strong>（任意）キャプチャボード</strong><span>PS5/Switchなど家庭用機の画面を取り込むときに使う。PCゲームなら不要。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 2 / OBS</p>
+            <h2>OBSの基本設定</h2>
+            <p>配信ソフトは無料の<strong>OBS Studio</strong>が定番です。最初に押さえる設定はこれだけ。</p>
+            <ul class="article-list">
+              <li><strong>映像</strong><span>解像度1920×1080、FPSは30か60。重ければ720pに下げる。</span></li>
+              <li><strong>出力（エンコーダー）</strong><span>GPUのハードウェアエンコーダー（NVENCなど）を選ぶとゲームへの負荷が軽い。</span></li>
+              <li><strong>ビットレート</strong><span>1080p60で6000kbps前後が目安。回線が細ければ下げる。</span></li>
+              <li><strong>音声</strong><span>マイクとゲーム音を別トラックにすると、後で音量を調整しやすい。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">STEP 3 / PLATFORM</p>
+            <h2>配信先の選び方</h2>
+            <div class="article-pair-grid">
+              <div><strong>YouTube Live</strong><p>アーカイブが残り検索やおすすめから見つけてもらいやすい。動画投稿と相性がよい。</p></div>
+              <div><strong>Twitch</strong><p>ゲーム配信のコミュニティ機能やリアルタイムの盛り上がりに強い。常連がつきやすい。</p></div>
+            </div>
+            <p>最初は同時配信せず、続けやすい方を1つ選んで慣れるのがおすすめです。配信ソフト側に「ストリームキー」を貼り付ければ連携できます。</p>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">TIPS</p>
+            <h2>続けるためのコツ</h2>
+            <ul class="article-list">
+              <li><strong>配信時間を決める</strong><span>「毎週この曜日のこの時間」と固定すると見に来てもらいやすい。</span></li>
+              <li><strong>音量バランスを整える</strong><span>マイクの声がゲーム音に埋もれないように。視聴離脱の最大要因。</span></li>
+              <li><strong>カクつき対策</strong><span>重いと感じたら解像度・FPS・ビットレートを下げる。安定してから上げる。</span></li>
+              <li><strong>無理をしない</strong><span>最初から毎日配信より、続けられるペースが結局いちばん伸びる。</span></li>
+            </ul>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">SCAN</p>
+            <h2>「映える立ち回り」も配信の武器</h2>
+            <p>配信は上手さよりキャラが大事とはいえ、安定した立ち回りは見ていて気持ちよく、視聴維持にもつながります。自分の強み・伸びしろを把握しておくと配信中のトークにも活きます。</p>
+            <a class="primary-link" href="gamesense.html"><span data-icon="arrow"></span>ゲームセンス診断で自分の強みを知る</a>
+          </div>
+          <div class="article-card">
+            <h2>次に読みたい関連ページ</h2>
+            <div class="article-pair-grid">
+              <div><strong><a href="gaming-gear-guide.html">ゲーミングデバイスの選び方</a></strong><p>揃える優先順位と各デバイスの要点。</p></div>
+              <div><strong><a href="gaming-headset-guide.html">ゲーミングヘッドセットおすすめ</a></strong><p>声を拾うマイク選びの参考に。</p></div>
+              <div><strong><a href="voice-chat-tips.html">VCが苦手な人へ</a></strong><p>話す・聞かせるの基本。配信トークにも。</p></div>
+              <div><strong><a href="gaming-desk-setup-guide.html">ゲーミングデスク環境の作り方</a></strong><p>長時間でも疲れない配信環境づくり。</p></div>
+              <div><strong><a href="game-focus-guide.html">ゲーム集中力の高め方</a></strong><p>配信中も集中を切らさないために。</p></div>
+              <div><strong><a href="gamermbti.html">ゲーマーMBTI診断</a></strong><p>自分のタイプを知ってキャラ作りに活かす。</p></div>
+            </div>
+          </div>
+          <div class="article-card">
+            <p class="article-kicker">FAQ</p>
+            <h2>よくある質問</h2>
+            <div class="article-pair-grid">
+              <div><strong>ゲーム配信に高性能なPCは必要ですか？</strong><p>プレイと配信（エンコード）を1台でこなすため、普段のプレイより少し余裕のあるスペックが安心です。最近のGPUにはハードウェアエンコーダーが載っているので、これを使えば負荷を抑えられます。重い場合は画質設定を下げる、別PCやキャプチャボードを使う方法もあります。</p></div>
+              <div><strong>配信先はYouTubeとTwitchどちらがいいですか？</strong><p>アーカイブが残り検索からも見られやすいのがYouTube、ゲーム配信のコミュニティ機能やリアルタイムの盛り上がりに強いのがTwitchです。まずは両方に同時配信せず、続けやすい方を1つ選んで慣れるのがおすすめです。</p></div>
+              <div><strong>ビットレートはどのくらいに設定すればいい？</strong><p>1080p60なら6000kbps前後が目安です。上り回線が細い場合は720p・3000〜4500kbps程度に下げると安定します。まずカクつかない設定で始め、安定してから画質を上げていきましょう。</p></div>
+            </div>
+          </div>
+          <div class="article-card affiliate-disclosure">
+            <p><span data-icon="ad"></span>本ページは配信を始めるための一般的な考え方を解説するものです。関連ガイドにはAmazonアソシエイトのリンクを含む場合があります。詳しくは<a href="affiliate-disclosure.html">広告表記</a>をご覧ください。</p>
+          </div>
+        </article>
+      </section>
+    </main>
+    <footer class="site-footer">
+      <div>
+        <a class="brand" href="index.html"><span class="brand-mark">GSL</span><span>GameSpec Lab</span></a>
+        <p>PCゲームのゲームセンス、ゲーマータイプ、相性を診断するサービスです。</p>
+      </div>
+      <nav aria-label="運営情報">
+        <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
+        <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
+        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
+        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="privacy.html"><span data-icon="shield"></span>プライバシー</a>
+        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+        <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
+      </nav>
+    </footer>
+    <script src="script.js?v=deep96"></script>
+  </body>
+</html>

@@ -50,6 +50,7 @@ PAGES = [
     ("steam-recommendation-diagnosis", "STEAM PICK", "Steamおすすめゲーム診断", "#7fe0c4"),
     ("partner", "DUO SYNC", "ゲームパートナー相性診断", "#ff9bc0"),
     ("pc-build", "PC BUILD", "ゲーミングPCの選び方", "#e0b94a"),
+    ("gaming-desk-setup-guide", "DESK SETUP", "ゲーミングデスク環境の作り方", "#5fd0e0"),
 ]
 
 

@@ -57,6 +57,7 @@ PAGES = [
     ("game-streaming-start-guide", "GAME STREAMING", "ゲーム配信の始め方", "#5fd0e0"),
     ("discord-setup-guide", "DISCORD GUIDE", "Discordの使い方・設定", "#7f8cff"),
     ("gaming-pc-lifespan-guide", "PC LIFESPAN", "ゲーミングPCの寿命・買い替え時期", "#e0b94a"),
+    ("esports-start-guide", "ESPORTS START", "e-スポーツの始め方", "#ff9bc0"),
 ]
 
 

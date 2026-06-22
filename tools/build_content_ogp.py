@@ -56,6 +56,7 @@ PAGES = [
     ("gaming-earphone-guide", "GAMING EARPHONE", "ゲーミングイヤホンの選び方", "#7fe0c4"),
     ("game-streaming-start-guide", "GAME STREAMING", "ゲーム配信の始め方", "#5fd0e0"),
     ("discord-setup-guide", "DISCORD GUIDE", "Discordの使い方・設定", "#7f8cff"),
+    ("gaming-pc-lifespan-guide", "PC LIFESPAN", "ゲーミングPCの寿命・買い替え時期", "#e0b94a"),
 ]
 
 

@@ -5835,3 +5835,37 @@ body.sense-result-ready .post-result-lab {
   color: rgb(var(--hero-accent));
   text-shadow: 0 0 14px rgb(var(--hero-accent) / 0.45);
 }
+
+/* ===== 華やかアップグレードv6：悩みリンクカードのアイコンバッジ化 ===== */
+.seo-link-grid a {
+  overflow: hidden;
+  position: relative;
+}
+.seo-link-grid a::before {
+  background: linear-gradient(90deg, var(--cyan), var(--pink) 70%, transparent);
+  content: "";
+  height: 3px;
+  left: 0;
+  opacity: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  transition: opacity 0.16s ease;
+}
+.seo-link-grid a:hover::before { opacity: 1; }
+.seo-link-grid .ui-icon {
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(114, 242, 255, 0.28);
+  box-sizing: content-box;
+  color: #02030a;
+  filter: none;
+  height: 18px;
+  padding: 8px;
+  transition: transform 0.16s ease, box-shadow 0.16s ease;
+  width: 18px;
+}
+.seo-link-grid a:hover .ui-icon {
+  box-shadow: 0 8px 24px rgba(255, 77, 210, 0.36);
+  transform: scale(1.06) rotate(-3deg);
+}

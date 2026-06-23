@@ -58,6 +58,7 @@ PAGES = [
     ("discord-setup-guide", "DISCORD GUIDE", "Discordの使い方・設定", "#7f8cff"),
     ("gaming-pc-lifespan-guide", "PC LIFESPAN", "ゲーミングPCの寿命・買い替え時期", "#e0b94a"),
     ("esports-start-guide", "ESPORTS START", "e-スポーツの始め方", "#ff9bc0"),
+    ("game-lag-fix-guide", "LAG FIX", "PCゲームが重い・カクつく時の対処", "#5fd0e0"),
 ]
 
 

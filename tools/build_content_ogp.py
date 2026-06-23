@@ -59,6 +59,7 @@ PAGES = [
     ("gaming-pc-lifespan-guide", "PC LIFESPAN", "ゲーミングPCの寿命・買い替え時期", "#e0b94a"),
     ("esports-start-guide", "ESPORTS START", "e-スポーツの始め方", "#ff9bc0"),
     ("game-lag-fix-guide", "LAG FIX", "PCゲームが重い・カクつく時の対処", "#5fd0e0"),
+    ("gaming-monitor-settings-guide", "MONITOR SETUP", "ゲーミングモニターの最適設定", "#5fd0e0"),
 ]
 
 

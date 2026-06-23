@@ -5724,3 +5724,37 @@ body.sense-result-ready .post-result-lab {
   margin-bottom: 4px;
   padding: 4px 12px;
 }
+
+/* ===== 華やかアップグレード v2：リスト/ペアグリッドのカード彩り ===== */
+.article-list li,
+.article-pair-grid > div {
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+  transition: transform 0.16s ease, background 0.16s ease, border-color 0.16s ease;
+}
+.article-list li::before,
+.article-pair-grid > div::before {
+  background: linear-gradient(180deg, var(--cyan), var(--pink));
+  bottom: 0;
+  content: "";
+  left: 0;
+  opacity: 0.55;
+  position: absolute;
+  top: 0;
+  width: 3px;
+}
+.article-list li { padding-left: 16px; }
+.article-pair-grid > div { padding-left: 16px; }
+.article-list li:hover,
+.article-pair-grid > div:hover {
+  background: rgba(114, 242, 255, 0.07);
+  border-color: rgba(114, 242, 255, 0.38);
+  transform: translateY(-2px);
+}
+.article-pair-grid a:hover strong { color: var(--cyan); }
+
+/* 記事カード右上のコーナーアクセントを少し華やかに */
+.article-card::after {
+  filter: drop-shadow(0 0 6px rgba(255, 77, 210, 0.5));
+}

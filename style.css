@@ -5869,3 +5869,17 @@ body.sense-result-ready .post-result-lab {
   box-shadow: 0 8px 24px rgba(255, 77, 210, 0.36);
   transform: scale(1.06) rotate(-3deg);
 }
+
+/* ===== 華やかアップグレードv7：セクション見出しのグラデ下線 ===== */
+.section-heading h2 {
+  position: relative;
+}
+.section-heading h2::after {
+  background: linear-gradient(90deg, transparent, var(--cyan), var(--pink), transparent);
+  border-radius: 2px;
+  content: "";
+  display: block;
+  height: 3px;
+  margin: 16px auto 0;
+  width: 72px;
+}

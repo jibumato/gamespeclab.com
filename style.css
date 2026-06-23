@@ -5662,3 +5662,65 @@ body.sense-result-ready .post-result-lab {
     grid-column: 1 / -1;
   }
 }
+
+/* ===== 華やかアップグレード v1：図版・フローの視認性と彩り強化 ===== */
+.gsl-figure {
+  background:
+    radial-gradient(120% 140% at 0% 0%, rgba(114, 242, 255, 0.10), transparent 55%),
+    rgba(255, 255, 255, 0.03);
+  border-color: rgba(114, 242, 255, 0.22);
+  border-radius: 2px;
+  overflow: hidden;
+  position: relative;
+}
+.gsl-figure::before {
+  background: linear-gradient(90deg, var(--cyan), var(--pink) 60%, var(--mint));
+  content: "";
+  height: 2px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+.gsl-figure-cap {
+  color: var(--mint);
+  text-shadow: 0 0 12px rgba(159, 255, 231, 0.35);
+}
+
+.gsl-node {
+  background:
+    linear-gradient(150deg, rgba(114, 242, 255, 0.16), rgba(255, 77, 210, 0.10) 70%),
+    rgba(255, 255, 255, 0.05);
+  border-color: rgba(114, 242, 255, 0.34);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.10),
+    0 8px 22px rgba(0, 0, 0, 0.22);
+  transition: transform 0.18s ease, box-shadow 0.18s ease, border-color 0.18s ease;
+}
+.gsl-node:hover {
+  border-color: rgba(114, 242, 255, 0.6);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 0 0 1px rgba(114, 242, 255, 0.25),
+    0 12px 30px rgba(0, 0, 0, 0.3);
+  transform: translateY(-2px);
+}
+.gsl-node b {
+  box-shadow: 0 0 12px rgba(114, 242, 255, 0.55);
+}
+.gsl-flow.is-sequence .gsl-node:not(:last-child)::after {
+  text-shadow: 0 0 10px rgba(114, 242, 255, 0.7);
+}
+
+/* 記事カードのキッカーをチップ風に華やかに */
+.article-card > .article-kicker {
+  align-items: center;
+  background: linear-gradient(90deg, rgba(255, 77, 210, 0.16), rgba(114, 242, 255, 0.12));
+  border: 1px solid rgba(255, 77, 210, 0.32);
+  border-radius: 999px;
+  color: #ffd9f4;
+  display: inline-flex;
+  gap: 6px;
+  margin-bottom: 4px;
+  padding: 4px 12px;
+}

@@ -62,6 +62,7 @@ PAGES = [
     ("gaming-monitor-settings-guide", "MONITOR SETUP", "ゲーミングモニターの最適設定", "#5fd0e0"),
     ("steam-beginner-guide", "STEAM GUIDE", "Steamの使い方", "#7fe0c4"),
     ("gaming-pc-setup-guide", "PC FIRST SETUP", "ゲーミングPCを買ったら最初にやる設定", "#e0b94a"),
+    ("game-motivation-guide", "MOTIVATION", "ゲームのモチベが続かない・飽きた時の対処", "#a7e8b0"),
 ]
 
 

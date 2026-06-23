@@ -5792,3 +5792,29 @@ body.sense-result-ready .post-result-lab {
 @media (max-width: 560px) {
   .type-axis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
 }
+
+/* ===== 華やかアップグレードv4：比較表ホバー・CTA演出 ===== */
+.compare-wrap {
+  border-color: rgba(114, 242, 255, 0.26);
+  border-radius: 2px;
+}
+.compare-table tbody tr {
+  transition: background 0.14s ease;
+}
+.compare-table tbody tr:hover td,
+.compare-table tbody tr:hover th {
+  background: rgba(114, 242, 255, 0.10);
+}
+.compare-table tbody th {
+  border-left: 2px solid rgba(255, 77, 210, 0.45);
+}
+
+.primary-link,
+.primary-button {
+  transition: transform 0.16s ease, filter 0.16s ease, box-shadow 0.16s ease;
+}
+.primary-link:hover,
+.primary-button:hover {
+  box-shadow: 0 6px 34px rgba(255, 77, 210, 0.34);
+  transform: translateY(-2px);
+}

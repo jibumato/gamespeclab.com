@@ -60,6 +60,7 @@ PAGES = [
     ("esports-start-guide", "ESPORTS START", "e-スポーツの始め方", "#ff9bc0"),
     ("game-lag-fix-guide", "LAG FIX", "PCゲームが重い・カクつく時の対処", "#5fd0e0"),
     ("gaming-monitor-settings-guide", "MONITOR SETUP", "ゲーミングモニターの最適設定", "#5fd0e0"),
+    ("steam-beginner-guide", "STEAM GUIDE", "Steamの使い方", "#7fe0c4"),
 ]
 
 

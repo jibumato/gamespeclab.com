@@ -4330,11 +4330,12 @@ body.sense-result-ready .post-result-lab {
 }
 
 .legal-hero {
+  --hero-accent: 114 242 255;
   overflow: hidden;
   background:
-    radial-gradient(72% 90% at 12% 6%, rgba(114, 242, 255, 0.16), transparent 60%),
+    radial-gradient(72% 90% at 12% 6%, rgb(var(--hero-accent) / 0.20), transparent 60%),
     radial-gradient(64% 84% at 92% 104%, rgba(255, 77, 210, 0.17), transparent 60%),
-    linear-gradient(135deg, rgba(114, 242, 255, 0.06), rgba(255, 255, 255, 0.02));
+    linear-gradient(135deg, rgb(var(--hero-accent) / 0.07), rgba(255, 255, 255, 0.02));
 }
 
 /* ヒーローのドットグリッド質感(ドット絵テーマと調和、上部だけ濃く) */
@@ -5817,4 +5818,20 @@ body.sense-result-ready .post-result-lab {
 .primary-button:hover {
   box-shadow: 0 6px 34px rgba(255, 77, 210, 0.34);
   transform: translateY(-2px);
+}
+
+/* ===== 華やかアップグレードv5：ヒーローのトピック別アクセント ===== */
+.article-hero::before {
+  background: linear-gradient(90deg, rgb(var(--hero-accent)), rgba(255, 77, 210, 0.85) 70%, transparent);
+  content: "";
+  height: 3px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+  z-index: 2;
+}
+.article-hero .eyebrow {
+  color: rgb(var(--hero-accent));
+  text-shadow: 0 0 14px rgb(var(--hero-accent) / 0.45);
 }

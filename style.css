@@ -5758,3 +5758,37 @@ body.sense-result-ready .post-result-lab {
 .article-card::after {
   filter: drop-shadow(0 0 6px rgba(255, 77, 210, 0.5));
 }
+
+/* ===== 華やかアップグレードv3：タイプ4軸ビジュアル ===== */
+.type-axis {
+  display: grid;
+  gap: 10px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+.taxis {
+  align-items: center;
+  background:
+    linear-gradient(160deg, rgba(114, 242, 255, 0.14), rgba(255, 77, 210, 0.10) 75%),
+    rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(114, 242, 255, 0.30);
+  border-radius: 2px;
+  display: grid;
+  gap: 3px;
+  justify-items: center;
+  padding: 14px 10px;
+  text-align: center;
+}
+.taxis b {
+  -webkit-background-clip: text;
+  background: linear-gradient(90deg, var(--cyan), var(--pink));
+  background-clip: text;
+  color: transparent;
+  font-size: 28px;
+  font-weight: 900;
+  line-height: 1;
+}
+.taxis span { color: var(--ink); font-size: 14px; font-weight: 800; }
+.taxis small { color: var(--muted); font-size: 11px; }
+@media (max-width: 560px) {
+  .type-axis { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+}

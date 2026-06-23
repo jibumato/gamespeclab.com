@@ -5883,3 +5883,43 @@ body.sense-result-ready .post-result-lab {
   margin: 16px auto 0;
   width: 72px;
 }
+
+/* ===== 華やかアップグレードv8：8能力カタログ ===== */
+.ability-grid {
+  display: grid;
+  gap: 12px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin: 18px 0 4px;
+}
+.ability-card {
+  align-content: start;
+  background:
+    linear-gradient(160deg, rgba(114, 242, 255, 0.10), rgba(255, 77, 210, 0.06) 75%),
+    rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(114, 242, 255, 0.26);
+  border-radius: 2px;
+  display: grid;
+  gap: 6px;
+  padding: 16px 14px;
+  transition: transform 0.16s ease, border-color 0.16s ease;
+}
+.ability-card:hover {
+  border-color: rgba(114, 242, 255, 0.55);
+  transform: translateY(-3px);
+}
+.ability-badge {
+  align-items: center;
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  border-radius: 50%;
+  box-shadow: 0 6px 18px rgba(114, 242, 255, 0.3);
+  color: #02030a;
+  display: inline-flex;
+  height: 34px;
+  justify-content: center;
+  width: 34px;
+}
+.ability-badge .ui-icon { color: #02030a; height: 18px; width: 18px; }
+.ability-card strong { color: var(--ink); font-size: 15px; }
+.ability-card small { color: var(--muted); font-size: 12px; line-height: 1.65; }
+@media (max-width: 820px) { .ability-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { .ability-grid { grid-template-columns: 1fr; } }

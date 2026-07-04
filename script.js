@@ -209,6 +209,9 @@ function trackEvent(name, detail = {}) {
     at: new Date().toISOString(),
   };
   document.documentElement.dataset.gslLastEvent = name;
+  if (Array.isArray(window.dataLayer)) {
+    window.dataLayer.push({ event: `gsl_${name}`, ...detail });
+  }
   try {
     const current = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '[]');
     localStorage.setItem(ANALYTICS_KEY, JSON.stringify([event, ...current].slice(0, 80)));
@@ -1810,6 +1813,7 @@ function renderGamerMbtiResult(type, scores) {
           <p>この診断はMBTI風の分類をゲーム内の行動傾向へ翻訳したエンタメ診断です。公式なMBTI検査や心理検査ではありません。</p>
         </div>
         <div class="result-actions">
+          <a class="primary-link" href="gamer-mbti-${type.code.toLowerCase()}.html">${icon('arrow')}このタイプを深掘りする</a>
           ${renderShareButtons('mbti')}
           <button class="ghost-button" type="button" id="reset-mbti-quiz">${icon('target')}もう一度診断</button>
           <a class="ghost-link" href="results.html#mbti-results">${icon('list')}16タイプ一覧</a>

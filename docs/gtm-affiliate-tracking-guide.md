@@ -148,3 +148,34 @@
 - トリガーが発火しない → Click URLの条件文字列と、実際のリンクURLが一致しているか（`amazon.co.jp/s?k=` の部分に大文字小文字・全角半角の違いがないか）を確認。
 - `affiliate_id` が空になる → 属性名が `data-affiliate`（ハイフンの位置）になっているか、対象要素がリンク（`<a>`タグ）自体か確認。
 - GA4に何も届かない → 手順4の測定ID（`G-FZRP7SHMG7`）が正しいか、GTMコンテナが「公開済み」状態になっているか確認。
+
+---
+
+## 9. 追補：診断・シェアの熱量もdataLayerに流れるようになりました
+
+`script.js` の `trackEvent()` に `window.dataLayer.push({ event: 'gsl_<名前>', ...詳細 })` を追加したため、
+Amazonリンクのクリックだけでなく、**診断の開始・完了・シェアボタンのクリック**もすべてGTMから拾えるようになっています。
+Playwrightでの動作確認済み（診断完走・シェアクリックそれぞれでdataLayerへの送信を確認済み）。
+
+### 使える主なイベント名（`event: "gsl_○○"` の形でdataLayerに入ります）
+
+| イベント名 | 発生タイミング | 主なパラメータ |
+|---|---|---|
+| `gsl_gamer_mbti_start` | ゲーマーMBTI診断の最初の質問に回答した時 | — |
+| `gsl_gamer_mbti_complete` | ゲーマーMBTI診断が完了した時 | `code`（例: `INTJ`）, `title` |
+| `gsl_gamer_mbti_type_page_open` | タイプ個別ページを開いた時 | — |
+| `gsl_sense_diagnosis_start` / `gsl_sense_diagnosis_complete` | GameSense Scan 8の開始／完了 | — |
+| `gsl_diagnosis_start` / `gsl_diagnosis_complete` | 汎用の診断開始／完了 | — |
+| `gsl_pc_diagnosis_start` / `gsl_pc_diagnosis_complete` | プレイ環境メモ（pc-build）診断の開始／完了 | — |
+| `gsl_mbti_share_click` / `gsl_mbti_share_x` / `gsl_mbti_share_line` | MBTI結果画面のシェアボタン（共有／X／LINE）クリック | `code` |
+| `gsl_sense_share_click` / `gsl_sense_share_x` / `gsl_sense_share_line` | GameSense結果画面のシェアボタンクリック | `archetype` |
+| `gsl_affiliate_click` | Amazonリンククリック（本編の手順で計測しているものと同じ発生源） | `id`, `href`, `text` |
+
+### GTMでの拾い方（ページビュー計測とは別に、追加で1トリガー・1タグ作るだけ）
+
+本編（手順3・4）と同じ要領で、次の2つを作ればOKです。
+
+1. **トリガー**：種類「カスタムイベント」→ イベント名に `gsl_.*`（正規表現一致にチェック）を指定すると、上記の`gsl_`で始まるイベントを1つのトリガーでまとめて拾えます。
+2. **タグ**：GA4イベントタグを新規作成し、イベント名を `{{Event}}`（組み込み変数）に設定。パラメータが必要な場合は「変数」画面で「イベント内の変数」からデータレイヤー変数（例：`code`, `archetype`, `id`）を作成し、イベントパラメータとして追加してください。
+
+これで「診断完了率」「シェア率（開始→シェアの割合）」「シェア経由でタイプページに来た人が、さらにAmazonリンクを踏む率」まで、GA4のレポートで一気通貫に追えるようになります。

@@ -10,7 +10,7 @@
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "deep105"
+VER = "deep106"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->
@@ -654,11 +654,11 @@ def build(a):
     <meta property="og:description" content="{a['desc']}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="{url}" />
-    <meta property="og:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta property="og:image" content="https://gamespeclab.com/assets/og/index.png" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="{a['h1']}｜{a['h1sub']}" />
     <meta name="twitter:description" content="{a['desc']}" />
-    <meta name="twitter:image" content="https://gamespeclab.com/assets/diagnosis-sync-bg.png" />
+    <meta name="twitter:image" content="https://gamespeclab.com/assets/og/index.png" />
     <title>{a['title']}</title>
     <link rel="canonical" href="{url}" />
     <link rel="icon" href="favicon.svg" />

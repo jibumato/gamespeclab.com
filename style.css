@@ -308,8 +308,7 @@ body.menu-open .menu-backdrop {
     linear-gradient(90deg, rgba(4, 5, 13, 0.98) 0%, rgba(4, 5, 13, 0.78) 38%, rgba(4, 5, 13, 0.36) 72%),
     linear-gradient(180deg, transparent 68%, #04050d 100%),
     image-set(
-      url("assets/diagnosis-sync-bg.webp") type("image/webp"),
-      url("assets/diagnosis-sync-bg.png") type("image/png")
+      url("assets/diagnosis-sync-bg.webp") type("image/webp")
     );
   background-position: center;
   background-size: cover;
@@ -518,8 +517,7 @@ body.gamer-mbti-result-ready .gamer-mbti-hero .result-panel {
     radial-gradient(circle at 22% 20%, rgba(255, 77, 210, 0.22), transparent 30rem),
     radial-gradient(circle at 80% 12%, rgba(184, 255, 106, 0.16), transparent 24rem),
     image-set(
-      url("assets/diagnosis-sync-bg.webp") type("image/webp"),
-      url("assets/diagnosis-sync-bg.png") type("image/png")
+      url("assets/diagnosis-sync-bg.webp") type("image/webp")
     );
 }
 
@@ -4904,8 +4902,7 @@ body.sense-result-ready .post-result-lab {
     background-image:
       linear-gradient(180deg, rgba(4, 5, 13, 0.98) 0%, rgba(4, 5, 13, 0.86) 58%, rgba(4, 5, 13, 0.68) 100%),
       image-set(
-        url("assets/diagnosis-sync-bg.webp") type("image/webp"),
-        url("assets/diagnosis-sync-bg.png") type("image/png")
+        url("assets/diagnosis-sync-bg.webp") type("image/webp")
       );
     min-height: 78svh;
     padding-top: 64px;

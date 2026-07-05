@@ -382,8 +382,8 @@ function drawHoloSheen(ctx, W, H) {
   ctx.restore();
 }
 
-function drawSparkles(ctx) {
-  const points = [[150, 240, 14], [930, 190, 10], [990, 560, 16], [120, 700, 9], [880, 1120, 12], [200, 1180, 8]];
+function drawSparkles(ctx, points) {
+  points = points || [[150, 240, 14], [930, 190, 10], [990, 560, 16], [120, 700, 9], [880, 1120, 12], [200, 1180, 8]];
   ctx.save();
   ctx.lineCap = 'round';
   points.forEach(([x, y, r]) => {
@@ -715,30 +715,63 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
+  const leftAcc = mbtiCard.accent || [114, 242, 255];
+  const rightAcc = senseCard.accent || [255, 77, 210];
+  const leftCss = cardAccentCss(leftAcc);
+  const rightCss = cardAccentCss(rightAcc);
+  const hasLegendary = mbtiCard.rarity.accent === 'legendary' || senseCard.rarity.accent === 'legendary';
+
   const bg = ctx.createLinearGradient(0, 0, W, H);
   bg.addColorStop(0, CARD_COLORS.bg1);
   bg.addColorStop(1, CARD_COLORS.bg0);
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  const glowA = ctx.createRadialGradient(260, 260, 0, 260, 260, 380);
-  glowA.addColorStop(0, 'rgba(255, 77, 210, 0.22)');
-  glowA.addColorStop(1, 'rgba(255, 77, 210, 0)');
+  // 左右で各タイプ色のグロー
+  const glowA = ctx.createRadialGradient(260, 300, 0, 260, 300, 400);
+  glowA.addColorStop(0, cardAccentCss(leftAcc, 0.24));
+  glowA.addColorStop(1, cardAccentCss(leftAcc, 0));
   ctx.fillStyle = glowA;
   ctx.fillRect(0, 0, W, H);
-  const glowB = ctx.createRadialGradient(940, 380, 0, 940, 380, 380);
-  glowB.addColorStop(0, 'rgba(114, 242, 255, 0.22)');
-  glowB.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  const glowB = ctx.createRadialGradient(W - 260, 300, 0, W - 260, 300, 400);
+  glowB.addColorStop(0, cardAccentCss(rightAcc, 0.24));
+  glowB.addColorStop(1, cardAccentCss(rightAcc, 0));
   ctx.fillStyle = glowB;
   ctx.fillRect(0, 0, W, H);
 
   ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
   for (let y = 0; y < H; y += 6) ctx.fillRect(0, y, W, 2);
 
-  ctx.strokeStyle = CARD_COLORS.cyan;
-  ctx.lineWidth = 3;
-  roundRectPath(ctx, 22, 22, W - 44, H - 44, 30);
-  ctx.stroke();
+  // LEGENDARYを含むならホロ光沢＋箔枠
+  if (hasLegendary) {
+    ctx.save();
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.05)';
+    [-60, 30].forEach((off) => {
+      ctx.beginPath();
+      ctx.moveTo(W * 0.2 + off, -50);
+      ctx.lineTo(W * 0.34 + off, -50);
+      ctx.lineTo(W * 0.14 + off, H + 50);
+      ctx.lineTo(0 + off, H + 50);
+      ctx.closePath();
+      ctx.fill();
+    });
+    ctx.restore();
+    const foil = ctx.createLinearGradient(0, 0, W, H);
+    HOLO_FOIL_COLORS.forEach((color, index) => foil.addColorStop(index / (HOLO_FOIL_COLORS.length - 1), color));
+    ctx.strokeStyle = foil;
+    ctx.lineWidth = 5;
+    roundRectPath(ctx, 22, 22, W - 44, H - 44, 30);
+    ctx.stroke();
+  } else {
+    // 外枠は左右のタイプ色を結ぶグラデ
+    const frame = ctx.createLinearGradient(0, 0, W, 0);
+    frame.addColorStop(0, leftCss);
+    frame.addColorStop(1, rightCss);
+    ctx.strokeStyle = frame;
+    ctx.lineWidth = 3;
+    roundRectPath(ctx, 22, 22, W - 44, H - 44, 30);
+    ctx.stroke();
+  }
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.1)';
   ctx.lineWidth = 1;
   roundRectPath(ctx, 32, 32, W - 64, H - 64, 24);
@@ -754,18 +787,26 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   const rightCx = W - 262;
   const centerY = 300;
 
-  const drawPortrait = async (cx, cardData) => {
+  const drawPortrait = async (cx, cardData, accRgb) => {
     const size = portraitSize;
     const x = cx - size / 2;
     const y = centerY - size / 2;
-    const accent = RARITY_CARD_ACCENT[cardData.rarity.accent] || RARITY_CARD_ACCENT.common;
+    const orbGlow = ctx.createRadialGradient(cx, centerY, 0, cx, centerY, size * 0.75);
+    orbGlow.addColorStop(0, cardAccentCss(accRgb, 0.28));
+    orbGlow.addColorStop(1, cardAccentCss(accRgb, 0));
+    ctx.fillStyle = orbGlow;
+    ctx.fillRect(x - 40, y - 40, size + 80, size + 80);
     ctx.save();
-    ctx.fillStyle = 'rgba(7, 12, 27, 0.88)';
+    ctx.fillStyle = 'rgba(7, 12, 27, 0.9)';
     roundRectPath(ctx, x, y, size, size, 36);
     ctx.fill();
-    const grad = ctx.createLinearGradient(x, y, x + size, y + size);
-    accent.forEach((color, index) => grad.addColorStop(index / Math.max(1, accent.length - 1), color));
-    ctx.strokeStyle = grad;
+    if (cardData.rarity.accent === 'legendary') {
+      const foil = ctx.createLinearGradient(x, y, x + size, y + size);
+      HOLO_FOIL_COLORS.forEach((color, index) => foil.addColorStop(index / (HOLO_FOIL_COLORS.length - 1), color));
+      ctx.strokeStyle = foil;
+    } else {
+      ctx.strokeStyle = cardAccentCss(accRgb);
+    }
     ctx.lineWidth = 4;
     ctx.stroke();
     ctx.restore();
@@ -781,9 +822,10 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
     }
   };
 
-  await drawPortrait(leftCx, mbtiCard);
-  await drawPortrait(rightCx, senseCard);
+  await drawPortrait(leftCx, mbtiCard, leftAcc);
+  await drawPortrait(rightCx, senseCard, rightAcc);
 
+  ctx.textAlign = 'center';
   ctx.font = `900 42px ${CARD_MONO}`;
   ctx.fillStyle = CARD_COLORS.softPink;
   ctx.fillText('×', W / 2, centerY + 14);
@@ -795,8 +837,9 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   const footerY = H - 46;
 
   ctx.font = `800 15px ${CARD_MONO}`;
-  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.fillStyle = leftCss;
   ctx.fillText(mbtiResult.type.code, leftCx, codeY);
+  ctx.fillStyle = rightCss;
   ctx.fillText(senseCard.code, rightCx, codeY);
 
   ctx.font = `900 25px ${CARD_FONT}`;
@@ -814,6 +857,10 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   ctx.font = `800 16px ${CARD_MONO}`;
   ctx.fillStyle = CARD_COLORS.muted;
   ctx.fillText(`PLAYER ID: ${idCode}`, W / 2, playerIdY);
+
+  if (hasLegendary) {
+    drawSparkles(ctx, [[70, 120, 12], [1130, 120, 11], [60, 560, 10], [1140, 560, 13], [W / 2, 120, 9]]);
+  }
 
   ctx.textAlign = 'left';
   ctx.font = `800 22px ${CARD_MONO}`;

@@ -32,15 +32,13 @@ def resolve_thumb(slug):
     return None
 
 
-# トップページはファーストビュー最優先で短く保つため、サムネイル対象から除外する
-SKIP_FILES = {"index.html"}
+# トップページは thumb-side クラス(右側スモールサムネイル)で高さを維持しつつ適用する。
+# CSSでOGP右側のピクセルモチーフ部分だけを正方形に切り出して表示する。
 
 
 def main():
     total = 0
     for path in sorted(glob.glob(os.path.join(ROOT, "*.html"))):
-        if os.path.basename(path) in SKIP_FILES:
-            continue
         html = open(path, encoding="utf-8").read()
         counter = {"n": 0}
 

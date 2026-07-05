@@ -6127,6 +6127,34 @@ body.sense-result-ready .post-result-lab {
   transform: scale(1.04);
 }
 
+/* トップページ用: 右側スモールサムネイル(高さを増やさない) */
+.thumb-side a {
+  align-items: center;
+  grid-template-columns: minmax(0, 1fr) 88px;
+  grid-template-rows: auto auto auto;
+  min-height: 0;
+}
+
+.thumb-side .seo-thumb {
+  border: 1px solid rgba(114, 242, 255, 0.28);
+  border-bottom: 1px solid rgba(114, 242, 255, 0.28);
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  margin: 0;
+}
+
+.thumb-side .seo-thumb img {
+  aspect-ratio: 3 / 4;
+  object-fit: cover;
+  object-position: 100% 50%;
+}
+
+.thumb-side a > span[data-icon],
+.thumb-side a > strong,
+.thumb-side a > small {
+  grid-column: 1;
+}
+
 @media (prefers-reduced-motion: reduce) {
   .seo-thumb img {
     transition: none;

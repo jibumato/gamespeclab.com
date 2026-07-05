@@ -1738,6 +1738,86 @@ p {
 .progress-track {
   height: 12px;
   margin: 14px 0 28px;
+  position: relative;
+}
+
+.progress-track::before {
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.9), transparent);
+  content: "";
+  inset: 0;
+  opacity: 0;
+  pointer-events: none;
+  position: absolute;
+  transform: translateX(-120%);
+  z-index: 2;
+}
+
+.progress-track.milestone-hit {
+  animation: quiz-milestone-pulse 820ms ease-out;
+}
+
+.progress-track.milestone-hit::before {
+  animation: quiz-milestone-sweep 820ms ease-out;
+}
+
+@keyframes quiz-milestone-sweep {
+  0% { opacity: 0; transform: translateX(-120%); }
+  25% { opacity: 1; }
+  100% { opacity: 0; transform: translateX(120%); }
+}
+
+@keyframes quiz-milestone-pulse {
+  0%, 100% { border-color: rgba(114, 242, 255, 0.14); box-shadow: none; }
+  40% { border-color: rgba(114, 242, 255, 0.9); box-shadow: 0 0 26px rgba(114, 242, 255, 0.7); }
+}
+
+/* 最終問：パネルをゴールド化して「あと1問」を強調 */
+.quiz-panel.final-question {
+  border-color: rgba(255, 215, 106, 0.55);
+  box-shadow:
+    0 24px 80px var(--shadow),
+    inset 0 1px 0 rgba(255, 255, 255, 0.08),
+    0 0 34px rgba(255, 215, 106, 0.18);
+}
+
+.quiz-panel.final-question::after {
+  border-right-color: rgba(255, 215, 106, 0.7);
+  border-top-color: rgba(255, 215, 106, 0.7);
+}
+
+.quiz-panel.final-question::before {
+  animation: quiz-final-badge 1.5s ease-in-out infinite;
+  background: linear-gradient(120deg, #ffd76a, #ff9d5c);
+  border-radius: 999px;
+  box-shadow: 0 0 18px rgba(255, 215, 106, 0.5);
+  color: #1a1200;
+  content: "🏁 ラストクエスチョン";
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  left: 20px;
+  letter-spacing: 0.02em;
+  padding: 4px 12px;
+  position: absolute;
+  top: -12px;
+  white-space: nowrap;
+  z-index: 4;
+}
+
+.quiz-panel.final-question .progress-track span {
+  background: linear-gradient(90deg, #ffd76a, #ff9d5c, #ffd76a);
+  box-shadow: 0 0 20px rgba(255, 215, 106, 0.6);
+}
+
+@keyframes quiz-final-badge {
+  0%, 100% { transform: translateY(0); }
+  50% { transform: translateY(-2px); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .progress-track.milestone-hit,
+  .progress-track.milestone-hit::before,
+  .quiz-panel.final-question::before { animation: none; }
 }
 
 .progress-track span,

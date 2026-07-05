@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep121"
+VER = "deep122"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->

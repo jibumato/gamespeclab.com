@@ -3217,6 +3217,29 @@ function updatePostResultLab(archetype, normalizedScores) {
   if (communityCopy) communityCopy.textContent = `あなたは「${primaryLabel} × ${secondaryLabel}」の組み合わせ。結果画面の相性TOP3から、噛み合いやすい相棒タイプを見つけられます。`;
 }
 
+const QUIZ_MILESTONES = [25, 50, 75];
+// 進捗の節目（25/50/75%）で一瞬フラッシュ、最終問でパネルをゴールド化して離脱を防ぐ。
+function applyQuizProgressFx(prefix, progress, answered, total) {
+  const bar = document.querySelector(`#${prefix}-progress`);
+  if (!bar) return;
+  const track = bar.closest('.progress-track');
+  const panel = bar.closest('.quiz-panel');
+  panel?.classList.toggle('final-question', total > 0 && answered === total - 1);
+
+  const prev = Number(bar.dataset.lastProgress || 0);
+  bar.dataset.lastProgress = String(progress);
+  if (!track) return;
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  const hit = QUIZ_MILESTONES.filter((m) => prev < m && progress >= m).pop();
+  if (!hit) return;
+  track.classList.remove('milestone-hit');
+  void track.offsetWidth; // reflow to restart the flash animation
+  track.dataset.milestone = String(hit);
+  track.classList.add('milestone-hit');
+  window.setTimeout(() => track.classList.remove('milestone-hit'), 900);
+}
+
 function renderSenseQuiz() {
   const keys = Object.keys(senseLabels);
   const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
@@ -3230,6 +3253,7 @@ function renderSenseQuiz() {
   document.querySelector('#sense-step').textContent = complete ? '結果' : `質問 ${senseAnswers.length + 1} / ${senseQuestions.length}`;
   document.querySelector('#sense-progress-text').textContent = `${progress}%`;
   document.querySelector('#sense-progress').style.width = `${progress}%`;
+  applyQuizProgressFx('sense', progress, senseAnswers.length, senseQuestions.length);
   document.querySelector('#sense-preview-name').textContent = archetype.name;
   document.querySelector('#sense-preview-catch').textContent = archetype.catchline;
   document.querySelector('#sense-score-preview').innerHTML = renderScoreGrid(normalizedScores, senseLabels);
@@ -3317,6 +3341,7 @@ function renderGamerMbtiQuiz() {
   document.querySelector('#mbti-step').textContent = complete ? '結果' : `質問 ${gamerMbtiAnswers.length + 1} / ${mbtiQuestions.length}`;
   document.querySelector('#mbti-progress-text').textContent = `${progress}%`;
   document.querySelector('#mbti-progress').style.width = `${progress}%`;
+  applyQuizProgressFx('mbti', progress, gamerMbtiAnswers.length, mbtiQuestions.length);
   document.querySelector('#mbti-preview-code').textContent = previewType.code;
   document.querySelector('#mbti-preview-name').textContent = previewType.title;
   document.querySelector('#mbti-preview-catch').textContent = previewType.catchline;
@@ -3696,6 +3721,7 @@ function renderQuiz() {
   document.querySelector('#quiz-step').textContent = complete ? '結果' : `質問 ${answers.length + 1} / ${questions.length}`;
   document.querySelector('#quiz-progress-text').textContent = `${progress}%`;
   document.querySelector('#quiz-progress').style.width = `${progress}%`;
+  applyQuizProgressFx('quiz', progress, answers.length, questions.length);
   document.querySelector('#preview-name').textContent = result.name;
   document.querySelector('#preview-catch').textContent = result.catchline;
   document.querySelector('#score-preview').innerHTML = renderScoreGrid(scores, traitLabels);
@@ -3850,6 +3876,7 @@ function renderPcQuiz() {
   document.querySelector('#pc-step').textContent = complete ? '結果' : `質問 ${pcAnswers.length + 1} / ${pcQuestions.length}`;
   document.querySelector('#pc-progress-text').textContent = `${progress}%`;
   document.querySelector('#pc-progress').style.width = `${progress}%`;
+  applyQuizProgressFx('pc', progress, pcAnswers.length, pcQuestions.length);
   document.querySelector('#pc-preview').innerHTML = renderPcCard(build);
   document.querySelector('#pc-score-preview').innerHTML = renderScoreGrid(scores, pcNeedLabels);
   document.querySelector('#pc-detail').innerHTML = complete ? renderPcCard(build) : renderPcWaitingCard(build);

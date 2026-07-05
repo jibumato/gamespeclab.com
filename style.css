@@ -4529,12 +4529,86 @@ body.sense-result-ready .post-result-lab {
 }
 
 .device-pick {
-  background: rgba(255, 255, 255, 0.035);
-  border: 1px solid rgba(114, 242, 255, 0.18);
+  background:
+    linear-gradient(160deg, rgba(114, 242, 255, 0.06), rgba(255, 77, 210, 0.045)),
+    rgba(255, 255, 255, 0.035);
+  border: 1px solid rgba(114, 242, 255, 0.2);
   display: grid;
   gap: 12px;
   margin-top: 14px;
   padding: 16px;
+  position: relative;
+  transition: border-color 200ms ease, box-shadow 200ms ease, transform 200ms ease;
+}
+
+.device-pick:hover {
+  border-color: rgba(114, 242, 255, 0.5);
+  box-shadow: 0 18px 46px rgba(4, 8, 20, 0.5);
+  transform: translateY(-2px);
+}
+
+.device-pick-banner {
+  align-items: center;
+  border-bottom: 1px solid rgba(114, 242, 255, 0.14);
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  padding-bottom: 12px;
+}
+
+.device-rank-orb {
+  align-items: center;
+  background:
+    radial-gradient(circle at 50% 30%, rgba(255, 77, 210, 0.22), transparent 70%),
+    rgba(7, 12, 27, 0.85);
+  border: 1px solid rgba(114, 242, 255, 0.4);
+  border-radius: 14px;
+  box-shadow: 0 0 20px rgba(114, 242, 255, 0.18);
+  display: inline-flex;
+  height: 52px;
+  justify-content: center;
+  position: relative;
+  width: 52px;
+}
+
+.device-rank-orb b {
+  background: linear-gradient(120deg, var(--cyan), var(--pink));
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 24px;
+  font-weight: 900;
+}
+
+.device-rank-orb .ui-icon {
+  background: rgba(4, 7, 18, 0.92);
+  border: 1px solid rgba(114, 242, 255, 0.4);
+  border-radius: 8px;
+  bottom: -8px;
+  color: var(--cyan);
+  height: 24px;
+  padding: 4px;
+  position: absolute;
+  right: -8px;
+  width: 24px;
+}
+
+.device-rank-tag {
+  align-items: center;
+  color: var(--cyan);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 6px;
+  letter-spacing: 0.12em;
+}
+
+.device-rank-tag .ui-icon {
+  color: var(--soft-pink);
+  height: 14px;
+  width: 14px;
 }
 
 .device-pick-head {
@@ -4543,6 +4617,11 @@ body.sense-result-ready .post-result-lab {
   flex-wrap: wrap;
   gap: 10px 14px;
   justify-content: space-between;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .device-pick { transition: none; }
+  .device-pick:hover { transform: none; }
 }
 
 .device-pick-head h3 {

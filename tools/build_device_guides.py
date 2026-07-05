@@ -13,7 +13,7 @@ from urllib.parse import urlencode
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep108"
+VER = "deep109"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->
@@ -154,7 +154,7 @@ MOUSE = {
 
 KEYBOARD = {
     "slug": "gaming-keyboard-guide",
-    "icon": "cpu",
+    "icon": "keyboard",
     "eyebrow": "GAMING KEYBOARD GUIDE",
     "h1": "ゲーミングキーボードおすすめ",
     "h1sub": "磁気軸・ラピッドトリガーを軸にした深掘り比較ガイド",
@@ -339,7 +339,7 @@ HEADSET = {
 
 MOUSEPAD = {
     "slug": "gaming-mousepad-guide",
-    "icon": "target",
+    "icon": "mousepad",
     "eyebrow": "GAMING MOUSEPAD GUIDE",
     "h1": "ゲーミングマウスパッドおすすめ",
     "h1sub": "素材・タイプ・サイズで選ぶ深掘り比較ガイド",
@@ -546,8 +546,12 @@ def render_specs(specs):
     return f'              <dl class="spec-table">\n{rows}\n              </dl>'
 
 
-def render_product(p, idx, dev_icon):
+def render_product(p, idx, dev_icon, dev_label):
     return f"""            <article class="device-pick">
+              <div class="device-pick-banner">
+                <span class="device-rank-orb"><b>{idx:02d}</b><span data-icon="{dev_icon}"></span></span>
+                <span class="device-rank-tag"><span data-icon="spark"></span>{dev_label} · PICK {idx:02d}</span>
+              </div>
               <div class="device-pick-head">
                 <h3>{p['name']}</h3>
                 <a class="primary-link" href="{amz(p['q'])}" target="_blank" rel="noopener sponsored" data-affiliate="dev-{idx}"><span data-icon="cart"></span>Amazonで見る</a>
@@ -557,8 +561,8 @@ def render_product(p, idx, dev_icon):
             </article>"""
 
 
-def render_category(cat, start_idx, dev_icon):
-    prods = "\n".join(render_product(p, start_idx + i, dev_icon)
+def render_category(cat, start_idx, dev_icon, dev_label):
+    prods = "\n".join(render_product(p, start_idx + i, dev_icon, dev_label)
                       for i, p in enumerate(cat["items"]))
     return f"""          <div class="article-card">
             <p class="article-kicker">{cat['kicker']}</p>
@@ -696,8 +700,9 @@ def build(dev):
     url = f"{BASE}/{dev['slug']}.html"
     cats_html = []
     idx = 1
+    dev_label = dev["eyebrow"].replace(" GUIDE", "")
     for cat in dev["cats"]:
-        html, idx = render_category(cat, idx, dev["icon"])
+        html, idx = render_category(cat, idx, dev["icon"], dev_label)
         cats_html.append(html)
     categories = "\n".join(cats_html)
     axes = render_axes(dev["axes"])

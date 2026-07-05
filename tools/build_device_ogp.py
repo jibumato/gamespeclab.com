@@ -6,7 +6,10 @@
 出力: assets/og/<slug>.png
 """
 import os
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw, ImageFont, ImageFilter, ImageChops
+
+CYAN = (114, 242, 255)
+PINK = (255, 77, 210)
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 OUT = os.path.join(ROOT, "assets", "og")
@@ -148,39 +151,76 @@ def fit(d, path, text, max_w, start):
     return font(path, 28)
 
 
+def glow_layer(size, blobs):
+    """加算合成用のネオングロー層(ぼかしたカラーの塊)を作る."""
+    layer = Image.new("RGB", size, (0, 0, 0))
+    d = ImageDraw.Draw(layer)
+    for cx, cy, r, color, strength in blobs:
+        col = tuple(int(c * strength) for c in color)
+        d.ellipse([cx - r, cy - r, cx + r, cy + r], fill=col)
+    return layer.filter(ImageFilter.GaussianBlur(120))
+
+
 def build(slug, en, jp, accent, drawfn):
     Wd, Hd = 1200, 630
-    base = (10, 11, 24)
+    base = (8, 10, 22)
     ac = hx(accent)
+    ac3 = ac[:3]
     img = Image.new("RGB", (Wd, Hd), base)
-    d = ImageDraw.Draw(img)
+    # 縦グラデーション(下に向けてアクセント寄り)
     for y in range(Hd):
         f = y / Hd
-        img.paste(tuple(int(base[i] + (ac[i] * 0.32 - base[i]) * f) for i in range(3)),
+        img.paste(tuple(int(base[i] + (ac3[i] * 0.16 - base[i]) * f) for i in range(3)),
                   (0, y, Wd, y + 1))
-    for gy in range(0, Hd, 40):
-        for gx in range(0, Wd, 40):
+    # ネオングロー(アート背後にアクセント、右上シアン、下ピンク)
+    img = ImageChops.add(img, glow_layer((Wd, Hd), [
+        (300, 316, 250, ac3, 0.55),
+        (1050, 110, 260, CYAN, 0.26),
+        (900, 560, 240, PINK, 0.20),
+    ]))
+    # スキャンライン
+    scan = Image.new("RGBA", (Wd, Hd), (0, 0, 0, 0))
+    sd = ImageDraw.Draw(scan)
+    for y in range(0, Hd, 4):
+        sd.line([(0, y), (Wd, y)], fill=(0, 0, 0, 26))
+    img = Image.alpha_composite(img.convert("RGBA"), scan).convert("RGB")
+    d = ImageDraw.Draw(img)
+    # ドットグリッド
+    for gy in range(0, Hd, 44):
+        for gx in range(0, Wd, 44):
             d.point((gx, gy), fill=(255, 255, 255))
-    # 左パネル
-    d.rounded_rectangle([60, 90, 520, 540], radius=28, fill=(0, 0, 0),
-                        outline=ac[:3], width=4)
-    # ドット絵
+    # 左パネル(二重枠 + コーナーアクセント)
+    d.rounded_rectangle([60, 96, 520, 536], radius=30, fill=(6, 9, 20), outline=ac3, width=4)
+    d.rounded_rectangle([70, 106, 510, 526], radius=24, outline=(255, 255, 255), width=1)
+    d.line([(496, 100), (516, 100)], fill=PINK, width=3)
+    d.line([(516, 100), (516, 120)], fill=PINK, width=3)
+    # ドット絵(拡大)
     cv = Cv()
     drawfn(cv, ac)
     add_outline(cv)
-    sc = 7
+    sc = 8
     art = cv.img.resize((GW * sc, GH * sc), Image.NEAREST)
-    img.paste(art, (int(290 - art.width / 2), int(315 - art.height / 2)), art)
+    img.paste(art, (int(290 - art.width / 2), int(316 - art.height / 2)), art)
+    d = ImageDraw.Draw(img)
 
     tx = 580
-    f_en = fit(d, LATIN_FONT, en, Wd - tx - 40, 120)
-    f_jp = fit(d, JP_FONT, jp, Wd - tx - 40, 56)
-    d.text((tx, 150), en, font=f_en, fill=ac[:3])
+    # PICKSピル
+    pill = "★ GEAR PICKS"
+    fp = font(JP_FONT, 28)
+    pw = d.textlength(pill, font=fp)
+    d.rounded_rectangle([tx, 118, tx + pw + 34, 164], radius=23, fill=(6, 9, 20), outline=ac3, width=2)
+    d.text((tx + 17, 125), pill, font=fp, fill=ac3)
+    # EN(ヒーロー)
+    f_en = fit(d, LATIN_FONT, en, Wd - tx - 40, 108)
+    d.text((tx, 190), en, font=f_en, fill=ac3)
+    # JP(下線 + 白)
+    f_jp = fit(d, JP_FONT, jp, Wd - tx - 40, 54)
     jw = d.textlength(jp, font=f_jp)
-    d.rectangle([tx + 4, 286, tx + 4 + jw, 292], fill=ac[:3])
-    d.text((tx + 4, 302), jp, font=f_jp, fill=(255, 255, 255))
-    d.text((tx + 4, 452), "ゲーミングデバイスガイド", font=font(JP_FONT, 30), fill=(200, 205, 225))
-    d.text((tx + 4, 500), "GameSpec Lab", font=font(JP_FONT, 34), fill=ac[:3])
+    d.rectangle([tx + 4, 318, tx + 4 + jw, 324], fill=ac3)
+    d.text((tx + 4, 336), jp, font=f_jp, fill=(232, 240, 255))
+    # サブ + ブランド
+    d.text((tx + 4, 452), "厳選ゲーミングデバイスガイド", font=font(JP_FONT, 30), fill=(200, 205, 225))
+    d.text((tx + 4, 500), "GameSpec Lab", font=font(JP_FONT, 34), fill=ac3)
 
     os.makedirs(OUT, exist_ok=True)
     img.save(os.path.join(OUT, f"{slug}.png"))

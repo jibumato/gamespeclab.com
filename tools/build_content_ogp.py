@@ -383,7 +383,9 @@ def build(slug, eyebrow, title, accent):
         for gx in range(0, Wd, 44):
             d.point((gx, gy), fill=(255, 255, 255))
     # 右パネル(モチーフ用の二重枠)
-    px1, py1, px2, py2 = 770, 140, 1110, 490
+    # ※トップページの右側サムネイル(3:4切り出し、窓=x727〜1200)で
+    #   パネルが中央に来るよう、窓の中心(x964)にパネル中心を合わせる
+    px1, py1, px2, py2 = 794, 140, 1134, 490
     d.rounded_rectangle([px1, py1, px2, py2], radius=28, fill=(6, 9, 20), outline=ac, width=3)
     d.rounded_rectangle([px1 + 9, py1 + 9, px2 - 9, py2 - 9], radius=22,
                         outline=(255, 255, 255), width=1)
@@ -402,7 +404,8 @@ def build(slug, eyebrow, title, accent):
     # 左の発光バー
     d.rectangle([80, 150, 92, 480], fill=ac)
     mx = 120
-    max_w = px1 - mx - 46
+    # タイトルがサムネイル切り出し窓(x727〜)に入り込まないよう幅を固定
+    max_w = 604
     # eyebrow
     f_eye = font(LATIN_FONT, 34)
     d.text((mx, 150), eyebrow, font=f_eye, fill=ac)

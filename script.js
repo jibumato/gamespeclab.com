@@ -3162,7 +3162,7 @@ function renderSenseQuiz() {
     const question = senseQuestions[senseAnswers.length];
     document.querySelector('#sense-quiz-box').innerHTML = `
       <div class="question-dialogue">
-        <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
+        <img src="assets/pipo-result.webp" alt="" width="960" height="640" loading="lazy" decoding="async" />
         <div>
           <span>${icon('chart')}ピポの認知スキャン</span>
           <p>24問でゲーム中の認知スキルを分解します。直感に近い選択をどうぞ。</p>

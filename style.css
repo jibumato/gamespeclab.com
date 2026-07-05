@@ -6078,6 +6078,15 @@ body.sense-result-ready .post-result-lab {
   max-width: 1120px;
 }
 
+.hub-link-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  max-width: 920px;
+}
+
+.hub-link-grid a {
+  padding: 20px;
+}
+
 .seo-link-grid a {
   align-items: flex-start;
   background:

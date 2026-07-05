@@ -11,9 +11,11 @@ Amazonアソシエイト(検索リンク, tag=jbmt-22)付き。
 import os
 from urllib.parse import urlencode
 
+import build_hero_motifs as hm
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep122"
+VER = "deep123"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->
@@ -781,12 +783,12 @@ def build(dev):
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
     <main>
-      <section class="legal-hero article-hero">
+      <section class="legal-hero article-hero"{hm.hero_section_attrs(dev['slug'])}>
         <div class="legal-copy">
           <p class="eyebrow"><span data-icon="{dev['icon']}"></span>{dev['eyebrow']}</p>
           <h1><span>{dev['h1']}</span><span>{dev['h1sub']}</span></h1>
           <p class="lead">{dev['lead']}</p>
-        </div>
+        </div>{hm.motif_html(dev['slug'])}
       </section>
       <section class="section article-section">
         <article class="article-body">

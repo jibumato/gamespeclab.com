@@ -9,8 +9,10 @@
 """
 import os
 
+import build_hero_motifs as hm
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "deep122"
+VER = "deep123"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->
@@ -709,12 +711,12 @@ def build(a):
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
     <main>
-      <section class="legal-hero article-hero">
+      <section class="legal-hero article-hero"{hm.hero_section_attrs(a['slug'])}>
         <div class="legal-copy">
           <p class="eyebrow"><span data-icon="{a['icon']}"></span>{a['eyebrow']}</p>
           <h1><span>{a['h1']}</span><span>{a['h1sub']}</span></h1>
           <p class="lead">{a['desc']}</p>
-        </div>
+        </div>{hm.motif_html(a['slug'])}
       </section>
       <section class="section article-section">
         <article class="article-body">

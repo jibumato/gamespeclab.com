@@ -11,9 +11,11 @@ Amazonアソシエイト(検索リンク, tag=jbmt-22)付きで掲載する静�
 import os
 from urllib.parse import urlencode
 
+import build_hero_motifs as hm
+
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 TAG = "jbmt-22"
-VER = "deep122"
+VER = "deep123"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->
@@ -299,12 +301,12 @@ def build():
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
     <main>
-      <section class="legal-hero article-hero">
+      <section class="legal-hero article-hero"{hm.hero_section_attrs("gaming-monitor-guide")}>
         <div class="legal-copy">
           <p class="eyebrow"><span data-icon="monitor"></span>GAMING MONITOR GUIDE</p>
           <h1><span>ゲーミングモニターおすすめ</span><span>用途別の選び方と、いま選ばれている本命モデル</span></h1>
           <p class="lead">価格.comなどのレビューや人気傾向をもとに、競技FPSからWQHD・4K・有機ELまで用途別に整理しました。まず「リフレッシュレート・解像度・パネル」の3点だけ押さえれば、失敗しにくくなります。</p>
-        </div>
+        </div>{hm.motif_html("gaming-monitor-guide")}
       </section>
       <section class="section article-section">
         <article class="article-body">

@@ -6667,6 +6667,52 @@ body.sense-result-ready .post-result-lab {
   text-shadow: 0 0 14px rgb(var(--hero-accent) / 0.45);
 }
 
+/* 記事ヒーロー右側のピクセルモチーフ(OGPと同じドット絵をアクセントグロー付きで) */
+.legal-hero.article-hero > .article-hero-motif {
+  animation: hero-motif-float 5.5s ease-in-out infinite;
+  pointer-events: none;
+  position: absolute;
+  right: clamp(12px, 5vw, 92px);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 0;
+}
+
+.article-hero-motif img {
+  filter:
+    drop-shadow(0 0 24px rgb(var(--hero-accent) / 0.55))
+    drop-shadow(0 8px 16px rgba(0, 0, 0, 0.5));
+  height: auto;
+  image-rendering: pixelated;
+  opacity: 0.9;
+  width: clamp(88px, 13vw, 168px);
+}
+
+@keyframes hero-motif-float {
+  0%, 100% { transform: translateY(-50%); }
+  50% { transform: translateY(calc(-50% - 10px)); }
+}
+
+@media (max-width: 640px) {
+  .legal-hero.article-hero > .article-hero-motif {
+    right: 8px;
+    top: 20px;
+    transform: none;
+  }
+  .article-hero-motif img {
+    opacity: 0.6;
+    width: 74px;
+  }
+  @keyframes hero-motif-float {
+    0%, 100% { transform: none; }
+    50% { transform: translateY(-8px); }
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .article-hero-motif { animation: none; }
+}
+
 /* ===== 華やかアップグレードv6：悩みリンクカードのアイコンバッジ化 ===== */
 .seo-link-grid a {
   overflow: hidden;

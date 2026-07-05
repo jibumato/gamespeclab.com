@@ -297,6 +297,360 @@ function attachShareHandlers(kind, { text, url, hashtags, title, track = {} }) {
   });
 }
 
+// ==== 結果カード画像（Canvas生成・保存/シェア） ====
+const CARD_COLORS = {
+  bg0: '#070c1b',
+  bg1: '#0d1730',
+  ink: '#f2f7ff',
+  muted: '#9badc9',
+  cyan: '#72f2ff',
+  pink: '#ff4dd2',
+  softPink: '#ffb7e9',
+  gold: '#ffd76a',
+  line: 'rgba(114, 242, 255, 0.28)',
+};
+
+const RARITY_CARD_ACCENT = {
+  legendary: ['#ff4dd2', '#ffd76a', '#72f2ff'],
+  epic: ['#c484ff', '#ff8adf'],
+  rare: ['#72f2ff', '#6a7dff'],
+  common: ['#9badc9', '#72f2ff'],
+};
+
+function loadImage(src) {
+  return new Promise((resolve) => {
+    const img = new Image();
+    img.decoding = 'async';
+    img.onload = () => resolve(img);
+    img.onerror = () => resolve(null);
+    img.src = src;
+  });
+}
+
+function roundRectPath(ctx, x, y, width, height, radius) {
+  const r = Math.min(radius, width / 2, height / 2);
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.arcTo(x + width, y, x + width, y + height, r);
+  ctx.arcTo(x + width, y + height, x, y + height, r);
+  ctx.arcTo(x, y + height, x, y, r);
+  ctx.arcTo(x, y, x + width, y, r);
+  ctx.closePath();
+}
+
+function wrapCanvasText(ctx, text, maxWidth) {
+  const chars = Array.from(text || '');
+  const lines = [];
+  let line = '';
+  chars.forEach((char) => {
+    const test = line + char;
+    if (ctx.measureText(test).width > maxWidth && line) {
+      lines.push(line);
+      line = char;
+    } else {
+      line = test;
+    }
+  });
+  if (line) lines.push(line);
+  return lines;
+}
+
+const CARD_FONT = "'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, sans-serif";
+const CARD_MONO = "ui-monospace, 'SFMono-Regular', Menlo, monospace";
+
+async function drawResultCard(data) {
+  const W = 1080;
+  const H = 1350;
+  const canvas = document.createElement('canvas');
+  canvas.width = W;
+  canvas.height = H;
+  const ctx = canvas.getContext('2d');
+
+  // 背景
+  const bg = ctx.createLinearGradient(0, 0, W, H);
+  bg.addColorStop(0, CARD_COLORS.bg1);
+  bg.addColorStop(1, CARD_COLORS.bg0);
+  ctx.fillStyle = bg;
+  ctx.fillRect(0, 0, W, H);
+
+  const glowA = ctx.createRadialGradient(W * 0.24, H * 0.2, 0, W * 0.24, H * 0.2, W * 0.7);
+  glowA.addColorStop(0, 'rgba(255, 77, 210, 0.22)');
+  glowA.addColorStop(1, 'rgba(255, 77, 210, 0)');
+  ctx.fillStyle = glowA;
+  ctx.fillRect(0, 0, W, H);
+  const glowB = ctx.createRadialGradient(W * 0.82, H * 0.7, 0, W * 0.82, H * 0.7, W * 0.7);
+  glowB.addColorStop(0, 'rgba(114, 242, 255, 0.18)');
+  glowB.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  ctx.fillStyle = glowB;
+  ctx.fillRect(0, 0, W, H);
+
+  // スキャンライン
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
+  for (let y = 0; y < H; y += 6) ctx.fillRect(0, y, W, 2);
+
+  // 枠
+  const accent = RARITY_CARD_ACCENT[data.rarity.accent] || RARITY_CARD_ACCENT.common;
+  const frame = ctx.createLinearGradient(0, 0, W, H);
+  accent.forEach((color, index) => frame.addColorStop(index / Math.max(1, accent.length - 1), color));
+  ctx.strokeStyle = frame;
+  ctx.lineWidth = 4;
+  roundRectPath(ctx, 26, 26, W - 52, H - 52, 34);
+  ctx.stroke();
+  ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+  ctx.lineWidth = 1;
+  roundRectPath(ctx, 40, 40, W - 80, H - 80, 26);
+  ctx.stroke();
+
+  // ヘッダー
+  ctx.textBaseline = 'alphabetic';
+  ctx.font = `800 26px ${CARD_MONO}`;
+  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.textAlign = 'left';
+  ctx.fillText('◤ GAMESPEC LAB', 72, 96);
+  ctx.font = `800 24px ${CARD_MONO}`;
+  ctx.fillStyle = CARD_COLORS.softPink;
+  ctx.textAlign = 'right';
+  ctx.fillText(data.label, W - 72, 96);
+
+  // キャラクターオーブ
+  const orbSize = 400;
+  const orbX = (W - orbSize) / 2;
+  const orbY = 150;
+  const orbGlow = ctx.createRadialGradient(W / 2, orbY + orbSize * 0.42, 0, W / 2, orbY + orbSize * 0.42, orbSize * 0.7);
+  orbGlow.addColorStop(0, 'rgba(114, 242, 255, 0.28)');
+  orbGlow.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  ctx.fillStyle = orbGlow;
+  ctx.fillRect(orbX - 40, orbY - 40, orbSize + 80, orbSize + 80);
+  ctx.save();
+  ctx.fillStyle = 'rgba(7, 12, 27, 0.82)';
+  roundRectPath(ctx, orbX, orbY, orbSize, orbSize, 56);
+  ctx.fill();
+  ctx.strokeStyle = frame;
+  ctx.lineWidth = 3;
+  ctx.stroke();
+  ctx.restore();
+
+  if (data.image) {
+    const img = await loadImage(data.image);
+    if (img && img.width) {
+      const pad = 54;
+      const maxW = orbSize - pad * 2;
+      const maxH = orbSize - pad * 2;
+      const scale = Math.min(maxW / img.width, maxH / img.height);
+      const dw = img.width * scale;
+      const dh = img.height * scale;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(img, W / 2 - dw / 2, orbY + orbSize / 2 - dh / 2, dw, dh);
+      ctx.imageSmoothingEnabled = true;
+    }
+  }
+
+  // レアリティ
+  const rarityY = orbY + orbSize + 66;
+  ctx.textAlign = 'center';
+  ctx.font = `900 34px ${CARD_MONO}`;
+  const rarityGrad = ctx.createLinearGradient(W / 2 - 260, 0, W / 2 + 260, 0);
+  accent.forEach((color, index) => rarityGrad.addColorStop(index / Math.max(1, accent.length - 1), color));
+  ctx.fillStyle = data.rarity.accent === 'common' ? CARD_COLORS.muted : rarityGrad;
+  ctx.fillText(`${data.rarity.tier}  ${data.rarity.label}`, W / 2, rarityY);
+  ctx.font = `900 30px ${CARD_FONT}`;
+  ctx.fillStyle = CARD_COLORS.gold;
+  const stars = '★'.repeat(data.rarity.stars) + '☆'.repeat(Math.max(0, 5 - data.rarity.stars));
+  ctx.fillText(stars, W / 2, rarityY + 44);
+  ctx.font = `800 26px ${CARD_FONT}`;
+  ctx.fillStyle = CARD_COLORS.muted;
+  ctx.fillText(data.rarity.percentLabel, W / 2, rarityY + 88);
+
+  // タイプ名
+  let cursorY = rarityY + 168;
+  ctx.fillStyle = CARD_COLORS.ink;
+  ctx.font = `900 62px ${CARD_FONT}`;
+  const nameLines = wrapCanvasText(ctx, data.name, W - 180);
+  nameLines.slice(0, 2).forEach((lineText) => {
+    ctx.fillText(lineText, W / 2, cursorY);
+    cursorY += 74;
+  });
+
+  // コード / サブ
+  ctx.font = `800 28px ${CARD_MONO}`;
+  ctx.fillStyle = CARD_COLORS.cyan;
+  const codeLines = wrapCanvasText(ctx, data.code, W - 180);
+  ctx.fillText(codeLines[0] || '', W / 2, cursorY + 6);
+  cursorY += 52;
+
+  // キャッチ
+  ctx.font = `600 30px ${CARD_FONT}`;
+  ctx.fillStyle = CARD_COLORS.softPink;
+  const catchLines = wrapCanvasText(ctx, data.catchline, W - 180);
+  catchLines.slice(0, 2).forEach((lineText) => {
+    ctx.fillText(lineText, W / 2, cursorY + 8);
+    cursorY += 42;
+  });
+
+  // バー
+  const bars = (data.bars || []).slice(0, 3);
+  let barY = Math.max(cursorY + 40, H - 320);
+  const barX = 96;
+  const barW = W - barX * 2;
+  ctx.textAlign = 'left';
+  bars.forEach((bar) => {
+    ctx.font = `800 26px ${CARD_FONT}`;
+    ctx.fillStyle = CARD_COLORS.ink;
+    ctx.fillText(bar.label, barX, barY - 12);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = CARD_COLORS.cyan;
+    ctx.font = `900 26px ${CARD_MONO}`;
+    ctx.fillText(String(bar.value), barX + barW, barY - 12);
+    ctx.textAlign = 'left';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    roundRectPath(ctx, barX, barY, barW, 16, 8);
+    ctx.fill();
+    const fillW = Math.max(18, (Math.min(100, Math.max(6, bar.value)) / 100) * barW);
+    const barGrad = ctx.createLinearGradient(barX, 0, barX + barW, 0);
+    barGrad.addColorStop(0, CARD_COLORS.cyan);
+    barGrad.addColorStop(1, CARD_COLORS.pink);
+    ctx.fillStyle = barGrad;
+    roundRectPath(ctx, barX, barY, fillW, 16, 8);
+    ctx.fill();
+    barY += 62;
+  });
+
+  // フッター
+  ctx.textAlign = 'left';
+  ctx.font = `800 24px ${CARD_MONO}`;
+  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.fillText('gamespeclab.com', 72, H - 62);
+  ctx.textAlign = 'right';
+  ctx.fillStyle = CARD_COLORS.muted;
+  ctx.fillText('#GameSpecLab で診断結果をシェア', W - 72, H - 62);
+
+  return canvas;
+}
+
+function canvasToBlob(canvas) {
+  return new Promise((resolve) => {
+    if (canvas.toBlob) canvas.toBlob((blob) => resolve(blob), 'image/png');
+    else resolve(null);
+  });
+}
+
+function getMbtiCardData(type, scores) {
+  const bars = mbtiAxisPairs.map(([left, right]) => {
+    const leftValue = scores[left] || 0;
+    const rightValue = scores[right] || 0;
+    const winner = leftValue >= rightValue ? left : right;
+    const percent = Math.round((Math.max(leftValue, rightValue) / Math.max(1, leftValue + rightValue)) * 100);
+    return { label: `${winner} · ${mbtiAxisLabels[winner]}`, value: percent };
+  });
+  return {
+    kind: 'mbti',
+    label: 'GAMER MBTI',
+    image: `assets/types/${type.code.toLowerCase()}.png`,
+    code: `参考コード ${type.code}`,
+    name: type.title,
+    catchline: type.catchline,
+    rarity: getMbtiRarity(type.code),
+    bars,
+  };
+}
+
+function getSenseCardData(archetype, normalizedScores) {
+  const top3 = rankScores(normalizedScores).slice(0, 3);
+  return {
+    kind: 'sense',
+    label: 'GAMESENSE SCAN 8',
+    image: `assets/types/sense-${archetype.primary}-guide.png`,
+    code: `${senseLabels[archetype.primary]} × ${senseLabels[archetype.secondary]}`,
+    name: archetype.name,
+    catchline: archetype.catchline,
+    rarity: getSenseRarity(archetype),
+    bars: top3.map(([key, value]) => ({ label: senseLabels[key], value })),
+  };
+}
+
+function renderResultCardStudio(kind) {
+  return `
+    <section class="card-studio" data-card-studio="${kind}" aria-label="結果カード画像">
+      <div class="card-studio-copy">
+        <span>${icon('spark')}SHARE CARD</span>
+        <strong>結果をカード画像でシェア</strong>
+        <p>スクショより綺麗な公式カードを1枚で作成。保存してSNSにそのまま投稿できます。</p>
+      </div>
+      <div class="card-studio-body">
+        <button class="primary-button" type="button" data-card-generate>${icon('share')}カード画像を作成</button>
+      </div>
+    </section>
+  `;
+}
+
+function attachCardStudio(kind, data, shareMeta) {
+  const studio = document.querySelector(`[data-card-studio="${kind}"]`);
+  if (!studio || studio.dataset.cardBound === 'true') return;
+  studio.dataset.cardBound = 'true';
+  const body = studio.querySelector('.card-studio-body');
+  const generateButton = studio.querySelector('[data-card-generate]');
+  if (!body || !generateButton) return;
+
+  generateButton.addEventListener('click', async () => {
+    trackEvent(`${kind}_card_generate`, shareMeta.track || {});
+    generateButton.disabled = true;
+    generateButton.innerHTML = `${icon('spark')}カードを生成中...`;
+    let canvas = null;
+    try {
+      canvas = await drawResultCard(data);
+    } catch (error) {
+      canvas = null;
+    }
+    if (!canvas) {
+      generateButton.disabled = false;
+      generateButton.innerHTML = `${icon('share')}もう一度作成`;
+      return;
+    }
+    const blob = await canvasToBlob(canvas);
+    const dataUrl = canvas.toDataURL('image/png');
+    const filename = `gamespeclab-${kind}-${(data.code || 'result').replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'card'}`;
+
+    body.innerHTML = `
+      <figure class="card-studio-preview">
+        <img src="${dataUrl}" alt="${data.name}の結果カード" width="1080" height="1350" />
+      </figure>
+      <div class="card-studio-buttons">
+        <button class="primary-button" type="button" data-card-share>${icon('share')}保存・シェア</button>
+        <button class="ghost-button" type="button" data-card-redo>${icon('target')}作り直す</button>
+      </div>
+      <p class="card-studio-hint">${icon('check')}画像を長押し／右クリックでも保存できます。</p>
+    `;
+
+    const shareButton = body.querySelector('[data-card-share]');
+    shareButton?.addEventListener('click', async () => {
+      trackEvent(`${kind}_card_share`, shareMeta.track || {});
+      const file = blob ? new File([blob], `${filename}.png`, { type: 'image/png' }) : null;
+      if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+        try {
+          await navigator.share({ files: [file], text: shareMeta.text, title: shareMeta.title });
+          return;
+        } catch (error) {
+          if (error?.name === 'AbortError') return;
+        }
+      }
+      const url = blob ? URL.createObjectURL(blob) : dataUrl;
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = `${filename}.png`;
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      if (blob) window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+    });
+
+    body.querySelector('[data-card-redo]')?.addEventListener('click', () => {
+      body.innerHTML = `<button class="primary-button" type="button" data-card-generate>${icon('share')}カード画像を作成</button>`;
+      studio.dataset.cardBound = 'false';
+      attachCardStudio(kind, data, shareMeta);
+    });
+  });
+}
+
 function restoreResultScroll(selector, force = false) {
   const hasResultHash = /^#(?:result=|sense=|mbti=)/.test(location.hash);
   if (!force && !hasResultHash) return;
@@ -1792,6 +2146,7 @@ function renderGamerMbtiResult(type, scores) {
       })}
       <div class="result-content">
         ${renderTypeSpotlight(`assets/types/${type.code.toLowerCase()}.png`, type.code, type.title)}
+        ${renderRarityBadge(getMbtiRarity(type.code))}
         <div class="result-dialogue">
           <div>
             <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
@@ -1808,6 +2163,7 @@ function renderGamerMbtiResult(type, scores) {
           <a class="primary-link" href="gamer-mbti-${type.code.toLowerCase()}.html">${icon('arrow')}このタイプを深掘りする</a>
           ${renderShareButtons('mbti', 'top')}
         </div>
+        ${renderResultCardStudio('mbti')}
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
@@ -2000,6 +2356,80 @@ function rankScores(scores) {
   return Object.entries(scores).sort((a, b) => b[1] - a[1]);
 }
 
+// 希少度（レアリティ）計算。MBTIはMBTI理論分布ベースの出現率、
+// GameSenseは8能力の重み付けから56アーキタイプ内での希少度ランクを算出する。
+const MBTI_POPULATION = {
+  ISFJ: 13.8, ESFJ: 12.3, ISTJ: 11.6, ISFP: 8.8, ESTJ: 8.7, ESFP: 8.5,
+  ENFP: 8.1, ISTP: 5.4, INFP: 4.4, ESTP: 4.3, INTP: 3.3, ENTP: 3.2,
+  ENFJ: 2.5, INTJ: 2.1, ENTJ: 1.8, INFJ: 1.5,
+};
+
+const SENSE_RARITY_WEIGHT = {
+  awareness: 0.18, speed: 0.16, prediction: 0.14, spatial: 0.13,
+  adaptation: 0.12, pattern: 0.11, resource: 0.09, mindgame: 0.07,
+};
+
+function rarityTierFromPercent(percent) {
+  if (percent <= 2.5) return { tier: 'LEGENDARY', label: '超激レア', stars: 5, accent: 'legendary' };
+  if (percent <= 5) return { tier: 'EPIC', label: '激レア', stars: 4, accent: 'epic' };
+  if (percent <= 9) return { tier: 'RARE', label: 'レア', stars: 3, accent: 'rare' };
+  return { tier: 'COMMON', label: '定番', stars: 2, accent: 'common' };
+}
+
+function getMbtiRarity(code) {
+  const percent = MBTI_POPULATION[code] ?? 6;
+  const tier = rarityTierFromPercent(percent);
+  return {
+    ...tier,
+    percent,
+    percentLabel: `全体の約${percent}%`,
+    note: '16タイプの出現率（MBTI理論分布ベース）',
+  };
+}
+
+function getSenseRarity(archetype) {
+  const keys = Object.keys(SENSE_RARITY_WEIGHT);
+  const denom = 1 - keys.reduce((sum, key) => sum + SENSE_RARITY_WEIGHT[key] ** 2, 0);
+  const pairs = [];
+  keys.forEach((primary) => keys.forEach((secondary) => {
+    if (primary === secondary) return;
+    const share = (SENSE_RARITY_WEIGHT[primary] * SENSE_RARITY_WEIGHT[secondary]) / denom;
+    pairs.push([primary, secondary, share]);
+  }));
+  pairs.sort((a, b) => a[2] - b[2]);
+  const total = pairs.length;
+  const rank = pairs.findIndex(([primary, secondary]) => primary === archetype.primary && secondary === archetype.secondary) + 1;
+  const safeRank = rank > 0 ? rank : Math.ceil(total / 2);
+  const topPercent = Math.max(1, Math.round((safeRank / total) * 100));
+  let tier;
+  if (safeRank <= 6) tier = { tier: 'LEGENDARY', label: '超激レア', stars: 5, accent: 'legendary' };
+  else if (safeRank <= 16) tier = { tier: 'EPIC', label: '激レア', stars: 4, accent: 'epic' };
+  else if (safeRank <= 33) tier = { tier: 'RARE', label: 'レア', stars: 3, accent: 'rare' };
+  else tier = { tier: 'COMMON', label: '王道', stars: 2, accent: 'common' };
+  const percentLabel = tier.accent === 'common'
+    ? 'みんなに愛される王道アーキタイプ'
+    : `希少度 上位${topPercent}%`;
+  return {
+    ...tier,
+    rank: safeRank,
+    total,
+    percent: topPercent,
+    percentLabel,
+    note: `全${total}アーキタイプ中${safeRank}番目の希少度`,
+  };
+}
+
+function renderRarityBadge(rarity) {
+  const stars = '★'.repeat(rarity.stars) + '☆'.repeat(Math.max(0, 5 - rarity.stars));
+  return `
+    <div class="rarity-badge is-${rarity.accent}" role="img" aria-label="希少度 ${rarity.label}。${rarity.percentLabel}">
+      <span class="rarity-tier">${icon('trophy')}${rarity.tier}<b>${rarity.label}</b></span>
+      <span class="rarity-stars" aria-hidden="true">${stars}</span>
+      <span class="rarity-percent">${icon('spark')}${rarity.percentLabel}</span>
+    </div>
+  `;
+}
+
 function getSenseArchetype(normalizedScores) {
   const ranked = rankScores(normalizedScores);
   const primary = ranked[0]?.[0] || 'awareness';
@@ -2056,7 +2486,7 @@ function renderRadarChart(scores, labels, icons) {
       <span>${String(index + 1).padStart(2, '0')}</span>
       <strong>${icon(icons[key] || 'target')}${labels[key]}</strong>
       <div class="mini-track"><span style="width:${Math.max(8, value)}%"></span></div>
-      <em>${value}</em>
+      <em data-count-to="${value}">${value}</em>
     </div>
   `).join('');
   return `
@@ -2091,7 +2521,7 @@ function renderTopSenseAbilities(scores) {
               <div class="top-ability-rank">
                 <span>${String(rank).padStart(2, '0')}</span>
                 <small>${rankLabels[index]}</small>
-                <b>${value}</b>
+                <b data-count-to="${value}">${value}</b>
               </div>
               <h3>${icon(senseIcons[key] || 'target')}${senseLabels[key]}</h3>
               <p>${profile.gift}</p>
@@ -2189,6 +2619,7 @@ function renderSenseResult(archetype, normalizedScores) {
       })}
       <div class="result-content">
         ${renderTypeSpotlight(`assets/types/sense-${archetype.primary}-guide.png`, primaryLabel, archetype.name)}
+        ${renderRarityBadge(getSenseRarity(archetype))}
         <div class="result-dialogue">
           <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
             <div class="sense-core-orb is-primary">
@@ -2213,6 +2644,7 @@ function renderSenseResult(archetype, normalizedScores) {
         <div class="result-actions result-actions-top">
           ${renderShareButtons('sense', 'top')}
         </div>
+        ${renderResultCardStudio('sense')}
         ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
         ${renderTopSenseAbilities(normalizedScores)}
         ${renderSenseMatrix(archetype)}
@@ -2412,6 +2844,11 @@ function renderSenseQuiz() {
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name },
   });
+  attachCardStudio('sense', getSenseCardData(archetype, normalizedScores), {
+    text: `GameSense Scan 8で「${archetype.name}」でした！ ${typeShareUrl(`sense-${archetype.primary}-guide.html`)}`,
+    title: 'GameSense Scan 8',
+    track: { archetype: archetype.name },
+  });
 }
 
 function renderGamerMbtiQuiz() {
@@ -2486,6 +2923,11 @@ function renderGamerMbtiQuiz() {
     text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！${type.catchline}`,
     url: typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`),
     hashtags: 'ゲーマーMBTI,GameSpecLab',
+    title: 'ゲーマーMBTIタイプ診断',
+    track: { code: type.code },
+  });
+  attachCardStudio('mbti', getMbtiCardData(type, scores), {
+    text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！ ${typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`)}`,
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code },
   });
@@ -2566,7 +3008,7 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
 function renderTypeSpotlight(image, code, title) {
   return `
     <div class="result-type-spotlight" aria-label="${title}のキャラクター">
-      <div class="type-spotlight-orb">
+      <div class="type-spotlight-orb is-holo" data-holo>
         <img class="type-spotlight-char" src="${image}" alt="${title}のドット絵キャラクター" width="200" height="220" loading="lazy" decoding="async" />
       </div>
       <span class="type-spotlight-badge">${icon('spark')}YOUR TYPE${code ? ` · ${code}` : ''}</span>
@@ -2664,12 +3106,83 @@ function activateResultReveal() {
       content.style.overflow = 'visible';
       content.style.transform = 'none';
     }
+    animateResultCharts(content || sequence, reduced);
   };
   if (reduced) {
     finish();
     return;
   }
   window.setTimeout(finish, 1450);
+}
+
+function setupHoloTilt(root, reduced) {
+  if (!root || reduced) return;
+  root.querySelectorAll('[data-holo]').forEach((orb) => {
+    if (orb.dataset.holoBound === 'true') return;
+    orb.dataset.holoBound = 'true';
+    let raf = null;
+    const apply = (px, py) => {
+      if (raf) return;
+      raf = window.requestAnimationFrame(() => {
+        raf = null;
+        const rx = (0.5 - py) * 14;
+        const ry = (px - 0.5) * 14;
+        orb.style.setProperty('--holo-x', `${(px - 0.5) * 120}%`);
+        orb.style.setProperty('--holo-y', `${(py - 0.5) * 120}%`);
+        orb.style.transform = `perspective(680px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    };
+    const reset = () => {
+      if (raf) window.cancelAnimationFrame(raf);
+      raf = null;
+      orb.classList.remove('is-tilting');
+      orb.style.removeProperty('--holo-x');
+      orb.style.removeProperty('--holo-y');
+      orb.style.transform = '';
+    };
+    const fromEvent = (event) => {
+      const point = event.touches ? event.touches[0] : event;
+      if (!point) return;
+      orb.classList.add('is-tilting');
+      const rect = orb.getBoundingClientRect();
+      apply((point.clientX - rect.left) / rect.width, (point.clientY - rect.top) / rect.height);
+    };
+    orb.addEventListener('pointermove', fromEvent);
+    orb.addEventListener('pointerleave', reset);
+    orb.addEventListener('touchmove', fromEvent, { passive: true });
+    orb.addEventListener('touchend', reset);
+  });
+}
+
+function animateResultCharts(root, reduced) {
+  if (!root || reduced) return;
+  setupHoloTilt(root, reduced);
+  root.querySelectorAll('.radar-score').forEach((poly) => {
+    poly.classList.add('is-charged');
+  });
+  root.querySelectorAll('[data-count-to]').forEach((node) => {
+    const target = Number(node.dataset.countTo) || 0;
+    if (!target) return;
+    const duration = 850;
+    let startTime = null;
+    const step = (now) => {
+      if (startTime === null) startTime = now;
+      const progress = Math.min(1, (now - startTime) / duration);
+      const eased = 1 - Math.pow(1 - progress, 3);
+      node.textContent = String(Math.round(target * eased));
+      if (progress < 1) window.requestAnimationFrame(step);
+      else node.textContent = String(target);
+    };
+    window.requestAnimationFrame(step);
+  });
+  root.querySelectorAll('.mini-track > span, .mbti-axis-track > span').forEach((bar) => {
+    const targetWidth = bar.style.width;
+    if (!targetWidth) return;
+    bar.style.width = '0%';
+    window.requestAnimationFrame(() => window.requestAnimationFrame(() => {
+      bar.style.width = targetWidth;
+    }));
+  });
 }
 
 function renderSyncCodeDetail(profile) {

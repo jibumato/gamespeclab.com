@@ -335,6 +335,74 @@ const RARITY_CARD_ACCENT = {
   common: ['#9badc9', '#72f2ff'],
 };
 
+// 静的タイプページの --type-accent と同じ値（結果カードのタイプ別テーマ色）
+const MBTI_CARD_ACCENTS = {
+  ISTJ: [139, 163, 216], ISFJ: [199, 206, 221], INFJ: [127, 217, 196], INTJ: [157, 139, 224],
+  ISTP: [207, 214, 226], ISFP: [224, 160, 80], INFP: [167, 232, 196], INTP: [165, 148, 230],
+  ESTP: [255, 210, 74], ESFP: [255, 224, 122], ENFP: [255, 224, 122], ENTP: [255, 210, 74],
+  ESTJ: [224, 185, 74], ESFJ: [255, 155, 192], ENFJ: [255, 210, 74], ENTJ: [224, 185, 74],
+};
+
+const SENSE_CARD_ACCENTS = {
+  awareness: [127, 224, 240], prediction: [179, 167, 255], pattern: [127, 224, 196],
+  spatial: [155, 192, 255], speed: [255, 210, 74], resource: [255, 224, 122],
+  mindgame: [255, 155, 214], adaptation: [167, 232, 176],
+};
+
+function cardAccentCss(rgb, alpha = 1) {
+  return `rgba(${rgb[0]}, ${rgb[1]}, ${rgb[2]}, ${alpha})`;
+}
+
+const HOLO_FOIL_COLORS = ['#ff4dd2', '#ffd76a', '#72f2ff', '#b8ff6a', '#ff4dd2'];
+
+function drawHoloFrame(ctx, W, H) {
+  const foil = ctx.createLinearGradient(0, 0, W, H);
+  HOLO_FOIL_COLORS.forEach((color, index) => {
+    foil.addColorStop(index / (HOLO_FOIL_COLORS.length - 1), color);
+  });
+  ctx.strokeStyle = foil;
+  ctx.lineWidth = 6;
+  roundRectPath(ctx, 26, 26, W - 52, H - 52, 34);
+  ctx.stroke();
+  return foil;
+}
+
+function drawHoloSheen(ctx, W, H) {
+  ctx.save();
+  ctx.fillStyle = 'rgba(255, 255, 255, 0.055)';
+  [-80, 40].forEach((off) => {
+    ctx.beginPath();
+    ctx.moveTo(W * 0.15 + off, -50);
+    ctx.lineTo(W * 0.42 + off, -50);
+    ctx.lineTo(W * 0.05 + off, H + 50);
+    ctx.lineTo(-W * 0.22 + off, H + 50);
+    ctx.closePath();
+    ctx.fill();
+  });
+  ctx.restore();
+}
+
+function drawSparkles(ctx) {
+  const points = [[150, 240, 14], [930, 190, 10], [990, 560, 16], [120, 700, 9], [880, 1120, 12], [200, 1180, 8]];
+  ctx.save();
+  ctx.lineCap = 'round';
+  points.forEach(([x, y, r]) => {
+    ctx.strokeStyle = CARD_COLORS.gold;
+    ctx.lineWidth = 3;
+    ctx.beginPath();
+    ctx.moveTo(x - r, y); ctx.lineTo(x + r, y);
+    ctx.moveTo(x, y - r); ctx.lineTo(x, y + r);
+    ctx.stroke();
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.9)';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(x - r * 0.5, y - r * 0.5); ctx.lineTo(x + r * 0.5, y + r * 0.5);
+    ctx.moveTo(x - r * 0.5, y + r * 0.5); ctx.lineTo(x + r * 0.5, y - r * 0.5);
+    ctx.stroke();
+  });
+  ctx.restore();
+}
+
 function loadImage(src) {
   return new Promise((resolve) => {
     const img = new Image();
@@ -384,6 +452,10 @@ async function drawResultCard(data) {
   canvas.height = H;
   const ctx = canvas.getContext('2d');
 
+  const accentRgb = data.accent || [114, 242, 255];
+  const accentCss = cardAccentCss(accentRgb);
+  const isLegendary = data.rarity.accent === 'legendary';
+
   // 背景
   const bg = ctx.createLinearGradient(0, 0, W, H);
   bg.addColorStop(0, CARD_COLORS.bg1);
@@ -391,29 +463,49 @@ async function drawResultCard(data) {
   ctx.fillStyle = bg;
   ctx.fillRect(0, 0, W, H);
 
-  const glowA = ctx.createRadialGradient(W * 0.24, H * 0.2, 0, W * 0.24, H * 0.2, W * 0.7);
-  glowA.addColorStop(0, 'rgba(255, 77, 210, 0.22)');
-  glowA.addColorStop(1, 'rgba(255, 77, 210, 0)');
+  // タイプ色のネオングロー
+  const glowA = ctx.createRadialGradient(W * 0.28, H * 0.22, 0, W * 0.28, H * 0.22, W * 0.62);
+  glowA.addColorStop(0, cardAccentCss(accentRgb, 0.26));
+  glowA.addColorStop(1, cardAccentCss(accentRgb, 0));
   ctx.fillStyle = glowA;
   ctx.fillRect(0, 0, W, H);
-  const glowB = ctx.createRadialGradient(W * 0.82, H * 0.7, 0, W * 0.82, H * 0.7, W * 0.7);
-  glowB.addColorStop(0, 'rgba(114, 242, 255, 0.18)');
-  glowB.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  const glowB = ctx.createRadialGradient(W * 0.85, H * 0.72, 0, W * 0.85, H * 0.72, W * 0.6);
+  glowB.addColorStop(0, cardAccentCss(accentRgb, 0.18));
+  glowB.addColorStop(1, cardAccentCss(accentRgb, 0));
   ctx.fillStyle = glowB;
   ctx.fillRect(0, 0, W, H);
+
+  // 背景にタイプ絵の透かし（拡大・低透明度）
+  if (data.image) {
+    const wmImg = await loadImage(data.image);
+    if (wmImg && wmImg.width) {
+      const wmW = W * 1.15;
+      const wmH = wmW * (wmImg.height / wmImg.width);
+      ctx.save();
+      ctx.globalAlpha = 0.09;
+      ctx.imageSmoothingEnabled = false;
+      ctx.drawImage(wmImg, W - wmW + 130, H - wmH + 40, wmW, wmH);
+      ctx.imageSmoothingEnabled = true;
+      ctx.restore();
+    }
+  }
 
   // スキャンライン
   ctx.fillStyle = 'rgba(255, 255, 255, 0.02)';
   for (let y = 0; y < H; y += 6) ctx.fillRect(0, y, W, 2);
 
-  // 枠
-  const accent = RARITY_CARD_ACCENT[data.rarity.accent] || RARITY_CARD_ACCENT.common;
-  const frame = ctx.createLinearGradient(0, 0, W, H);
-  accent.forEach((color, index) => frame.addColorStop(index / Math.max(1, accent.length - 1), color));
-  ctx.strokeStyle = frame;
-  ctx.lineWidth = 4;
-  roundRectPath(ctx, 26, 26, W - 52, H - 52, 34);
-  ctx.stroke();
+  // ホロ光沢バンド（LEGENDARYのみ）
+  if (isLegendary) drawHoloSheen(ctx, W, H);
+
+  // 枠：LEGENDARYはレインボー箔、それ以外はタイプ色
+  if (isLegendary) {
+    drawHoloFrame(ctx, W, H);
+  } else {
+    ctx.strokeStyle = accentCss;
+    ctx.lineWidth = 4;
+    roundRectPath(ctx, 26, 26, W - 52, H - 52, 34);
+    ctx.stroke();
+  }
   ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
   ctx.lineWidth = 1;
   roundRectPath(ctx, 40, 40, W - 80, H - 80, 26);
@@ -422,7 +514,7 @@ async function drawResultCard(data) {
   // ヘッダー
   ctx.textBaseline = 'alphabetic';
   ctx.font = `800 26px ${CARD_MONO}`;
-  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.fillStyle = accentCss;
   ctx.textAlign = 'left';
   ctx.fillText('◤ GAMESPEC LAB', 72, 96);
   ctx.font = `800 24px ${CARD_MONO}`;
@@ -435,16 +527,16 @@ async function drawResultCard(data) {
   const orbX = (W - orbSize) / 2;
   const orbY = 150;
   const orbGlow = ctx.createRadialGradient(W / 2, orbY + orbSize * 0.42, 0, W / 2, orbY + orbSize * 0.42, orbSize * 0.7);
-  orbGlow.addColorStop(0, 'rgba(114, 242, 255, 0.28)');
-  orbGlow.addColorStop(1, 'rgba(114, 242, 255, 0)');
+  orbGlow.addColorStop(0, cardAccentCss(accentRgb, 0.3));
+  orbGlow.addColorStop(1, cardAccentCss(accentRgb, 0));
   ctx.fillStyle = orbGlow;
   ctx.fillRect(orbX - 40, orbY - 40, orbSize + 80, orbSize + 80);
   ctx.save();
-  ctx.fillStyle = 'rgba(7, 12, 27, 0.82)';
+  ctx.fillStyle = 'rgba(7, 12, 27, 0.9)';
   roundRectPath(ctx, orbX, orbY, orbSize, orbSize, 56);
   ctx.fill();
-  ctx.strokeStyle = frame;
-  ctx.lineWidth = 3;
+  ctx.strokeStyle = accentCss;
+  ctx.lineWidth = 4;
   ctx.stroke();
   ctx.restore();
 
@@ -467,9 +559,13 @@ async function drawResultCard(data) {
   const rarityY = orbY + orbSize + 66;
   ctx.textAlign = 'center';
   ctx.font = `900 34px ${CARD_MONO}`;
-  const rarityGrad = ctx.createLinearGradient(W / 2 - 260, 0, W / 2 + 260, 0);
-  accent.forEach((color, index) => rarityGrad.addColorStop(index / Math.max(1, accent.length - 1), color));
-  ctx.fillStyle = data.rarity.accent === 'common' ? CARD_COLORS.muted : rarityGrad;
+  if (isLegendary) {
+    const rarityGrad = ctx.createLinearGradient(W / 2 - 260, 0, W / 2 + 260, 0);
+    HOLO_FOIL_COLORS.forEach((color, index) => rarityGrad.addColorStop(index / (HOLO_FOIL_COLORS.length - 1), color));
+    ctx.fillStyle = rarityGrad;
+  } else {
+    ctx.fillStyle = data.rarity.accent === 'common' ? CARD_COLORS.muted : accentCss;
+  }
   ctx.fillText(`${data.rarity.tier}  ${data.rarity.label}`, W / 2, rarityY);
   ctx.font = `900 30px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.gold;
@@ -491,7 +587,7 @@ async function drawResultCard(data) {
 
   // コード / サブ
   ctx.font = `800 28px ${CARD_MONO}`;
-  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.fillStyle = accentCss;
   const codeLines = wrapCanvasText(ctx, data.code, W - 180);
   ctx.fillText(codeLines[0] || '', W / 2, cursorY + 6);
   cursorY += 52;
@@ -516,27 +612,30 @@ async function drawResultCard(data) {
     ctx.fillStyle = CARD_COLORS.ink;
     ctx.fillText(bar.label, barX, barY - 12);
     ctx.textAlign = 'right';
-    ctx.fillStyle = CARD_COLORS.cyan;
+    ctx.fillStyle = accentCss;
     ctx.font = `900 26px ${CARD_MONO}`;
     ctx.fillText(String(bar.value), barX + barW, barY - 12);
     ctx.textAlign = 'left';
-    ctx.fillStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.fillStyle = 'rgba(255, 255, 255, 0.1)';
     roundRectPath(ctx, barX, barY, barW, 16, 8);
     ctx.fill();
     const fillW = Math.max(18, (Math.min(100, Math.max(6, bar.value)) / 100) * barW);
     const barGrad = ctx.createLinearGradient(barX, 0, barX + barW, 0);
-    barGrad.addColorStop(0, CARD_COLORS.cyan);
-    barGrad.addColorStop(1, CARD_COLORS.pink);
+    barGrad.addColorStop(0, cardAccentCss(accentRgb, 0.75));
+    barGrad.addColorStop(1, accentCss);
     ctx.fillStyle = barGrad;
     roundRectPath(ctx, barX, barY, fillW, 16, 8);
     ctx.fill();
     barY += 62;
   });
 
+  // キラキラ（LEGENDARYのみ、テキスト描画の後に重ねる）
+  if (isLegendary) drawSparkles(ctx);
+
   // フッター
   ctx.textAlign = 'left';
   ctx.font = `800 24px ${CARD_MONO}`;
-  ctx.fillStyle = CARD_COLORS.cyan;
+  ctx.fillStyle = accentCss;
   ctx.fillText('gamespeclab.com', 72, H - 62);
   ctx.textAlign = 'right';
   ctx.fillStyle = CARD_COLORS.muted;
@@ -568,6 +667,7 @@ function getMbtiCardData(type, scores) {
     name: type.title,
     catchline: type.catchline,
     rarity: getMbtiRarity(type.code),
+    accent: MBTI_CARD_ACCENTS[type.code],
     bars,
   };
 }
@@ -582,6 +682,7 @@ function getSenseCardData(archetype, normalizedScores) {
     name: archetype.name,
     catchline: archetype.catchline,
     rarity: getSenseRarity(archetype),
+    accent: SENSE_CARD_ACCENTS[archetype.primary],
     bars: top3.map(([key, value]) => ({ label: `${abilityTierGrade(value)}・${senseLabels[key]}`, value })),
   };
 }

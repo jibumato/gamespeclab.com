@@ -248,18 +248,20 @@ function lineShareIntent(url) {
   return `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(url)}`;
 }
 
-function renderShareButtons(kind) {
+function renderShareButtons(kind, variant = '') {
+  const suffix = variant ? `-${variant}` : '';
   return `
-    <button class="primary-button" type="button" id="share-${kind}-result">${icon('share')}結果をシェア</button>
-    <button class="share-chip share-chip-x" type="button" id="share-${kind}-x" aria-label="Xでポストする">${icon('x')}Xでポスト</button>
-    <button class="share-chip share-chip-line" type="button" id="share-${kind}-line" aria-label="LINEで送る">${icon('chat')}LINEで送る</button>
+    <button class="primary-button" type="button" id="share-${kind}-result${suffix}" data-share-kind="${kind}" data-share-role="result">${icon('share')}結果をシェア</button>
+    <button class="share-chip share-chip-x" type="button" id="share-${kind}-x${suffix}" data-share-kind="${kind}" data-share-role="x" aria-label="Xでポストする">${icon('x')}Xでポスト</button>
+    <button class="share-chip share-chip-line" type="button" id="share-${kind}-line${suffix}" data-share-kind="${kind}" data-share-role="line" aria-label="LINEで送る">${icon('chat')}LINEで送る</button>
   `;
 }
 
 function attachShareHandlers(kind, { text, url, hashtags, title, track = {} }) {
   const fullText = `${text}\n${url}`;
-  const native = document.querySelector(`#share-${kind}-result`);
-  if (native) {
+  document.querySelectorAll(`[data-share-kind="${kind}"][data-share-role="result"]`).forEach((native) => {
+    if (native.dataset.shareBound === 'true') return;
+    native.dataset.shareBound = 'true';
     const original = native.innerHTML;
     native.addEventListener('click', async () => {
       trackEvent(`${kind}_share_click`, track);
@@ -276,14 +278,22 @@ function attachShareHandlers(kind, { text, url, hashtags, title, track = {} }) {
         window.open(xShareIntent(text, url, hashtags), '_blank', 'noopener,noreferrer');
       }
     });
-  }
-  document.querySelector(`#share-${kind}-x`)?.addEventListener('click', () => {
-    trackEvent(`${kind}_share_x`, track);
-    window.open(xShareIntent(text, url, hashtags), '_blank', 'noopener,noreferrer');
   });
-  document.querySelector(`#share-${kind}-line`)?.addEventListener('click', () => {
-    trackEvent(`${kind}_share_line`, track);
-    window.open(lineShareIntent(url), '_blank', 'noopener,noreferrer');
+  document.querySelectorAll(`[data-share-kind="${kind}"][data-share-role="x"]`).forEach((btn) => {
+    if (btn.dataset.shareBound === 'true') return;
+    btn.dataset.shareBound = 'true';
+    btn.addEventListener('click', () => {
+      trackEvent(`${kind}_share_x`, track);
+      window.open(xShareIntent(text, url, hashtags), '_blank', 'noopener,noreferrer');
+    });
+  });
+  document.querySelectorAll(`[data-share-kind="${kind}"][data-share-role="line"]`).forEach((btn) => {
+    if (btn.dataset.shareBound === 'true') return;
+    btn.dataset.shareBound = 'true';
+    btn.addEventListener('click', () => {
+      trackEvent(`${kind}_share_line`, track);
+      window.open(lineShareIntent(url), '_blank', 'noopener,noreferrer');
+    });
   });
 }
 
@@ -1794,15 +1804,24 @@ function renderGamerMbtiResult(type, scores) {
             <p>${type.summary}</p>
           </div>
         </div>
+        <div class="result-actions result-actions-top">
+          <a class="primary-link" href="gamer-mbti-${type.code.toLowerCase()}.html">${icon('arrow')}このタイプを深掘りする</a>
+          ${renderShareButtons('mbti', 'top')}
+        </div>
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('trophy')}克服ポイント</p><span>02</span></div><h3>弱みに見える才能の使い方</h3><p>${type.growth}</p></article>
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('gamepad')}おすすめロール</p><span>03</span></div><h3>${type.role}</h3><p>あなたの判断基準とプレイ温度が出やすいポジションです。</p></article>
-          <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性傾向</p><span>04</span></div><h3>組むと噛み合いやすい相手</h3><p>${type.partner}</p></article>
-          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
-          <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}ゲーム紹介</p><span>06</span></div><h3>気軽にチェックするならこの4本</h3><p>診断結果に近い雰囲気のゲームを、軽い紹介としてまとめています。気になるジャンルを探す入口として見てください。</p>${renderGameSuggestionList(type.games)}</article>
         </section>
+        <details class="result-more">
+          <summary>${icon('arrow')}相性傾向・注意点・おすすめゲームも見る</summary>
+          <div class="mbti-result-grid">
+            <article class="result-card"><div class="card-head"><p class="card-label">${icon('link')}相性傾向</p><span>04</span></div><h3>組むと噛み合いやすい相手</h3><p>${type.partner}</p></article>
+            <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('shield')}ギスギス回避メモ</p><span>05</span></div><h3>違いを知ると神コンビになる</h3><p>${type.caution}</p></article>
+            <article class="result-card result-card-wide"><div class="card-head"><p class="card-label">${icon('gamepad')}ゲーム紹介</p><span>06</span></div><h3>気軽にチェックするならこの4本</h3><p>診断結果に近い雰囲気のゲームを、軽い紹介としてまとめています。気になるジャンルを探す入口として見てください。</p>${renderGameSuggestionList(type.games)}</article>
+          </div>
+        </details>
         ${renderCompatiblePartnersPanel(compatiblePartners, type.title)}
         <div class="mbti-compat-note">
           <span>${icon('chat')}MBTI風相性メモ</span>
@@ -2113,12 +2132,20 @@ function getSenseMatrix(archetype) {
 
 function renderSenseMatrix(archetype) {
   const matrix = getSenseMatrix(archetype);
-  const cards = [
+  const primaryCards = [
     ['spark', 'あなたの強み', matrix.strength],
-    ['shield', '克服ポイント', matrix.softWeakness],
     ['trophy', '伸ばし方', matrix.growth],
+  ];
+  const moreCards = [
+    ['shield', '克服ポイント', matrix.softWeakness, 'soft'],
     ['gamepad', '活きる役割', matrix.role],
   ];
+  const renderCard = ([cardIcon, title, text, emphasis]) => `
+    <article class="sense-matrix-card"${emphasis ? ` data-emphasis="${emphasis}"` : ''}>
+      <span>${icon(cardIcon)}${title}</span>
+      <p>${text}</p>
+    </article>
+  `;
   return `
     <section class="sense-matrix-panel" aria-label="アーキタイプ詳細">
       <div class="sense-matrix-head">
@@ -2127,20 +2154,21 @@ function renderSenseMatrix(archetype) {
         <p>弱みに見える部分にも、あなたらしいプレイスタイルの種があります。この分析結果は、あなたの良さを残したまま伸ばすためのガイドです。</p>
       </div>
       <div class="sense-matrix-grid">
-        ${cards.map(([cardIcon, title, text]) => `
-          <article class="sense-matrix-card">
-            <span>${icon(cardIcon)}${title}</span>
-            <p>${text}</p>
-          </article>
-        `).join('')}
+        ${primaryCards.map(renderCard).join('')}
       </div>
-      <div class="sense-affirmation">
-        <img src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
-        <div>
-          <span>${icon('spark')}ミナのワンポイントメモ</span>
-          <p>ミナから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
+      <details class="result-more">
+        <summary>${icon('arrow')}克服ポイント・活きる役割も見る</summary>
+        <div class="sense-matrix-grid">
+          ${moreCards.map(renderCard).join('')}
         </div>
-      </div>
+        <div class="sense-affirmation">
+          <img src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
+          <div>
+            <span>${icon('spark')}ミナのワンポイントメモ</span>
+            <p>ミナから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
+          </div>
+        </div>
+      </details>
     </section>
   `;
 }
@@ -2181,6 +2209,9 @@ function renderSenseResult(archetype, normalizedScores) {
             <p class="result-catch">${archetype.catchline}</p>
             <p>${archetype.summary}</p>
           </div>
+        </div>
+        <div class="result-actions result-actions-top">
+          ${renderShareButtons('sense', 'top')}
         </div>
         ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
         ${renderTopSenseAbilities(normalizedScores)}

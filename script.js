@@ -1,51 +1,6 @@
 const AMAZON_ASSOCIATE_TAG = 'jbmt-22';
 const ANALYTICS_KEY = 'gamespecLabEvents';
 const QUIZ_STATE_PREFIX = 'gamespecLabQuizState:';
-const TYPE_DEX_KEY = 'gamespecLabTypeDex';
-const TYPE_DEX_TOTAL = { mbti: 16, sense: 56 };
-
-function loadTypeDex() {
-  try {
-    const raw = JSON.parse(localStorage.getItem(TYPE_DEX_KEY) || '{}');
-    return {
-      mbti: Array.isArray(raw.mbti) ? raw.mbti : [],
-      sense: Array.isArray(raw.sense) ? raw.sense : [],
-    };
-  } catch (error) {
-    return { mbti: [], sense: [] };
-  }
-}
-
-function unlockDexEntry(kind, id) {
-  const dex = loadTypeDex();
-  if (dex[kind].includes(id)) return false;
-  dex[kind].push(id);
-  try {
-    localStorage.setItem(TYPE_DEX_KEY, JSON.stringify(dex));
-  } catch (error) {
-    return false;
-  }
-  window.dispatchEvent(new CustomEvent('gamespec:dex-unlock', { detail: { kind, id, dex } }));
-  return true;
-}
-
-function isDexUnlocked(kind, id) {
-  return loadTypeDex()[kind].includes(id);
-}
-
-function renderDexProgressChip(kind) {
-  const dex = loadTypeDex();
-  const total = TYPE_DEX_TOTAL[kind];
-  const count = dex[kind].length;
-  const percent = Math.round((count / total) * 100);
-  const anchor = kind === 'mbti' ? 'mbti-results' : 'sense-results';
-  return `
-    <a class="dex-progress-chip" href="results.html#${anchor}" aria-label="図鑑コンプリート ${count}/${total}体">
-      ${icon('list')}<span>図鑑 ${count}/${total}</span>
-      <span class="dex-chip-track"><span style="width:${percent}%"></span></span>
-    </a>
-  `;
-}
 
 function isNightOwlHour() {
   const hour = new Date().getHours();
@@ -58,36 +13,6 @@ function renderNightOwlBadge() {
     <span class="night-owl-badge" aria-label="深夜帯の診断ボーナス：夜行性ゲーマー">
       ${icon('moon')}<b>NIGHT OWL</b>夜行性ゲーマー
     </span>
-  `;
-}
-
-function renderTypeDexPanel() {
-  const panel = document.querySelector('#type-dex-panel');
-  if (!panel) return;
-  const dex = loadTypeDex();
-  const mbtiCount = dex.mbti.length;
-  const senseCount = dex.sense.length;
-  const totalAll = TYPE_DEX_TOTAL.mbti + TYPE_DEX_TOTAL.sense;
-  const totalPercent = Math.round(((mbtiCount + senseCount) / totalAll) * 100);
-  const rows = [
-    ['user', 'ゲーマーMBTI', mbtiCount, TYPE_DEX_TOTAL.mbti],
-    ['chart', 'GameSense', senseCount, TYPE_DEX_TOTAL.sense],
-  ];
-  panel.innerHTML = `
-    <div class="dex-panel-head">
-      <span>${icon('list')}TYPE DEX</span>
-      <strong>図鑑コンプリート度 ${totalPercent}%</strong>
-      <p>診断結果やタイプページを見るたびに図鑑が埋まっていきます。全${totalAll}体のコンプを目指そう。</p>
-    </div>
-    <div class="dex-panel-rows">
-      ${rows.map(([rowIcon, label, count, total]) => `
-        <div class="dex-panel-row">
-          <span>${icon(rowIcon)}${label}</span>
-          <div class="mini-track"><span style="width:${Math.round((count / total) * 100)}%"></span></div>
-          <strong>${count}/${total}</strong>
-        </div>
-      `).join('')}
-    </div>
   `;
 }
 
@@ -2470,7 +2395,6 @@ function renderGamerMbtiResult(type, scores) {
         ${renderTypeSpotlight(`assets/types/${type.code.toLowerCase()}.png`, type.code, type.title)}
         <div class="result-status-row">
           ${renderRarityBadge(getMbtiRarity(type.code))}
-          ${renderDexProgressChip('mbti')}
           ${renderNightOwlBadge()}
         </div>
         <div class="result-dialogue">
@@ -2989,7 +2913,6 @@ function renderSenseResult(archetype, normalizedScores) {
         ${renderTypeSpotlight(`assets/types/sense-${archetype.primary}-guide.png`, primaryLabel, archetype.name)}
         <div class="result-status-row">
           ${renderRarityBadge(getSenseRarity(archetype))}
-          ${renderDexProgressChip('sense')}
           ${renderNightOwlBadge()}
         </div>
         <div class="result-dialogue">
@@ -3198,7 +3121,6 @@ function renderSenseQuiz() {
 
   trackEvent('sense_diagnosis_complete', { archetype: archetype.name, primary: archetype.primary, secondary: archetype.secondary, nightOwl: isNightOwlHour() });
   saveQuizAnswers('sense', senseAnswers);
-  unlockDexEntry('sense', `${archetype.primary}_${archetype.secondary}`);
   const senseResultHash = `#sense=${archetype.primary}_${archetype.secondary}`;
   setResultHash(senseResultHash);
   document.querySelector('#sense-quiz-box').innerHTML = renderSenseResult(archetype, normalizedScores);
@@ -3281,7 +3203,6 @@ function renderGamerMbtiQuiz() {
 
   trackEvent('gamer_mbti_complete', { code: type.code, title: type.title, nightOwl: isNightOwlHour() });
   saveQuizAnswers('mbti', gamerMbtiAnswers);
-  unlockDexEntry('mbti', type.code);
   const mbtiResultHash = `#mbti=${type.code}`;
   setResultHash(mbtiResultHash);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
@@ -3904,37 +3825,29 @@ function renderSenseResultLinks() {
   if (!resultLinks) return;
   const base = resultLinks.dataset.base || 'gamesense.html';
   const types = getAllSenseTypeLinks();
-  resultLinks.innerHTML = types.map((type) => {
-    const unlocked = isDexUnlocked('sense', type.id);
-    return `
-    <a class="result-link-card sense-type-card${unlocked ? '' : ' is-locked'}" href="${base}#sense=${type.id}">
+  resultLinks.innerHTML = types.map((type) => `
+    <a class="result-link-card sense-type-card" href="${base}#sense=${type.id}">
       <span class="sense-type-thumb-wrap"><img class="sense-type-thumb" src="assets/types/sense-${type.primary}-guide.png" alt="${type.primaryLabel}のドット絵キャラクター" width="64" height="70" loading="lazy" decoding="async" /></span>
       <span class="card-head"><span>${icon(senseIcons[type.primary] || 'chart')}${type.name}</span><span class="card-head-right"><small>G8</small>${rarityTierChip(getSenseRarity(type))}</span></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon(senseIcons[type.secondary] || 'spark')}${type.primaryLabel} × ${type.secondaryLabel}</span>
       <small>${icon('arrow')}結果を表示</small>
-      ${unlocked ? '' : `<span class="dex-lock-badge" aria-hidden="true">${icon('shield')}タップして図鑑に登録</span>`}
     </a>
-  `;
-  }).join('');
+  `).join('');
 }
 
 function renderGamerMbtiTypeLinks() {
   const resultLinks = document.querySelector('#mbti-result-links');
   if (!resultLinks) return;
   const base = resultLinks.dataset.base || '';
-  resultLinks.innerHTML = Object.entries(gamerMbtiTypes).map(([code, type]) => {
-    const unlocked = isDexUnlocked('mbti', code);
-    return `
-    <a class="result-link-card mbti-type-card${unlocked ? '' : ' is-locked'}" href="${base}gamer-mbti-${code.toLowerCase()}.html">
+  resultLinks.innerHTML = Object.entries(gamerMbtiTypes).map(([code, type]) => `
+    <a class="result-link-card mbti-type-card" href="${base}gamer-mbti-${code.toLowerCase()}.html">
       <span class="card-head"><span>${icon('user')}${type.title}</span><span class="card-head-right"><small>${code}</small>${rarityTierChip(getMbtiRarity(code))}</span></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon('gamepad')}${type.role}</span>
       <small>${icon('arrow')}結果を表示</small>
-      ${unlocked ? '' : `<span class="dex-lock-badge" aria-hidden="true">${icon('shield')}タップして図鑑に登録</span>`}
     </a>
-  `;
-  }).join('');
+  `).join('');
 }
 
 function drawWrappedCanvasText(ctx, text, x, y, maxWidth, lineHeight, maxLines = 3) {
@@ -4171,7 +4084,6 @@ function applySenseHashRoute() {
   if (!senseLabels[primary] || !senseLabels[secondary] || primary === secondary) return false;
   const archetype = getSenseArchetypeFromKeys(primary, secondary);
   const normalizedScores = buildSenseScoresForPair(primary, secondary);
-  unlockDexEntry('sense', `${primary}_${secondary}`);
 
   senseAnswers = [];
   document.body.classList.add('sense-result-ready');
@@ -4208,7 +4120,6 @@ function applyGamerMbtiHashRoute() {
   const type = getGamerMbtiResult(code);
   if (!type?.title) return false;
   const scores = buildGamerMbtiScoresForCode(code);
-  unlockDexEntry('mbti', code);
 
   gamerMbtiAnswers = [];
   document.body.classList.add('gamer-mbti-result-ready');
@@ -4336,27 +4247,11 @@ if (document.querySelector('#mbti-result-links')) {
   renderGamerMbtiTypeLinks();
 }
 
-if (document.querySelector('#type-dex-panel')) {
-  renderTypeDexPanel();
-  window.addEventListener('pageshow', (event) => {
-    if (event.persisted) {
-      renderTypeDexPanel();
-      renderSenseResultLinks();
-      renderGamerMbtiTypeLinks();
-    }
-  });
-}
-
 if (document.querySelector('#gamer-id-card-panel')) {
   renderGamerIdCardPanel();
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) renderGamerIdCardPanel();
   });
-}
-
-const staticMbtiTypeHero = document.querySelector('[data-mbti-type-code]');
-if (staticMbtiTypeHero) {
-  unlockDexEntry('mbti', staticMbtiTypeHero.dataset.mbtiTypeCode);
 }
 
 if (!document.querySelector('#gamer-mbti') && /^#mbti=([IE][SN][TF][JP])$/.test(location.hash)) {

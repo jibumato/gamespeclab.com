@@ -4402,6 +4402,11 @@ if (document.querySelector('#gamer-id-card-panel')) {
   });
 }
 
+if (document.querySelector('.type-hero-stage[data-holo]')) {
+  const reducedHolo = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  setupHoloTilt(document, reducedHolo);
+}
+
 if (!document.querySelector('#gamer-mbti') && /^#mbti=([IE][SN][TF][JP])$/.test(location.hash)) {
   location.replace(`gamermbti.html${location.hash}`);
 }

@@ -5061,6 +5061,42 @@ body.sense-result-ready .post-result-lab {
   z-index: 2;
 }
 
+.type-hero-stage.is-holo {
+  transition: transform 260ms ease;
+  will-change: transform;
+}
+
+.type-hero-stage.is-holo::after {
+  animation: holo-sweep 6.5s ease-in-out infinite;
+  background:
+    linear-gradient(115deg,
+      transparent 22%,
+      rgba(255, 77, 210, 0.24) 40%,
+      rgb(var(--type-accent) / 0.32) 50%,
+      rgba(184, 255, 106, 0.2) 60%,
+      transparent 78%);
+  background-position: calc(50% + var(--holo-x, 0%)) calc(50% + var(--holo-y, 0%));
+  background-size: 240% 240%;
+  border-radius: 26px;
+  content: "";
+  inset: 0;
+  mix-blend-mode: screen;
+  opacity: 0.5;
+  pointer-events: none;
+  position: absolute;
+  transition: background-position 100ms ease-out;
+  z-index: 3;
+}
+
+.type-hero-stage.is-holo.is-tilting::after {
+  animation-play-state: paused;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .type-hero-stage.is-holo { transition: none; }
+  .type-hero-stage.is-holo::after { animation: none; }
+}
+
 .type-hero-ring {
   position: absolute;
   z-index: 1;

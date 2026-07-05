@@ -2301,6 +2301,46 @@ p {
   .rarity-badge.is-legendary .rarity-tier { animation: none; }
 }
 
+.card-head-right {
+  align-items: center;
+  display: inline-flex;
+  flex-shrink: 0;
+  gap: 8px;
+}
+
+.rarity-chip {
+  align-items: center;
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  gap: 5px;
+  letter-spacing: 0.02em;
+}
+
+.result-link-card .card-head-right .rarity-chip {
+  background: rgba(7, 12, 27, 0.92);
+  border: 1px solid rgba(114, 242, 255, 0.35);
+  color: var(--muted);
+  font-size: 10px;
+  font-weight: 900;
+  padding: 3px 8px 3px 6px;
+}
+
+.rarity-chip b {
+  font-size: 13px;
+  line-height: 1;
+}
+
+.rarity-chip.is-rare b { color: var(--cyan); }
+.result-link-card .card-head-right .rarity-chip.is-rare { border-color: rgba(114, 242, 255, 0.5); }
+.rarity-chip.is-epic b { color: #c484ff; }
+.result-link-card .card-head-right .rarity-chip.is-epic { border-color: rgba(196, 132, 255, 0.6); }
+.rarity-chip.is-legendary b { color: #ffd76a; }
+.result-link-card .card-head-right .rarity-chip.is-legendary {
+  border-color: rgba(255, 215, 106, 0.6);
+  box-shadow: 0 0 12px rgba(255, 183, 233, 0.25);
+}
+.rarity-chip.is-common b { color: var(--muted); }
+
 .card-studio {
   background:
     linear-gradient(135deg, rgba(255, 77, 210, 0.1), rgba(114, 242, 255, 0.08)),
@@ -3388,38 +3428,118 @@ p {
   font-weight: 900;
 }
 
-.ability-rank-list {
+.ability-tier-list {
   display: grid;
-  gap: 9px;
+  gap: 6px;
 }
 
-.ability-rank-row {
+.tier-list-caption {
   align-items: center;
-  display: grid;
-  gap: 10px;
-  grid-template-columns: 34px minmax(96px, 0.9fr) minmax(80px, 1fr) 38px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px 10px;
+  justify-content: space-between;
+  margin-bottom: 4px;
 }
 
-.ability-rank-row > span,
-.ability-rank-row em {
+.tier-list-caption span {
+  align-items: center;
+  color: var(--cyan);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 6px;
+  letter-spacing: 0.08em;
+}
+
+.tier-list-caption span .ui-icon {
+  color: #ffd76a;
+}
+
+.tier-list-caption small {
   color: var(--muted);
+  font-size: 11px;
+}
+
+.ability-tier-row {
+  align-items: stretch;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  display: grid;
+  gap: 8px;
+  grid-template-columns: 52px minmax(0, 1fr);
+  min-height: 44px;
+}
+
+.tier-grade {
+  align-items: center;
+  color: #04050d;
+  display: flex;
+  flex-direction: column;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 20px;
+  font-weight: 900;
+  gap: 1px;
+  justify-content: center;
+  line-height: 1;
+  text-align: center;
+}
+
+.tier-grade small {
+  color: rgba(4, 5, 13, 0.72);
+  font-size: 8px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.tier-S { background: linear-gradient(135deg, #ffd76a, #ff8adf); }
+.tier-A { background: linear-gradient(135deg, #ff6ec4, #ff4dd2); }
+.tier-B { background: linear-gradient(135deg, #72f2ff, #6a7dff); }
+.tier-C { background: linear-gradient(135deg, #6a7dff, #4a56a8); color: #f2f7ff; }
+.tier-C small { color: rgba(242, 247, 255, 0.75); }
+.tier-D { background: linear-gradient(135deg, #57647f, #3a4256); color: #f2f7ff; }
+.tier-D small { color: rgba(242, 247, 255, 0.7); }
+
+.tier-slots {
+  align-content: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  padding: 6px 8px 6px 0;
+}
+
+.tier-slot {
+  align-items: center;
+  background: rgba(7, 12, 27, 0.72);
+  border: 1px solid rgba(114, 242, 255, 0.2);
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 12px;
+  font-weight: 800;
+  gap: 5px;
+  padding: 5px 9px;
+}
+
+.tier-slot .ui-icon {
+  color: var(--cyan);
+  height: 14px;
+  width: 14px;
+}
+
+.tier-slot em {
+  color: var(--mint);
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
   font-size: 11px;
   font-style: normal;
   font-weight: 900;
 }
 
-.ability-rank-row strong {
-  align-items: center;
-  color: var(--ink);
-  display: inline-flex;
-  font-size: 13px;
-  gap: 7px;
-  line-height: 1.35;
-}
-
-.ability-rank-row strong .ui-icon {
-  color: var(--cyan);
+.tier-slot.is-empty {
+  background: transparent;
+  border: 0;
+  color: var(--muted);
+  opacity: 0.5;
 }
 
 .sense-result-grid {
@@ -5497,10 +5617,6 @@ body.sense-result-ready .post-result-lab {
   .result-next-actions .ghost-link,
   .result-next-actions .primary-link {
     width: 100%;
-  }
-
-  .ability-rank-row {
-    grid-template-columns: 28px minmax(92px, 1fr) minmax(66px, 0.7fr) 32px;
   }
 
   .radar-svg text {

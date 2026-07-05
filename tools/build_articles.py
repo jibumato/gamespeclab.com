@@ -10,7 +10,7 @@
 import os
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "deep109"
+VER = "deep110"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->

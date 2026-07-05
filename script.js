@@ -567,7 +567,7 @@ function getSenseCardData(archetype, normalizedScores) {
     name: archetype.name,
     catchline: archetype.catchline,
     rarity: getSenseRarity(archetype),
-    bars: top3.map(([key, value]) => ({ label: senseLabels[key], value })),
+    bars: top3.map(([key, value]) => ({ label: `${abilityTierGrade(value)}・${senseLabels[key]}`, value })),
   };
 }
 
@@ -2433,6 +2433,13 @@ function renderRarityBadge(rarity) {
   `;
 }
 
+const RARITY_TIER_GRADE = { legendary: 'S', epic: 'A', rare: 'B', common: 'C' };
+
+function rarityTierChip(rarity) {
+  const grade = RARITY_TIER_GRADE[rarity.accent] || 'C';
+  return `<span class="rarity-chip is-${rarity.accent}" aria-label="希少度ティア ${grade} ${rarity.label}"><b>${grade}</b>${rarity.label}</span>`;
+}
+
 function getSenseArchetype(normalizedScores) {
   const ranked = rankScores(normalizedScores);
   const primary = ranked[0]?.[0] || 'awareness';
@@ -2484,14 +2491,6 @@ function renderRadarChart(scores, labels, icons) {
     const [x, y] = pointFor(index, Math.max(4, scores[key] || 0));
     return `<circle cx="${x}" cy="${y}" r="4"><title>${labels[key]} ${scores[key] || 0}</title></circle>`;
   }).join('');
-  const rows = rankScores(scores).map(([key, value], index) => `
-    <div class="ability-rank-row">
-      <span>${String(index + 1).padStart(2, '0')}</span>
-      <strong>${icon(icons[key] || 'target')}${labels[key]}</strong>
-      <div class="mini-track"><span style="width:${Math.max(8, value)}%"></span></div>
-      <em data-count-to="${value}">${value}</em>
-    </div>
-  `).join('');
   return `
     <div class="sense-radar-card">
       <svg class="radar-svg" viewBox="0 0 ${size} ${size}" role="img" aria-label="8能力レーダーチャート">
@@ -2500,7 +2499,50 @@ function renderRadarChart(scores, labels, icons) {
         <polygon points="${scorePoints}" class="radar-score"></polygon>
         ${dots}
       </svg>
-      <div class="ability-rank-list">${rows}</div>
+      ${renderAbilityTierList(scores, labels, icons)}
+    </div>
+  `;
+}
+
+const ABILITY_TIER_DEFS = [
+  ['S', '覚醒級'],
+  ['A', '主戦力'],
+  ['B', '安定'],
+  ['C', '発展途上'],
+  ['D', '伸びしろ'],
+];
+
+function abilityTierGrade(value) {
+  if (value >= 80) return 'S';
+  if (value >= 68) return 'A';
+  if (value >= 56) return 'B';
+  if (value >= 44) return 'C';
+  return 'D';
+}
+
+function renderAbilityTierList(scores, labels, icons) {
+  const grouped = { S: [], A: [], B: [], C: [], D: [] };
+  rankScores(scores).forEach(([key, value]) => {
+    grouped[abilityTierGrade(value)].push([key, value]);
+  });
+  const rows = ABILITY_TIER_DEFS.map(([grade, note]) => {
+    const items = grouped[grade];
+    const slots = items.length
+      ? items.map(([key, value]) => `
+          <span class="tier-slot">${icon(icons[key] || 'target')}<b>${labels[key]}</b><em data-count-to="${value}">${value}</em></span>
+        `).join('')
+      : '<span class="tier-slot is-empty">—</span>';
+    return `
+      <div class="ability-tier-row" data-grade="${grade}">
+        <span class="tier-grade tier-${grade}">${grade}<small>${note}</small></span>
+        <div class="tier-slots">${slots}</div>
+      </div>
+    `;
+  }).join('');
+  return `
+    <div class="ability-tier-list" aria-label="8能力ティアリスト">
+      <div class="tier-list-caption"><span>${icon('trophy')}ABILITY TIER LIST</span><small>スコアをS〜Dに格付け</small></div>
+      ${rows}
     </div>
   `;
 }
@@ -3536,7 +3578,7 @@ function renderSenseResultLinks() {
   resultLinks.innerHTML = types.map((type) => `
     <a class="result-link-card sense-type-card" href="${base}#sense=${type.id}">
       <span class="sense-type-thumb-wrap"><img class="sense-type-thumb" src="assets/types/sense-${type.primary}-guide.png" alt="${type.primaryLabel}のドット絵キャラクター" width="64" height="70" loading="lazy" decoding="async" /></span>
-      <span class="card-head"><span>${icon(senseIcons[type.primary] || 'chart')}${type.name}</span><small>G8</small></span>
+      <span class="card-head"><span>${icon(senseIcons[type.primary] || 'chart')}${type.name}</span><span class="card-head-right"><small>G8</small>${rarityTierChip(getSenseRarity(type))}</span></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon(senseIcons[type.secondary] || 'spark')}${type.primaryLabel} × ${type.secondaryLabel}</span>
       <small>${icon('arrow')}結果を表示</small>
@@ -3550,7 +3592,7 @@ function renderGamerMbtiTypeLinks() {
   const base = resultLinks.dataset.base || '';
   resultLinks.innerHTML = Object.entries(gamerMbtiTypes).map(([code, type]) => `
     <a class="result-link-card mbti-type-card" href="${base}gamer-mbti-${code.toLowerCase()}.html">
-      <span class="card-head"><span>${icon('user')}${type.title}</span><small>${code}</small></span>
+      <span class="card-head"><span>${icon('user')}${type.title}</span><span class="card-head-right"><small>${code}</small>${rarityTierChip(getMbtiRarity(code))}</span></span>
       <strong>${type.catchline}</strong>
       <span class="result-link-meta">${icon('gamepad')}${type.role}</span>
       <small>${icon('arrow')}結果を表示</small>

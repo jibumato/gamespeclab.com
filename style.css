@@ -6096,10 +6096,45 @@ body.sense-result-ready .post-result-lab {
   color: var(--text);
   display: grid;
   gap: 8px;
+  grid-template-rows: auto auto auto 1fr;
   min-height: 150px;
+  overflow: hidden;
   padding: 18px;
   text-decoration: none;
   transition: transform 160ms ease, border-color 160ms ease, background 160ms ease;
+}
+
+.seo-thumb {
+  border-bottom: 1px solid rgba(114, 242, 255, 0.2);
+  display: block;
+  margin: -18px -18px 4px;
+}
+
+.hub-link-grid .seo-thumb {
+  margin: -20px -20px 4px;
+}
+
+.seo-thumb img {
+  aspect-ratio: 1200 / 630;
+  display: block;
+  height: auto;
+  object-fit: cover;
+  transition: transform 220ms ease;
+  width: 100%;
+}
+
+.seo-link-grid a:hover .seo-thumb img {
+  transform: scale(1.04);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .seo-thumb img {
+    transition: none;
+  }
+
+  .seo-link-grid a:hover .seo-thumb img {
+    transform: none;
+  }
 }
 
 .seo-link-grid a:hover {

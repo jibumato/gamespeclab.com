@@ -2406,6 +2406,8 @@ function getSenseCompatiblePartners(archetype) {
           subMeta: 'GameSense Scan 8内の相性タイプ',
           href: `gamesense.html#sense=${id}`,
           iconName: senseIcons[primary] || 'chart',
+          image: `assets/types/sense-${primary}-guide.png`,
+          accent: (SENSE_CARD_ACCENTS[primary] || [114, 242, 255]).join(' '),
         };
       }))
     .filter((match) => match.id !== sourcePair)
@@ -2426,6 +2428,8 @@ function getMbtiCompatiblePartners(code) {
       subMeta: 'ゲーマーMBTI内の相性タイプ',
       href: `gamermbti.html#mbti=${candidateCode}`,
       iconName: 'user',
+      image: `assets/types/${candidateCode.toLowerCase()}.png`,
+      accent: (MBTI_CARD_ACCENTS[candidateCode] || [114, 242, 255]).join(' '),
     };
   });
 }
@@ -2443,9 +2447,10 @@ function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果', op
       </div>
       <div class="compat-partner-grid">
         ${matches.map((match, index) => `
-          <article class="compat-partner-card rank-${index + 1}">
+          <article class="compat-partner-card rank-${index + 1}"${match.accent ? ` style="--partner-accent: ${match.accent}"` : ''}>
             <div class="compat-partner-rank">
-              <span>${String(index + 1).padStart(2, '0')}</span>
+              ${match.image ? `<span class="compat-partner-thumb"><img src="${match.image}" alt="" width="72" height="79" loading="lazy" decoding="async" /></span>` : ''}
+              <span class="compat-partner-rank-no">${String(index + 1).padStart(2, '0')}</span>
               <small>${match.badge}</small>
             </div>
             <div>

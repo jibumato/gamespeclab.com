@@ -3502,12 +3502,54 @@ function getSenseShareMeta(archetype, normalizedScores) {
   };
 }
 
-function getSenseGearReasons(primaryLabel, secondaryLabel, lowestLabel) {
-  return {
-    monitor: `${primaryLabel}が強く出たあなたは、画面上の小さな変化を拾えるほど判断が活きます。高リフレッシュのモニターは、敵の出入りや味方の位置変化を見逃しにくくするための土台です。`,
-    mouse: `${secondaryLabel}をプレイに反映するには、思った方向へすぐ動かせる入力環境が大事です。軽量マウスは、判断から操作までのズレを減らし、あなたの反応をそのまま動きに乗せやすくします。`,
-    mousepad: `${lowestLabel}は「同じ動きを再現する」練習で伸ばしやすい能力です。大型マウスパッドは、振り向きや追いエイムの動き幅を確保して、感覚を安定させる助けになります。`,
-  };
+// 8能力 → 相性のいいデバイスガイド。上位能力に応じて紹介デバイスを出し分ける。
+const SENSE_GEAR_MAP = {
+  awareness: { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '視認性と情報量を底上げ', reason: '状況認識が強いあなたは、画面上の小さな変化を拾えるほど判断が活きます。高リフレッシュのモニターは、敵の出入りや味方の位置変化を見逃しにくくする土台です。' },
+  prediction: { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '音で次の展開を先取り', reason: '未来予測が強いあなたは、足音や気配から次の動きを読めます。定位の良いヘッドセットは、その先読みの精度を一段引き上げます。' },
+  pattern: { guide: 'gaming-keyboard-guide.html', icon: 'cpu', title: 'キーボードの選び方', small: '入力の再現性を高める', reason: 'パターン認識が強いあなたは、同じ入力を同じ精度で返せるほど崩れません。磁気軸・ラピッドトリガーは、狙った操作の再現性を支えます。' },
+  spatial: { guide: 'gaming-mousepad-guide.html', icon: 'target', title: 'マウスパッドの選び方', small: '振り向きと追いエイムの再現性', reason: '空間把握が強いあなたは、距離や角度を動きに変えられます。大型マウスパッドは、振り向き幅を確保して同じ動きを再現しやすくします。' },
+  speed: { guide: 'gaming-mouse-guide.html', icon: 'mouse', title: 'マウスの選び方', small: '判断を操作へ最短で乗せる', reason: '判断速度が強いあなたは、決めた瞬間に動かせる入力が武器です。軽量・低遅延のマウスは、判断から操作までのズレを減らします。' },
+  resource: { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '情報を一望して配分を管理', reason: 'リソース管理が強いあなたは、残り時間や人数差を俯瞰できます。広い視界のモニターは、その配分判断を後押しします。' },
+  mindgame: { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '相手の意図と気配を拾う', reason: '心理戦が強いあなたは、音と間から相手の狙いを読めます。定位の良いヘッドセットは、駆け引きを有利に進める情報源になります。' },
+  adaptation: { guide: 'gaming-keyboard-guide.html', icon: 'cpu', title: 'キーボードの選び方', small: '反復練習を支える入力環境', reason: '学習適応力が強いあなたは、練習した分だけ動きが洗練されます。疲れにくく安定した入力環境は、その反復を後押しします。' },
+};
+
+// 上位能力からデバイスが3種に満たない/重複した場合の補完枠（汎用リンク）。
+const SENSE_GEAR_FALLBACK = [
+  { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '視認性と反応の余裕を作る', reason: '高リフレッシュのモニターは、見えてから動くまでの余裕を作る土台です。' },
+  { guide: 'gaming-mouse-guide.html', icon: 'mouse', title: 'マウスの選び方', small: '判断を操作に乗せやすくする', reason: '軽量マウスは、思った方向へ素直に動かしやすく、操作のズレを減らします。' },
+  { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '音の情報を逃さない', reason: '定位の良いヘッドセットは、足音や位置の手がかりを拾いやすくします。' },
+];
+
+// 上位能力からデバイスガイドを最大3種（重複なし）選ぶ。
+function getSenseGearPicks(sortedAbilities) {
+  const picks = [];
+  const usedGuides = new Set();
+  sortedAbilities.forEach(([key]) => {
+    if (picks.length >= 3) return;
+    const gear = SENSE_GEAR_MAP[key];
+    if (!gear || usedGuides.has(gear.guide)) return;
+    usedGuides.add(gear.guide);
+    picks.push(gear);
+  });
+  SENSE_GEAR_FALLBACK.forEach((gear) => {
+    if (picks.length >= 3 || usedGuides.has(gear.guide)) return;
+    usedGuides.add(gear.guide);
+    picks.push(gear);
+  });
+  return picks;
+}
+
+function renderSenseGearList(sortedAbilities) {
+  const list = document.querySelector('#sense-gear-list');
+  if (!list) return;
+  list.innerHTML = getSenseGearPicks(sortedAbilities).map((gear) => `
+    <a href="${gear.guide}">
+      <span>${icon(gear.icon)}${gear.title}</span>
+      <small>${gear.small}</small>
+      <em>${gear.reason}</em>
+    </a>
+  `).join('');
 }
 
 function updatePostResultLab(archetype, normalizedScores) {
@@ -3523,9 +3565,6 @@ function updatePostResultLab(archetype, normalizedScores) {
   const resultCore = document.querySelector('#post-result-core');
   const resultStyle = document.querySelector('#post-result-style');
   const resultWeapon = document.querySelector('#post-result-weapon');
-  const gearReasonMonitor = document.querySelector('#gear-reason-monitor');
-  const gearReasonMouse = document.querySelector('#gear-reason-mouse');
-  const gearReasonMousepad = document.querySelector('#gear-reason-mousepad');
   const trainingTitle = document.querySelector('#training-title');
   const trainingCopy = document.querySelector('#training-copy');
   const communityCopy = document.querySelector('#community-type-copy');
@@ -3545,10 +3584,7 @@ function updatePostResultLab(archetype, normalizedScores) {
   if (resultCore) resultCore.textContent = shareMeta.flexLine;
   if (resultStyle) resultStyle.textContent = shareMeta.style;
   if (resultWeapon) resultWeapon.textContent = shareMeta.weapon;
-  const gearReasons = getSenseGearReasons(primaryLabel, secondaryLabel, lowestLabel);
-  if (gearReasonMonitor) gearReasonMonitor.textContent = gearReasons.monitor;
-  if (gearReasonMouse) gearReasonMouse.textContent = gearReasons.mouse;
-  if (gearReasonMousepad) gearReasonMousepad.textContent = gearReasons.mousepad;
+  renderSenseGearList(sorted);
   shareMeta.topThree.forEach(([key, value], index) => {
     const node = document.querySelector(`#post-result-top${index + 1}`);
     if (node) node.textContent = `${String(index + 1).padStart(2, '0')} ${senseLabels[key]} ${value}`;

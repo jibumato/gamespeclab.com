@@ -12,7 +12,7 @@ import os
 import build_hero_motifs as hm
 
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-VER = "deep129"
+VER = "deep130"
 TODAY = "2026-06-19"
 
 GTM_HEAD = """    <!-- Google Tag Manager -->

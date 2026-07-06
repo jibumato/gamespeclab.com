@@ -1287,6 +1287,65 @@ function attachCardStudio(kind, data, shareMeta) {
   });
 }
 
+// 結果画面の主役を「シェア用と同じカード」にする。カードを自動生成して表示し、
+// 横に見出し・キャッチ・アクションを並べる（キャラが空白に浮く従来レイアウトを廃止）。
+function renderResultCardHero(kind, sideHtml) {
+  return `
+    <div class="result-card-hero">
+      <figure class="result-card-figure" data-result-card="${kind}">
+        <div class="result-card-loading">${icon('spark')}<span>カードを生成中...</span></div>
+      </figure>
+      <div class="result-card-side">
+        ${sideHtml}
+      </div>
+    </div>
+  `;
+}
+
+async function attachResultCardHero(kind, data, shareMeta) {
+  const figure = document.querySelector(`.result-card-figure[data-result-card="${kind}"]`);
+  if (!figure || figure.dataset.cardBound === 'true') return;
+  figure.dataset.cardBound = 'true';
+  let canvas = null;
+  try {
+    canvas = await drawResultCard(data);
+  } catch (error) {
+    canvas = null;
+  }
+  if (!canvas) {
+    figure.innerHTML = `<div class="result-card-loading">${icon('target')}<span>カードを表示できませんでした</span></div>`;
+    return;
+  }
+  const blob = await canvasToBlob(canvas);
+  const dataUrl = canvas.toDataURL('image/png');
+  const filename = `gamespeclab-${kind}-${(data.code || 'result').replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'card'}`;
+  figure.innerHTML = `
+    <img src="${dataUrl}" alt="${data.name}の結果カード" width="1080" height="1350" />
+    <button class="primary-button result-card-save" type="button" data-card-save>${icon('share')}カードを保存・シェア</button>
+    <p class="result-card-hint">${icon('check')}画像を長押し／右クリックでも保存できます。</p>
+  `;
+  figure.querySelector('[data-card-save]')?.addEventListener('click', async () => {
+    trackEvent(`${kind}_card_share`, shareMeta.track || {});
+    const file = blob ? new File([blob], `${filename}.png`, { type: 'image/png' }) : null;
+    if (file && navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({ files: [file], text: shareMeta.text, title: shareMeta.title });
+        return;
+      } catch (error) {
+        if (error?.name === 'AbortError') return;
+      }
+    }
+    const url = blob ? URL.createObjectURL(blob) : dataUrl;
+    const anchor = document.createElement('a');
+    anchor.href = url;
+    anchor.download = `${filename}.png`;
+    document.body.appendChild(anchor);
+    anchor.click();
+    anchor.remove();
+    if (blob) window.setTimeout(() => URL.revokeObjectURL(url), 4000);
+  });
+}
+
 function restoreResultScroll(selector, force = false) {
   const hasResultHash = /^#(?:result=|sense=|mbti=)/.test(location.hash);
   if (!force && !hasResultHash) return;
@@ -2855,28 +2914,24 @@ function renderGamerMbtiResult(type, scores) {
         revealPixel: true,
       })}
       <div class="result-content">
-        ${renderTypeSpotlight(`assets/types/${type.code.toLowerCase()}.png`, type.code, type.title)}
-        <div class="result-status-row">
-          ${renderRarityBadge(getMbtiRarity(type.code))}
-          ${renderNightOwlBadge()}
-        </div>
-        <div class="result-dialogue">
-          <div>
-            <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
-            <h3 id="mbti-quiz-title">${type.title}</h3>
-            <div class="mbti-code-note" aria-label="ゲーマータイプ補足コード">
-              <span>${icon('tag')}参考コード</span>
-              <strong>${type.code}</strong>
-            </div>
-            <p class="result-catch">${type.catchline}</p>
-            <p>${type.summary}</p>
+        ${renderResultCardHero('mbti', `
+          <div class="result-kicker">${icon('user')}GAMER MBTI TYPE</div>
+          <h3 id="mbti-quiz-title">${type.title}</h3>
+          <div class="result-status-row">
+            ${renderRarityBadge(getMbtiRarity(type.code))}
+            ${renderNightOwlBadge()}
           </div>
-        </div>
-        <div class="result-actions result-actions-top">
-          <a class="primary-link" href="gamer-mbti-${type.code.toLowerCase()}.html">${icon('arrow')}このタイプを深掘りする</a>
-          ${renderShareButtons('mbti', 'top')}
-        </div>
-        ${renderResultCardStudio('mbti')}
+          <div class="mbti-code-note" aria-label="ゲーマータイプ補足コード">
+            <span>${icon('tag')}参考コード</span>
+            <strong>${type.code}</strong>
+          </div>
+          <p class="result-catch">${type.catchline}</p>
+          <p>${type.summary}</p>
+          <div class="result-actions result-actions-top">
+            <a class="primary-link" href="gamer-mbti-${type.code.toLowerCase()}.html">${icon('arrow')}このタイプを深掘りする</a>
+            ${renderShareButtons('mbti', 'top')}
+          </div>
+        `)}
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
@@ -3717,7 +3772,7 @@ function renderGamerMbtiQuiz() {
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code },
   });
-  attachCardStudio('mbti', getMbtiCardData(type, scores), {
+  attachResultCardHero('mbti', getMbtiCardData(type, scores), {
     text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！ ${typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`)}`,
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code },

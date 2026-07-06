@@ -2552,6 +2552,96 @@ p {
   margin: 0;
 }
 
+/* 結果画面の主役をシェア用カードに（キャラが空白に浮くレイアウトの置き換え） */
+.result-card-hero {
+  align-items: start;
+  display: grid;
+  gap: 28px;
+  grid-template-columns: minmax(240px, 330px) minmax(0, 1fr);
+}
+
+.result-card-figure {
+  display: grid;
+  gap: 12px;
+  margin: 0;
+  min-width: 0;
+}
+
+.result-card-figure img {
+  border: 1px solid rgb(var(--type-accent, 114 242 255) / 0.3);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.result-card-loading {
+  align-items: center;
+  aspect-ratio: 1080 / 1350;
+  background: linear-gradient(160deg, rgb(var(--type-accent, 114 242 255) / 0.08), rgba(255, 255, 255, 0.02));
+  border: 1px solid rgb(var(--type-accent, 114 242 255) / 0.24);
+  border-radius: 20px;
+  color: var(--muted);
+  display: flex;
+  flex-direction: column;
+  font-size: 13px;
+  gap: 10px;
+  justify-content: center;
+}
+
+.result-card-loading .ui-icon {
+  color: rgb(var(--type-accent, 114 242 255));
+  height: 26px;
+  width: 26px;
+}
+
+.result-card-save {
+  width: 100%;
+}
+
+.result-card-hint {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+  margin: 0;
+}
+
+.result-card-hint .ui-icon {
+  color: var(--lime);
+  flex: 0 0 auto;
+}
+
+.result-card-side {
+  align-content: start;
+  display: grid;
+  gap: 12px;
+  min-width: 0;
+}
+
+.result-card-side .result-status-row {
+  margin: 0;
+}
+
+@media (max-width: 720px) {
+  .result-card-hero {
+    gap: 20px;
+    grid-template-columns: 1fr;
+    justify-items: center;
+  }
+
+  .result-card-figure {
+    max-width: 300px;
+    width: 100%;
+  }
+
+  .result-card-side {
+    width: 100%;
+  }
+}
+
 .card-studio-hint .ui-icon {
   color: var(--lime);
 }

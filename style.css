@@ -2552,19 +2552,22 @@ p {
   margin: 0;
 }
 
-/* 結果画面の主役をシェア用カードに（キャラが空白に浮くレイアウトの置き換え） */
+/* 結果画面の主役をシェア用カードに。枠外で独立させ、中央から上→下へ視線が流れる縦積み */
 .result-card-hero {
-  align-items: start;
-  display: grid;
-  gap: 28px;
-  grid-template-columns: minmax(240px, 330px) minmax(0, 1fr);
+  align-items: center;
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+  text-align: center;
 }
 
 .result-card-figure {
   display: grid;
   gap: 12px;
+  justify-items: center;
   margin: 0;
-  min-width: 0;
+  max-width: 360px;
+  width: 100%;
 }
 
 .result-card-figure img {
@@ -2615,30 +2618,26 @@ p {
 }
 
 .result-card-side {
-  align-content: start;
   display: grid;
   gap: 12px;
-  min-width: 0;
+  justify-items: center;
+  margin: 0 auto;
+  max-width: 620px;
+  width: 100%;
 }
 
 .result-card-side .result-status-row {
   margin: 0;
 }
 
-@media (max-width: 720px) {
-  .result-card-hero {
-    gap: 20px;
-    grid-template-columns: 1fr;
-    justify-items: center;
-  }
+.result-card-side .result-actions-top {
+  justify-content: center;
+  margin-top: 4px;
+}
 
+@media (max-width: 720px) {
   .result-card-figure {
     max-width: 300px;
-    width: 100%;
-  }
-
-  .result-card-side {
-    width: 100%;
   }
 }
 

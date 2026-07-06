@@ -2639,7 +2639,12 @@ function getSenseCompatiblePartners(archetype) {
           subMeta: 'GameSense Scan 8内の相性タイプ',
           href: `gamesense.html#sense=${id}`,
           iconName: senseIcons[primary] || 'chart',
-          image: `assets/types/sense-${primary}-guide.png`,
+          emblem: {
+            mainIcon: senseIcons[primary] || 'chart',
+            subIcon: senseIcons[secondary] || 'spark',
+            accent: (SENSE_CARD_ACCENTS[primary] || [114, 242, 255]).join(' '),
+            subAccent: (SENSE_CARD_ACCENTS[secondary] || [255, 77, 210]).join(' '),
+          },
           accent: (SENSE_CARD_ACCENTS[primary] || [114, 242, 255]).join(' '),
         };
       }))
@@ -2682,7 +2687,9 @@ function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果', op
         ${matches.map((match, index) => `
           <article class="compat-partner-card rank-${index + 1}"${match.accent ? ` style="--partner-accent: ${match.accent}"` : ''}>
             <div class="compat-partner-rank">
-              ${match.image ? `<span class="compat-partner-thumb"><img src="${match.image}" alt="" width="72" height="79" loading="lazy" decoding="async" /></span>` : ''}
+              ${match.emblem
+                ? `<span class="sense-type-emblem compat-partner-emblem" style="--emblem-accent: ${match.emblem.accent}; --emblem-sub: ${match.emblem.subAccent}" aria-hidden="true"><span class="sense-type-emblem-main">${icon(match.emblem.mainIcon)}</span><span class="sense-type-emblem-sub">${icon(match.emblem.subIcon)}</span></span>`
+                : (match.image ? `<span class="compat-partner-thumb"><img src="${match.image}" alt="" width="72" height="79" loading="lazy" decoding="async" /></span>` : '')}
               <span class="compat-partner-rank-no">${String(index + 1).padStart(2, '0')}</span>
               <small>${match.badge}</small>
             </div>

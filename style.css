@@ -3146,6 +3146,23 @@ p {
   width: 84px;
 }
 
+/* 相性パネルの相手サムネイルもエンブレム化(センスはキャラが主能力キーで重複するため) */
+.compat-partner-rank .compat-partner-emblem {
+  border-radius: 18px;
+  height: 76px;
+  width: 76px;
+}
+
+.compat-partner-rank .compat-partner-emblem .sense-type-emblem-main .ui-icon {
+  height: 36px;
+  width: 36px;
+}
+
+.compat-partner-rank .compat-partner-emblem .sense-type-emblem-sub {
+  height: 26px;
+  width: 26px;
+}
+
 .compat-partner-thumb img {
   height: auto;
   image-rendering: pixelated;
@@ -4306,7 +4323,8 @@ p {
   width: 64px;
 }
 
-.sense-type-card .sense-type-emblem-main {
+.sense-type-card .sense-type-emblem-main,
+.compat-partner-emblem .sense-type-emblem-main {
   align-items: center;
   color: rgb(var(--emblem-accent));
   display: inline-flex;
@@ -4318,7 +4336,8 @@ p {
   width: 32px;
 }
 
-.sense-type-card .sense-type-emblem-sub {
+.sense-type-card .sense-type-emblem-sub,
+.compat-partner-emblem .sense-type-emblem-sub {
   align-items: center;
   background: rgba(7, 12, 27, 0.92);
   border: 1px solid rgb(var(--emblem-sub) / 0.6);
@@ -5596,6 +5615,31 @@ body.sense-result-ready .post-result-lab {
     font-size: 15px;
     height: 36px;
     width: 36px;
+  }
+
+  /* モバイルは50pxカラムに収まるようエンブレムを縮小 */
+  .compat-partner-rank .compat-partner-emblem {
+    border-radius: 13px;
+    height: 46px;
+    width: 46px;
+  }
+
+  .compat-partner-rank .compat-partner-emblem .sense-type-emblem-main .ui-icon {
+    height: 22px;
+    width: 22px;
+  }
+
+  .compat-partner-rank .compat-partner-emblem .sense-type-emblem-sub {
+    border-radius: 6px;
+    bottom: -5px;
+    height: 18px;
+    right: -5px;
+    width: 18px;
+  }
+
+  .compat-partner-rank .compat-partner-emblem .sense-type-emblem-sub .ui-icon {
+    height: 11px;
+    width: 11px;
   }
 
   .compat-partner-rank small {

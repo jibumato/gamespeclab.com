@@ -3296,7 +3296,10 @@ function renderSenseResult(archetype, normalizedScores) {
         revealPixel: true,
       })}
       <div class="result-content">
-        ${renderTypeSpotlight(`assets/types/sense-${archetype.primary}-guide.png`, primaryLabel, archetype.name)}
+        <div class="sense-radar-spotlight">
+          <span class="type-spotlight-badge">${icon('chart')}YOUR SCAN · ${primaryLabel} × ${secondaryLabel}</span>
+          ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
+        </div>
         <div class="result-status-row">
           ${renderRarityBadge(getSenseRarity(archetype))}
           ${renderNightOwlBadge()}
@@ -3326,7 +3329,6 @@ function renderSenseResult(archetype, normalizedScores) {
           ${renderShareButtons('sense', 'top')}
         </div>
         ${renderResultCardStudio('sense')}
-        ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
         ${renderTopSenseAbilities(normalizedScores)}
         ${renderSenseMatrix(archetype)}
         <div class="sense-result-grid">

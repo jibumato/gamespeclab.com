@@ -3513,6 +3513,22 @@ p {
   padding: 18px;
 }
 
+/* センス結果の主役をレーダーに（キャラ人形の代わり） */
+.sense-radar-spotlight {
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+}
+
+.sense-radar-spotlight .type-spotlight-badge {
+  color: var(--cyan);
+}
+
+.sense-radar-spotlight .sense-radar-card {
+  box-shadow: 0 0 34px rgba(114, 242, 255, 0.12);
+  width: 100%;
+}
+
 .radar-svg {
   color: var(--cyan);
   height: auto;

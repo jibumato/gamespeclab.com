@@ -3433,40 +3433,20 @@ function renderSenseResult(archetype, normalizedScores) {
         revealImage: 'assets/pipo-scan.webp',
       })}
       <div class="result-content">
-        <div class="sense-radar-spotlight">
-          <span class="type-spotlight-badge">${icon('chart')}YOUR SCAN · ${primaryLabel} × ${secondaryLabel}</span>
-          ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
-        </div>
-        <div class="result-status-row">
-          ${renderRarityBadge(getSenseRarity(archetype))}
-          ${renderNightOwlBadge()}
-        </div>
-        <div class="result-dialogue">
-          <div class="sense-core-icons" aria-label="アーキタイプを構成する上位能力">
-            <div class="sense-core-orb is-primary">
-              <small>01</small>
-              ${icon(senseIcons[archetype.primary] || 'target')}
-              <strong>${primaryLabel}</strong>
-            </div>
-            <span class="sense-core-link">×</span>
-            <div class="sense-core-orb is-secondary">
-              <small>02</small>
-              ${icon(senseIcons[archetype.secondary] || 'spark')}
-              <strong>${secondaryLabel}</strong>
-            </div>
+        ${renderResultCardHero('sense', `
+          <div class="result-kicker">${icon('chart')}CALLSIGN</div>
+          <h3 id="sense-quiz-title" class="sense-callsign">${archetype.callsign}</h3>
+          <p class="sense-callsign-alias">${archetype.alias} — ${primaryLabel} × ${secondaryLabel}</p>
+          <div class="result-status-row">
+            ${renderRarityBadge(getSenseRarity(archetype))}
+            ${renderNightOwlBadge()}
           </div>
-          <div>
-            <div class="result-kicker">${icon('chart')}CALLSIGN</div>
-            <h3 id="sense-quiz-title" class="sense-callsign">${archetype.callsign}</h3>
-            <p class="sense-callsign-alias">${archetype.alias} — ${primaryLabel} × ${secondaryLabel}</p>
-            <p class="result-catch">${archetype.catchline}</p>
-            <p>${archetype.summary}</p>
+          <p class="result-catch">${archetype.catchline}</p>
+          <p>${archetype.summary}</p>
+          <div class="result-actions result-actions-top">
+            ${renderShareButtons('sense', 'top')}
           </div>
-        </div>
-        <div class="result-actions result-actions-top">
-          ${renderShareButtons('sense', 'top')}
-        </div>
-        ${renderResultCardStudio('sense')}
+        `)}
         ${renderTopSenseAbilities(normalizedScores)}
         ${renderSenseMatrix(archetype)}
         <div class="sense-result-grid">
@@ -3689,7 +3669,7 @@ function renderSenseQuiz() {
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name },
   });
-  attachCardStudio('sense', getSenseCardData(archetype, normalizedScores), {
+  attachResultCardHero('sense', getSenseCardData(archetype, normalizedScores), {
     text: `GameSense Scan 8で「${archetype.name}」でした！ ${typeShareUrl(`sense-${archetype.primary}-guide.html`)}`,
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name },

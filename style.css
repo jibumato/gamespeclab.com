@@ -4288,29 +4288,58 @@ p {
   line-height: 1.5;
 }
 
-.sense-type-thumb-wrap {
+/* 型ごとに固有の「主能力×副能力」エンブレム(キャラ絵は主能力が同じだと重複するため) */
+.sense-type-emblem {
   align-items: center;
   background:
-    radial-gradient(circle at 50% 32%, rgba(114, 242, 255, 0.16), transparent 70%),
-    rgba(7, 12, 27, 0.55);
-  border: 1px solid rgba(114, 242, 255, 0.22);
+    radial-gradient(circle at 50% 30%, rgb(var(--emblem-accent) / 0.28), transparent 72%),
+    rgba(7, 12, 27, 0.72);
+  border: 1px solid rgb(var(--emblem-accent) / 0.45);
   border-radius: 16px;
+  box-shadow: 0 0 18px rgb(var(--emblem-accent) / 0.18);
   display: inline-flex;
+  height: 64px;
   justify-content: center;
   justify-self: start;
-  padding: 6px 12px;
+  position: relative;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  width: 64px;
 }
 
-.sense-type-thumb {
-  display: block;
-  filter: drop-shadow(0 3px 6px rgba(0, 0, 0, 0.45));
-  height: auto;
-  image-rendering: pixelated;
-  transition: transform 0.2s ease;
-  width: 56px;
+.sense-type-card .sense-type-emblem-main {
+  align-items: center;
+  color: rgb(var(--emblem-accent));
+  display: inline-flex;
+  justify-content: center;
 }
 
-.sense-type-card:hover .sense-type-thumb {
+.sense-type-emblem-main .ui-icon {
+  height: 32px;
+  width: 32px;
+}
+
+.sense-type-card .sense-type-emblem-sub {
+  align-items: center;
+  background: rgba(7, 12, 27, 0.92);
+  border: 1px solid rgb(var(--emblem-sub) / 0.6);
+  border-radius: 8px;
+  bottom: -6px;
+  color: rgb(var(--emblem-sub));
+  display: inline-flex;
+  height: 24px;
+  justify-content: center;
+  position: absolute;
+  right: -6px;
+  width: 24px;
+}
+
+.sense-type-emblem-sub .ui-icon {
+  height: 14px;
+  width: 14px;
+}
+
+.sense-type-card:hover .sense-type-emblem {
+  box-shadow: 0 0 26px rgb(var(--emblem-accent) / 0.3);
   transform: translateY(-3px);
 }
 

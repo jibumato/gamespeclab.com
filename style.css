@@ -5030,13 +5030,6 @@ body.sense-result-ready .post-result-lab {
   width: 100%;
 }
 
-.gear-guide-links {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-top: 12px;
-}
-
 .device-pick {
   background:
     linear-gradient(160deg, rgba(114, 242, 255, 0.06), rgba(255, 77, 210, 0.045)),

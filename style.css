@@ -3546,6 +3546,21 @@ p {
   width: 100%;
 }
 
+/* センスの識別名はコールサイン(英語)。人格の「〜型」と器を分ける */
+.sense-callsign {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  letter-spacing: 0.06em;
+}
+
+.sense-callsign-alias {
+  color: var(--cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  margin: 2px 0 6px;
+}
+
 .radar-svg {
   color: var(--cyan);
   height: auto;

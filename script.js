@@ -618,17 +618,17 @@ function drawSenseScanReport(data) {
   ctx.fillStyle = CARD_COLORS.muted;
   ctx.fillText(rarity.percentLabel, W / 2, rarityY + 86);
 
-  // アーキタイプ名（＝データのラベルという立ち位置）
+  // コールサイン（＝センスの識別名。人格の「〜型」とは器を分ける）
   const ty = rarityY + 188;
   ctx.font = `800 24px ${CARD_MONO}`;
   ctx.fillStyle = cardAccentCss(accentRgb, 0.85);
-  ctx.fillText('— ARCHETYPE —', W / 2, ty - 56);
-  ctx.font = `900 58px ${CARD_FONT}`;
+  ctx.fillText('— CALLSIGN —', W / 2, ty - 60);
+  ctx.font = `900 66px ${CARD_MONO}`;
   ctx.fillStyle = CARD_COLORS.ink;
-  ctx.fillText(data.name, W / 2, ty);
-  ctx.font = `800 28px ${CARD_MONO}`;
+  ctx.fillText(data.callsign || data.name, W / 2, ty);
+  ctx.font = `800 27px ${CARD_FONT}`;
   ctx.fillStyle = accentCss;
-  ctx.fillText(data.code, W / 2, ty + 46);
+  ctx.fillText(`${data.alias ? `${data.alias}｜` : ''}${data.code}`, W / 2, ty + 46);
 
   // TOP3 グレードチップ
   const top3 = rankScores(scores).slice(0, 3);
@@ -909,7 +909,9 @@ function getSenseCardData(archetype, normalizedScores) {
     label: 'GAMESENSE SCAN 8',
     image: `assets/types/sense-${archetype.primary}-guide.png`,
     code: `${senseLabels[archetype.primary]} × ${senseLabels[archetype.secondary]}`,
-    name: archetype.name,
+    name: archetype.callsign,
+    callsign: archetype.callsign,
+    alias: archetype.alias,
     catchline: archetype.catchline,
     rarity: getSenseRarity(archetype),
     accent: SENSE_CARD_ACCENTS[archetype.primary],
@@ -1078,7 +1080,13 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   ctx.font = `900 25px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.ink;
   drawWrappedCanvasText(ctx, mbtiResult.type.title, leftCx, titleY, 220, 30, 2);
-  drawWrappedCanvasText(ctx, senseResult.archetype.name, rightCx, titleY, 220, 30, 2);
+  // 右側はコールサイン(1行) + 日本語エイリアス(小)
+  ctx.font = `900 24px ${CARD_MONO}`;
+  ctx.fillText(senseResult.archetype.callsign, rightCx, titleY);
+  ctx.font = `700 14px ${CARD_FONT}`;
+  ctx.fillStyle = CARD_COLORS.muted;
+  ctx.fillText(senseResult.archetype.alias, rightCx, titleY + 24);
+  ctx.fillStyle = CARD_COLORS.ink;
 
   ctx.font = `800 13px ${CARD_MONO}`;
   ctx.fillStyle = mbtiCard.rarity.accent === 'common' ? CARD_COLORS.muted : CARD_COLORS.gold;
@@ -2039,6 +2047,68 @@ const senseArchetypes = {
   resource_speed: ['テンポ管理アタッカー', '資源を見ながら、攻めるタイミングを逃さないタイプ。', '準備と実行の切り替えがうまく、チャンスを形にできます。'],
   spatial_prediction: ['ルート予測ナビゲーター', '地形や射線から、次に起きる接敵を予測するタイプ。', '先回り、裏取り、退路確保で強みが出ます。'],
   prediction_spatial: ['未来マップ設計士', '次の展開を読み、位置取りで有利を作るタイプ。', '移動判断やエリア取りが噛み合うほどチームを助けます。'],
+};
+
+// GameSenseのコールサイン(英語の戦術識別名)。
+// 命名の棲み分け: ゲーマーMBTI=日本語「〜型」(プレイ人格) / GameSense=CALLSIGN(能力の識別名)。
+// 日本語名はaliasとして残し、意味の補助線に使う。
+const SENSE_CALLSIGNS = {
+  awareness_prediction: 'ORACLE',
+  awareness_pattern: 'ARGUS',
+  awareness_spatial: 'SENTINEL',
+  awareness_speed: 'FALCON',
+  awareness_resource: 'OPERATOR',
+  awareness_mindgame: 'PROFILER',
+  awareness_adaptation: 'TRACKER',
+  prediction_awareness: 'VISIONARY',
+  prediction_pattern: 'PROPHET',
+  prediction_spatial: 'HORIZON',
+  prediction_speed: 'COMET',
+  prediction_resource: 'TIMEKEEPER',
+  prediction_mindgame: 'GAMBIT',
+  prediction_adaptation: 'SAGE',
+  pattern_awareness: 'CIPHER',
+  pattern_prediction: 'TACTICIAN',
+  pattern_spatial: 'ARCHITECT',
+  pattern_speed: 'CIRCUIT',
+  pattern_resource: 'ENGINEER',
+  pattern_mindgame: 'HACKER',
+  pattern_adaptation: 'CORTEX',
+  spatial_awareness: 'ATLAS',
+  spatial_prediction: 'PATHFINDER',
+  spatial_pattern: 'MERIDIAN',
+  spatial_speed: 'VECTOR',
+  spatial_resource: 'WARDEN',
+  spatial_mindgame: 'FLANKER',
+  spatial_adaptation: 'COMPASS',
+  speed_awareness: 'QUICKDRAW',
+  speed_prediction: 'INTERCEPTOR',
+  speed_pattern: 'REFLEX',
+  speed_spatial: 'VANGUARD',
+  speed_resource: 'CLUTCH',
+  speed_mindgame: 'VIPER',
+  speed_adaptation: 'OVERCLOCK',
+  resource_awareness: 'QUARTERMASTER',
+  resource_prediction: 'ENDGAME',
+  resource_pattern: 'BROKER',
+  resource_spatial: 'LOGISTICS',
+  resource_speed: 'TEMPO',
+  resource_mindgame: 'DEALER',
+  resource_adaptation: 'FORGE',
+  mindgame_awareness: 'PREDATOR',
+  mindgame_prediction: 'MENTALIST',
+  mindgame_pattern: 'TRICKSTER',
+  mindgame_spatial: 'MIRAGE',
+  mindgame_speed: 'WILDCARD',
+  mindgame_resource: 'POKERFACE',
+  mindgame_adaptation: 'PHANTOM',
+  adaptation_awareness: 'CHRONICLE',
+  adaptation_prediction: 'PIONEER',
+  adaptation_pattern: 'DARWIN',
+  adaptation_spatial: 'NOMAD',
+  adaptation_speed: 'SURGE',
+  adaptation_resource: 'ALCHEMIST',
+  adaptation_mindgame: 'CHAMELEON',
 };
 
 const senseCoreNames = {
@@ -3089,19 +3159,25 @@ function getSenseArchetype(normalizedScores) {
 
 function getSenseArchetypeFromKeys(primary, secondary) {
   const preset = senseArchetypes[`${primary}_${secondary}`];
+  const callsign = SENSE_CALLSIGNS[`${primary}_${secondary}`] || 'SCANNER';
+  const alias = preset ? preset[0] : `${senseCoreNames[primary]}${senseStyleNames[secondary]}`;
+  const base = {
+    primary,
+    secondary,
+    callsign,
+    alias,
+    // 汎用の表示名。見出しなど凝った箇所はcallsign/aliasを個別に使う。
+    name: `${callsign}（${alias}）`,
+  };
   if (preset) {
     return {
-      primary,
-      secondary,
-      name: `${preset[0]}型`,
+      ...base,
       catchline: preset[1],
       summary: preset[2],
     };
   }
   return {
-    primary,
-    secondary,
-    name: `${senseCoreNames[primary]}${senseStyleNames[secondary]}型`,
+    ...base,
     catchline: `${senseLabels[primary]}を軸に、${senseLabels[secondary]}で勝ち筋を広げるタイプ。`,
     summary: `あなたは${senseLabels[primary]}で強みを作り、${senseLabels[secondary]}を使って状況に合わせるゲーム脳です。得意な場面を言語化すると、さらに再現性が上がります。`,
   };
@@ -3325,8 +3401,9 @@ function renderSenseResult(archetype, normalizedScores) {
             </div>
           </div>
           <div>
-            <div class="result-kicker">${icon('chart')}GameSense Archetype</div>
-            <h3 id="sense-quiz-title">${archetype.name}</h3>
+            <div class="result-kicker">${icon('chart')}CALLSIGN</div>
+            <h3 id="sense-quiz-title" class="sense-callsign">${archetype.callsign}</h3>
+            <p class="sense-callsign-alias">${archetype.alias} — ${primaryLabel} × ${secondaryLabel}</p>
             <p class="result-catch">${archetype.catchline}</p>
             <p>${archetype.summary}</p>
           </div>

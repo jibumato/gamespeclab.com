@@ -3292,8 +3292,7 @@ function renderSenseResult(archetype, normalizedScores) {
         name: archetype.name,
         revealLabel: 'GAMESENSE SCAN 8',
         revealHeadline: '8能力のシグナルを解析中...',
-        revealImage: `assets/types/sense-${archetype.primary}-guide.png`,
-        revealPixel: true,
+        revealImage: 'assets/pipo-scan.webp',
       })}
       <div class="result-content">
         <div class="sense-radar-spotlight">

@@ -4657,6 +4657,16 @@ p {
   margin: 0 0 12px;
 }
 
+.page-disclaimer {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 0 28px 40px;
+  text-align: center;
+}
+
 .affiliate-grid {
   grid-template-columns: 1fr;
 }

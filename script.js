@@ -3176,6 +3176,14 @@ function getSenseRarity(archetype) {
 }
 
 function renderRarityBadge(rarity) {
+  if (rarity.accent === 'common') {
+    return `
+      <div class="rarity-badge is-common" role="img" aria-label="${rarity.label}。${rarity.percentLabel}">
+        <span class="rarity-tier">${icon('heart')}POPULAR<b>${rarity.label}</b></span>
+        <span class="rarity-percent">${icon('spark')}${rarity.percentLabel}</span>
+      </div>
+    `;
+  }
   const stars = '★'.repeat(rarity.stars) + '☆'.repeat(Math.max(0, 5 - rarity.stars));
   return `
     <div class="rarity-badge is-${rarity.accent}" role="img" aria-label="希少度 ${rarity.label}。${rarity.percentLabel}">
@@ -3552,6 +3560,55 @@ function renderSenseGearList(sortedAbilities) {
   `).join('');
 }
 
+// ゲーマーMBTIの4軸 → 相性のいいデバイスガイド。タイプコードの各軸から出し分ける。
+const MBTI_GEAR_MAP = {
+  E: { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '通話のノリを支える', reason: '外向プレイのあなたは、通話の温度がそのままプレイの熱量になります。装着感が良く声が届きやすいヘッドセットは、テンションを維持する土台です。' },
+  I: { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '集中を切らさない視認性', reason: '集中と内省を大事にするあなたは、画面に没入できる環境で実力が出ます。高リフレッシュのモニターは、その集中をそのまま結果につなげます。' },
+  S: { guide: 'gaming-mouse-guide.html', icon: 'mouse', title: 'マウスの選び方', small: '現場反応を操作に乗せる', reason: '現場反応型のあなたは、見えた瞬間に動ける入力が武器です。軽量・低遅延のマウスは、反応速度をそのまま結果に変えます。' },
+  N: { guide: 'gaming-keyboard-guide.html', icon: 'cpu', title: 'キーボードの選び方', small: '構想を素早く実行に移す', reason: '未来構想型のあなたは、考えた作戦をすぐ行動に移せる入力環境が合います。反応の良いキーボードは、思考と操作のズレを減らします。' },
+  T: { guide: 'gaming-mousepad-guide.html', icon: 'target', title: 'マウスパッドの選び方', small: '勝ち筋の再現性を支える', reason: '勝ち筋重視のあなたは、同じ動きを同じ精度で再現できるかが重要です。大型のマウスパッドは、振り向きや狙いの再現性を底上げします。' },
+  F: { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '空気を拾う耳を支える', reason: '空気重視のあなたは、声のトーンや間から相手の気持ちを拾います。定位のいいヘッドセットは、その繊細な感覚をさらに活かします。' },
+  J: { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '作戦を見渡す情報量', reason: '作戦遂行型のあなたは、盤面全体を見渡せるほど計画が機能します。広い視界のモニターは、その俯瞰力を後押しします。' },
+  P: { guide: 'gaming-keyboard-guide.html', icon: 'cpu', title: 'キーボードの選び方', small: '即興の切り替えを支える', reason: '即興適応型のあなたは、状況に応じて操作を素早く切り替えます。反応の良いキーボードは、その場の判断をそのまま操作に反映します。' },
+};
+
+const MBTI_GEAR_FALLBACK = [
+  { guide: 'gaming-monitor-guide.html', icon: 'monitor', title: 'モニターの選び方', small: '視認性と反応の余裕を作る', reason: '高リフレッシュのモニターは、見えてから動くまでの余裕を作る土台です。' },
+  { guide: 'gaming-mouse-guide.html', icon: 'mouse', title: 'マウスの選び方', small: '判断を操作に乗せやすくする', reason: '軽量マウスは、思った方向へ素直に動かしやすく、操作のズレを減らします。' },
+  { guide: 'gaming-headset-guide.html', icon: 'headset', title: 'ヘッドセットの選び方', small: '音の情報を逃さない', reason: '定位の良いヘッドセットは、通話や足音の手がかりを拾いやすくします。' },
+];
+
+// タイプコードの4軸からデバイスガイドを最大3種（重複なし）選ぶ。
+function getMbtiGearPicks(code) {
+  const picks = [];
+  const usedGuides = new Set();
+  [...code].forEach((letter) => {
+    if (picks.length >= 3) return;
+    const gear = MBTI_GEAR_MAP[letter];
+    if (!gear || usedGuides.has(gear.guide)) return;
+    usedGuides.add(gear.guide);
+    picks.push(gear);
+  });
+  MBTI_GEAR_FALLBACK.forEach((gear) => {
+    if (picks.length >= 3 || usedGuides.has(gear.guide)) return;
+    usedGuides.add(gear.guide);
+    picks.push(gear);
+  });
+  return picks;
+}
+
+function renderMbtiGearList(code) {
+  const list = document.querySelector('#mbti-gear-list');
+  if (!list) return;
+  list.innerHTML = getMbtiGearPicks(code).map((gear) => `
+    <a href="${gear.guide}">
+      <span>${icon(gear.icon)}${gear.title}</span>
+      <small>${gear.small}</small>
+      <em>${gear.reason}</em>
+    </a>
+  `).join('');
+}
+
 function updatePostResultLab(archetype, normalizedScores) {
   const lab = document.querySelector('#post-result-lab');
   if (!lab) return;
@@ -3688,13 +3745,13 @@ function renderSenseQuiz() {
   });
   attachShareHandlers('sense', {
     text: `GameSense Scan 8で「${archetype.name}」でした！${archetype.catchline}`,
-    url: typeShareUrl(`sense-${archetype.primary}-guide.html`),
+    url: typeShareUrl(`gamesense.html#sense=${archetype.primary}_${archetype.secondary}`),
     hashtags: 'GameSenseScan,GameSpecLab',
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name },
   });
   attachResultCardHero('sense', getSenseCardData(archetype, normalizedScores), {
-    text: `GameSense Scan 8で「${archetype.name}」でした！ ${typeShareUrl(`sense-${archetype.primary}-guide.html`)}`,
+    text: `GameSense Scan 8で「${archetype.name}」でした！ ${typeShareUrl(`gamesense.html#sense=${archetype.primary}_${archetype.secondary}`)}`,
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name },
   });
@@ -3762,6 +3819,7 @@ function renderGamerMbtiQuiz() {
   setResultHash(mbtiResultHash);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
   activateResultReveal();
+  renderMbtiGearList(type.code);
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     clearQuizAnswers('mbti');
@@ -4663,7 +4721,7 @@ function applySenseHashRoute() {
   });
   attachShareHandlers('sense', {
     text: `GameSense Scan 8で「${archetype.name}」でした！${archetype.catchline}`,
-    url: typeShareUrl(`sense-${primary}-guide.html`),
+    url: typeShareUrl(`gamesense.html#sense=${primary}_${secondary}`),
     hashtags: 'GameSenseScan,GameSpecLab',
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name, source: 'type_directory' },
@@ -4692,6 +4750,7 @@ function applyGamerMbtiHashRoute() {
   document.querySelector('#mbti-score-preview').innerHTML = renderGamerMbtiAxisGrid(scores);
   document.querySelector('#mbti-quiz-box').innerHTML = renderGamerMbtiResult(type, scores);
   activateResultReveal();
+  renderMbtiGearList(type.code);
   document.querySelector('#reset-mbti-quiz')?.addEventListener('click', () => {
     gamerMbtiAnswers = [];
     document.body.classList.remove('gamer-mbti-result-ready');

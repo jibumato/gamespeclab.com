@@ -2370,6 +2370,19 @@ p {
   color: var(--soft-pink);
 }
 
+.rarity-badge.is-common {
+  background: rgba(255, 77, 210, 0.08);
+  border-color: rgba(255, 183, 233, 0.45);
+}
+
+.rarity-badge.is-common .rarity-tier {
+  color: var(--soft-pink);
+}
+
+.rarity-badge.is-common .rarity-tier .ui-icon {
+  color: var(--pink);
+}
+
 .rarity-badge.is-rare {
   border-color: rgba(114, 242, 255, 0.55);
   box-shadow: 0 0 22px rgba(114, 242, 255, 0.18);
@@ -4761,7 +4774,8 @@ p {
   padding: 74px 28px 26px;
 }
 
-body.sense-result-ready .post-result-lab {
+body.sense-result-ready .post-result-lab,
+body.gamer-mbti-result-ready .post-result-lab {
   display: grid;
   gap: 28px;
 }

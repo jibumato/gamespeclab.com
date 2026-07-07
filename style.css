@@ -3581,6 +3581,74 @@ p {
   padding: 14px;
 }
 
+.cross-scan-panel {
+  background:
+    radial-gradient(circle at 82% 18%, rgba(255, 77, 210, 0.16), transparent 42%),
+    radial-gradient(circle at 12% 82%, rgba(114, 242, 255, 0.12), transparent 40%),
+    rgba(7, 12, 28, 0.88);
+  border: 1px solid rgba(114, 242, 255, 0.5);
+  box-shadow: 0 0 34px rgba(114, 242, 255, 0.16), inset 0 1px 0 rgba(255, 255, 255, 0.08);
+  display: grid;
+  gap: 12px;
+  justify-items: center;
+  padding: 28px 20px 24px;
+  position: relative;
+  text-align: center;
+}
+
+.cross-scan-panel::before {
+  background: linear-gradient(90deg, var(--aqua), var(--pink));
+  content: "";
+  height: 3px;
+  left: 0;
+  position: absolute;
+  right: 0;
+  top: 0;
+}
+
+.cross-scan-eyebrow {
+  align-items: center;
+  color: var(--cyan);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 7px;
+  letter-spacing: 0.14em;
+}
+
+.cross-scan-panel strong {
+  color: var(--ink);
+  font-size: clamp(20px, 2.4vw, 28px);
+  line-height: 1.3;
+}
+
+.cross-scan-panel p {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.75;
+  margin: 0;
+  max-width: 560px;
+}
+
+.cross-scan-cta {
+  font-size: 13px;
+  min-height: 48px;
+  padding: 0 26px;
+}
+
+.cross-scan-panel small {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  font-size: 12px;
+  gap: 6px;
+}
+
+.cross-scan-panel small .ui-icon {
+  color: var(--soft-pink);
+}
+
 .mbti-compat-note span {
   align-items: center;
   color: var(--lime);

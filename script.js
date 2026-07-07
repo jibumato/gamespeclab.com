@@ -2896,6 +2896,36 @@ function renderScaleOptionList(question, dataAttribute) {
   `;
 }
 
+// もう片方のメイン診断への相互導線。結果画面内で他セクションと分けて目立たせる。
+function renderCrossScanPanel(kind) {
+  const target = kind === 'sense'
+    ? {
+      href: 'gamermbti.html',
+      eyebrow: 'NEXT SCAN',
+      title: '能力値の次は、プレイ人格。',
+      body: '8能力の強みに、判断・通話温度・役割の16タイプを重ねると、向いてるロールと組みやすい相手がさらにはっきりします。16問・約1分。',
+      cta: 'ゲーマーMBTIを診断する',
+      ctaIcon: 'user',
+    }
+    : {
+      href: 'gamesense.html',
+      eyebrow: 'NEXT SCAN',
+      title: 'プレイ人格の次は、能力値。',
+      body: 'タイプに8能力のレーダーチャートを重ねると、強みの根拠と伸ばしどころまで見えてきます。24問・約2分。',
+      cta: 'GameSense Scan 8を診断する',
+      ctaIcon: 'chart',
+    };
+  return `
+    <aside class="cross-scan-panel" aria-label="もう1つの診断への案内">
+      <span class="cross-scan-eyebrow">${icon('zap')}${target.eyebrow}</span>
+      <strong>${target.title}</strong>
+      <p>${target.body}</p>
+      <a class="primary-link cross-scan-cta" href="${target.href}">${icon(target.ctaIcon)}${target.cta}</a>
+      <small>${icon('spark')}両方の結果が揃うと、タイプ図鑑で「ゲーマー名刺」も作れます。</small>
+    </aside>
+  `;
+}
+
 function renderGamerMbtiResult(type, scores) {
   const compatiblePartners = getMbtiCompatiblePartners(type.code);
   return `
@@ -2941,6 +2971,7 @@ function renderGamerMbtiResult(type, scores) {
           </div>
         </details>
         ${renderCompatiblePartnersPanel(compatiblePartners, type.title)}
+        ${renderCrossScanPanel('mbti')}
         <div class="mbti-compat-note">
           <span>${icon('chat')}MBTI風相性メモ</span>
           <p>T型は改善案を愛として出しがちで、F型はまず共感を求めがちです。違いを責めるより、「今は共感」「次に改善」と順番を分けると、ゲームの空気が一気に整います。</p>
@@ -3481,10 +3512,10 @@ function renderSenseResult(archetype, normalizedScores) {
           </article>
         </div>
         ${renderCompatiblePartnersPanel(compatiblePartners, `${primaryLabel} × ${secondaryLabel}`)}
+        ${renderCrossScanPanel('sense')}
         ${renderSenseTheoryNote()}
         <div class="result-actions">
           ${renderShareButtons('sense')}
-          <a class="ghost-link" href="gamermbti.html">${icon('user')}ゲーマータイプも見る</a>
           <button class="ghost-button" type="button" id="reset-sense-quiz">${icon('target')}もう一度診断</button>
         </div>
       </div>

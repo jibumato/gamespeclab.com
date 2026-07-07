@@ -613,7 +613,10 @@ function drawSenseScanReport(data) {
   ctx.fillText(`${rarity.tier}  ${rarity.label}`, W / 2, rarityY);
   ctx.font = `900 30px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.gold;
-  ctx.fillText('★'.repeat(rarity.stars) + '☆'.repeat(Math.max(0, 5 - rarity.stars)), W / 2, rarityY + 44);
+  const senseScoreText = typeof rarity.rating === 'number'
+    ? `★ ${rarity.rating.toFixed(1)} / 5.0`
+    : '★'.repeat(rarity.stars) + '☆'.repeat(Math.max(0, 5 - rarity.stars));
+  ctx.fillText(senseScoreText, W / 2, rarityY + 44);
   ctx.font = `800 26px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.muted;
   ctx.fillText(rarity.percentLabel, W / 2, rarityY + 86);
@@ -799,7 +802,9 @@ async function drawResultCard(data) {
   ctx.fillText(`${data.rarity.tier}  ${data.rarity.label}`, W / 2, rarityY);
   ctx.font = `900 30px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.gold;
-  const stars = '★'.repeat(data.rarity.stars) + '☆'.repeat(Math.max(0, 5 - data.rarity.stars));
+  const stars = typeof data.rarity.rating === 'number'
+    ? `★ ${data.rarity.rating.toFixed(1)} / 5.0`
+    : '★'.repeat(data.rarity.stars) + '☆'.repeat(Math.max(0, 5 - data.rarity.stars));
   ctx.fillText(stars, W / 2, rarityY + 44);
   ctx.font = `800 26px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.muted;
@@ -3166,17 +3171,31 @@ function getSenseRarity(archetype) {
   const percentLabel = tier.accent === 'common'
     ? 'みんなに愛される王道アーキタイプ'
     : `希少度 上位${topPercent}%`;
+  // 星は希少度スコアとして 3.9〜5.0 の0.1刻みで表示（がっかり防止の下限3.9）。
+  // 希少なアーキタイプほど5.0に近づく。
+  const rating = Math.round((3.9 + (1 - (safeRank - 1) / Math.max(1, total - 1)) * 1.1) * 10) / 10;
   return {
     ...tier,
     rank: safeRank,
     total,
     percent: topPercent,
     percentLabel,
+    rating,
     note: `全${total}アーキタイプ中${safeRank}番目の希少度`,
   };
 }
 
 function renderRarityBadge(rarity) {
+  if (typeof rarity.rating === 'number') {
+    const score = rarity.rating.toFixed(1);
+    return `
+      <div class="rarity-badge is-${rarity.accent} has-rating" role="img" aria-label="ゲームセンススコア ${score} / 5.0。${rarity.percentLabel}">
+        <span class="rarity-tier">${icon('trophy')}SCORE</span>
+        <span class="rarity-score"><span class="rarity-score-star">★</span><b>${score}</b><small>/ 5.0</small></span>
+        <span class="rarity-percent">${icon('spark')}${rarity.percentLabel}</span>
+      </div>
+    `;
+  }
   if (rarity.accent === 'common') {
     return `
       <div class="rarity-badge is-common" role="img" aria-label="${rarity.label}。${rarity.percentLabel}">

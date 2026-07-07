@@ -2358,6 +2358,31 @@ p {
   text-shadow: 0 0 10px rgba(255, 215, 106, 0.5);
 }
 
+.rarity-score {
+  align-items: baseline;
+  color: #ffd76a;
+  display: inline-flex;
+  gap: 4px;
+  text-shadow: 0 0 12px rgba(255, 215, 106, 0.5);
+}
+
+.rarity-score-star {
+  font-size: 15px;
+  line-height: 1;
+}
+
+.rarity-score b {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: 0.02em;
+}
+
+.rarity-score small {
+  color: rgba(255, 224, 138, 0.75);
+  font-size: 11px;
+  font-weight: 800;
+}
+
 .rarity-percent {
   align-items: center;
   color: var(--muted);

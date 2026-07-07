@@ -23,6 +23,7 @@
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
+  scroll-padding-top: 84px;
 }
 
 body {
@@ -2370,6 +2371,19 @@ p {
   color: var(--soft-pink);
 }
 
+.rarity-badge.is-common {
+  background: rgba(255, 77, 210, 0.08);
+  border-color: rgba(255, 183, 233, 0.45);
+}
+
+.rarity-badge.is-common .rarity-tier {
+  color: var(--soft-pink);
+}
+
+.rarity-badge.is-common .rarity-tier .ui-icon {
+  color: var(--pink);
+}
+
 .rarity-badge.is-rare {
   border-color: rgba(114, 242, 255, 0.55);
   box-shadow: 0 0 22px rgba(114, 242, 255, 0.18);
@@ -4167,6 +4181,16 @@ p {
   max-width: 1160px;
 }
 
+.type-directory-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 4px auto 0;
+  max-width: 1160px;
+  padding: 0 20px;
+}
+
 .plan-grid {
   grid-template-columns: repeat(3, minmax(0, 1fr));
 }
@@ -4644,6 +4668,16 @@ p {
   margin: 0 0 12px;
 }
 
+.page-disclaimer {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 0 auto;
+  max-width: 900px;
+  padding: 0 28px 40px;
+  text-align: center;
+}
+
 .affiliate-grid {
   grid-template-columns: 1fr;
 }
@@ -4761,7 +4795,8 @@ p {
   padding: 74px 28px 26px;
 }
 
-body.sense-result-ready .post-result-lab {
+body.sense-result-ready .post-result-lab,
+body.gamer-mbti-result-ready .post-result-lab {
   display: grid;
   gap: 28px;
 }
@@ -6073,7 +6108,9 @@ body.sense-result-ready .post-result-lab {
     align-items: flex-start;
   }
 
-  .buddy-panel {
+  .buddy-panel,
+  .mbti-primer,
+  .sync-primer {
     display: none;
   }
 

@@ -74,7 +74,7 @@ The Commander, bold and commanding expression, a regal pointed crown, raising a 
 The Disruptor, sharp and mischievous expression, wild spiky hair, no headwear, crackling neon energy arcing between the fingers, wearing an outfit in #7a3a78, #c4502a hair, glowing #ffd24a accents, smirking with a clever spark
 ```
 
-### INFJ — 静かな預言者型（The Seer）
+### INFJ — 静かなる預言者型（The Seer）
 
 - 配色: 衣装 `#2f5b56` / 髪 `#2a2438` / アクセント(発光) `#7fd9c4`
 - 装備: a tall pointed wizard hat with a small star / leaning on a staff topped with a glowing orb

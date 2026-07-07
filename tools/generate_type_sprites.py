@@ -438,7 +438,7 @@ _MBTI_DEF = [
     ("intp", "孤高の研究者型",     "#4a3b7a", "#6b5a3a", "#a594e6", "glasses",    "book"),
     ("entj", "覇道コマンダー型",   "#5b3a7a", "#1f1a30", "#e0b94a", "crown",      "scepter"),
     ("entp", "メタ破壊の革命家型", "#7a3a78", "#c4502a", "#ffd24a", "spiky",      "spark"),
-    ("infj", "静かな預言者型",     "#2f5b56", "#2a2438", "#7fd9c4", "wizard",     "stafforb"),
+    ("infj", "静かなる預言者型",     "#2f5b56", "#2a2438", "#7fd9c4", "wizard",     "stafforb"),
     ("infp", "夢見る巡礼者型",     "#3a6b5a", "#a86b3a", "#a7e8c4", "travelhood", "lantern"),
     ("enfj", "鼓舞する旗手型",     "#2f6b4a", "#4a3320", "#ffd24a", "plume",      "banner"),
     ("enfp", "ひらめき冒険家型",   "#3a8a52", "#d98a2a", "#ffe07a", "feather",    "map"),

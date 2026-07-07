@@ -2364,7 +2364,7 @@ const gamerMbtiTypes = {
     games: ['Overwatch 2', 'Deep Rock Galactic', 'Helldivers 2', 'It Takes Two', 'PlateUp!'],
   },
   INFJ: {
-    title: '静かな預言者型',
+    title: '静かなる預言者型',
     catchline: '勝ち筋と空気の両方を見て、チームを静かに整えるタイプ。',
     summary: 'あなたのゲームセンスは「先読み」と「気配り」の両立です。試合の潮目と味方の空気を同時に読み、崩れる前に整えられる、固定チームの潤滑油タイプです。',
     strength: '戦術、空気、関係性を同時に見られるのが強みです。勝ち方だけでなく、勝った後もまた組みたいと思える雰囲気を作れます。',

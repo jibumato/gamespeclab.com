@@ -23,6 +23,7 @@
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
+  scroll-padding-top: 84px;
 }
 
 body {
@@ -4178,6 +4179,16 @@ p {
   grid-template-columns: repeat(4, minmax(0, 1fr));
   margin: 0 auto;
   max-width: 1160px;
+}
+
+.type-directory-nav {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  justify-content: center;
+  margin: 4px auto 0;
+  max-width: 1160px;
+  padding: 0 20px;
 }
 
 .plan-grid {

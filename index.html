@@ -35,7 +35,7 @@
     <link rel="icon" href="favicon.svg" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
     <link rel="preload" as="image" href="assets/navi-mina.webp" type="image/webp" />
-    <link rel="preload" as="image" href="assets/pipo-gag.webp" type="image/webp" />
+    <link rel="preload" as="image" href="assets/pipo-result.webp" type="image/webp" />
     <link rel="stylesheet" href="style.css?v=deep135" />
     <script type="application/ld+json">
       {
@@ -103,35 +103,6 @@
                                         "url": "https://gamespeclab.com/results.html"
                                 }
                         ]
-                },
-                {
-                        "@type": "FAQPage",
-                        "mainEntity": [
-                                {
-                                        "@type": "Question",
-                                        "name": "GameSpec Labでは何を診断できますか？",
-                                        "acceptedAnswer": {
-                                                "@type": "Answer",
-                                                "text": "GameSense Scan 8でゲームセンスの8能力を可視化し、ゲーマーMBTIでゲーム中の判断や役割の傾向を16タイプで確認できます。"
-                                        }
-                                },
-                                {
-                                        "@type": "Question",
-                                        "name": "診断は無料で使えますか？",
-                                        "acceptedAnswer": {
-                                                "@type": "Answer",
-                                                "text": "どちらの診断も無料で利用できます。結果ページ内には広告リンクを含む場合があります。"
-                                        }
-                                },
-                                {
-                                        "@type": "Question",
-                                        "name": "診断結果から次に何を見ればいいですか？",
-                                        "acceptedAnswer": {
-                                                "@type": "Answer",
-                                                "text": "結果一覧、読み物ガイド、各タイプの個別解説ページへ進むと、向いている役割や相性のいい相手をさらに深く確認できます。"
-                                        }
-                                }
-                        ]
                 }
         ]
 }
@@ -151,9 +122,8 @@
       <nav id="site-menu" aria-label="サイト内メニュー">
         <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
-        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
-        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
-        <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
+        <a href="results.html"><span data-icon="list"></span>タイプ図鑑</a>
+        <a href="articles.html"><span data-icon="spark"></span>読み物</a>
       </nav>
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
@@ -169,22 +139,6 @@
         <div class="choice-copy">
           <h1 class="choice-brand-title"><span>GameSpec Lab</span><small>無料ゲームセンス診断とゲーマーMBTI</small></h1>
           <p class="lead">ゲームセンス診断とゲーマーMBTI診断から、PCゲームでの強み、向いてる役割、相性のいい相手タイプまで順番に見つけられます。</p>
-        </div>
-        <div class="choice-guides" aria-label="ナビAIミナとピポからの案内">
-          <figure class="choice-guide is-mina">
-            <span class="choice-guide-avatar"><img src="assets/navi-mina.webp" alt="ナビAIミナ" width="1448" height="1086" decoding="async" fetchpriority="high" /></span>
-            <figcaption>
-              <strong>ミナ</strong>
-              <span>まずはあなた自身をスキャンしよう。強みとタイプが見えると、相性のいい相棒も探しやすくなるよ。</span>
-            </figcaption>
-          </figure>
-          <figure class="choice-guide is-pipo">
-            <span class="choice-guide-avatar"><img src="assets/pipo-gag.webp" alt="ピポ" width="960" height="640" decoding="async" fetchpriority="high" /></span>
-            <figcaption>
-              <strong>ピポ</strong>
-              <span>ピポ計算中。能力ログとタイプログを照合して、あなたの勝ち筋を発見します。</span>
-            </figcaption>
-          </figure>
         </div>
         <div class="diagnosis-choice-grid" aria-label="診断を選ぶ">
           <a class="diagnosis-choice-card is-sense" href="gamesense.html">
@@ -219,6 +173,22 @@
             <span class="choice-tags"><span>16タイプ</span><span>称号</span><span>プレイ人格</span></span>
             <small class="choice-card-cta"><span data-icon="arrow"></span>ゲーマータイプ診断へ</small>
           </a>
+        </div>
+        <div class="choice-guides" aria-label="ナビAIミナとピポからの案内">
+          <figure class="choice-guide is-mina">
+            <span class="choice-guide-avatar"><img src="assets/navi-mina.webp" alt="ナビAIミナ" width="1448" height="1086" loading="lazy" decoding="async" /></span>
+            <figcaption>
+              <strong>ミナ</strong>
+              <span>まずはあなた自身をスキャンしよう。強みとタイプが見えると、相性のいい相棒も探しやすくなるよ。</span>
+            </figcaption>
+          </figure>
+          <figure class="choice-guide is-pipo">
+            <span class="choice-guide-avatar"><img src="assets/pipo-gag.webp" alt="ピポ" width="960" height="640" loading="lazy" decoding="async" /></span>
+            <figcaption>
+              <strong>ピポ</strong>
+              <span>ピポ計算中。能力ログとタイプログを照合して、あなたの勝ち筋を発見します。</span>
+            </figcaption>
+          </figure>
         </div>
       </section>
 
@@ -263,17 +233,6 @@
         </div>
       </section>
 
-    <section class="section seo-link-panel" aria-label="よくある質問">
-      <div class="section-heading compact">
-        <p class="eyebrow"><span data-icon="spark"></span>FAQ</p>
-        <h2>よくある質問</h2>
-      </div>
-      <div class="article-pair-grid faq-section-grid">
-      <div><strong>GameSpec Labでは何を診断できますか？</strong><p>GameSense Scan 8でゲームセンスの8能力を可視化し、ゲーマーMBTIでゲーム中の判断や役割の傾向を16タイプで確認できます。</p></div>
-      <div><strong>診断は無料で使えますか？</strong><p>どちらの診断も無料で利用できます。結果ページ内には広告リンクを含む場合があります。</p></div>
-      <div><strong>診断結果から次に何を見ればいいですか？</strong><p>結果一覧、読み物ガイド、各タイプの個別解説ページへ進むと、向いている役割や相性のいい相手をさらに深く確認できます。</p></div>
-      </div>
-    </section>
     </main>
 
     <footer class="site-footer">
@@ -284,8 +243,8 @@
       <nav aria-label="運営情報">
         <a href="gamesense.html"><span data-icon="chart"></span>ゲームセンス</a>
         <a href="gamermbti.html"><span data-icon="user"></span>ゲーマーMBTI</a>
-        <a href="results.html"><span data-icon="list"></span>結果一覧</a>
-        <a href="articles.html"><span data-icon="spark"></span>ガイド</a>
+        <a href="results.html"><span data-icon="list"></span>タイプ図鑑</a>
+        <a href="articles.html"><span data-icon="spark"></span>読み物</a>
         <a href="privacy.html"><span data-icon="shield"></span>プライバシー</a>
         <a href="affiliate-disclosure.html"><span data-icon="ad"></span>広告表記</a>
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>

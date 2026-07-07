@@ -2823,6 +2823,7 @@ function renderCompatiblePartnersPanel(matches, sourceLabel = '診断結果', op
           </article>
         `).join('')}
       </div>
+      <a class="ghost-link compat-partner-cta" href="partner.html">${icon('link')}実際のフレンドとの相性も診断する</a>
     </section>
   `;
 }

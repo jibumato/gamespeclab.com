@@ -4727,6 +4727,11 @@ function applySenseHashRoute() {
     title: 'GameSense Scan 8',
     track: { archetype: archetype.name, source: 'type_directory' },
   });
+  attachResultCardHero('sense', getSenseCardData(archetype, normalizedScores), {
+    text: `GameSense Scan 8で「${archetype.name}」でした！ ${typeShareUrl(`gamesense.html#sense=${primary}_${secondary}`)}`,
+    title: 'GameSense Scan 8',
+    track: { archetype: archetype.name, source: 'type_directory' },
+  });
   document.querySelector('#gamesense')?.scrollIntoView();
   trackEvent('sense_type_page_open', { archetype: archetype.name, primary, secondary });
   return true;
@@ -4762,6 +4767,11 @@ function applyGamerMbtiHashRoute() {
     text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！${type.catchline}`,
     url: typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`),
     hashtags: 'ゲーマーMBTI,GameSpecLab',
+    title: 'ゲーマーMBTIタイプ診断',
+    track: { code: type.code, source: 'type_directory' },
+  });
+  attachResultCardHero('mbti', getMbtiCardData(type, scores), {
+    text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！ ${typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`)}`,
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code, source: 'type_directory' },
   });

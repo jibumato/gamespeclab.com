@@ -6097,7 +6097,9 @@ body.gamer-mbti-result-ready .post-result-lab {
     align-items: flex-start;
   }
 
-  .buddy-panel {
+  .buddy-panel,
+  .mbti-primer,
+  .sync-primer {
     display: none;
   }
 

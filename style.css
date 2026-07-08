@@ -7831,3 +7831,27 @@ body.gear-white .top-ability-tip strong { color: var(--lime); }
 body.gear-white .night-owl-badge { background: #f3f0fb; border: 1px solid rgba(107,107,207,0.3); color: var(--muted); }
 body.gear-white .night-owl-badge .ui-icon { color: #6b6bcf; }
 body.gear-white .night-owl-badge b { background: rgba(107,107,207,0.12); color: #4a4aa8; }
+
+/* result reveal placeholder (scanning band) — white pilot */
+body.gear-white .result-reveal-card {
+  background:
+    radial-gradient(circle at 22% 45%, rgba(184,74,134,0.06), transparent 34%),
+    linear-gradient(125deg, rgba(14,133,124,0.06), rgba(184,74,134,0.05)),
+    #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: var(--gw-elev);
+}
+body.gear-white .result-reveal-card::before { background: linear-gradient(90deg, transparent, rgba(14,133,124,0.18), transparent); }
+
+/* partner.html sync-code primer panel — white pilot */
+body.gear-white .sync-primer {
+  background:
+    linear-gradient(135deg, rgba(14,133,124,0.05), rgba(184,74,134,0.045)),
+    #ffffff;
+  border: 1px solid var(--line);
+  box-shadow: var(--gw-elev);
+}
+body.gear-white .sync-primer-head strong { color: var(--ink); }
+body.gear-white .sync-primer-head small { border: 1px solid rgba(184,74,134,0.36); color: var(--pink); }
+body.gear-white .sync-primer-grid span { background: #f5f9f9; border: 1px solid var(--line); }
+body.gear-white .sync-primer-grid b { color: var(--cyan); }

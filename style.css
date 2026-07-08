@@ -7974,3 +7974,10 @@ body.gear-white .compare-table thead th {
 }
 body.gear-white .compare-table tbody th { background: #eef4f4; color: var(--cyan); }
 body.gear-white .compare-table tbody tr:nth-child(even) td { background: #f5f9f9; }
+
+/* white theme — device guide gear-link reason text (was near-white em) */
+body.gear-white .gear-link-list a em {
+  background: rgba(74, 143, 42, 0.08);
+  border-left-color: var(--lime);
+  color: #2f5c1a;
+}

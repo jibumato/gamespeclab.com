@@ -2961,6 +2961,7 @@ function renderGamerMbtiResult(type, scores) {
             ${renderShareButtons('mbti', 'top')}
           </div>
         `)}
+        ${renderFigureStage(`assets/types/${type.code.toLowerCase()}.png`, type.title)}
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
@@ -3986,6 +3987,53 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
   `;
 }
 
+// ドット絵を層状に押し出した擬似3Dフィギュア（スクロールで回転）
+function renderFigureStage(image, title) {
+  const LAYERS = 10;
+  const layers = Array.from({ length: LAYERS }, (_, i) => {
+    const face = i === 0 || i === LAYERS - 1 ? 'is-face' : 'is-core';
+    return `<img src="${image}" alt="" aria-hidden="true" class="${face}" style="--i:${i}" loading="lazy" decoding="async" width="200" height="220" />`;
+  }).join('');
+  return `
+    <div class="figure-stage" data-spin3d role="img" aria-label="${title}の3Dフィギュア風表示">
+      <div class="figure-spin">${layers}</div>
+      <div class="figure-base" aria-hidden="true"></div>
+      <span class="figure-caption">${icon('spark')}STATUS FIGURE · スクロールで回転</span>
+    </div>
+  `;
+}
+
+let figureSpinBound = false;
+
+function updateFigureSpin() {
+  const vh = window.innerHeight || 1;
+  document.querySelectorAll('[data-spin3d] .figure-spin').forEach((spin) => {
+    const rect = spin.getBoundingClientRect();
+    // ビューポートを通過する間に一回転（-18°スタートで静止時も立体感が出る角度に）
+    const progress = Math.max(0, Math.min(1, (vh - rect.top) / (vh + rect.height)));
+    spin.style.setProperty('--spin', `${(-18 + progress * 360).toFixed(1)}deg`);
+  });
+}
+
+function setupFigureSpin() {
+  if (!document.querySelector('[data-spin3d]')) return;
+  const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  if (reduced) return;
+  updateFigureSpin();
+  if (figureSpinBound) return;
+  figureSpinBound = true;
+  let raf = null;
+  const onScroll = () => {
+    if (raf) return;
+    raf = window.requestAnimationFrame(() => {
+      raf = null;
+      updateFigureSpin();
+    });
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  window.addEventListener('resize', onScroll, { passive: true });
+}
+
 function renderTypeSpotlight(image, code, title) {
   return `
     <div class="result-type-spotlight" aria-label="${title}のキャラクター">
@@ -4088,6 +4136,7 @@ function activateResultReveal() {
       content.style.transform = 'none';
     }
     animateResultCharts(content || sequence, reduced);
+    setupFigureSpin();
   };
   if (reduced) {
     finish();

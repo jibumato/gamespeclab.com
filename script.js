@@ -902,7 +902,7 @@ function getMbtiCardData(type, scores) {
   return {
     kind: 'mbti',
     label: 'GAMER MBTI',
-    image: `assets/types/${type.code.toLowerCase()}.png`,
+    image: `assets/types/${type.code.toLowerCase()}.png?v=2`,
     code: `参考コード ${type.code}`,
     name: type.title,
     catchline: type.catchline,
@@ -917,7 +917,7 @@ function getSenseCardData(archetype, normalizedScores) {
   return {
     kind: 'sense',
     label: 'GAMESENSE SCAN 8',
-    image: `assets/types/sense-${archetype.primary}-guide.png`,
+    image: `assets/types/sense-${archetype.primary}-guide.png?v=2`,
     code: `${senseLabels[archetype.primary]} × ${senseLabels[archetype.secondary]}`,
     name: archetype.callsign,
     callsign: archetype.callsign,
@@ -2793,7 +2793,7 @@ function getMbtiCompatiblePartners(code) {
       subMeta: 'ゲーマーMBTI内の相性タイプ',
       href: `gamermbti.html#mbti=${candidateCode}`,
       iconName: 'user',
-      image: `assets/types/${candidateCode.toLowerCase()}.png`,
+      image: `assets/types/${candidateCode.toLowerCase()}.png?v=2`,
       accent: (MBTI_CARD_ACCENTS[candidateCode] || [114, 242, 255]).join(' '),
     };
   });
@@ -2939,7 +2939,7 @@ function renderGamerMbtiResult(type, scores) {
         name: type.title,
         revealLabel: 'GAMER TYPE SCAN',
         revealHeadline: 'プレイ人格ログを照合中...',
-        revealImage: `assets/types/${type.code.toLowerCase()}.png`,
+        revealImage: `assets/types/${type.code.toLowerCase()}.png?v=2`,
         revealPixel: true,
       })}
       <div class="result-content">
@@ -2961,7 +2961,7 @@ function renderGamerMbtiResult(type, scores) {
             ${renderShareButtons('mbti', 'top')}
           </div>
         `)}
-        ${renderFigureStage(`assets/types/${type.code.toLowerCase()}.png`, type.title)}
+        ${renderFigureStage(`assets/types/${type.code.toLowerCase()}.png?v=2`, type.title)}
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>

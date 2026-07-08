@@ -7859,3 +7859,84 @@ body.gear-white .sync-primer-head strong { color: var(--ink); }
 body.gear-white .sync-primer-head small { border: 1px solid rgba(184,74,134,0.36); color: var(--pink); }
 body.gear-white .sync-primer-grid span { background: #f5f9f9; border: 1px solid var(--line); }
 body.gear-white .sync-primer-grid b { color: var(--cyan); }
+
+/* ==========================================================================
+   擬似3Dフィギュア（MBTI結果のステータス画面演出・スクロールで回転）
+   ========================================================================== */
+.figure-stage {
+  display: grid;
+  gap: 0;
+  justify-items: center;
+  margin: 26px auto 6px;
+  perspective: 900px;
+}
+.figure-spin {
+  height: 220px;
+  position: relative;
+  transform: rotateY(var(--spin, -18deg));
+  transform-style: preserve-3d;
+  width: 200px;
+  will-change: transform;
+}
+.figure-spin img {
+  height: 100%;
+  image-rendering: pixelated;
+  inset: 0;
+  object-fit: contain;
+  position: absolute;
+  transform: translateZ(calc((var(--i) - 4.5) * 2.4px));
+  width: 100%;
+}
+/* 中間レイヤーは暗くして「厚み」のエッジに、表裏の面だけ本来の色 */
+.figure-spin img.is-core { filter: brightness(0.3) saturate(1.35); }
+.figure-spin img.is-face { filter: drop-shadow(0 0 14px rgba(114, 242, 255, 0.22)); }
+.figure-base {
+  background:
+    radial-gradient(closest-side, rgba(114, 242, 255, 0.3), rgba(114, 242, 255, 0.08) 58%, transparent 76%);
+  border-radius: 50%;
+  height: 34px;
+  margin-top: -12px;
+  position: relative;
+  width: 216px;
+}
+.figure-base::before {
+  animation: figureRing 3.4s linear infinite;
+  background: conic-gradient(from 0deg, var(--cyan), var(--pink), var(--lime), var(--cyan));
+  border-radius: 50%;
+  content: "";
+  height: 60px;
+  left: 50%;
+  margin: -30px 0 0 -30px;
+  -webkit-mask: radial-gradient(closest-side, transparent 84%, #000 86%);
+  mask: radial-gradient(closest-side, transparent 84%, #000 86%);
+  opacity: 0.8;
+  position: absolute;
+  top: 50%;
+  /* 円をZ回転（色が流れる）→ 縦に潰して楕円に。楕円自体は歪まない */
+  transform: scale(3.3, 0.44) rotate(0deg);
+  width: 60px;
+}
+.figure-base::after {
+  background: radial-gradient(closest-side, rgba(0, 0, 0, 0.55), transparent 70%);
+  border-radius: 50%;
+  content: "";
+  inset: 6px 34px;
+  position: absolute;
+}
+.figure-caption {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  gap: 6px;
+  letter-spacing: 0.08em;
+  margin-top: 10px;
+}
+.figure-caption .ui-icon { color: var(--cyan); height: 13px; width: 13px; }
+@keyframes figureRing { to { transform: scale(3.3, 0.44) rotate(360deg); } }
+@media (prefers-reduced-motion: reduce) {
+  .figure-base::before { animation: none; }
+  .figure-spin { transform: rotateY(-18deg); }
+}

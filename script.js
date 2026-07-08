@@ -4978,11 +4978,30 @@ function applyHashRoute() {
   document.querySelector('#diagnosis').scrollIntoView();
 }
 
+// 16タイプ早見表（results.html）の性別トグル: サムネイルを一括で BOY/GIRL 切替
+function setupMbtiDirectoryToggle() {
+  const grid = document.querySelector('.static-type-grid.is-mbti');
+  const btns = document.querySelectorAll('[data-mbti-dir-variant]');
+  if (!grid || !btns.length) return;
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.mbtiDirVariant;
+      btns.forEach((x) => x.classList.toggle('is-active', x === btn));
+      grid.querySelectorAll('.type-thumb').forEach((img) => {
+        const m = (img.getAttribute('src') || '').match(/assets\/types\/([a-z]+)(?:-f)?\.png/);
+        if (!m) return;
+        img.src = `assets/types/${m[1]}${v === 'b' ? '-f' : ''}.png?v=2`;
+      });
+    });
+  });
+}
+
 hydrateStaticIcons();
 enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
 setupPostResultActions();
+setupMbtiDirectoryToggle();
 
 if (document.querySelector('#quiz-box')) {
   const restoredPartnerResult = answers.length === questions.length && savedPartnerHashMatches();

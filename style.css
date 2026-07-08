@@ -7945,6 +7945,7 @@ body.gear-white .sync-primer-grid b { color: var(--cyan); }
 .char-variant { display: inline-flex; gap: 6px; }
 .char-variant.is-figure { margin-top: 8px; }
 .char-variant.is-card { margin: 0; }
+.char-variant.is-directory { margin: 0 0 16px; justify-content: center; }
 .char-variant button {
   background: rgba(255, 255, 255, 0.05);
   border: 1px solid rgba(114, 242, 255, 0.25);

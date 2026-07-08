@@ -837,9 +837,13 @@ async function drawResultCard(data) {
     cursorY += 42;
   });
 
-  // バー
-  const bars = (data.bars || []).slice(0, 3);
+  // バー（MBTIは4軸、GameSenseは上位3能力）
+  const bars = (data.bars || []).slice(0, 4);
   let barY = Math.max(cursorY + 40, H - 320);
+  // フッターに重ならないよう、本数に応じて行間を詰める（3本以下は従来どおり62px）
+  const barStep = bars.length > 1
+    ? Math.min(62, (H - 140 - barY) / (bars.length - 1))
+    : 62;
   const barX = 96;
   const barW = W - barX * 2;
   ctx.textAlign = 'left';
@@ -862,7 +866,7 @@ async function drawResultCard(data) {
     ctx.fillStyle = barGrad;
     roundRectPath(ctx, barX, barY, fillW, 16, 8);
     ctx.fill();
-    barY += 62;
+    barY += barStep;
   });
 
   // キラキラ（LEGENDARYのみ、テキスト描画の後に重ねる）

@@ -902,7 +902,7 @@ function getMbtiCardData(type, scores) {
   return {
     kind: 'mbti',
     label: 'GAMER MBTI',
-    image: `assets/types/${type.code.toLowerCase()}.png?v=2`,
+    image: mbtiCharImg(type.code),
     code: `参考コード ${type.code}`,
     name: type.title,
     catchline: type.catchline,
@@ -2961,7 +2961,7 @@ function renderGamerMbtiResult(type, scores) {
             ${renderShareButtons('mbti', 'top')}
           </div>
         `)}
-        ${renderFigureStage(`assets/types/${type.code.toLowerCase()}.png?v=2`, type.title)}
+        ${renderFigureStage(mbtiCharImg(type.code), type.title)}
         ${renderGamerMbtiAxisGrid(scores)}
         <section class="mbti-result-grid" aria-label="ゲーマーMBTI結果詳細">
           <article class="result-card"><div class="card-head"><p class="card-label">${icon('spark')}才能ラベル</p><span>01</span></div><h3>ゲーム内で光るあなたらしさ</h3><p>${type.strength}</p></article>
@@ -3909,11 +3909,13 @@ function renderGamerMbtiQuiz() {
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code },
   });
-  attachResultCardHero('mbti', getMbtiCardData(type, scores), {
+  const mbtiCardShareMeta = {
     text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！ ${typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`)}`,
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code },
-  });
+  };
+  mbtiCardCtx = { type, scores, shareMeta: mbtiCardShareMeta };
+  attachResultCardHero('mbti', getMbtiCardData(type, scores), mbtiCardShareMeta);
 }
 
 function renderShareCard(profile, scores) {
@@ -3987,6 +3989,41 @@ function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あな�
   `;
 }
 
+// キャラ表示バリアント（A=既定 / B=女性版）。診断前ゲートは設けず結果画面で任意切替
+let charVariant = 'a';
+let mbtiCardCtx = null;
+let charVariantBound = false;
+
+function mbtiCharImg(code) {
+  return `assets/types/${code.toLowerCase()}${charVariant === 'b' ? '-f' : ''}.png?v=2`;
+}
+
+function setCharVariant(v) {
+  if (v === charVariant) return;
+  charVariant = v;
+  document.querySelectorAll('[data-char-variant]').forEach((b) => {
+    b.classList.toggle('is-active', b.dataset.charVariant === v);
+  });
+  if (!mbtiCardCtx) return;
+  const img = mbtiCharImg(mbtiCardCtx.type.code);
+  document.querySelectorAll('[data-spin3d] .figure-spin img').forEach((layer) => { layer.src = img; });
+  const figure = document.querySelector('.result-card-figure[data-result-card="mbti"]');
+  if (figure) {
+    figure.dataset.cardBound = '';
+    figure.innerHTML = `<div class="result-card-loading">${icon('spark')}<span>カードを生成中...</span></div>`;
+    attachResultCardHero('mbti', getMbtiCardData(mbtiCardCtx.type, mbtiCardCtx.scores), mbtiCardCtx.shareMeta);
+  }
+}
+
+function setupCharVariantToggle() {
+  if (charVariantBound) return;
+  charVariantBound = true;
+  document.addEventListener('click', (ev) => {
+    const btn = ev.target.closest('[data-char-variant]');
+    if (btn) setCharVariant(btn.dataset.charVariant);
+  });
+}
+
 // ドット絵を層状に押し出した擬似3Dフィギュア（スクロールで回転）
 function renderFigureStage(image, title) {
   const LAYERS = 10;
@@ -3999,6 +4036,10 @@ function renderFigureStage(image, title) {
       <div class="figure-spin">${layers}</div>
       <div class="figure-base" aria-hidden="true"></div>
       <span class="figure-caption">${icon('spark')}STATUS FIGURE · スクロールで回転</span>
+      <div class="figure-variant" role="group" aria-label="キャラクターのスタイル切替">
+        <button type="button" data-char-variant="a" class="${charVariant === 'a' ? 'is-active' : ''}">STYLE A</button>
+        <button type="button" data-char-variant="b" class="${charVariant === 'b' ? 'is-active' : ''}">STYLE B</button>
+      </div>
     </div>
   `;
 }
@@ -4137,6 +4178,7 @@ function activateResultReveal() {
     }
     animateResultCharts(content || sequence, reduced);
     setupFigureSpin();
+    setupCharVariantToggle();
   };
   if (reduced) {
     finish();
@@ -4891,11 +4933,13 @@ function applyGamerMbtiHashRoute() {
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code, source: 'type_directory' },
   });
-  attachResultCardHero('mbti', getMbtiCardData(type, scores), {
+  const mbtiHashShareMeta = {
     text: `ゲーマーMBTI診断で「${type.title}（${type.code}）」でした！ ${typeShareUrl(`gamer-mbti-${type.code.toLowerCase()}.html`)}`,
     title: 'ゲーマーMBTIタイプ診断',
     track: { code: type.code, source: 'type_directory' },
-  });
+  };
+  mbtiCardCtx = { type, scores, shareMeta: mbtiHashShareMeta };
+  attachResultCardHero('mbti', getMbtiCardData(type, scores), mbtiHashShareMeta);
   document.querySelector('#gamer-mbti')?.scrollIntoView();
   trackEvent('gamer_mbti_type_page_open', { code: type.code, title: type.title });
   return true;

@@ -3600,16 +3600,40 @@ function getSenseGearPicks(sortedAbilities) {
   return picks;
 }
 
+// デバイスガイドごとの「本命」製品。診断結果から具体的な1台＋Amazon導線を出す。
+const GEAR_PRODUCTS = {
+  'gaming-monitor-guide.html': { name: 'LG UltraGear 27GS95QE-B', spec: '27型 / 240Hz / OLED', query: 'LG UltraGear 27GS95QE-B OLED' },
+  'gaming-mouse-guide.html': { name: 'Razer Viper V3 Pro', spec: '54g / 8000Hz / 無線', query: 'Razer Viper V3 Pro' },
+  'gaming-keyboard-guide.html': { name: 'Wooting 80HE', spec: '磁気軸 / ラピッドトリガー', query: 'Wooting 80HE' },
+  'gaming-headset-guide.html': { name: 'HyperX Cloud III', spec: '低遅延 / 定位◎', query: 'HyperX Cloud III' },
+  'gaming-mousepad-guide.html': { name: 'Logicool G640r', spec: '大型 / コントロール系', query: 'Logicool G640r マウスパッド' },
+};
+
+// 診断結果のギア項目。理由＋本命製品(Amazon)＋選び方ガイドへの導線をまとめる。
+function renderGearItem(gear) {
+  const product = GEAR_PRODUCTS[gear.guide];
+  const prodBlock = product ? `
+      <div class="gear-rec-prod">
+        <span class="gear-rec-name"><b>本命</b><strong>${product.name}</strong><small>${product.spec}</small></span>
+        <a class="gear-rec-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="gear-${gear.guide}">${icon('cart')}Amazonで見る</a>
+      </div>` : '';
+  return `
+    <div class="gear-rec">
+      <span class="gear-rec-title">${icon(gear.icon)}${gear.title}</span>
+      <small>${gear.small}</small>
+      <em>${gear.reason}</em>
+      ${prodBlock}
+      <a class="gear-rec-guide" href="${gear.guide}">${icon('arrow')}選び方を詳しく</a>
+    </div>
+  `;
+}
+
+const GEAR_AFF_NOTE = '<p class="gear-aff-note">※「Amazonで見る」はAmazonアソシエイトのリンクを含みます。価格・在庫・仕様は各製品ページでご確認ください。</p>';
+
 function renderSenseGearList(sortedAbilities) {
   const list = document.querySelector('#sense-gear-list');
   if (!list) return;
-  list.innerHTML = getSenseGearPicks(sortedAbilities).map((gear) => `
-    <a href="${gear.guide}">
-      <span>${icon(gear.icon)}${gear.title}</span>
-      <small>${gear.small}</small>
-      <em>${gear.reason}</em>
-    </a>
-  `).join('');
+  list.innerHTML = getSenseGearPicks(sortedAbilities).map(renderGearItem).join('') + GEAR_AFF_NOTE;
 }
 
 // ゲーマーMBTIの4軸 → 相性のいいデバイスガイド。タイプコードの各軸から出し分ける。
@@ -3652,13 +3676,7 @@ function getMbtiGearPicks(code) {
 function renderMbtiGearList(code) {
   const list = document.querySelector('#mbti-gear-list');
   if (!list) return;
-  list.innerHTML = getMbtiGearPicks(code).map((gear) => `
-    <a href="${gear.guide}">
-      <span>${icon(gear.icon)}${gear.title}</span>
-      <small>${gear.small}</small>
-      <em>${gear.reason}</em>
-    </a>
-  `).join('');
+  list.innerHTML = getMbtiGearPicks(code).map(renderGearItem).join('') + GEAR_AFF_NOTE;
 }
 
 function updatePostResultLab(archetype, normalizedScores) {

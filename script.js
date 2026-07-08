@@ -100,6 +100,7 @@ const iconPaths = {
   keyboard: '<rect x="3" y="7" width="18" height="11" rx="2"/><path d="M6 10h.01"/><path d="M10 10h.01"/><path d="M14 10h.01"/><path d="M18 10h.01"/><path d="M8 14h8"/>',
   mousepad: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M14 8a2.5 2.5 0 0 0-2.5 2.5v3a2.5 2.5 0 0 0 5 0v-3A2.5 2.5 0 0 0 14 8z"/>',
   chair: '<path d="M7 4h10v8H7z"/><path d="M6 12h12"/><path d="M9 12v5"/><path d="M15 12v5"/><path d="M9 17h6"/>',
+  desk: '<path d="M3 8h18"/><path d="M4 8v11"/><path d="M20 8v11"/><path d="M4 8l2-3h12l2 3"/>',
   moon: '<path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>',
   share: '<path d="M8 12h8"/><path d="m13 7 5 5-5 5"/><path d="M5 5v14"/>',
   shield: '<path d="M12 3 5 6v5c0 5 3 8 7 10 4-2 7-5 7-10V6z"/><path d="m9 12 2 2 4-5"/>',

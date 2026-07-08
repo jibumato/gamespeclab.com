@@ -4978,11 +4978,35 @@ function applyHashRoute() {
   document.querySelector('#diagnosis').scrollIntoView();
 }
 
+// キャラ性別トグル（BOY/GIRL）: ページ内のMBTIキャラ画像を一括切替
+// 早見表(results)・各タイプ詳細ページのヒーロー等、[data-mbti-dir-variant]がある全ページで動作
+const MBTI_DIR_CODES = ['istj', 'isfj', 'infj', 'intj', 'istp', 'isfp', 'infp', 'intp',
+  'estp', 'esfp', 'enfp', 'entp', 'estj', 'esfj', 'enfj', 'entj'];
+function setupMbtiDirectoryToggle() {
+  const btns = document.querySelectorAll('[data-mbti-dir-variant]');
+  if (!btns.length) return;
+  const re = new RegExp(`assets/types/(${MBTI_DIR_CODES.join('|')})(?:-f)?\\.png`);
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const v = btn.dataset.mbtiDirVariant;
+      document.querySelectorAll('[data-mbti-dir-variant]').forEach((x) => {
+        x.classList.toggle('is-active', x.dataset.mbtiDirVariant === v);
+      });
+      document.querySelectorAll('img').forEach((img) => {
+        const m = (img.getAttribute('src') || '').match(re);
+        if (!m) return;
+        img.src = `assets/types/${m[1]}${v === 'b' ? '-f' : ''}.png?v=2`;
+      });
+    });
+  });
+}
+
 hydrateStaticIcons();
 enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
 setupPostResultActions();
+setupMbtiDirectoryToggle();
 
 if (document.querySelector('#quiz-box')) {
   const restoredPartnerResult = answers.length === questions.length && savedPartnerHashMatches();

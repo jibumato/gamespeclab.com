@@ -1331,6 +1331,7 @@ async function attachResultCardHero(kind, data, shareMeta) {
   const filename = `gamespeclab-${kind}-${(data.code || 'result').replace(/[^a-zA-Z0-9]/g, '').toLowerCase() || 'card'}`;
   figure.innerHTML = `
     <img src="${dataUrl}" alt="${data.name}の結果カード" width="1080" height="1350" />
+    ${kind === 'mbti' ? renderCharVariantToggle('is-card') : ''}
     <button class="primary-button result-card-save" type="button" data-card-save>${icon('share')}カードを保存・シェア</button>
     <p class="result-card-hint">${icon('check')}画像を長押し／右クリックでも保存できます。</p>
   `;
@@ -4024,6 +4025,16 @@ function setupCharVariantToggle() {
   });
 }
 
+// 性別トグル（A=BOY / B=GIRL）。フィギュアと結果カード両方で共用
+function renderCharVariantToggle(extraClass) {
+  return `
+    <div class="char-variant ${extraClass || ''}" role="group" aria-label="キャラクターの性別切替">
+      <button type="button" data-char-variant="a" class="${charVariant === 'a' ? 'is-active' : ''}">BOY</button>
+      <button type="button" data-char-variant="b" class="${charVariant === 'b' ? 'is-active' : ''}">GIRL</button>
+    </div>
+  `;
+}
+
 // ドット絵を層状に押し出した擬似3Dフィギュア（スクロールで回転）
 function renderFigureStage(image, title) {
   const LAYERS = 10;
@@ -4036,10 +4047,7 @@ function renderFigureStage(image, title) {
       <div class="figure-spin">${layers}</div>
       <div class="figure-base" aria-hidden="true"></div>
       <span class="figure-caption">${icon('spark')}STATUS FIGURE · スクロールで回転</span>
-      <div class="figure-variant" role="group" aria-label="キャラクターのスタイル切替">
-        <button type="button" data-char-variant="a" class="${charVariant === 'a' ? 'is-active' : ''}">STYLE A</button>
-        <button type="button" data-char-variant="b" class="${charVariant === 'b' ? 'is-active' : ''}">STYLE B</button>
-      </div>
+      ${renderCharVariantToggle('is-figure')}
     </div>
   `;
 }

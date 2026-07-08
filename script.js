@@ -4978,17 +4978,22 @@ function applyHashRoute() {
   document.querySelector('#diagnosis').scrollIntoView();
 }
 
-// 16タイプ早見表（results.html）の性別トグル: サムネイルを一括で BOY/GIRL 切替
+// キャラ性別トグル（BOY/GIRL）: ページ内のMBTIキャラ画像を一括切替
+// 早見表(results)・各タイプ詳細ページのヒーロー等、[data-mbti-dir-variant]がある全ページで動作
+const MBTI_DIR_CODES = ['istj', 'isfj', 'infj', 'intj', 'istp', 'isfp', 'infp', 'intp',
+  'estp', 'esfp', 'enfp', 'entp', 'estj', 'esfj', 'enfj', 'entj'];
 function setupMbtiDirectoryToggle() {
-  const grid = document.querySelector('.static-type-grid.is-mbti');
   const btns = document.querySelectorAll('[data-mbti-dir-variant]');
-  if (!grid || !btns.length) return;
+  if (!btns.length) return;
+  const re = new RegExp(`assets/types/(${MBTI_DIR_CODES.join('|')})(?:-f)?\\.png`);
   btns.forEach((btn) => {
     btn.addEventListener('click', () => {
       const v = btn.dataset.mbtiDirVariant;
-      btns.forEach((x) => x.classList.toggle('is-active', x === btn));
-      grid.querySelectorAll('.type-thumb').forEach((img) => {
-        const m = (img.getAttribute('src') || '').match(/assets\/types\/([a-z]+)(?:-f)?\.png/);
+      document.querySelectorAll('[data-mbti-dir-variant]').forEach((x) => {
+        x.classList.toggle('is-active', x.dataset.mbtiDirVariant === v);
+      });
+      document.querySelectorAll('img').forEach((img) => {
+        const m = (img.getAttribute('src') || '').match(re);
         if (!m) return;
         img.src = `assets/types/${m[1]}${v === 'b' ? '-f' : ''}.png?v=2`;
       });

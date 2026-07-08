@@ -7629,3 +7629,205 @@ body.gear-home::after { display: none; }
 }
 .gear-link-list .gear-rec-guide:hover { text-decoration: underline; }
 .gear-aff-note { color: var(--muted); font-size: 10.5px; line-height: 1.55; margin: 2px 0 0; }
+
+/* ==========================================================================
+   White theme for diagnosis pages (pilot: gamesense.html) — body.gear-white
+   Scoped so the dark diagnosis pages are unaffected until migrated.
+   ========================================================================== */
+body.gear-white {
+  --bg: #f4f7f7;
+  --panel: #ffffff;
+  --panel-strong: #ffffff;
+  --ink: #142029;
+  --muted: #5c6a74;
+  --line: rgba(14, 133, 124, 0.20);
+  --line-strong: rgba(14, 133, 124, 0.42);
+  --cyan: #0e857c;
+  --blue: #3a63c6;
+  --pink: #b84a86;
+  --soft-pink: #cf7ba6;
+  --mint: #0e857c;
+  --lavender: #6b6bcf;
+  --lime: #4a8f2a;
+  --shadow: rgba(18, 42, 45, 0.10);
+  --gw-elev: 0 1px 2px rgba(18,42,45,0.05), 0 4px 14px rgba(18,42,45,0.05);
+  background: var(--bg);
+  color: var(--ink);
+}
+body.gear-white::before {
+  background-image:
+    linear-gradient(rgba(14, 133, 124, 0.07) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(14, 133, 124, 0.07) 1px, transparent 1px);
+  background-size: 34px 34px;
+}
+body.gear-white::after { display: none; }
+
+/* ---- header / footer / nav ---- */
+body.gear-white .site-header { background: rgba(255, 255, 255, 0.9); border-bottom: 1px solid var(--line); }
+body.gear-white .brand { color: var(--ink); }
+body.gear-white .brand-mark { background: var(--cyan); border: 0; box-shadow: none; color: #fff; transform: none; border-radius: 8px; }
+body.gear-white .menu-toggle { background: #eef2f2; border: 1px solid var(--line); color: var(--ink); }
+body.gear-white .menu-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+body.gear-white .site-header nav { background: #ffffff; border-left: 1px solid var(--line); box-shadow: -28px 0 70px rgba(18, 42, 45, 0.14); }
+body.gear-white .site-header nav::before { color: var(--muted); }
+body.gear-white .site-header nav a { border-color: var(--line); color: var(--ink); }
+body.gear-white .site-header nav a .ui-icon,
+body.gear-white .site-footer nav a .ui-icon { color: var(--cyan); filter: none; }
+body.gear-white .site-footer { background: #ffffff; border-top: 1px solid var(--line); }
+body.gear-white .site-footer p { color: var(--muted); }
+body.gear-white .site-footer nav a { color: var(--muted); }
+body.gear-white .site-footer nav a:hover { color: var(--cyan); }
+
+/* ---- hero ---- */
+body.gear-white .hero-band { background-image: none; background: transparent; min-height: auto; border-bottom: 1px solid var(--line); }
+body.gear-white .hero-band::before, body.gear-white .hero-band::after { display: none; }
+body.gear-white .hero-orbit { display: none; }
+body.gear-white .eyebrow { color: var(--cyan); }
+body.gear-white .lead { color: var(--ink); }
+body.gear-white .diagnosis-copy h1 { color: var(--ink); }
+body.gear-white .sense-hero .diagnosis-copy .sense-hero-title,
+body.gear-white .sense-hero-title span { color: var(--ink); text-shadow: none; -webkit-text-fill-color: currentColor; }
+
+/* companion pill + buddy panel */
+body.gear-white .companion-pill { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .companion-pill strong { color: var(--cyan); }
+body.gear-white .companion-pill span { color: var(--ink); }
+body.gear-white .companion-avatar { background: #eef4f4; border-color: var(--line); }
+body.gear-white .buddy-panel { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .buddy-portraits img { background: #eef4f4; border-color: var(--line-strong); box-shadow: none; }
+body.gear-white .buddy-lines strong { color: var(--cyan); }
+body.gear-white .buddy-lines span { color: var(--ink); }
+
+/* ---- quiz ---- */
+body.gear-white .quiz-panel,
+body.gear-white .result-panel .result-card,
+body.gear-white .accent-card { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .quiz-panel { color: var(--ink); }
+body.gear-white .quiz-status { color: var(--cyan); }
+body.gear-white .progress-track { background: #e6eeee; }
+body.gear-white .question-dialogue { background: #f5f9f9; border: 1px solid var(--line); }
+body.gear-white .question-dialogue p,
+body.gear-white .question-dialogue h3 { color: var(--ink); }
+body.gear-white .question-dialogue span { color: var(--cyan); }
+body.gear-white .scale-caption span,
+body.gear-white .scale-caption small { color: var(--muted); }
+body.gear-white .scale-button { background: #fff; border: 1px solid var(--line); color: var(--ink); }
+body.gear-white .scale-button:hover { border-color: var(--cyan); background: #f0faf8; }
+body.gear-white .scale-button strong { color: var(--ink); }
+body.gear-white .scale-button span { color: var(--muted); }
+body.gear-white .option-button { background: #fff; border: 1px solid var(--line); color: var(--ink); }
+body.gear-white .option-button:hover { border-color: var(--cyan); }
+body.gear-white .result-card .card-label,
+body.gear-white .result-kicker { color: var(--cyan); }
+body.gear-white .result-panel h3,
+body.gear-white .result-card h3 { color: var(--ink); }
+body.gear-white .result-panel p { color: var(--muted); }
+body.gear-white .score-row .score-label { color: var(--ink); }
+body.gear-white .mini-track { background: #e6eeee; }
+
+/* ---- section wrappers / headings ---- */
+body.gear-white .section-heading h2,
+body.gear-white .article-card h2,
+body.gear-white .article-body h2 { color: var(--ink); }
+body.gear-white .section-heading p,
+body.gear-white .article-card p { color: var(--muted); }
+body.gear-white .article-card,
+body.gear-white .ability-card,
+body.gear-white .article-pair-grid > div { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .article-card strong,
+body.gear-white .article-pair-grid strong { color: var(--ink); }
+body.gear-white .article-kicker { color: var(--cyan); }
+body.gear-white .ability-card strong { color: var(--ink); }
+body.gear-white .ability-card small { color: var(--muted); }
+body.gear-white .ability-badge { color: var(--cyan); }
+
+/* ---- seo link grids ---- */
+body.gear-white .seo-link-grid a { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .seo-link-grid a strong { color: var(--ink); }
+body.gear-white .seo-link-grid a small { color: var(--muted); }
+body.gear-white .seo-link-grid a:hover { border-color: var(--cyan); }
+
+/* ---- primary/ghost links & buttons ---- */
+body.gear-white .primary-link { background: var(--cyan); border-color: var(--cyan); color: #fff; }
+body.gear-white .primary-link .ui-icon { color: #fff; filter: none; }
+body.gear-white .ghost-link,
+body.gear-white .ghost-button { background: #fff; border-color: var(--line); color: var(--ink); }
+body.gear-white .ghost-link:hover,
+body.gear-white .ghost-button:hover { border-color: var(--cyan); color: var(--cyan); background: #f0faf8; }
+body.gear-white .ghost-link .ui-icon,
+body.gear-white .ghost-button .ui-icon { color: var(--cyan); filter: none; }
+
+/* ==========================================================================
+   White theme — diagnosis RESULT screen (pilot: gamesense.html)
+   ========================================================================== */
+/* fallback static gear anchors (pre-JS) */
+body.gear-white .gear-link-list a { background: #f5f9f9; border: 1px solid var(--line); color: var(--ink); }
+body.gear-white .gear-link-list a span { color: var(--ink); }
+body.gear-white .gear-link-list a small { color: var(--muted); }
+
+/* outer result panels */
+body.gear-white .sense-matrix-panel,
+body.gear-white .compat-partner-panel,
+body.gear-white .sense-radar-card,
+body.gear-white .post-action-card { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .post-action-card { box-shadow: 0 6px 22px rgba(18,42,45,0.07); }
+
+/* inner tinted result cards */
+body.gear-white .result-insight-card,
+body.gear-white .sense-matrix-card,
+body.gear-white .theory-note,
+body.gear-white .gear-link-list .gear-rec { background: #f5f9f9; border: 1px solid var(--line); box-shadow: none; }
+body.gear-white .result-insight-card p { color: var(--ink); }
+body.gear-white .result-insight-card span,
+body.gear-white .sense-matrix-card span,
+body.gear-white .sense-matrix-head span,
+body.gear-white .compat-partner-head span,
+body.gear-white .compat-partner-rank small,
+body.gear-white .theory-note span { color: var(--cyan); }
+body.gear-white .sense-matrix-head strong,
+body.gear-white .compat-partner-head strong,
+body.gear-white .compat-partner-card h3,
+body.gear-white .post-action-card h3,
+body.gear-white .gear-rec-title { color: var(--ink); }
+
+/* summary strip chips */
+body.gear-white .result-summary-strip span { background: #f5f9f9; border: 1px solid var(--line); color: var(--ink); }
+body.gear-white .result-summary-strip .ui-icon { color: var(--cyan); }
+
+/* compat partner cards */
+body.gear-white .compat-partner-card { background: #f5f9f9; }
+body.gear-white .compat-partner-rank-no { color: var(--muted); }
+
+/* gear guide (monetization) */
+body.gear-white .post-card-index { color: var(--pink); border-color: var(--line-strong); }
+body.gear-white .gear-rec > small { color: var(--muted); }
+body.gear-white .gear-rec em { background: rgba(74,143,42,0.08); border-left-color: var(--lime); color: #2f5c1a; }
+body.gear-white .gear-rec-prod { background: #fff; border: 1px solid var(--line); }
+body.gear-white .gear-rec-name b { color: #b07d0a; }
+body.gear-white .gear-rec-name strong { color: var(--ink); }
+body.gear-white .gear-rec-name small { color: var(--muted); }
+body.gear-white .gear-link-list .gear-rec-buy { background: linear-gradient(135deg, var(--cyan), var(--soft-pink)); color: #fff; }
+body.gear-white .gear-link-list .gear-rec-buy .ui-icon { color: #fff; }
+body.gear-white .gear-link-list .gear-rec-guide { background: transparent; border: 0; color: var(--cyan); }
+
+/* top-ability panel (radar highlights) — white pilot */
+body.gear-white .top-ability-panel { background: #fff; border: 1px solid var(--line); box-shadow: var(--gw-elev); }
+body.gear-white .top-ability-head span { color: var(--cyan); }
+body.gear-white .top-ability-head strong { color: var(--ink); }
+body.gear-white .top-ability-card,
+body.gear-white .top-ability-card.rank-1,
+body.gear-white .top-ability-card.rank-2 { background: #f5f9f9; border: 1px solid var(--line); }
+body.gear-white .top-ability-card p,
+body.gear-white .top-ability-tip span { color: var(--ink); }
+body.gear-white .top-ability-rank span { color: var(--ink); }
+body.gear-white .top-ability-rank small { color: var(--cyan); }
+body.gear-white .top-ability-rank b { color: var(--cyan); border: 1px solid var(--line-strong); background: #fff; }
+body.gear-white .top-ability-card h3 { color: var(--ink); }
+body.gear-white .top-ability-card h3 .ui-icon { color: var(--cyan); }
+body.gear-white .top-ability-tip { border-top: 1px solid var(--line); }
+body.gear-white .top-ability-tip strong { color: var(--lime); }
+
+/* night-owl badge — white pilot */
+body.gear-white .night-owl-badge { background: #f3f0fb; border: 1px solid rgba(107,107,207,0.3); color: var(--muted); }
+body.gear-white .night-owl-badge .ui-icon { color: #6b6bcf; }
+body.gear-white .night-owl-badge b { background: rgba(107,107,207,0.12); color: #4a4aa8; }

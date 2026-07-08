@@ -7534,3 +7534,7 @@ body.gear-home::after { display: none; }
 @media (prefers-reduced-motion: reduce) {
   .gh-rgb::before, .gh-cat::before, .gh-pick::before, .gh-flag::before { animation: none; }
 }
+
+/* Pipo-only layout (Mina removed): recenter the single portrait/photo */
+.buddy-panel.is-solo .buddy-portraits img { object-position: 50% 42%; }
+.result-dialogue.is-solo .result-pipo-photo { margin-left: 0; margin-right: 0; transform: none; object-position: 50% 34%; }

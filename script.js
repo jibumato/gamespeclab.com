@@ -3456,10 +3456,10 @@ function renderSenseMatrix(archetype) {
           ${moreCards.map(renderCard).join('')}
         </div>
         <div class="sense-affirmation">
-          <img src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
+          <img src="assets/pipo-scan.webp" alt="" width="768" height="768" loading="lazy" decoding="async" />
           <div>
-            <span>${icon('spark')}ミナのワンポイントメモ</span>
-            <p>ミナから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
+            <span>${icon('spark')}ピポのワンポイントメモ</span>
+            <p>ピポから見ると、${matrix.affirmation} その持ち味は消さずに、試合で使いやすい形に整えていこう。</p>
           </div>
         </div>
       </details>
@@ -3947,8 +3947,7 @@ function renderResultSummaryStrip(profile) {
 
 function renderResultHero(profile, kickerIcon = 'trophy', kickerText = 'あなたのタイプ') {
   return `
-    <div class="result-dialogue">
-      <img class="result-mina-photo" src="assets/navi-mina.webp" alt="" width="1448" height="1086" loading="lazy" decoding="async" />
+    <div class="result-dialogue is-solo">
       <img class="result-pipo-photo" src="assets/pipo-result.webp" alt="" width="960" height="640" loading="lazy" decoding="async" />
       <div>
         <div class="result-kicker">${icon(kickerIcon)}${kickerText}</div>

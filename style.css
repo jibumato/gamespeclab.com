@@ -7940,3 +7940,23 @@ body.gear-white .sync-primer-grid b { color: var(--cyan); }
   .figure-base::before { animation: none; }
   .figure-spin { transform: rotateY(-18deg); }
 }
+
+/* figure stage variant toggle (STYLE A/B) */
+.figure-variant { display: inline-flex; gap: 6px; margin-top: 8px; }
+.figure-variant button {
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(114, 242, 255, 0.25);
+  color: var(--muted);
+  cursor: pointer;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.06em;
+  padding: 6px 14px;
+}
+.figure-variant button:hover { border-color: var(--cyan); color: var(--ink); }
+.figure-variant button.is-active {
+  background: linear-gradient(135deg, rgba(114, 242, 255, 0.2), rgba(255, 77, 210, 0.12));
+  border-color: rgba(114, 242, 255, 0.6);
+  color: var(--ink);
+}

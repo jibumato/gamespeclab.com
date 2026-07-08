@@ -7963,3 +7963,13 @@ body.gear-white .sync-primer-grid b { color: var(--cyan); }
   border-color: rgba(114, 242, 255, 0.6);
   color: var(--ink);
 }
+
+/* white theme — device guide compare table (pilot: gaming-*-guide) */
+body.gear-white .compare-table th,
+body.gear-white .compare-table td { border-color: var(--line); }
+body.gear-white .compare-table thead th {
+  background: linear-gradient(145deg, rgba(14,133,124,0.12), rgba(184,74,134,0.08)), #eef4f4;
+  color: var(--ink);
+}
+body.gear-white .compare-table tbody th { background: #eef4f4; color: var(--cyan); }
+body.gear-white .compare-table tbody tr:nth-child(even) td { background: #f5f9f9; }

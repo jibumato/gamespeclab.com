@@ -4046,7 +4046,7 @@ function renderFigureStage(image, title) {
     <div class="figure-stage" data-spin3d role="img" aria-label="${title}の3Dフィギュア風表示">
       <div class="figure-spin">${layers}</div>
       <div class="figure-base" aria-hidden="true"></div>
-      <span class="figure-caption">${icon('spark')}STATUS FIGURE · スクロールで回転</span>
+      <span class="figure-caption">${icon('spark')}STATUS FIGURE</span>
       ${renderCharVariantToggle('is-figure')}
     </div>
   `;

@@ -4053,6 +4053,8 @@ function renderFigureStage(image, title) {
 }
 
 let figureSpinBound = false;
+let figureSpinVisible = false;
+let figureSpinRaf = null;
 
 function updateFigureSpin() {
   const vh = window.innerHeight || 1;
@@ -4064,8 +4066,21 @@ function updateFigureSpin() {
   });
 }
 
+// scroll/resizeイベントに加えて、可視中はrAFで毎フレーム追従させる。
+// モバイルのタッチスクロール（慣性スクロール中）は passive な scroll イベントの
+// 発火がブラウザ側で間引かれ、更新が飛ぶ/止まって見えることがあるための保険。
+function runFigureSpinLoop() {
+  if (!figureSpinVisible) {
+    figureSpinRaf = null;
+    return;
+  }
+  updateFigureSpin();
+  figureSpinRaf = window.requestAnimationFrame(runFigureSpinLoop);
+}
+
 function setupFigureSpin() {
-  if (!document.querySelector('[data-spin3d]')) return;
+  const stages = document.querySelectorAll('[data-spin3d]');
+  if (!stages.length) return;
   const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
   if (reduced) return;
   updateFigureSpin();
@@ -4081,6 +4096,17 @@ function setupFigureSpin() {
   };
   window.addEventListener('scroll', onScroll, { passive: true });
   window.addEventListener('resize', onScroll, { passive: true });
+  if ('IntersectionObserver' in window) {
+    const io = new IntersectionObserver((entries) => {
+      entries.forEach((entry) => {
+        figureSpinVisible = entry.isIntersecting;
+        if (figureSpinVisible && !figureSpinRaf) {
+          figureSpinRaf = window.requestAnimationFrame(runFigureSpinLoop);
+        }
+      });
+    }, { threshold: 0, rootMargin: '40% 0px' });
+    stages.forEach((stage) => io.observe(stage));
+  }
 }
 
 function renderTypeSpotlight(image, code, title) {

@@ -7442,6 +7442,21 @@ body.gear-home::after { display: none; }
 .gh-diag .gh-go { margin-top: 4px; font-weight: 700; font-size: 14px; color: var(--gh-accent); display: inline-flex; align-items: center; gap: 8px; }
 .gh-diag .gh-go .ui-icon { height: 16px; width: 16px; }
 
+/* 診断カードだけダーク化して目立たせる（他は白基調のまま） */
+.gh-diag.gh-rgb {
+  background:
+    radial-gradient(circle at 18% 12%, rgba(114, 242, 255, 0.14), transparent 42%),
+    radial-gradient(circle at 88% 92%, rgba(255, 77, 210, 0.12), transparent 46%),
+    linear-gradient(160deg, #12121f, #0a0a16);
+  transition: transform .18s ease, box-shadow .18s ease;
+}
+.gh-diag.gh-rgb:hover { transform: translateY(-3px); }
+.gh-diag.gh-rgb .gh-k { color: #72f2ff; }
+.gh-diag.gh-rgb h3 { color: #f7f9ff; }
+.gh-diag.gh-rgb p { color: rgba(247, 249, 255, 0.68); }
+.gh-diag.gh-rgb .gh-go { color: #72f2ff; }
+.gh-diag.gh-rgb .gh-go .ui-icon { color: #72f2ff; }
+
 /* ---- product picks ---- */
 .gh-pick-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
 .gh-pick {

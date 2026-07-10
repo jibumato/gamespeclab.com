@@ -7086,6 +7086,50 @@ body.gamer-mbti-result-ready .post-result-lab {
   filter: drop-shadow(0 0 6px rgba(255, 77, 210, 0.5));
 }
 
+/* ===== デバイス図鑑 ===== */
+.zukan-controls { display: grid; gap: 12px; }
+.zukan-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.zukan-chip {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); cursor: pointer; font-size: 12.5px; font-weight: 700;
+  padding: 7px 14px; transition: border-color .15s ease, background .15s ease;
+}
+.zukan-chip:hover { border-color: var(--cyan); }
+.zukan-chip.is-on { background: var(--cyan); border-color: transparent; color: #fff; }
+.zukan-toolbar { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+.zukan-count { color: var(--muted); font-size: 12.5px; }
+.zukan-sort {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
+  color: var(--ink); font-size: 12.5px; font-weight: 700; padding: 7px 10px;
+}
+.zukan-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); margin-top: 4px; }
+.zukan-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(18, 42, 45, 0.05); display: grid; gap: 7px;
+  justify-items: center; padding: 16px 12px 14px; position: relative; text-align: center;
+  transition: transform .15s ease, border-color .15s ease, box-shadow .15s ease;
+}
+.zukan-card:hover { border-color: var(--cyan); box-shadow: 0 10px 26px rgba(14, 133, 124, 0.13); transform: translateY(-2px); }
+.zukan-cat {
+  background: rgba(14, 133, 124, 0.08); border-radius: 6px; color: var(--cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 9.5px;
+  font-weight: 900; left: 10px; letter-spacing: 0.06em; padding: 3px 7px; position: absolute; top: 10px;
+}
+.zukan-img { height: 72px; image-rendering: pixelated; image-rendering: crisp-edges; margin-top: 12px; width: 72px; }
+.zukan-name { font-size: 13px; line-height: 1.4; min-height: 2.6em; display: grid; align-items: center; }
+.zukan-price { color: var(--cyan); font-size: 12px; font-weight: 800; margin: 0; }
+.zukan-links { display: grid; gap: 6px; width: 100%; }
+.zukan-buy {
+  background: var(--cyan); border-radius: 8px; color: #fff; display: block;
+  font-size: 11.5px; font-weight: 800; padding: 8px 6px; text-decoration: none;
+}
+.zukan-buy:hover { filter: brightness(1.07); }
+.zukan-guide { color: var(--muted); font-size: 11px; text-decoration: none; }
+.zukan-guide:hover { color: var(--cyan); text-decoration: underline; }
+.zukan-note { color: var(--muted); font-size: 12px; line-height: 1.8; margin-top: 22px; }
+.guide-nav-chip.is-zukan { color: var(--cyan); font-weight: 800; padding-left: 14px; }
+@media (max-width: 430px) { .zukan-grid { grid-template-columns: repeat(2, 1fr); } }
+
 /* 最終更新ライン */
 .guide-updated {
   align-items: center;

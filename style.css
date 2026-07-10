@@ -7086,6 +7086,18 @@ body.gamer-mbti-result-ready .post-result-lab {
   filter: drop-shadow(0 0 6px rgba(255, 77, 210, 0.5));
 }
 
+/* 最終更新ライン */
+.guide-updated {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-size: 12px;
+  gap: 6px;
+  margin: -6px auto 0;
+  max-width: 1060px;
+}
+.guide-updated .ui-icon { color: var(--cyan); height: 13px; width: 13px; }
+
 /* コンパクトなデバイス別ガイド・ナビ（チップ式） */
 .guide-nav {
   align-items: center;

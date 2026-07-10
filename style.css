@@ -7948,6 +7948,7 @@ body.gear-white .site-header nav a { border-color: var(--line); color: var(--ink
 body.gear-white .site-header nav a .ui-icon,
 body.gear-white .site-footer nav a .ui-icon { color: var(--cyan); filter: none; }
 body.gear-white .site-footer { background: #ffffff; border-top: 1px solid var(--line); }
+body.gear-white .site-footer .brand-mark { background: transparent; border-radius: 0; }
 body.gear-white .site-footer p { color: var(--muted); }
 body.gear-white .site-footer nav a { color: var(--muted); }
 body.gear-white .site-footer nav a:hover { color: var(--cyan); }

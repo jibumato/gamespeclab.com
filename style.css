@@ -6918,6 +6918,63 @@ body.gamer-mbti-result-ready .post-result-lab {
   filter: drop-shadow(0 0 6px rgba(255, 77, 210, 0.5));
 }
 
+/* コンパクトなデバイス別ガイド・ナビ（チップ式） */
+.guide-nav {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 14px;
+  margin: 0 auto;
+  max-width: 1060px;
+}
+.guide-nav-label {
+  color: var(--muted);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 900;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+.guide-nav-chips { display: flex; flex-wrap: wrap; gap: 8px; }
+.guide-nav-chip {
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  color: var(--ink);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 6px;
+  line-height: 1;
+  padding: 6px 14px 6px 7px;
+  text-decoration: none;
+  transition: border-color 0.15s ease, background 0.15s ease, transform 0.15s ease, box-shadow 0.15s ease;
+}
+.guide-nav-chip img {
+  flex: none;
+  height: 24px;
+  image-rendering: pixelated;
+  image-rendering: crisp-edges;
+  width: 24px;
+}
+a.guide-nav-chip:hover {
+  border-color: var(--cyan);
+  box-shadow: 0 4px 14px rgba(14, 133, 124, 0.16);
+  transform: translateY(-1px);
+}
+.guide-nav-chip.is-current {
+  background: linear-gradient(120deg, var(--cyan), #12a596);
+  border-color: transparent;
+  box-shadow: 0 4px 14px rgba(14, 133, 124, 0.26);
+  color: #fff;
+}
+.guide-nav-chip.is-current img {
+  background: #fff;
+  border-radius: 6px;
+  padding: 2px;
+}
+
 /* ===== 華やかアップグレードv3：タイプ4軸ビジュアル ===== */
 .type-axis {
   display: grid;

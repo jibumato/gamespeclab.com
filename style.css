@@ -5244,6 +5244,23 @@ body.gamer-mbti-result-ready .post-result-lab {
   .device-pick:hover { transform: none; }
 }
 
+/* product pixel-art thumbnails (guide ranked cards) */
+.device-pick-title { align-items: center; display: flex; gap: 14px; min-width: 0; }
+.device-pick-thumb {
+  width: 72px; height: 72px; flex: none;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+  border-radius: 14px; padding: 6px;
+  background: radial-gradient(120% 120% at 50% 15%, rgba(114, 242, 255, 0.12), transparent 68%);
+  border: 1px solid rgba(114, 242, 255, 0.16);
+  filter: drop-shadow(0 4px 8px rgba(4, 8, 20, 0.35));
+}
+/* product thumbnails inline in link-list rows */
+.gear-link-thumb {
+  width: 36px; height: 36px; flex: none;
+  image-rendering: pixelated; image-rendering: crisp-edges;
+  vertical-align: middle;
+}
+
 .device-pick-head h3 {
   color: var(--ink);
   font-size: 16px;

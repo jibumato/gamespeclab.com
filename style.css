@@ -5261,6 +5261,86 @@ body.gamer-mbti-result-ready .post-result-lab {
   vertical-align: middle;
 }
 
+/* ---- social proof: achievement badges (A) ---- */
+.device-pick-title { flex-wrap: wrap; }
+.device-badge {
+  align-items: center;
+  background: linear-gradient(100deg, #c9930a, #e0b23c);
+  border-radius: 999px;
+  box-shadow: 0 3px 10px rgba(201, 147, 10, 0.3);
+  color: #fff;
+  display: inline-flex;
+  flex: none;
+  font-size: 10.5px;
+  font-weight: 900;
+  gap: 5px;
+  letter-spacing: 0.05em;
+  line-height: 1;
+  padding: 5px 12px;
+}
+.device-badge .ui-icon { height: 11px; width: 11px; }
+.device-badge.is-origin {
+  background: linear-gradient(100deg, #0e857c, #12a596);
+  box-shadow: 0 3px 10px rgba(14, 133, 124, 0.3);
+}
+
+/* ---- social proof: lore block (C) ---- */
+.device-lore {
+  background: linear-gradient(135deg, rgba(14, 133, 124, 0.06), rgba(184, 74, 134, 0.05));
+  border: 1px solid rgba(14, 133, 124, 0.2);
+  border-radius: 10px;
+  font-size: 12.5px;
+  line-height: 1.75;
+  margin: 0;
+  padding: 12px 14px 12px 40px;
+  position: relative;
+}
+.device-lore::before {
+  background: currentColor;
+  color: #c9930a;
+  content: "";
+  height: 17px;
+  left: 13px;
+  -webkit-mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12 2l2.4 6.9L21 9.2l-5.4 4.5 1.8 7L12 16.8 6.6 20.7l1.8-7L3 9.2l6.6-.3z"/></svg>') center/contain no-repeat;
+  mask: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="black"><path d="M12 2l2.4 6.9L21 9.2l-5.4 4.5 1.8 7L12 16.8 6.6 20.7l1.8-7L3 9.2l6.6-.3z"/></svg>') center/contain no-repeat;
+  position: absolute;
+  top: 13px;
+  width: 17px;
+}
+.device-lore-label {
+  color: #a8720a;
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 900;
+  letter-spacing: 0.14em;
+  margin-bottom: 3px;
+}
+.device-lore b { color: var(--ink); }
+.device-lore small {
+  color: var(--muted);
+  display: block;
+  font-size: 10.5px;
+  margin-top: 4px;
+}
+
+/* ---- social proof: inline honor chip for link-list rows ---- */
+.gear-link-honor {
+  background: linear-gradient(100deg, #c9930a, #e0b23c);
+  border-radius: 999px;
+  color: #fff;
+  display: inline-block;
+  flex: none;
+  font-size: 10px;
+  font-style: normal;
+  font-weight: 900;
+  letter-spacing: 0.04em;
+  line-height: 1;
+  margin-left: 8px;
+  padding: 4px 10px;
+  vertical-align: middle;
+}
+
 .device-pick-head h3 {
   color: var(--ink);
   font-size: 16px;

@@ -7445,7 +7445,7 @@ body.gear-home::after { display: none; }
 .gh-diag .gh-go { margin-top: 4px; font-weight: 700; font-size: 14px; color: var(--gh-accent); display: inline-flex; align-items: center; gap: 8px; }
 .gh-diag .gh-go .ui-icon { height: 16px; width: 16px; }
 .gh-hot {
-  position: absolute; top: -10px; right: 18px;
+  position: absolute; top: -10px; right: 18px; z-index: 4;
   background: linear-gradient(135deg, #ff6a3d, #ff2f8f);
   color: #fff; font-family: var(--gh-mono); font-size: 10.5px; font-weight: 900;
   letter-spacing: 0.08em; padding: 4px 10px; border-radius: 999px;

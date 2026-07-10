@@ -2986,6 +2986,17 @@ function renderScaleOptionList(question, dataAttribute) {
 
 // もう片方のメイン診断への相互導線。結果画面内で他セクションと分けて目立たせる。
 function renderCrossScanPanel(kind) {
+  // 両診断が揃っていれば、この結果画面からそのまま名刺作成へ誘導する。
+  if (getSavedMbtiResult() && getSavedSenseResult()) {
+    return `
+      <aside class="cross-scan-panel is-id-ready" aria-label="ゲーマー名刺の作成">
+        <span class="cross-scan-eyebrow">${icon('tag')}GAMER ID CARD</span>
+        <strong>2つの結果が揃いました。ゲーマー名刺を作れます。</strong>
+        <p>ゲーマーMBTIとGameSense Scan 8を、レーダー付きの1枚にまとめてそのままシェアできます。</p>
+        <a class="primary-link cross-scan-cta" href="results.html#gamer-id-card-panel">${icon('share')}ゲーマー名刺を作成する</a>
+      </aside>
+    `;
+  }
   const target = kind === 'sense'
     ? {
       href: 'gamermbti.html',
@@ -3009,7 +3020,7 @@ function renderCrossScanPanel(kind) {
       <strong>${target.title}</strong>
       <p>${target.body}</p>
       <a class="primary-link cross-scan-cta" href="${target.href}">${icon(target.ctaIcon)}${target.cta}</a>
-      <small>${icon('spark')}両方の結果が揃うと、タイプ図鑑で「ゲーマー名刺」も作れます。</small>
+      <small>${icon('spark')}両方の結果が揃うと、<a href="results.html#gamer-id-card-panel">「ゲーマー名刺」</a>を1枚にまとめてシェアできます。</small>
     </aside>
   `;
 }
@@ -5187,6 +5198,15 @@ if (document.querySelector('#gamer-id-card-panel')) {
   window.addEventListener('pageshow', (event) => {
     if (event.persisted) renderGamerIdCardPanel();
   });
+  // 結果ページなどから #gamer-id-card-panel で来た場合、描画後にパネルへ寄せて強調する。
+  if (window.location.hash === '#gamer-id-card-panel') {
+    const panel = document.querySelector('#gamer-id-card-panel');
+    window.requestAnimationFrame(() => {
+      panel.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      panel.classList.add('is-flash');
+      window.setTimeout(() => panel.classList.remove('is-flash'), 1600);
+    });
+  }
 }
 
 if (document.querySelector('.type-hero-stage[data-holo]')) {

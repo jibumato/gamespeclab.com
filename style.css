@@ -3639,6 +3639,21 @@ p {
   color: var(--soft-pink);
 }
 
+/* 両診断が揃ったときの名刺CTAは、ご褒美として一段目立たせる */
+.cross-scan-panel.is-id-ready {
+  border-color: rgba(255, 77, 210, 0.6);
+  box-shadow: 0 0 40px rgba(255, 77, 210, 0.24), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+}
+
+.cross-scan-panel.is-id-ready .cross-scan-eyebrow {
+  color: var(--soft-pink);
+}
+
+.cross-scan-panel.is-id-ready .cross-scan-cta {
+  background: linear-gradient(90deg, var(--pink), var(--aqua));
+  color: #0b0f1f;
+}
+
 .mbti-compat-note span {
   align-items: center;
   color: var(--lime);
@@ -4414,6 +4429,21 @@ p {
 
 .gamer-id-panel:empty {
   display: none;
+}
+
+/* 結果ページから飛んできたときに、名刺パネルを一瞬強調する */
+.gamer-id-panel.is-flash {
+  animation: id-panel-flash 1.6s ease-out;
+}
+
+@keyframes id-panel-flash {
+  0% { box-shadow: 0 0 0 0 rgba(255, 77, 210, 0); }
+  25% { box-shadow: 0 0 0 4px rgba(255, 77, 210, 0.55), 0 0 42px rgba(255, 77, 210, 0.4); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 77, 210, 0); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .gamer-id-panel.is-flash { animation: none; }
 }
 
 .id-card-copy {

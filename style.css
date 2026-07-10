@@ -7333,7 +7333,7 @@ body.gear-home::after { display: none; }
 .gh-btn {
   display: inline-flex; align-items: center; gap: 9px; font-weight: 700; font-size: 15px;
   padding: 13px 20px; border-radius: var(--gh-radius); border: 1px solid transparent; cursor: pointer;
-  text-decoration: none;
+  text-decoration: none; transition: transform .18s ease, box-shadow .18s ease, filter .18s ease, background .18s ease, border-color .18s ease;
 }
 .gh-btn.gh-primary { background: var(--gh-accent); color: #fff; box-shadow: 0 8px 20px -8px var(--gh-accent); }
 .gh-btn.gh-primary:hover { filter: brightness(1.06); box-shadow: 0 10px 24px -8px var(--gh-accent); }
@@ -7341,6 +7341,26 @@ body.gear-home::after { display: none; }
 .gh-btn.gh-ghost:hover { background: var(--gh-accent-soft); border-color: var(--gh-accent); }
 .gh-btn .gh-tag { font-family: var(--gh-mono); font-size: 10px; font-weight: 800; letter-spacing: 0.08em; color: var(--gh-amber); border: 1px solid currentColor; padding: 1px 5px; border-radius: 4px; }
 .gh-btn .gh-star { color: var(--gh-amber); }
+
+/* 目玉の診断CTA: ダーク背景＋RGBフレーム＋グローで最も目立たせる */
+.gh-btn.gh-diag-cta {
+  background:
+    radial-gradient(circle at 16% 12%, rgba(114, 242, 255, 0.18), transparent 46%),
+    radial-gradient(circle at 86% 88%, rgba(255, 77, 210, 0.16), transparent 48%),
+    linear-gradient(150deg, #16162c, #0a0a16);
+  color: #fff; font-size: 16px; font-weight: 800; padding: 15px 24px;
+}
+.gh-btn.gh-diag-cta:hover { transform: translateY(-2px); filter: brightness(1.08); }
+.gh-btn.gh-diag-cta .gh-diag-spark { color: #72f2ff; height: 18px; width: 18px; }
+.gh-btn.gh-diag-cta .gh-diag-spark .ui-icon { color: #72f2ff; height: 18px; width: 18px; }
+.gh-btn.gh-diag-cta .gh-diag-tag {
+  background: linear-gradient(135deg, #ff6a3d, #ff2f8f); color: #fff;
+  font-family: var(--gh-mono); font-size: 10.5px; font-weight: 900; letter-spacing: 0.06em;
+  padding: 3px 9px; border-radius: 999px; box-shadow: 0 3px 10px rgba(255, 47, 143, 0.4);
+}
+.gh-btn.gh-diag-cta.gh-glow {
+  box-shadow: 0 0 26px -8px rgba(114, 242, 255, 0.45), 0 0 40px -10px rgba(255, 77, 210, 0.35), 0 10px 26px -12px rgba(0, 0, 0, 0.5);
+}
 
 /* ---- hero ---- */
 .gh-hero { border-bottom: 1px solid var(--gh-line); }

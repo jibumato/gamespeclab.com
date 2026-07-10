@@ -3925,7 +3925,7 @@ function renderShareCard(profile, scores) {
     .slice(0, 3);
   return `
     <article class="share-card-visual" aria-label="${profile.name}の共有カード">
-      <div class="share-card-topline"><span>${icon('spark')}GameSpec Lab</span><span>${icon('link')}Duo Sync</span></div>
+      <div class="share-card-topline"><span>${icon('spark')}GamespecLab</span><span>${icon('link')}Duo Sync</span></div>
       <div>
         <p>${icon('target')}あなたのゲームパートナー相性</p>
         <div class="share-sync-code"><span>GSL SYNC CODE</span><strong>${profile.syncCode}</strong><small>${profile.syncCodeLabel}</small></div>
@@ -4299,7 +4299,7 @@ function renderSyncCodeDetail(profile) {
         <strong>${profile.syncCode}</strong>
         <div>
           <h3>${profile.syncCodeLabel}</h3>
-          <p>ゲーム中の相性を、行動テンポ、通話スタイル、勝負温度、チーム内の立ち位置で表したGameSpec Lab独自コードです。</p>
+          <p>ゲーム中の相性を、行動テンポ、通話スタイル、勝負温度、チーム内の立ち位置で表したGamespecLab独自コードです。</p>
         </div>
       </div>
       <div class="sync-axis-grid">
@@ -4335,7 +4335,7 @@ function renderResultDetails(profile) {
 }
 
 function updateShare(profile) {
-  const shareText = `GameSpec Labで診断したら「${profile.syncCode} / ${profile.name}」でした。${profile.shareLine || profile.catchline}`;
+  const shareText = `GamespecLabで診断したら「${profile.syncCode} / ${profile.name}」でした。${profile.shareLine || profile.catchline}`;
   const shareUrl = resultUrl(`#result=${profile.id}`);
   const sharePreview = document.querySelector('#share-preview-text');
   const tweetLink = document.querySelector('#tweet-link');
@@ -4414,12 +4414,12 @@ function renderQuiz() {
     renderQuiz();
   });
   document.querySelector('#share-result').addEventListener('click', async () => {
-    const text = `GameSpec Labで「${result.syncCode} / ${result.name}」でした。${result.syncCodeLabel}\n${resultUrl(partnerResultHash)}`;
+    const text = `GamespecLabで「${result.syncCode} / ${result.name}」でした。${result.syncCodeLabel}\n${resultUrl(partnerResultHash)}`;
     trackEvent('share_click', { result: result.id, name: result.name, method: navigator.share ? 'native' : 'clipboard' });
     const shareButton = document.querySelector('#share-result');
     try {
       if (navigator.share) {
-        await navigator.share({ title: 'GameSpec Lab', text });
+        await navigator.share({ title: 'GamespecLab', text });
         return;
       }
       await navigator.clipboard.writeText(text);
@@ -4811,7 +4811,7 @@ function setupPostResultActions() {
   postShareButton?.addEventListener('click', async () => {
     trackEvent('sense_post_share_click');
     const type = document.querySelector('#post-result-type')?.textContent || 'GameSense Scan 8';
-    const text = `GameSpec LabのGameSense Scan 8で「${type}」でした。\n${location.origin}${location.pathname}`;
+    const text = `GamespecLabのGameSense Scan 8で「${type}」でした。\n${location.origin}${location.pathname}`;
     try {
       const blob = await createSenseResultCardBlob();
       if (!blob) throw new Error('image generation failed');
@@ -5148,7 +5148,7 @@ function triggerKonamiEasterEgg() {
 
   const toast = document.createElement('div');
   toast.className = 'konami-toast';
-  toast.innerHTML = `${icon('spark')}<div><strong>隠しコマンド発見！</strong><span>GameSpec Labより、いつも診断してくれてありがとう。</span></div>`;
+  toast.innerHTML = `${icon('spark')}<div><strong>隠しコマンド発見！</strong><span>GamespecLabより、いつも診断してくれてありがとう。</span></div>`;
   document.body.appendChild(toast);
   window.requestAnimationFrame(() => toast.classList.add('is-visible'));
   window.setTimeout(() => {

@@ -7836,32 +7836,45 @@ body.gear-home::after { display: none; }
   box-shadow: 0 0 26px -8px rgba(114, 242, 255, 0.45), 0 0 40px -10px rgba(255, 77, 210, 0.35), 0 10px 26px -12px rgba(0, 0, 0, 0.5);
 }
 
-/* ---- hero ---- */
+/* ---- hero ----
+   構成: 見出し＋リードは全幅。CTAと相棒AIピポの提案を1本のバーとして
+   下部で連結し「提案→診断」の導線を1つの決断ユニットに見せる。 */
 .gh-hero { border-bottom: 1px solid var(--gh-line); }
-.gh-hero-inner { display: grid; grid-template-columns: 1.35fr 1fr; gap: 40px; padding: 60px 0 56px; align-items: center; }
+.gh-hero-inner { padding: 60px 0 56px; }
 .gh-hero h1 { font-size: clamp(32px, 5vw, 58px); line-height: 1.05; font-weight: 850; letter-spacing: -0.025em; margin-top: 16px; }
 .gh-hero h1 .gh-hl { color: var(--gh-accent); }
-.gh-hero .gh-lead { color: var(--gh-ink-dim); font-size: 17px; max-width: 46ch; margin-top: 20px; line-height: 1.75; }
-.gh-cta-row { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
+.gh-hero .gh-lead { color: var(--gh-ink-dim); font-size: 17px; max-width: 60ch; margin-top: 20px; line-height: 1.75; }
+
+.gh-hero-bar {
+  margin-top: 32px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  border: 1px solid var(--gh-line);
+  border-radius: var(--gh-radius);
+  background: var(--gh-panel);
+  box-shadow: var(--gh-shadow);
+  overflow: hidden;
+}
+.gh-cta-row { display: grid; gap: 10px; align-content: center; padding: 20px 24px; background: var(--gh-panel-2); border-right: 1px solid var(--gh-line); }
 
 .gh-pipo {
-  background: var(--gh-panel); border: 1px solid var(--gh-line); border-radius: var(--gh-radius);
-  padding: 18px; box-shadow: var(--gh-shadow); display: grid; gap: 14px;
+  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px;
+  padding: 18px 22px; min-width: 0;
 }
-.gh-pipo-head { display: flex; align-items: center; gap: 13px; }
 .gh-pipo-avatar {
-  width: 54px; height: 54px; flex: none; border-radius: var(--gh-radius); overflow: hidden;
+  width: 46px; height: 46px; flex: none; border-radius: 10px; overflow: hidden;
   background: var(--gh-panel-2); border: 1px solid var(--gh-line-bright); display: grid; place-items: center;
 }
 .gh-pipo-avatar img { width: 100%; height: 100%; object-fit: cover; }
-.gh-pipo-head b { font-size: 14px; color: var(--gh-ink); }
-.gh-pipo-head span { display: block; font-family: var(--gh-mono); font-size: 11px; color: var(--gh-muted); letter-spacing: 0.1em; text-transform: uppercase; }
-.gh-pipo p { margin: 0; font-size: 13.5px; color: var(--gh-ink-dim); line-height: 1.7; }
-.gh-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; }
+.gh-pipo-msg { display: grid; gap: 3px; min-width: 0; }
+.gh-pipo-role { font-family: var(--gh-mono); font-size: 10.5px; color: var(--gh-muted); letter-spacing: 0.1em; text-transform: uppercase; }
+.gh-pipo-msg p { margin: 0; font-size: 13px; color: var(--gh-ink-dim); line-height: 1.6; max-width: 44ch; }
+.gh-pipo-msg p b { color: var(--gh-ink); }
+.gh-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: none; }
 .gh-readout div {
-  font-family: var(--gh-mono); font-size: 11px; letter-spacing: 0.05em; color: var(--gh-muted);
-  display: flex; justify-content: space-between; padding: 7px 10px; background: var(--gh-panel-2);
-  border-radius: 6px; border: 1px solid var(--gh-line);
+  font-family: var(--gh-mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--gh-muted);
+  display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; background: var(--gh-panel-2);
+  border-radius: 6px; border: 1px solid var(--gh-line); white-space: nowrap;
 }
 .gh-readout b { color: var(--gh-accent); font-weight: 700; }
 
@@ -8028,12 +8041,17 @@ body.gear-home::after { display: none; }
 
 /* ---- responsive ---- */
 @media (max-width: 920px) {
-  .gh-hero-inner { grid-template-columns: 1fr; gap: 26px; padding: 44px 0 40px; }
+  .gh-hero-inner { padding: 44px 0 40px; }
+  .gh-hero-bar { grid-template-columns: 1fr; }
+  .gh-cta-row { border-right: 0; border-bottom: 1px solid var(--gh-line); }
+  .gh-pipo { grid-template-columns: auto 1fr; }
+  .gh-readout { grid-column: 1 / -1; margin-top: 4px; }
   .gh-cat-grid, .gh-pick-grid { grid-template-columns: repeat(2, 1fr); }
   .gh-diag-grid, .gh-guide-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
   .gh-wrap { padding: 0 16px; }
+  .gh-readout { grid-template-columns: 1fr 1fr; }
   .gh-cat-grid, .gh-pick-grid, .gh-guide-row, .gh-diag-grid { grid-template-columns: 1fr; }
   .gh-arrow { transform: rotate(90deg); }
 }

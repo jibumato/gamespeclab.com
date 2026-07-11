@@ -2628,6 +2628,45 @@ p {
   width: 26px;
 }
 
+/* GameSense SCAN REPORTカードのライブ生成中に表示するcanvas。
+   最終的な<img>と同じ見た目にして、差し替え時に違和感が出ないようにする。 */
+.result-card-figure canvas {
+  border: 1px solid rgb(var(--type-accent, 114 242 255) / 0.3);
+  border-radius: 20px;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.5);
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
+.result-card-scan-status {
+  align-items: center;
+  color: var(--muted);
+  display: inline-flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px;
+  font-weight: 700;
+  gap: 7px;
+  letter-spacing: 0.08em;
+  margin: 0;
+}
+
+.result-card-scan-dot {
+  animation: radar-dot-pulse 1.1s ease-in-out infinite;
+  background: var(--pink);
+  border-radius: 50%;
+  box-shadow: 0 0 7px 1px var(--pink);
+  flex: none;
+  height: 6px;
+  width: 6px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .result-card-scan-dot {
+    animation: none;
+  }
+}
+
 .result-card-save {
   width: 100%;
 }

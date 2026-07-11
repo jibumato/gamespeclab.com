@@ -445,15 +445,134 @@ function wrapCanvasText(ctx, text, maxWidth) {
 const CARD_FONT = "'Hiragino Sans', 'Hiragino Kaku Gothic ProN', 'Noto Sans JP', 'Yu Gothic', system-ui, sans-serif";
 const CARD_MONO = "ui-monospace, 'SFMono-Regular', Menlo, monospace";
 
+// レーダー部分だけを担当するヘルパー。revealStateを渡すと各頂点を
+// 個別の半径で描画できるため、スキャン演出の途中経過をそのまま
+// 本番カードと同じ絵作りでコマ撮りできる（省略時＝完成形を一括描画）。
+function drawSenseRadarSection(ctx, geo, scores, revealState) {
+  const { cx, cy, R, axes, primary, secondary, accentRgb, accentCss } = geo;
+  const pt = (i, r) => {
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / axes.length;
+    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
+  };
+  const radiusFor = (key, index) => {
+    if (revealState) {
+      const st = revealState.points[index];
+      return st ? st.r : R * 0.07;
+    }
+    return (Math.max(6, scores[key] || 0) / 100) * R;
+  };
+  const isTriggered = (index) => (revealState ? !!revealState.points[index]?.triggered : true);
+
+  const rGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.35);
+  rGlow.addColorStop(0, cardAccentCss(accentRgb, 0.16));
+  rGlow.addColorStop(1, cardAccentCss(accentRgb, 0));
+  ctx.fillStyle = rGlow;
+  ctx.fillRect(cx - R * 1.4, cy - R * 1.4, R * 2.8, R * 2.8);
+  for (let ring = 1; ring <= 4; ring++) {
+    ctx.beginPath();
+    axes.forEach((_, i) => {
+      const [x, y] = pt(i, (R * ring) / 4);
+      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+    });
+    ctx.closePath();
+    ctx.strokeStyle = ring === 4 ? cardAccentCss(accentRgb, 0.45) : 'rgba(255, 255, 255, 0.10)';
+    ctx.lineWidth = ring === 4 ? 2 : 1;
+    ctx.stroke();
+  }
+  axes.forEach((_, i) => {
+    const [x, y] = pt(i, R);
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(x, y);
+    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
+    ctx.lineWidth = 1;
+    ctx.stroke();
+  });
+  ctx.beginPath();
+  axes.forEach((k, i) => {
+    const [x, y] = pt(i, radiusFor(k, i));
+    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
+  });
+  ctx.closePath();
+  ctx.save();
+  ctx.shadowColor = accentCss;
+  ctx.shadowBlur = 26;
+  ctx.fillStyle = cardAccentCss(accentRgb, 0.26);
+  ctx.fill();
+  ctx.strokeStyle = accentCss;
+  ctx.lineWidth = 3.5;
+  ctx.stroke();
+  ctx.restore();
+  axes.forEach((k, i) => {
+    const [x, y] = pt(i, radiusFor(k, i));
+    ctx.beginPath();
+    ctx.arc(x, y, isTriggered(i) ? 6 : 3, 0, Math.PI * 2);
+    ctx.fillStyle = (k === primary || k === secondary) ? CARD_COLORS.gold : accentCss;
+    ctx.fill();
+    ctx.strokeStyle = 'rgba(7, 12, 27, 0.9)';
+    ctx.lineWidth = 2;
+    ctx.stroke();
+  });
+  axes.forEach((k, i) => {
+    const a = -Math.PI / 2 + (i * 2 * Math.PI) / axes.length;
+    const [x, y] = pt(i, R + 54);
+    const isTop = (k === primary || k === secondary);
+    ctx.textAlign = Math.abs(Math.cos(a)) < 0.3 ? 'center' : (Math.cos(a) > 0 ? 'left' : 'right');
+    ctx.font = `${isTop ? 900 : 700} 26px ${CARD_FONT}`;
+    ctx.fillStyle = isTop ? CARD_COLORS.ink : CARD_COLORS.muted;
+    ctx.fillText(senseLabels[k], x, y);
+    ctx.font = `900 24px ${CARD_MONO}`;
+    ctx.fillStyle = isTop ? CARD_COLORS.gold : cardAccentCss(accentRgb, 0.85);
+    ctx.fillText(String(scores[k] || 0), x, y + 30);
+  });
+}
+
+// スイープ線（回転する走査線）を重ね描きする。結果画面のレーダー演出と
+// 同じ見た目をCanvas上で再現するための補助関数。
+function drawSenseSweepOverlay(ctx, cx, cy, R, sweepDeg) {
+  ctx.save();
+  for (let k = 14; k >= 0; k--) {
+    const trailDeg = sweepDeg - k * 1.6;
+    const tr = (trailDeg * Math.PI) / 180;
+    const alpha = (1 - k / 14) * 0.22;
+    ctx.beginPath();
+    ctx.moveTo(cx, cy);
+    ctx.lineTo(cx + Math.cos(tr) * R, cy + Math.sin(tr) * R);
+    ctx.strokeStyle = `rgba(255, 77, 210, ${alpha})`;
+    ctx.lineWidth = 3;
+    ctx.stroke();
+  }
+  const rad = (sweepDeg * Math.PI) / 180;
+  ctx.beginPath();
+  ctx.moveTo(cx, cy);
+  ctx.lineTo(cx + Math.cos(rad) * R, cy + Math.sin(rad) * R);
+  ctx.strokeStyle = '#ff4dd2';
+  ctx.lineWidth = 3.5;
+  ctx.shadowColor = 'rgba(255, 77, 210, 0.9)';
+  ctx.shadowBlur = 18;
+  ctx.stroke();
+  ctx.beginPath();
+  ctx.arc(cx + Math.cos(rad) * R, cy + Math.sin(rad) * R, 6, 0, Math.PI * 2);
+  ctx.fillStyle = '#ffe1f6';
+  ctx.shadowBlur = 22;
+  ctx.fill();
+  ctx.restore();
+}
+
 // GameSense専用：キャラではなくレーダーチャートを主役にした「SCAN REPORT」カード。
 // MBTI(=キャラ=人格)とセンス(=能力データ)でシェアの役割を分離する。
-function drawSenseScanReport(data) {
+// opts.canvasを渡すと新規作成せずそのcanvasに描き直す(スキャン演出の
+// コマ撮り用)。opts.revealStateを渡すとレーダーだけ途中経過で描画する。
+function drawSenseScanReport(data, opts = {}) {
   const W = 1080;
   const H = 1350;
-  const canvas = document.createElement('canvas');
-  canvas.width = W;
-  canvas.height = H;
+  const canvas = opts.canvas || document.createElement('canvas');
+  if (!opts.canvas) {
+    canvas.width = W;
+    canvas.height = H;
+  }
   const ctx = canvas.getContext('2d');
+  ctx.clearRect(0, 0, W, H);
 
   const accentRgb = data.accent || [114, 242, 255];
   const accentCss = cardAccentCss(accentRgb);
@@ -533,72 +652,10 @@ function drawSenseScanReport(data) {
   const cy = 480;
   const R = 230;
   const axes = Object.keys(senseLabels);
-  const pt = (i, r) => {
-    const a = -Math.PI / 2 + (i * 2 * Math.PI) / axes.length;
-    return [cx + Math.cos(a) * r, cy + Math.sin(a) * r];
-  };
-  const rGlow = ctx.createRadialGradient(cx, cy, 0, cx, cy, R * 1.35);
-  rGlow.addColorStop(0, cardAccentCss(accentRgb, 0.16));
-  rGlow.addColorStop(1, cardAccentCss(accentRgb, 0));
-  ctx.fillStyle = rGlow;
-  ctx.fillRect(cx - R * 1.4, cy - R * 1.4, R * 2.8, R * 2.8);
-  for (let ring = 1; ring <= 4; ring++) {
-    ctx.beginPath();
-    axes.forEach((_, i) => {
-      const [x, y] = pt(i, (R * ring) / 4);
-      if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-    });
-    ctx.closePath();
-    ctx.strokeStyle = ring === 4 ? cardAccentCss(accentRgb, 0.45) : 'rgba(255, 255, 255, 0.10)';
-    ctx.lineWidth = ring === 4 ? 2 : 1;
-    ctx.stroke();
+  drawSenseRadarSection(ctx, { cx, cy, R, axes, primary, secondary, accentRgb, accentCss }, scores, opts.revealState);
+  if (opts.revealState && opts.revealState.sweepDeg !== undefined) {
+    drawSenseSweepOverlay(ctx, cx, cy, R, opts.revealState.sweepDeg);
   }
-  axes.forEach((_, i) => {
-    const [x, y] = pt(i, R);
-    ctx.beginPath();
-    ctx.moveTo(cx, cy);
-    ctx.lineTo(x, y);
-    ctx.strokeStyle = 'rgba(255, 255, 255, 0.08)';
-    ctx.lineWidth = 1;
-    ctx.stroke();
-  });
-  ctx.beginPath();
-  axes.forEach((k, i) => {
-    const [x, y] = pt(i, (Math.max(6, scores[k] || 0) / 100) * R);
-    if (i === 0) ctx.moveTo(x, y); else ctx.lineTo(x, y);
-  });
-  ctx.closePath();
-  ctx.save();
-  ctx.shadowColor = accentCss;
-  ctx.shadowBlur = 26;
-  ctx.fillStyle = cardAccentCss(accentRgb, 0.26);
-  ctx.fill();
-  ctx.strokeStyle = accentCss;
-  ctx.lineWidth = 3.5;
-  ctx.stroke();
-  ctx.restore();
-  axes.forEach((k, i) => {
-    const [x, y] = pt(i, (Math.max(6, scores[k] || 0) / 100) * R);
-    ctx.beginPath();
-    ctx.arc(x, y, 6, 0, Math.PI * 2);
-    ctx.fillStyle = (k === primary || k === secondary) ? CARD_COLORS.gold : accentCss;
-    ctx.fill();
-    ctx.strokeStyle = 'rgba(7, 12, 27, 0.9)';
-    ctx.lineWidth = 2;
-    ctx.stroke();
-  });
-  axes.forEach((k, i) => {
-    const a = -Math.PI / 2 + (i * 2 * Math.PI) / axes.length;
-    const [x, y] = pt(i, R + 54);
-    const isTop = (k === primary || k === secondary);
-    ctx.textAlign = Math.abs(Math.cos(a)) < 0.3 ? 'center' : (Math.cos(a) > 0 ? 'left' : 'right');
-    ctx.font = `${isTop ? 900 : 700} 26px ${CARD_FONT}`;
-    ctx.fillStyle = isTop ? CARD_COLORS.ink : CARD_COLORS.muted;
-    ctx.fillText(senseLabels[k], x, y);
-    ctx.font = `900 24px ${CARD_MONO}`;
-    ctx.fillStyle = isTop ? CARD_COLORS.gold : cardAccentCss(accentRgb, 0.85);
-    ctx.fillText(String(scores[k] || 0), x, y + 30);
-  });
 
   // レアリティ
   const rarityY = cy + R + 128;
@@ -1394,13 +1451,113 @@ function renderResultCardHero(kind, sideHtml) {
   `;
 }
 
+// SCAN REPORTカードを、結果画面のレーダーと同じ「1周スキャンで確定」演出
+// 付きで生成する。演出の最中もfigure内には実物のcanvasが存在するため、
+// 完了後にそのままシェア用画像として使い回せる。
+function runSenseScanSweepCard(figure, data) {
+  return new Promise((resolve) => {
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    const W = 1080;
+    const H = 1350;
+    const canvas = document.createElement('canvas');
+    canvas.width = W;
+    canvas.height = H;
+    canvas.setAttribute('aria-hidden', 'true');
+    figure.innerHTML = '';
+    const status = document.createElement('p');
+    status.className = 'result-card-scan-status';
+    status.innerHTML = `<span class="result-card-scan-dot" aria-hidden="true"></span><span data-scan-status-text>SCANNING…</span>`;
+    figure.append(status, canvas);
+
+    const R = 230;
+    const baseR = R * 0.07;
+    const axes = Object.keys(senseLabels);
+    const scores = data.scores || {};
+    const points = axes.map((key, index) => ({
+      key,
+      angle: -90 + (index * 360) / axes.length,
+      value: Math.max(6, scores[key] || 0),
+      r: baseR,
+      triggered: false,
+      settled: false,
+    }));
+    const statusText = status.querySelector('[data-scan-status-text]');
+
+    const finish = () => {
+      drawSenseScanReport(data, { canvas });
+      if (statusText) statusText.textContent = 'SCAN COMPLETE';
+      resolve(canvas);
+    };
+
+    const runFade = () => {
+      const FADE_MS = 260;
+      let start = null;
+      const frame = (ts) => {
+        if (start === null) start = ts;
+        const t = Math.min((ts - start) / FADE_MS, 1);
+        points.forEach((p) => {
+          p.triggered = t > 0;
+          p.r = baseR + ((p.value / 100) * R - baseR) * t;
+        });
+        drawSenseScanReport(data, { canvas, revealState: { points } });
+        if (t < 1) window.requestAnimationFrame(frame);
+        else finish();
+      };
+      window.requestAnimationFrame(frame);
+    };
+
+    const runSweep = () => {
+      const SWEEP_MS = 2200;
+      const REVEAL_MS = 420;
+      const easeOutBack = (t) => {
+        const c1 = 1.7;
+        const c3 = c1 + 1;
+        return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+      };
+      let start = null;
+      const frame = (ts) => {
+        if (start === null) start = ts;
+        const progress = Math.min((ts - start) / SWEEP_MS, 1);
+        const sweepDeg = -90 + progress * 360;
+        points.forEach((p) => {
+          if (!p.triggered && sweepDeg >= p.angle) {
+            p.triggered = true;
+            p.revealStart = ts;
+          }
+          if (p.triggered && !p.settled) {
+            const rt = Math.min((ts - p.revealStart) / REVEAL_MS, 1);
+            p.r = baseR + ((p.value / 100) * R - baseR) * easeOutBack(rt);
+            if (rt >= 1) p.settled = true;
+          }
+        });
+        drawSenseScanReport(data, { canvas, revealState: { points, sweepDeg: progress < 1 ? sweepDeg : undefined } });
+        const stillTweening = points.some((p) => p.triggered && !p.settled);
+        if (progress < 1 || stillTweening) window.requestAnimationFrame(frame);
+        else finish();
+      };
+      window.requestAnimationFrame(frame);
+    };
+
+    // draw the collapsed starting frame immediately so there's no blank flash
+    drawSenseScanReport(data, { canvas, revealState: { points } });
+
+    if (reduced) {
+      runFade();
+      return;
+    }
+    // 「診断ログを解析中...」の演出が隠れている間に終わらないよう、
+    // それが引っ込むタイミングまで開始を待つ。
+    window.setTimeout(runSweep, RESULT_REVEAL_MS);
+  });
+}
+
 async function attachResultCardHero(kind, data, shareMeta) {
   const figure = document.querySelector(`.result-card-figure[data-result-card="${kind}"]`);
   if (!figure || figure.dataset.cardBound === 'true') return;
   figure.dataset.cardBound = 'true';
   let canvas = null;
   try {
-    canvas = await drawResultCard(data);
+    canvas = kind === 'sense' ? await runSenseScanSweepCard(figure, data) : await drawResultCard(data);
   } catch (error) {
     canvas = null;
   }
@@ -4407,6 +4564,11 @@ function renderResultNextPanel(profile) {
   `;
 }
 
+// 「診断ログを解析中...」の演出カードが表示され続ける時間。カード生成側の
+// スキャン演出もこの分だけ待ってから始めることで、まだ隠れている間に
+// 終わってしまわないようにする(attachResultCardHeroから参照)。
+const RESULT_REVEAL_MS = 1450;
+
 function activateResultReveal() {
   const sequence = document.querySelector('.result-sequence');
   if (!sequence) return;
@@ -4440,7 +4602,7 @@ function activateResultReveal() {
     finish();
     return;
   }
-  window.setTimeout(finish, 1450);
+  window.setTimeout(finish, RESULT_REVEAL_MS);
 }
 
 function setupHoloTilt(root, reduced) {

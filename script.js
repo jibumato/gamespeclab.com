@@ -3406,20 +3406,115 @@ function renderRadarChart(scores, labels, icons) {
   }).join('');
   const scorePoints = keys.map((key, index) => pointFor(index, Math.max(4, scores[key] || 0)).join(',')).join(' ');
   const dots = keys.map((key, index) => {
-    const [x, y] = pointFor(index, Math.max(4, scores[key] || 0));
-    return `<circle cx="${x}" cy="${y}" r="4"><title>${labels[key]} ${scores[key] || 0}</title></circle>`;
+    const value = Math.max(4, scores[key] || 0);
+    const [x, y] = pointFor(index, value);
+    const angleDeg = -90 + (360 / keys.length) * index;
+    return `<circle cx="${x}" cy="${y}" r="4" class="radar-vertex" data-axis-key="${key}" data-axis-value="${scores[key] || 0}" data-axis-angle="${angleDeg}"><title>${labels[key]} ${scores[key] || 0}</title></circle>`;
   }).join('');
   return `
     <div class="sense-radar-card">
-      <svg class="radar-svg" viewBox="0 0 ${size} ${size}" role="img" aria-label="8能力レーダーチャート">
-        ${rings}
-        ${axes}
-        <polygon points="${scorePoints}" class="radar-score"></polygon>
-        ${dots}
-      </svg>
+      <div class="radar-primary" data-radar-primary>
+        <p class="radar-scan-status"><span class="radar-scan-dot" aria-hidden="true"></span><span data-radar-status-text>SCAN COMPLETE</span></p>
+        <div class="radar-stage">
+          <div class="radar-sweep-beam" data-radar-beam aria-hidden="true"></div>
+          <svg class="radar-svg" viewBox="0 0 ${size} ${size}" role="img" aria-label="8能力レーダーチャート">
+            ${rings}
+            ${axes}
+            <polygon points="${scorePoints}" class="radar-score" data-radar-polygon></polygon>
+            ${dots}
+          </svg>
+        </div>
+      </div>
       ${renderAbilityTierList(scores, labels, icons)}
     </div>
   `;
+}
+
+// レーダー確定の瞬間を「1周スキャン」で見せる演出。各頂点はスイープ線が
+// 通過した時にだけ確定するため、事前にHTMLへ描画済みの最終形をいったん
+// 中心付近まで畳み、JSで元の位置へ戻す（reduced-motion/JS失敗時は
+// 最終形がそのまま見える=安全側にフォールバックする）。
+function runRadarSweep(card) {
+  const primary = card.querySelector('[data-radar-primary]');
+  const beam = card.querySelector('[data-radar-beam]');
+  const polygon = card.querySelector('[data-radar-polygon]');
+  const statusText = card.querySelector('[data-radar-status-text]');
+  const vertices = Array.from(card.querySelectorAll('.radar-vertex'));
+  if (!primary || !beam || !polygon || !vertices.length) return;
+
+  const center = 160;
+  const baseR = 104 * 0.08;
+  const pointAt = (angleDeg, r) => {
+    const rad = (angleDeg * Math.PI) / 180;
+    return [center + Math.cos(rad) * r, center + Math.sin(rad) * r];
+  };
+  const points = vertices.map((el) => ({
+    el,
+    angle: Number(el.dataset.axisAngle),
+    value: Number(el.dataset.axisValue) || 0,
+    r: baseR,
+    triggered: false,
+    settled: false,
+  }));
+
+  const applyGeometry = () => {
+    points.forEach((p) => {
+      const [x, y] = pointAt(p.angle, p.r);
+      p.el.setAttribute('cx', x);
+      p.el.setAttribute('cy', y);
+      p.el.setAttribute('r', p.triggered ? 4 : 2);
+    });
+    polygon.setAttribute('points', points.map((p) => pointAt(p.angle, p.r).join(',')).join(' '));
+  };
+
+  points.forEach((p) => p.el.classList.remove('is-hit'));
+  applyGeometry();
+  primary.classList.add('is-scanning');
+  if (statusText) statusText.textContent = 'SCANNING…';
+
+  const SWEEP_MS = 2200;
+  const REVEAL_MS = 420;
+  const easeOutBack = (t) => {
+    const c1 = 1.7;
+    const c3 = c1 + 1;
+    return 1 + c3 * Math.pow(t - 1, 3) + c1 * Math.pow(t - 1, 2);
+  };
+
+  let start = null;
+  const frame = (ts) => {
+    if (start === null) start = ts;
+    const elapsed = ts - start;
+    const progress = Math.min(elapsed / SWEEP_MS, 1);
+    const sweepDeg = -90 + progress * 360;
+    beam.style.transform = `rotate(${sweepDeg + 90}deg)`;
+
+    points.forEach((p) => {
+      if (!p.triggered && sweepDeg >= p.angle) {
+        p.triggered = true;
+        p.revealStart = ts;
+        p.el.classList.add('is-hit');
+      }
+      if (p.triggered && !p.settled) {
+        const rt = Math.min((ts - p.revealStart) / REVEAL_MS, 1);
+        p.r = baseR + (104 * (p.value / 100) - baseR) * easeOutBack(rt);
+        if (rt >= 1) {
+          p.settled = true;
+          p.el.classList.remove('is-hit');
+        }
+      }
+    });
+    applyGeometry();
+
+    const stillTweening = points.some((p) => p.triggered && !p.settled);
+    if (progress < 1 || stillTweening) {
+      window.requestAnimationFrame(frame);
+    } else {
+      primary.classList.remove('is-scanning');
+      beam.style.transform = '';
+      if (statusText) statusText.textContent = 'SCAN COMPLETE';
+    }
+  };
+  window.requestAnimationFrame(frame);
 }
 
 const ABILITY_TIER_DEFS = [
@@ -3595,6 +3690,14 @@ function renderSenseResult(archetype, normalizedScores) {
           </div>
         `)}
         ${renderTopSenseAbilities(normalizedScores)}
+        <section class="radar-reveal-section" aria-label="8能力レーダーチャート">
+          <div class="top-ability-head">
+            <span>${icon('chart')}GAMESENSE SCAN 8</span>
+            <strong>8能力レーダー</strong>
+            <p>スキャンした8つの能力を1周のレーダーで確認できます。数値はティアリストの並びと同じです。</p>
+          </div>
+          ${renderRadarChart(normalizedScores, senseLabels, senseIcons)}
+        </section>
         ${renderSenseMatrix(archetype)}
         <div class="sense-result-grid">
           <article class="result-insight-card">
@@ -4356,8 +4459,8 @@ function setupHoloTilt(root, reduced) {
 function animateResultCharts(root, reduced) {
   if (!root || reduced) return;
   setupHoloTilt(root, reduced);
-  root.querySelectorAll('.radar-score').forEach((poly) => {
-    poly.classList.add('is-charged');
+  root.querySelectorAll('.sense-radar-card').forEach((card) => {
+    runRadarSweep(card);
   });
   root.querySelectorAll('[data-count-to]').forEach((node) => {
     const target = Number(node.dataset.countTo) || 0;

@@ -4662,10 +4662,11 @@ function watchRadarSweep(card, reduced) {
   observer.observe(card);
 }
 
-// 相性TOP3を1位→2位→3位の順に明らかにする。レーダーと同じく、
-// 実際にスクロールして見えた瞬間に発火する（見えない場所で終わらせない）。
-function watchCompatPartnerReveal(panel, reduced) {
-  const cards = Array.from(panel.querySelectorAll('.compat-partner-card'));
+// ランキング系カードを1位→2位→3位の順に明らかにする汎用ヘルパー。
+// レーダーと同じく、実際にスクロールして見えた瞬間に発火する
+// （見えない場所で演出が終わってしまわないようにするため）。
+function watchStaggerReveal(panel, cardSelector, reduced) {
+  const cards = Array.from(panel.querySelectorAll(cardSelector));
   if (!cards.length) return;
   cards.forEach((card) => card.classList.add('is-pending'));
 
@@ -4696,7 +4697,10 @@ function animateResultCharts(root, reduced) {
     watchRadarSweep(card, reduced);
   });
   root.querySelectorAll('.compat-partner-panel').forEach((panel) => {
-    watchCompatPartnerReveal(panel, reduced);
+    watchStaggerReveal(panel, '.compat-partner-card', reduced);
+  });
+  root.querySelectorAll('.top-ability-panel').forEach((panel) => {
+    watchStaggerReveal(panel, '.top-ability-card', reduced);
   });
   if (reduced) return;
   setupHoloTilt(root, reduced);

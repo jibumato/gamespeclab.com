@@ -689,7 +689,7 @@ function drawSenseScanReport(data, opts = {}) {
   ctx.fillText(data.callsign || data.name, W / 2, ty);
   ctx.font = `800 27px ${CARD_FONT}`;
   ctx.fillStyle = accentCss;
-  ctx.fillText(`${data.alias ? `${data.alias}｜` : ''}${data.code}`, W / 2, ty + 46);
+  ctx.fillText(data.code, W / 2, ty + 46);
 
   // TOP3 グレードチップ
   const top3 = rankScores(scores).slice(0, 3);
@@ -1174,7 +1174,7 @@ async function drawGamerIdCard(mbtiResult, senseResult) {
   ctx.fillText(senseResult.archetype.callsign, rcx0, 216);
   ctx.font = `700 20px ${CARD_FONT}`;
   ctx.fillStyle = CARD_COLORS.muted;
-  ctx.fillText(`${senseResult.archetype.alias}｜${senseCard.code}`, rcx0, 246);
+  ctx.fillText(senseCard.code, rcx0, 246);
 
   // レーダー
   const rx = 824;
@@ -3525,8 +3525,8 @@ function getSenseArchetypeFromKeys(primary, secondary) {
     secondary,
     callsign,
     alias,
-    // 汎用の表示名。見出しなど凝った箇所はcallsign/aliasを個別に使う。
-    name: `${callsign}（${alias}）`,
+    // 汎用の表示名。カッコ書きのalias併記はやめ、CALLSIGN単体で統一する。
+    name: callsign,
   };
   if (preset) {
     return {
@@ -3861,7 +3861,7 @@ function renderSenseResult(archetype, normalizedScores) {
         ${renderResultCardHero('sense', `
           <div class="result-kicker">${icon('chart')}CALLSIGN</div>
           <h3 id="sense-quiz-title" class="sense-callsign">${archetype.callsign}</h3>
-          <p class="sense-callsign-alias">${archetype.alias} — ${primaryLabel} × ${secondaryLabel}</p>
+          <p class="sense-callsign-alias">${primaryLabel} × ${secondaryLabel}</p>
           <div class="result-status-row">
             ${renderRarityBadge(getSenseRarity(archetype))}
             ${renderNightOwlBadge()}

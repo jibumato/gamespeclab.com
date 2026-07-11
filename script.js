@@ -4482,10 +4482,28 @@ function setupHoloTilt(root, reduced) {
   });
 }
 
+function watchRadarSweep(card, reduced) {
+  // 結果画面はヒーローカードなどが上にあり、レーダーは表示直後スクロール前だと
+  // 画面外にある。ページ読み込み時に演出を発火すると誰も見ないまま終わってしまう
+  // ため、実際にスクロールして見えた瞬間に発火する。
+  if (typeof IntersectionObserver !== 'function') {
+    runRadarSweep(card, reduced);
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(card);
+      runRadarSweep(card, reduced);
+    });
+  }, { threshold: 0.4 });
+  observer.observe(card);
+}
+
 function animateResultCharts(root, reduced) {
   if (!root) return;
   root.querySelectorAll('.sense-radar-card').forEach((card) => {
-    runRadarSweep(card, reduced);
+    watchRadarSweep(card, reduced);
   });
   if (reduced) return;
   setupHoloTilt(root, reduced);

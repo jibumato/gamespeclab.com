@@ -3278,7 +3278,24 @@ p {
   gap: 14px;
   grid-template-columns: 88px minmax(0, 1fr);
   min-width: 0;
+  opacity: 1;
   padding: 16px 18px;
+  transform: translateY(0);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* 相性TOP3を1位→2位→3位の順に明らかにする演出。JSで表示直前だけ
+   is-pendingを付与し、順番に外していく(watchCompatPartnerReveal)。
+   JS未実行/無効時は常にopacity:1のまま=安全側にフォールバックする。 */
+.compat-partner-card.is-pending {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .compat-partner-card {
+    transition-duration: 0.2s;
+  }
 }
 
 .compat-partner-card.rank-1 {

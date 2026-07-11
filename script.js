@@ -4662,10 +4662,41 @@ function watchRadarSweep(card, reduced) {
   observer.observe(card);
 }
 
+// 相性TOP3を1位→2位→3位の順に明らかにする。レーダーと同じく、
+// 実際にスクロールして見えた瞬間に発火する（見えない場所で終わらせない）。
+function watchCompatPartnerReveal(panel, reduced) {
+  const cards = Array.from(panel.querySelectorAll('.compat-partner-card'));
+  if (!cards.length) return;
+  cards.forEach((card) => card.classList.add('is-pending'));
+
+  const reveal = () => {
+    const stagger = reduced ? 0 : 220;
+    cards.forEach((card, index) => {
+      window.setTimeout(() => card.classList.remove('is-pending'), index * stagger);
+    });
+  };
+
+  if (typeof IntersectionObserver !== 'function') {
+    reveal();
+    return;
+  }
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach((entry) => {
+      if (!entry.isIntersecting) return;
+      observer.unobserve(panel);
+      reveal();
+    });
+  }, { threshold: 0.3 });
+  observer.observe(panel);
+}
+
 function animateResultCharts(root, reduced) {
   if (!root) return;
   root.querySelectorAll('.sense-radar-card').forEach((card) => {
     watchRadarSweep(card, reduced);
+  });
+  root.querySelectorAll('.compat-partner-panel').forEach((panel) => {
+    watchCompatPartnerReveal(panel, reduced);
   });
   if (reduced) return;
   setupHoloTilt(root, reduced);

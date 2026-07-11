@@ -3434,7 +3434,7 @@ function renderRadarChart(scores, labels, icons) {
 // 通過した時にだけ確定するため、事前にHTMLへ描画済みの最終形をいったん
 // 中心付近まで畳み、JSで元の位置へ戻す（reduced-motion/JS失敗時は
 // 最終形がそのまま見える=安全側にフォールバックする）。
-function runRadarSweep(card) {
+function runRadarSweep(card, reduced) {
   const primary = card.querySelector('[data-radar-primary]');
   const beam = card.querySelector('[data-radar-beam]');
   const polygon = card.querySelector('[data-radar-polygon]');
@@ -3469,6 +3469,32 @@ function runRadarSweep(card) {
 
   points.forEach((p) => p.el.classList.remove('is-hit'));
   applyGeometry();
+
+  // OS側の「モーションを減らす」設定時は、回転スイープなど大きな動きは省くが、
+  // 完全に静止画のまま(=壊れて見える)にはせず、短い一括フェードだけ見せる。
+  if (reduced) {
+    if (statusText) statusText.textContent = 'SCANNING…';
+    const FADE_MS = 260;
+    let fadeStart = null;
+    const fadeFrame = (ts) => {
+      if (fadeStart === null) fadeStart = ts;
+      const t = Math.min((ts - fadeStart) / FADE_MS, 1);
+      points.forEach((p) => {
+        p.triggered = t > 0;
+        p.r = baseR + (104 * (p.value / 100) - baseR) * t;
+      });
+      applyGeometry();
+      if (t < 1) {
+        window.requestAnimationFrame(fadeFrame);
+      } else {
+        points.forEach((p) => { p.settled = true; });
+        if (statusText) statusText.textContent = 'SCAN COMPLETE';
+      }
+    };
+    window.requestAnimationFrame(fadeFrame);
+    return;
+  }
+
   primary.classList.add('is-scanning');
   if (statusText) statusText.textContent = 'SCANNING…';
 
@@ -4457,11 +4483,12 @@ function setupHoloTilt(root, reduced) {
 }
 
 function animateResultCharts(root, reduced) {
-  if (!root || reduced) return;
-  setupHoloTilt(root, reduced);
+  if (!root) return;
   root.querySelectorAll('.sense-radar-card').forEach((card) => {
-    runRadarSweep(card);
+    runRadarSweep(card, reduced);
   });
+  if (reduced) return;
+  setupHoloTilt(root, reduced);
   root.querySelectorAll('[data-count-to]').forEach((node) => {
     const target = Number(node.dataset.countTo) || 0;
     if (!target) return;

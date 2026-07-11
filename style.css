@@ -7841,12 +7841,16 @@ body.gear-home::after { display: none; }
    下部で連結し「提案→診断」の導線を1つの決断ユニットに見せる。 */
 .gh-hero { border-bottom: 1px solid var(--gh-line); }
 .gh-hero-inner { padding: 60px 0 56px; }
-.gh-hero h1 { font-size: clamp(32px, 5vw, 58px); line-height: 1.05; font-weight: 850; letter-spacing: -0.025em; margin-top: 16px; }
-.gh-hero h1 .gh-hl { color: var(--gh-accent); }
+.gh-hero h1 {
+  font-size: clamp(32px, 5vw, 58px); line-height: 1.05; font-weight: 850; letter-spacing: -0.025em; margin-top: 16px;
+  max-width: none; text-shadow: none; text-wrap: pretty;
+}
+.gh-hero h1 .gh-hl { color: var(--gh-accent); display: inline; }
 .gh-hero .gh-lead { color: var(--gh-ink-dim); font-size: 17px; max-width: 60ch; margin-top: 20px; line-height: 1.75; }
 
 .gh-hero-bar {
   margin-top: 32px;
+  max-width: 760px;
   display: grid;
   grid-template-columns: 1fr;
   border: 1px solid var(--gh-line);
@@ -7856,6 +7860,11 @@ body.gear-home::after { display: none; }
   overflow: hidden;
 }
 .gh-cta-row { display: grid; gap: 10px; padding: 20px 24px; background: var(--gh-panel-2); border-bottom: 1px solid var(--gh-line); }
+.gh-cta-note {
+  display: flex; align-items: center; gap: 6px; margin: 2px 0 0;
+  font-size: 12.5px; color: var(--gh-muted);
+}
+.gh-cta-note .ui-icon { height: 14px; width: 14px; color: var(--gh-accent); }
 
 .gh-pipo {
   display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 18px;
@@ -7985,7 +7994,14 @@ body.gear-home::after { display: none; }
   background: var(--gh-accent); color: #fff; text-decoration: none;
 }
 .gh-buy:hover { filter: brightness(1.06); }
+.gh-pick-guide {
+  display: inline-flex; align-items: center; justify-content: center; gap: 6px;
+  font-size: 12px; font-weight: 600; color: var(--gh-muted); text-decoration: none;
+}
+.gh-pick-guide .ui-icon { height: 13px; width: 13px; }
+.gh-pick-guide:hover { color: var(--gh-accent); }
 .gh-aff-note { font-family: var(--gh-mono); font-size: 11px; color: var(--gh-muted); margin: 16px 0 0; letter-spacing: 0.02em; }
+.gh-aff-note a { color: var(--gh-accent); }
 
 /* ---- spec comparison (white panel) ---- */
 .gh-spec { background: var(--gh-panel); border: 1px solid var(--gh-line); border-radius: calc(var(--gh-radius) + 2px); overflow: hidden; box-shadow: var(--gh-elev); }

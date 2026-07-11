@@ -7848,17 +7848,17 @@ body.gear-home::after { display: none; }
 .gh-hero-bar {
   margin-top: 32px;
   display: grid;
-  grid-template-columns: auto 1fr;
+  grid-template-columns: 1fr;
   border: 1px solid var(--gh-line);
   border-radius: var(--gh-radius);
   background: var(--gh-panel);
   box-shadow: var(--gh-shadow);
   overflow: hidden;
 }
-.gh-cta-row { display: grid; gap: 10px; align-content: center; padding: 20px 24px; background: var(--gh-panel-2); border-right: 1px solid var(--gh-line); }
+.gh-cta-row { display: grid; gap: 10px; padding: 20px 24px; background: var(--gh-panel-2); border-bottom: 1px solid var(--gh-line); }
 
 .gh-pipo {
-  display: grid; grid-template-columns: auto 1fr auto; align-items: center; gap: 18px;
+  display: grid; grid-template-columns: auto 1fr; align-items: center; gap: 18px;
   padding: 18px 22px; min-width: 0;
 }
 .gh-pipo-avatar {
@@ -7870,7 +7870,7 @@ body.gear-home::after { display: none; }
 .gh-pipo-role { font-family: var(--gh-mono); font-size: 10.5px; color: var(--gh-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 .gh-pipo-msg p { margin: 0; font-size: 13px; color: var(--gh-ink-dim); line-height: 1.6; max-width: 44ch; }
 .gh-pipo-msg p b { color: var(--gh-ink); }
-.gh-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: none; }
+.gh-readout { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; flex: none; grid-column: 1 / -1; margin-top: 4px; }
 .gh-readout div {
   font-family: var(--gh-mono); font-size: 10.5px; letter-spacing: 0.05em; color: var(--gh-muted);
   display: flex; justify-content: space-between; gap: 8px; padding: 6px 9px; background: var(--gh-panel-2);
@@ -8042,16 +8042,11 @@ body.gear-home::after { display: none; }
 /* ---- responsive ---- */
 @media (max-width: 920px) {
   .gh-hero-inner { padding: 44px 0 40px; }
-  .gh-hero-bar { grid-template-columns: 1fr; }
-  .gh-cta-row { border-right: 0; border-bottom: 1px solid var(--gh-line); }
-  .gh-pipo { grid-template-columns: auto 1fr; }
-  .gh-readout { grid-column: 1 / -1; margin-top: 4px; }
   .gh-cat-grid, .gh-pick-grid { grid-template-columns: repeat(2, 1fr); }
   .gh-diag-grid, .gh-guide-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
   .gh-wrap { padding: 0 16px; }
-  .gh-readout { grid-template-columns: 1fr 1fr; }
   .gh-cat-grid, .gh-pick-grid, .gh-guide-row, .gh-diag-grid { grid-template-columns: 1fr; }
   .gh-arrow { transform: rotate(90deg); }
 }

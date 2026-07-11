@@ -4134,9 +4134,25 @@ p {
   display: grid;
   gap: 11px;
   min-width: 0;
+  opacity: 1;
   overflow: hidden;
   padding: 15px;
   position: relative;
+  transform: translateY(0);
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+
+/* 上位3能力を1位→2位→3位の順に明らかにする演出。相性TOP3と同じ仕組み
+   (watchTopAbilityReveal)。JS未実行/無効時は常にopacity:1のまま。 */
+.top-ability-card.is-pending {
+  opacity: 0;
+  transform: translateY(16px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .top-ability-card {
+    transition-duration: 0.2s;
+  }
 }
 
 .top-ability-card::before {

@@ -1638,8 +1638,12 @@ p {
 .spread-section,
 .legal-hero,
 .legal-section {
-  padding: 84px 34px;
+  padding: clamp(40px, 5vw, 60px) 34px;
   position: relative;
+}
+/* ヒーロー下部の余白を一段詰めて、1画面目の情報密度を上げる */
+.legal-hero {
+  padding-bottom: clamp(32px, 4vw, 44px);
 }
 
 .section::before,

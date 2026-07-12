@@ -8328,6 +8328,31 @@ body.gear-white .article-list li { padding: 10px 12px; gap: 3px; }
 body.gear-white .article-list li strong { font-size: 13.5px; }
 body.gear-white .article-list li span { font-size: 12.5px; line-height: 1.6; }
 
+/* 購入前の失敗回避ブロック（買う前の3チェック / よくある後悔・全ガイド共通） */
+.pre-buy-list { display: grid; gap: 12px; list-style: none; margin: 16px 0 0; padding: 0; }
+.pre-buy-list li { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; }
+.pre-buy-n {
+  display: grid; place-items: center; width: 26px; height: 26px; flex: none;
+  border-radius: 999px; background: var(--cyan); color: #fff;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 13px; font-weight: 900;
+}
+body.gear-white .pre-buy-list strong { display: block; font-size: 14.5px; color: var(--ink); }
+body.gear-white .pre-buy-list p { margin: 3px 0 0; font-size: 13px; line-height: 1.65; color: var(--muted); }
+
+.regret-list { display: grid; gap: 10px; list-style: none; margin: 16px 0 0; padding: 0; }
+.regret-list li {
+  display: grid; gap: 4px; padding: 12px 15px; border-radius: 10px;
+  background: rgba(184, 74, 134, 0.05); border-left: 3px solid var(--pink);
+}
+body.gear-white .regret-bad {
+  font-weight: 800; font-size: 13.5px; color: var(--ink);
+  display: flex; align-items: center; gap: 7px;
+}
+.regret-bad::before {
+  content: "✕"; color: var(--pink); font-weight: 900; font-size: 12px;
+}
+body.gear-white .regret-good { font-size: 12.5px; line-height: 1.65; color: var(--muted); padding-left: 19px; }
+
 /* tighter product ranking cards */
 body.gear-white .device-pick { gap: 10px; padding: 15px; }
 body.gear-white .device-pick-banner { padding-bottom: 10px; }

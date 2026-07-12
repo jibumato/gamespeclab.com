@@ -7264,6 +7264,12 @@ body.gamer-mbti-result-ready .post-result-lab {
 
 /* ===== デバイス図鑑 ===== */
 .zukan-controls { display: grid; gap: 12px; }
+.zukan-filter { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 12px; }
+.zukan-filter-label {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 900;
+  letter-spacing: 0.06em; color: var(--muted); padding-top: 8px; white-space: nowrap;
+}
+.zukan-empty { color: var(--muted); font-size: 13.5px; text-align: center; padding: 32px 0; margin: 0; }
 .zukan-chips { display: flex; flex-wrap: wrap; gap: 7px; }
 .zukan-chip {
   background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
@@ -7917,6 +7923,19 @@ body.gear-home::after { display: none; }
   letter-spacing: 0.06em; color: var(--gh-amber); border: 1px solid var(--gh-amber); padding: 2px 6px; border-radius: 4px;
 }
 
+/* ---- budget entry ---- */
+.gh-budget-row { display: grid; grid-template-columns: repeat(6, 1fr); gap: 12px; }
+.gh-budget {
+  background: var(--gh-panel); border: 1px solid var(--gh-line); border-radius: var(--gh-radius);
+  padding: 16px 14px; box-shadow: var(--gh-elev); text-decoration: none;
+  display: grid; gap: 4px; align-content: start;
+  transition: transform .18s ease, box-shadow .18s ease, border-color .18s ease;
+}
+.gh-budget:hover { transform: translateY(-4px); border-color: var(--gh-accent); box-shadow: var(--gh-elev-hover); }
+.gh-budget b { font-size: 16px; font-weight: 800; color: var(--gh-ink); letter-spacing: -0.01em; }
+.gh-budget span { font-size: 12px; color: var(--gh-ink-dim); }
+.gh-budget em { font-family: var(--gh-mono); font-size: 10.5px; color: var(--gh-muted); font-style: normal; border-top: 1px dashed var(--gh-line-bright); padding-top: 8px; margin-top: 4px; }
+
 /* ---- flagship diagnosis ---- */
 .gh-flag { position: relative; background: var(--gh-accent-soft); }
 .gh-flag::before {
@@ -8059,11 +8078,13 @@ body.gear-home::after { display: none; }
 @media (max-width: 920px) {
   .gh-hero-inner { padding: 44px 0 40px; }
   .gh-cat-grid, .gh-pick-grid { grid-template-columns: repeat(2, 1fr); }
+  .gh-budget-row { grid-template-columns: repeat(3, 1fr); }
   .gh-diag-grid, .gh-guide-row { grid-template-columns: 1fr 1fr; }
 }
 @media (max-width: 560px) {
   .gh-wrap { padding: 0 16px; }
   .gh-cat-grid, .gh-pick-grid, .gh-guide-row, .gh-diag-grid { grid-template-columns: 1fr; }
+  .gh-budget-row { grid-template-columns: repeat(2, 1fr); }
   .gh-arrow { transform: rotate(90deg); }
 }
 @media (prefers-reduced-motion: reduce) {

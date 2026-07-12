@@ -8237,6 +8237,33 @@ body.gear-white .site-footer p { color: var(--muted); }
 body.gear-white .site-footer nav a { color: var(--muted); }
 body.gear-white .site-footer nav a:hover { color: var(--cyan); }
 
+/* ==========================================================================
+   Desktop inline navigation for all non-home pages
+   トップ(gear-home)以外もデスクトップではドロワーではなく横並びナビを表示。
+   861px未満は従来どおりハンバーガー＋オフキャンバス。
+   ========================================================================== */
+@media (min-width: 861px) {
+  body:not(.gear-home) .menu-toggle { display: none; }
+  body:not(.gear-home) .site-header nav {
+    position: static; flex-direction: row; align-items: center; visibility: visible;
+    height: auto; width: auto; max-width: none; right: auto; top: auto;
+    padding: 0; gap: 2px; background: none; border: 0; box-shadow: none;
+  }
+  body:not(.gear-home) .site-header nav::before { display: none; }
+  body:not(.gear-home) .site-header nav a {
+    background: none; border-color: transparent; min-height: 38px; width: auto; padding: 8px 12px;
+    justify-content: center; text-transform: none; font-family: inherit;
+    font-size: 14px; font-weight: 600; letter-spacing: 0;
+  }
+  /* ダークテーマ（body クラスなしの診断・記事系） */
+  body:not(.gear-home):not(.gear-white) .site-header nav a { color: var(--muted); }
+  body:not(.gear-home):not(.gear-white) .site-header nav a:hover { background: rgba(114, 242, 255, 0.12); color: var(--ink); }
+  /* 白テーマ（ガイド・図鑑・法務系） */
+  body.gear-white .site-header nav { background: none; border-left: 0; box-shadow: none; }
+  body.gear-white .site-header nav a { border-color: transparent; color: var(--ink); }
+  body.gear-white .site-header nav a:hover { background: rgba(14, 133, 124, 0.08); color: var(--ink); }
+}
+
 /* ---- hero ---- */
 body.gear-white .hero-band { background-image: none; background: transparent; min-height: auto; border-bottom: 1px solid var(--line); }
 body.gear-white .hero-band::before, body.gear-white .hero-band::after { display: none; }

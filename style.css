@@ -1473,7 +1473,7 @@ p {
   flex: 0 0 auto;
   height: 34px;
   object-fit: cover;
-  object-position: 50% 19%;
+  object-position: 44% 40%;
   width: 34px;
 }
 
@@ -8111,7 +8111,7 @@ body.gear-home::after { display: none; }
 }
 
 /* Pipo-only layout (Mina removed): recenter the single portrait/photo */
-.buddy-panel.is-solo .buddy-portraits img { object-position: 50% 42%; }
+.buddy-panel.is-solo .buddy-portraits img { object-fit: cover; object-position: 44% 40%; }
 .result-dialogue.is-solo .result-pipo-photo { margin-left: 0; margin-right: 0; transform: none; object-position: 50% 34%; }
 
 /* diagnosis result → concrete device recommendation card (dark) */

@@ -113,6 +113,18 @@ button {
   width: 36px;
 }
 
+/* ロゴのタグライン。全ページのヘッダーで表示を統一（gear-homeは専用ルールが上書き） */
+.brand small {
+  display: block;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 1px;
+}
+
 .site-footer nav {
   align-items: center;
   display: flex;

@@ -7899,7 +7899,7 @@ body.gear-home::after { display: none; }
   width: 46px; height: 46px; flex: none; border-radius: 10px; overflow: hidden;
   background: var(--gh-panel-2); border: 1px solid var(--gh-line-bright); display: grid; place-items: center;
 }
-.gh-pipo-avatar img { width: 100%; height: 100%; object-fit: cover; }
+.gh-pipo-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: 44% 40%; }
 .gh-pipo-msg { display: grid; gap: 3px; min-width: 0; }
 .gh-pipo-role { font-family: var(--gh-mono); font-size: 10.5px; color: var(--gh-muted); letter-spacing: 0.1em; text-transform: uppercase; }
 .gh-pipo-msg p { margin: 0; font-size: 13px; color: var(--gh-ink-dim); line-height: 1.6; max-width: 44ch; }

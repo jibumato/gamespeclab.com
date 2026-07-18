@@ -96,6 +96,7 @@ const iconPaths = {
   memory: '<path d="M5 8h14v8H5z"/><path d="M7 16v3"/><path d="M11 16v3"/><path d="M15 16v3"/><path d="M8 11h8"/>',
   mic: '<path d="M12 3a3 3 0 0 0-3 3v6a3 3 0 0 0 6 0V6a3 3 0 0 0-3-3z"/><path d="M5 11a7 7 0 0 0 14 0"/><path d="M12 18v3"/>',
   monitor: '<rect x="4" y="5" width="16" height="11" rx="1"/><path d="M9 20h6"/><path d="M12 16v4"/>',
+  search: '<circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/>',
   mouse: '<path d="M12 3a5 5 0 0 0-5 5v8a5 5 0 0 0 10 0V8a5 5 0 0 0-5-5z"/><path d="M12 3v6"/>',
   keyboard: '<rect x="3" y="7" width="18" height="11" rx="2"/><path d="M6 10h.01"/><path d="M10 10h.01"/><path d="M14 10h.01"/><path d="M18 10h.01"/><path d="M8 14h8"/>',
   mousepad: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="M14 8a2.5 2.5 0 0 0-2.5 2.5v3a2.5 2.5 0 0 0 5 0v-3A2.5 2.5 0 0 0 14 8z"/>',

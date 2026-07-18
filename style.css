@@ -7285,6 +7285,25 @@ body.gamer-mbti-result-ready .post-result-lab {
 
 /* ===== デバイス図鑑 ===== */
 .zukan-controls { display: grid; gap: 12px; }
+.zukan-search-row {
+  align-items: center;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  display: flex;
+  gap: 8px;
+  padding: 10px 14px;
+  transition: border-color .15s ease;
+}
+.zukan-search-row:focus-within { border-color: var(--cyan); }
+.zukan-search-icon { color: var(--muted); flex: 0 0 auto; height: 16px; width: 16px; }
+.zukan-search-icon .ui-icon { display: block; height: 16px; width: 16px; }
+.zukan-search {
+  background: none; border: 0; color: var(--ink); flex: 1; font-size: 13.5px; min-width: 0; padding: 2px 0;
+}
+.zukan-search:focus { outline: none; }
+.zukan-search::placeholder { color: var(--muted); }
+.zukan-search::-webkit-search-cancel-button { cursor: pointer; }
 .zukan-filter { display: grid; grid-template-columns: auto 1fr; align-items: start; gap: 12px; }
 .zukan-filter-label {
   font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 11px; font-weight: 900;

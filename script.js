@@ -198,6 +198,7 @@ function setupMenuDrawer() {
   if (!header || !button || !nav || !backdrop) return;
 
   const setOpen = (open) => {
+    document.documentElement.classList.toggle('menu-open', open);
     document.body.classList.toggle('menu-open', open);
     button.setAttribute('aria-expanded', String(open));
     button.setAttribute('aria-label', open ? 'メニューを閉じる' : 'メニューを開く');

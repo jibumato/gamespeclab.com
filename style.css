@@ -40,7 +40,7 @@ body {
   font-family: Inter, "Segoe UI", system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
   margin: 0;
   min-height: 100svh;
-  overflow-x: hidden;
+  overflow-x: clip;
 }
 
 body::before {
@@ -194,9 +194,10 @@ button {
   max-width: 360px;
   padding: 96px 24px 24px;
   position: fixed;
-  right: -380px;
+  right: 0;
   top: 0;
-  transition: right 180ms ease, visibility 180ms ease;
+  transform: translateX(105%);
+  transition: transform 220ms ease, visibility 220ms ease;
   visibility: hidden;
   width: min(86vw, 360px);
   z-index: 90;
@@ -233,12 +234,13 @@ button {
   z-index: 70;
 }
 
+html.menu-open,
 body.menu-open {
   overflow: hidden;
 }
 
 body.menu-open .site-header nav {
-  right: 0;
+  transform: translateX(0);
   visibility: visible;
 }
 
@@ -7788,7 +7790,7 @@ body.gear-home::after { display: none; }
   .gear-home .menu-toggle { display: none; }
   .gear-home .site-header nav {
     position: static; flex-direction: row; align-items: center;
-    height: auto; width: auto; max-width: none; right: auto; visibility: visible;
+    height: auto; width: auto; max-width: none; right: auto; visibility: visible; transform: none;
     padding: 0; gap: 2px; background: none; border: 0; box-shadow: none;
   }
   .gear-home .site-header nav::before { display: none; }
@@ -8262,7 +8264,7 @@ body.gear-white .site-footer nav a:hover { color: var(--cyan); }
   body:not(.gear-home) .menu-toggle { display: none; }
   body:not(.gear-home) .site-header nav {
     position: static; flex-direction: row; align-items: center; visibility: visible;
-    height: auto; width: auto; max-width: none; right: auto; top: auto;
+    height: auto; width: auto; max-width: none; right: auto; top: auto; transform: none;
     padding: 0; gap: 2px; background: none; border: 0; box-shadow: none;
   }
   body:not(.gear-home) .site-header nav::before { display: none; }

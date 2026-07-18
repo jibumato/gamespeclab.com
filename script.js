@@ -190,6 +190,31 @@ function enhancePlainLinks() {
   });
 }
 
+function setupBackToTop() {
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'back-to-top';
+  btn.setAttribute('aria-label', 'ページの先頭に戻る');
+  btn.innerHTML = icon('arrow', 'back-to-top-icon');
+  document.body.appendChild(btn);
+
+  let visible = false;
+  const SHOW_AT = 640;
+  const onScroll = () => {
+    const shouldShow = window.scrollY > SHOW_AT;
+    if (shouldShow === visible) return;
+    visible = shouldShow;
+    btn.classList.toggle('is-visible', visible);
+  };
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+
+  btn.addEventListener('click', () => {
+    const reduced = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: reduced ? 'auto' : 'smooth' });
+  });
+}
+
 function setupMenuDrawer() {
   const header = document.querySelector('.site-header');
   const button = document.querySelector('.menu-toggle');
@@ -5470,6 +5495,7 @@ hydrateStaticIcons();
 enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
+setupBackToTop();
 setupPostResultActions();
 setupMbtiDirectoryToggle();
 

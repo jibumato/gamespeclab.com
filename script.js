@@ -220,6 +220,31 @@ function setupPrevResultLinks() {
   }
 }
 
+function setupTableOfContents() {
+  const container = document.querySelector('.article-body');
+  if (!container) return;
+
+  const headings = Array.from(container.querySelectorAll('h2'))
+    .filter((h) => !h.closest('.article-grid') && !h.closest('.guide-changelog') && !h.closest('.zukan-grid'));
+  if (headings.length < 4) return;
+
+  headings.forEach((h, i) => { if (!h.id) h.id = `toc-sec-${i}`; });
+
+  const toc = document.createElement('nav');
+  toc.className = 'toc-box';
+  toc.setAttribute('aria-label', '目次');
+  toc.innerHTML = `
+    <p class="toc-title">${icon('list')}目次</p>
+    <ol class="toc-list">
+      ${headings.map((h) => `<li><a href="#${h.id}">${h.textContent}</a></li>`).join('')}
+    </ol>
+  `;
+
+  let anchor = headings[0];
+  while (anchor.parentElement && anchor.parentElement !== container) anchor = anchor.parentElement;
+  if (anchor.parentElement === container) container.insertBefore(toc, anchor);
+}
+
 function setupBackToTop() {
   const btn = document.createElement('button');
   btn.type = 'button';
@@ -5525,6 +5550,7 @@ hydrateStaticIcons();
 enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
+setupTableOfContents();
 setupBackToTop();
 setupPrevResultLinks();
 setupPostResultActions();

@@ -190,6 +190,35 @@ function enhancePlainLinks() {
   });
 }
 
+function setupPrevResultLinks() {
+  const grid = document.querySelector('.gh-diag-grid');
+  if (!grid) return;
+
+  const markPrevResult = (href, label) => {
+    const card = grid.querySelector(`a[href="${href}"]`);
+    if (!card) return;
+    const go = card.querySelector('.gh-go');
+    if (go) go.innerHTML = `前回の結果を見る${icon('arrow')}`;
+    card.insertAdjacentHTML('beforeend', `<span class="gh-diag-prev">${icon('check')}前回の結果: <b>${label}</b></span>`);
+  };
+
+  if (senseAnswers.length === senseQuestions.length) {
+    const keys = Object.keys(senseLabels);
+    const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
+    const maxScores = getMaxScores(senseQuestions, 'sense', keys);
+    const normalizedScores = normalizeScores(rawScores, maxScores, { floor: 38 });
+    const archetype = getSenseArchetype(normalizedScores);
+    markPrevResult('gamesense.html', archetype.name);
+  }
+
+  if (gamerMbtiAnswers.length === mbtiQuestions.length) {
+    const keys = Object.keys(mbtiAxisLabels);
+    const scores = getScores(gamerMbtiAnswers, mbtiQuestions, 'mbti', keys);
+    const type = getGamerMbtiResult(scores);
+    markPrevResult('gamermbti.html', type.title);
+  }
+}
+
 function setupBackToTop() {
   const btn = document.createElement('button');
   btn.type = 'button';
@@ -5496,6 +5525,7 @@ enhanceLegalCards();
 enhancePlainLinks();
 setupMenuDrawer();
 setupBackToTop();
+setupPrevResultLinks();
 setupPostResultActions();
 setupMbtiDirectoryToggle();
 

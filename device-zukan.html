@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear51" />
+    <link rel="stylesheet" href="style.css?v=gear52" />
   </head>
   <body class="gear-white">
     <!-- Google Tag Manager (noscript) -->
@@ -88,6 +88,10 @@
       <section class="legal-section">
         <div class="article-body">
           <div class="zukan-controls" id="zukan">
+            <div class="zukan-search-row">
+              <span data-icon="search" class="zukan-search-icon"></span>
+              <input type="search" id="zukan-search" class="zukan-search" placeholder="製品名・メーカーで検索（例: Viper, ロジクール）" aria-label="製品名で検索">
+            </div>
             <div class="zukan-filter">
               <span class="zukan-filter-label">カテゴリ</span>
               <div class="zukan-chips" id="zukan-chips"></div>
@@ -106,7 +110,7 @@
             </div>
           </div>
           <div class="zukan-grid" id="zukan-grid"></div>
-          <p class="zukan-empty" id="zukan-empty" hidden>この条件に合う製品はありません。予算やカテゴリを広げてみてください。</p>
+          <p class="zukan-empty" id="zukan-empty" hidden>この条件に合う製品はありません。検索キーワードや予算・カテゴリを広げてみてください。</p>
           <p class="zukan-note">価格帯は2026年7月時点の目安です（変動あり）。本ページのリンクにはAmazonアソシエイトを利用しています。</p>
         </div>
       </section>
@@ -125,9 +129,10 @@
         {label:'3〜5万円', lo:30000, hi:50000},
         {label:'5万円〜', lo:50000, hi:Infinity}
       ];
-      var cat = 'すべて', sort = 'rec', budget = 0;
+      var cat = 'すべて', sort = 'rec', budget = 0, query = '';
       var chips = document.getElementById('zukan-chips');
       var budgetChips = document.getElementById('zukan-budget');
+      var searchInput = document.getElementById('zukan-search');
       var grid = document.getElementById('zukan-grid');
       var count = document.getElementById('zukan-count');
       var empty = document.getElementById('zukan-empty');
@@ -153,12 +158,14 @@
         budgetChips.appendChild(b);
       });
       document.getElementById('zukan-sort').addEventListener('change', function(){ sort = this.value; render(); });
+      searchInput.addEventListener('input', function(){ query = this.value.trim().toLowerCase(); render(); });
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
       function render(){
         var bnd = BUDGETS[budget];
         var list = DATA.map(function(d,i){ d._i=i; return d; })
           .filter(function(d){ return cat==='すべて' || d.cat===cat; })
-          .filter(function(d){ return d.yen >= bnd.lo && d.yen < bnd.hi; });
+          .filter(function(d){ return d.yen >= bnd.lo && d.yen < bnd.hi; })
+          .filter(function(d){ return !query || d.name.toLowerCase().indexOf(query) !== -1; });
         if (sort==='asc') list.sort(function(a,b){ return a.yen-b.yen; });
         else if (sort==='desc') list.sort(function(a,b){ return b.yen-a.yen; });
         else list.sort(function(a,b){ return a._i-b._i; });
@@ -197,6 +204,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear51"></script>
+    <script src="script.js?v=gear52"></script>
   </body>
 </html>

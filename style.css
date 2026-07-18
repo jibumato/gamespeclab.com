@@ -5990,6 +5990,63 @@ body.gamer-mbti-result-ready .post-result-lab {
   grid-template-columns: minmax(0, 1.4fr) minmax(280px, 0.6fr);
 }
 
+.toc-box {
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.07), rgba(255, 255, 255, 0.025)),
+    rgba(8, 14, 31, 0.82);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 22px;
+}
+.toc-title {
+  align-items: center;
+  color: var(--muted);
+  display: flex;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 12px;
+  font-weight: 900;
+  gap: 8px;
+  letter-spacing: 0.1em;
+  margin: 0 0 12px;
+  text-transform: uppercase;
+}
+.toc-title .ui-icon { color: var(--cyan); height: 14px; width: 14px; }
+.toc-list {
+  columns: 2;
+  column-gap: 24px;
+  counter-reset: toc;
+  display: block;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.toc-list li {
+  break-inside: avoid;
+  counter-increment: toc;
+  margin-bottom: 8px;
+}
+.toc-list a {
+  color: var(--ink);
+  display: block;
+  font-size: 13.5px;
+  font-weight: 600;
+  line-height: 1.5;
+  text-decoration: none;
+}
+.toc-list a::before {
+  color: var(--cyan);
+  content: counter(toc) ". ";
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-weight: 800;
+}
+.toc-list a:hover { color: var(--cyan); text-decoration: underline; }
+
+@media (max-width: 640px) {
+  .toc-list { columns: 1; }
+}
+
+body.gear-white .toc-box { background: var(--panel); box-shadow: 0 4px 16px rgba(18, 42, 45, 0.05); }
+
 .article-side {
   align-content: start;
   display: grid;

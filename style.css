@@ -7575,6 +7575,16 @@ a.guide-nav-chip:hover {
   width: clamp(88px, 13vw, 168px);
 }
 
+.gsl-masthead {
+  background: #04050d;
+  line-height: 0;
+}
+.gsl-masthead img {
+  display: block;
+  height: auto;
+  width: 100%;
+}
+
 @keyframes hero-motif-float {
   0%, 100% { transform: translateY(-50%); }
   50% { transform: translateY(calc(-50% - 10px)); }

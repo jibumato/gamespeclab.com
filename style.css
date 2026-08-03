@@ -7578,10 +7578,14 @@ a.guide-nav-chip:hover {
 .gsl-masthead {
   background: #04050d;
   line-height: 0;
+  overflow: hidden;
+  width: 100%;
 }
 .gsl-masthead img {
+  aspect-ratio: 1983 / 793;
   display: block;
   height: auto;
+  max-width: 100%;
   width: 100%;
 }
 

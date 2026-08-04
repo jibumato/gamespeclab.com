@@ -7399,7 +7399,14 @@ body.gear-white .toc-box { background: var(--panel); box-shadow: 0 4px 16px rgba
 .zukan-chip:hover { border-color: var(--cyan); }
 .zukan-chip.is-on { background: var(--cyan); border-color: transparent; color: #fff; }
 .zukan-toolbar { align-items: center; display: flex; gap: 12px; justify-content: space-between; }
+.zukan-toolbar-right { align-items: center; display: flex; gap: 10px; }
 .zukan-count { color: var(--muted); font-size: 12.5px; }
+.zukan-clear {
+  background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--pink);
+  cursor: pointer; font-size: 12.5px; font-weight: 700; padding: 7px 10px;
+  transition: border-color .15s ease, background .15s ease;
+}
+.zukan-clear:hover { background: rgba(184, 74, 134, 0.08); border-color: var(--pink); }
 .zukan-sort {
   background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
   color: var(--ink); font-size: 12.5px; font-weight: 700; padding: 7px 10px;
@@ -7602,6 +7609,7 @@ a.guide-nav-chip:hover {
   background: #04050d;
   line-height: 0;
   overflow: hidden;
+  position: relative;
   width: 100%;
 }
 .gsl-masthead img {
@@ -7614,6 +7622,27 @@ a.guide-nav-chip:hover {
 @media (max-width: 640px) {
   .gsl-masthead img { aspect-ratio: 1180 / 793; }
 }
+
+.gsl-jump-cta {
+  align-items: center;
+  background: linear-gradient(135deg, var(--cyan), var(--pink));
+  border-radius: 999px;
+  bottom: clamp(12px, 3vw, 22px);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.4);
+  color: #04050d;
+  display: inline-flex;
+  font-size: clamp(12px, 1.6vw, 14px);
+  font-weight: 800;
+  gap: 6px;
+  line-height: 1.3;
+  padding: clamp(8px, 1.6vw, 12px) clamp(14px, 3vw, 20px);
+  position: absolute;
+  right: clamp(12px, 4vw, 32px);
+  text-decoration: none;
+  transition: transform 160ms ease;
+}
+.gsl-jump-cta:hover { transform: translateY(-2px); }
+.gsl-jump-cta .ui-icon { height: 14px; width: 14px; }
 
 @keyframes hero-motif-float {
   0%, 100% { transform: translateY(-50%); }

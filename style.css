@@ -24,6 +24,29 @@
   box-sizing: border-box;
 }
 
+:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 2px;
+}
+
+.skip-link {
+  background: var(--panel-strong, var(--panel));
+  border-radius: 0 0 8px 0;
+  color: var(--ink);
+  font-weight: 700;
+  left: 0;
+  padding: 12px 20px;
+  position: fixed;
+  top: 0;
+  transform: translateY(-120%);
+  transition: transform 160ms ease;
+  z-index: 200;
+}
+
+.skip-link:focus-visible {
+  transform: translateY(0);
+}
+
 html {
   overflow-x: hidden;
   scroll-behavior: smooth;
@@ -7587,6 +7610,9 @@ a.guide-nav-chip:hover {
   height: auto;
   max-width: 100%;
   width: 100%;
+}
+@media (max-width: 640px) {
+  .gsl-masthead img { aspect-ratio: 1180 / 793; }
 }
 
 @keyframes hero-motif-float {

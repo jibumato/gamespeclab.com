@@ -74,10 +74,13 @@
       }
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
-    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear54" />
+    <link rel="preload" as="image" href="assets/hero-masthead-mobile.webp?v=gear55" media="(max-width: 640px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/hero-masthead.webp?v=gear55" media="(min-width: 641px)" fetchpriority="high" />
+    <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" />
+    <link rel="stylesheet" href="style.css?v=gear55" />
   </head>
   <body>
+    <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
     <!-- Google Tag Manager (noscript) -->
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TVV88Q6L"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
@@ -97,8 +100,8 @@
       <button class="menu-backdrop" type="button" aria-label="メニューを閉じる"></button>
     </header>
 
-    <main>
-      <div class="gsl-masthead"><img src="assets/hero-masthead.webp?v=gear54" alt="GamespecLab ── あなたに最適な一台が見つかる。ゲーム環境を、科学する。" width="1983" height="793" loading="eager" fetchpriority="high" decoding="async" /></div>
+    <main id="main">
+      <div class="gsl-masthead"><picture><source media="(max-width: 640px)" srcset="assets/hero-masthead-mobile.webp?v=gear55" width="1180" height="793" /><img src="assets/hero-masthead.webp?v=gear55" alt="GamespecLab ── あなたに最適な一台が見つかる。ゲーム環境を、科学する。" width="1983" height="793" loading="eager" fetchpriority="high" decoding="async" /></picture></div>
       <section class="hero-band diagnosis-hero" id="diagnosis">
         <div class="hero-orbit" aria-hidden="true">
           <span>SYNC</span>
@@ -233,6 +236,6 @@
       </nav>
     </footer>
 
-    <script src="script.js?v=gear54"></script>
+    <script src="script.js?v=gear55"></script>
   </body>
 </html>

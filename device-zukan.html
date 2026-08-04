@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear55" />
+    <link rel="stylesheet" href="style.css?v=gear56" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -103,11 +103,14 @@
             </div>
             <div class="zukan-toolbar">
               <span class="zukan-count" id="zukan-count"></span>
-              <select id="zukan-sort" class="zukan-sort" aria-label="並び替え">
-                <option value="rec">おすすめ順</option>
-                <option value="asc">価格が安い順</option>
-                <option value="desc">価格が高い順</option>
-              </select>
+              <div class="zukan-toolbar-right">
+                <button type="button" id="zukan-clear" class="zukan-clear" hidden>条件をクリア</button>
+                <select id="zukan-sort" class="zukan-sort" aria-label="並び替え">
+                  <option value="rec">おすすめ順</option>
+                  <option value="asc">価格が安い順</option>
+                  <option value="desc">価格が高い順</option>
+                </select>
+              </div>
             </div>
           </div>
           <div class="zukan-grid" id="zukan-grid"></div>
@@ -134,6 +137,7 @@
       var chips = document.getElementById('zukan-chips');
       var budgetChips = document.getElementById('zukan-budget');
       var searchInput = document.getElementById('zukan-search');
+      var clearBtn = document.getElementById('zukan-clear');
       var grid = document.getElementById('zukan-grid');
       var count = document.getElementById('zukan-count');
       var empty = document.getElementById('zukan-empty');
@@ -160,6 +164,12 @@
       });
       document.getElementById('zukan-sort').addEventListener('change', function(){ sort = this.value; render(); });
       searchInput.addEventListener('input', function(){ query = this.value.trim().toLowerCase(); render(); });
+      clearBtn.addEventListener('click', function(){
+        cat = 'すべて'; budget = 0; query = ''; searchInput.value = '';
+        chips.querySelectorAll('.zukan-chip').forEach(function(x){ x.classList.toggle('is-on', x.textContent===cat); });
+        budgetChips.querySelectorAll('.zukan-chip').forEach(function(x,j){ x.classList.toggle('is-on', j===0); });
+        render();
+      });
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
       function render(){
         var bnd = BUDGETS[budget];
@@ -172,6 +182,7 @@
         else list.sort(function(a,b){ return a._i-b._i; });
         count.textContent = list.length + '種を表示中';
         empty.hidden = list.length > 0;
+        clearBtn.hidden = cat === 'すべて' && budget === 0 && !query;
         grid.innerHTML = list.map(function(d){
           return '<article class="zukan-card">'
             + '<span class="zukan-cat">' + esc(d.cat) + '</span>'
@@ -205,6 +216,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear55"></script>
+    <script src="script.js?v=gear56"></script>
   </body>
 </html>

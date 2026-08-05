@@ -7492,6 +7492,58 @@ body.has-cmp-bar .back-to-top { bottom: 108px; }
 }
 
 .zukan-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); margin-top: 4px; }
+
+/* ---- プロ使用デバイス検索 ---- */
+.pro-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); margin-top: 4px; }
+.pro-card {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
+  box-shadow: 0 4px 16px rgba(18, 42, 45, 0.05); display: flex; flex-direction: column;
+  gap: 9px; min-width: 0; padding: 18px 18px 16px;
+}
+.pro-card-head { align-items: baseline; display: flex; gap: 10px; justify-content: space-between; }
+.pro-name { font-size: 19px; font-weight: 800; margin: 0; }
+.pro-game {
+  background: rgba(14, 133, 124, 0.08); border-radius: 6px; color: var(--cyan); flex: none;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
+  font-weight: 900; letter-spacing: 0.05em; padding: 3px 8px; white-space: nowrap;
+}
+.pro-team { color: var(--muted); font-size: 12.5px; margin: 0; }
+.pro-dev-list { display: grid; gap: 6px; list-style: none; margin: 0; padding: 0; }
+.pro-dev-list li { align-items: center; display: flex; flex-wrap: wrap; gap: 6px; }
+.pro-dev-cat {
+  color: var(--muted); flex: none; font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 10px; font-weight: 800; letter-spacing: 0.04em; min-width: 7.5em;
+}
+.pro-dev-name {
+  background: none; border: 0; border-bottom: 1px dashed var(--line-strong); color: var(--ink);
+  cursor: pointer; font-size: 13px; font-weight: 700; padding: 0; text-align: left;
+}
+.pro-dev-name:hover { color: var(--cyan); border-bottom-color: var(--cyan); }
+.pro-dev-zukan, .pro-dev-guide {
+  background: rgba(14, 133, 124, 0.08); border-radius: 5px; color: var(--cyan); flex: none;
+  font-size: 10.5px; font-weight: 800; padding: 2px 7px; text-decoration: none;
+}
+.pro-dev-guide { background: none; border: 1px solid var(--line); color: var(--muted); }
+.pro-dev-guide:hover { border-color: var(--cyan); color: var(--cyan); }
+.pro-memo { color: var(--muted); font-size: 12px; line-height: 1.7; margin: 0; }
+.pro-src { border-top: 1px dashed var(--line); color: var(--muted); font-size: 11px; margin: auto 0 0; padding-top: 9px; }
+.pro-src a { color: var(--cyan); }
+.pro-view-toggle { border: 1px solid var(--line); border-radius: 8px; display: inline-flex; overflow: hidden; }
+.pro-view-btn {
+  background: none; border: 0; color: var(--muted); cursor: pointer;
+  font-size: 12.5px; font-weight: 700; padding: 7px 13px;
+}
+.pro-view-btn.is-on { background: var(--cyan); color: #fff; }
+.pro-user-chips { display: flex; flex-wrap: wrap; gap: 7px; }
+.pro-user-chip {
+  align-items: baseline; background: none; border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); cursor: pointer; display: inline-flex; font-size: 12.5px; font-weight: 700;
+  gap: 6px; padding: 5px 12px;
+}
+.pro-user-chip:hover { border-color: var(--cyan); color: var(--cyan); }
+.pro-user-chip small { color: var(--muted); font-size: 10px; }
+.pro-note-card { margin-top: 18px; }
+.pro-updated { color: var(--muted); font-size: 11.5px; margin: 10px 0 0; }
 .zukan-card {
   background: var(--panel); border: 1px solid var(--line); border-radius: 14px;
   box-shadow: 0 4px 16px rgba(18, 42, 45, 0.05); display: grid; gap: 7px;

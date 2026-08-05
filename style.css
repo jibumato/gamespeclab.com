@@ -7411,6 +7411,78 @@ body.gear-white .toc-box { background: var(--panel); box-shadow: 0 4px 16px rgba
   background: var(--panel); border: 1px solid var(--line); border-radius: 8px;
   color: var(--ink); font-size: 12.5px; font-weight: 700; padding: 7px 10px;
 }
+/* ---- 図鑑: スペック比較 ---- */
+.zukan-cmp-toggle {
+  align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 6px;
+  color: var(--muted); cursor: pointer; display: inline-flex; font-size: 10.5px; font-weight: 800;
+  gap: 4px; padding: 3px 7px; position: absolute; right: 8px; top: 8px; z-index: 2;
+}
+.zukan-cmp-toggle input { accent-color: var(--cyan); cursor: pointer; margin: 0; }
+.zukan-cmp-toggle.is-off { cursor: not-allowed; opacity: 0.4; }
+.zukan-cmp-toggle.is-off input { cursor: not-allowed; }
+.zukan-cmp-bar {
+  background: var(--panel-strong); border-top: 1px solid var(--line-strong); bottom: 0;
+  box-shadow: 0 -8px 28px rgba(0, 0, 0, 0.22); left: 0; padding: 12px 20px; position: fixed;
+  right: 0; z-index: 60;
+}
+.zukan-cmp-bar-inner {
+  align-items: center; display: flex; flex-wrap: wrap; gap: 10px; justify-content: space-between;
+  margin: 0 auto; max-width: 1060px;
+}
+.zukan-cmp-slots { align-items: center; display: flex; flex-wrap: wrap; gap: 7px; min-width: 0; }
+.zukan-cmp-chip {
+  align-items: center; background: var(--panel); border: 1px solid var(--line); border-radius: 999px;
+  color: var(--ink); cursor: pointer; display: inline-flex; font-size: 12px; font-weight: 700; gap: 6px;
+  padding: 5px 11px;
+}
+.zukan-cmp-chip:hover { border-color: var(--pink); color: var(--pink); }
+.zukan-cmp-chip span { font-size: 13px; }
+.zukan-cmp-hint { color: var(--muted); font-size: 12px; }
+.zukan-cmp-actions { display: flex; gap: 8px; }
+.zukan-cmp-run {
+  background: var(--cyan); border: 0; border-radius: 8px; color: #fff; cursor: pointer;
+  font-size: 13px; font-weight: 800; padding: 9px 18px;
+}
+.zukan-cmp-run:disabled { cursor: not-allowed; opacity: 0.45; }
+.zukan-cmp-reset {
+  background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--muted);
+  cursor: pointer; font-size: 12.5px; font-weight: 700; padding: 9px 14px;
+}
+.zukan-cmp-panel {
+  background: var(--panel); border: 1px solid var(--line-strong); border-radius: 14px;
+  margin-top: 16px; padding: 18px;
+  /* 親が display:grid のため min-width:auto だと表がはみ出し、
+     body の overflow-x:clip で3台目が到達不能になる。明示的に縮小を許可する */
+  min-width: 0;
+}
+.zukan-cmp-head { align-items: center; display: flex; gap: 12px; justify-content: space-between; margin-bottom: 12px; }
+.zukan-cmp-head h2 { font-size: clamp(16px, 2.2vw, 20px); margin: 0; }
+.zukan-cmp-close {
+  background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--muted);
+  cursor: pointer; font-size: 12.5px; font-weight: 700; padding: 6px 12px;
+}
+.zukan-cmp-scroll { min-width: 0; overflow-x: auto; }
+.zukan-cmp-table { border-collapse: collapse; min-width: 100%; }
+.zukan-cmp-table th, .zukan-cmp-table td {
+  border-bottom: 1px solid var(--line); font-size: 13px; padding: 9px 12px; text-align: left; vertical-align: top;
+}
+.zukan-cmp-table thead th { color: var(--cyan); font-weight: 800; white-space: nowrap; }
+.zukan-cmp-table tbody th { color: var(--muted); font-weight: 700; white-space: nowrap; }
+.zukan-cmp-buy {
+  background: var(--cyan); border-radius: 6px; color: #fff; display: inline-block;
+  font-size: 12px; font-weight: 700; padding: 6px 10px; text-decoration: none; white-space: nowrap;
+}
+body.has-cmp-bar { padding-bottom: 96px; }
+body.has-cmp-bar .back-to-top { bottom: 108px; }
+
+@media (max-width: 560px) {
+  .zukan-cmp-bar { padding: 10px 14px; }
+  .zukan-cmp-bar-inner { gap: 8px; }
+  .zukan-cmp-chip { font-size: 11px; max-width: 46vw; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  body.has-cmp-bar { padding-bottom: 128px; }
+  body.has-cmp-bar .back-to-top { bottom: 140px; }
+}
+
 .zukan-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fill, minmax(168px, 1fr)); margin-top: 4px; }
 .zukan-card {
   background: var(--panel); border: 1px solid var(--line); border-radius: 14px;

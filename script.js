@@ -225,7 +225,7 @@ function setupTableOfContents() {
   if (!container) return;
 
   const headings = Array.from(container.querySelectorAll('h2'))
-    .filter((h) => !h.closest('.article-grid') && !h.closest('.guide-changelog') && !h.closest('.zukan-grid'));
+    .filter((h) => !h.closest('.article-grid') && !h.closest('.guide-changelog') && !h.closest('.zukan-grid') && !h.closest('.pro-grid'));
   if (headings.length < 4) return;
 
   headings.forEach((h, i) => { if (!h.id) h.id = `toc-sec-${i}`; });

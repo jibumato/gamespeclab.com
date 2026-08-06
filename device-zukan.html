@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear60" />
+    <link rel="stylesheet" href="style.css?v=gear61" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -187,6 +187,15 @@
         budgetChips.querySelectorAll('.zukan-chip').forEach(function(x,j){ x.classList.toggle('is-on', j===0); });
         render();
       });
+      // 図鑑製品名 → プロ使用デバイス検索の逆引きクエリと使用者数（pro-devices.htmlのデータと一致させる）
+      var PRO_USE = {
+        'Logicool G PRO X SUPERLIGHT 2': {q:'G PRO X SUPERLIGHT 2', n:3},
+        'Razer Viper V3 Pro': {q:'Viper V3 Pro', n:2},
+        'BenQ ZOWIE XL2566K': {q:'XL2566K', n:1},
+        'Wooting 60HE / 80HE': {q:'Wooting', n:2},
+        'Logicool G PRO X TKL': {q:'G PRO X TKL', n:1},
+        'Logicool G840 / G640': {q:'G640', n:1}
+      };
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
       function cmpCat(){ return compare.length ? DATA[compare[0]].cat : null; }
@@ -270,8 +279,10 @@
         empty.hidden = list.length > 0;
         clearBtn.hidden = cat === 'すべて' && budget === 0 && !query;
         grid.innerHTML = list.map(function(d){
+          var pro = PRO_USE[d.name];
           return '<article class="zukan-card">'
             + '<span class="zukan-cat">' + esc(d.cat) + '</span>'
+            + (pro ? '<a class="zukan-pro" href="pro-devices.html?q=' + encodeURIComponent(pro.q) + '" title="この製品を使うプロを見る">プロ使用' + pro.n + '名</a>' : '')
             + (d.specs ? '<label class="zukan-cmp-toggle"><input type="checkbox" data-cmp="' + d._i + '">比較</label>' : '')
             + '<img class="zukan-img" src="' + d.img + '?v=gear21" alt="' + esc(d.name) + '" width="72" height="72" loading="lazy" decoding="async">'
             + '<h2 class="zukan-name">' + esc(d.name) + '</h2>'
@@ -304,6 +315,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear60"></script>
+    <script src="script.js?v=gear61"></script>
   </body>
 </html>

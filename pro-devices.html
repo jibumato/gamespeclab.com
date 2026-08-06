@@ -69,7 +69,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear60" />
+    <link rel="stylesheet" href="style.css?v=gear61" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -157,6 +157,9 @@
         chips.appendChild(b);
       });
       searchInput.addEventListener('input',function(){ query=this.value.trim().toLowerCase(); render(); });
+      // ?q= で外部（図鑑・診断結果）から逆引きディープリンクできるようにする
+      var qParam = new URLSearchParams(location.search).get('q');
+      if (qParam) { query = qParam.trim().toLowerCase(); searchInput.value = qParam.trim(); }
       clearBtn.addEventListener('click',function(){
         game='すべて'; query=''; searchInput.value='';
         chips.querySelectorAll('.zukan-chip').forEach(function(x){ x.classList.toggle('is-on', x.textContent===game); });
@@ -249,6 +252,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear60"></script>
+    <script src="script.js?v=gear61"></script>
   </body>
 </html>

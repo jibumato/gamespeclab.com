@@ -34,7 +34,7 @@
     <link rel="canonical" href="https://gamespeclab.com/fps-sensitivity-guide.html" />
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear60" />
+    <link rel="stylesheet" href="style.css?v=gear61" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -118,6 +118,29 @@
             <p class="gsl-figure-cap"><span data-icon="chart"></span>感度を決める要素</p>
             <div class="concept-formula"><span class="cf-box">DPI</span><span class="cf-op">×</span><span class="cf-box">ゲーム内感度</span><span class="cf-op">＝</span><span class="cf-box cf-result">eDPI（振り向きの速さ）</span></div>
           </div>
+          <div class="article-card" id="edpi-calc">
+            <p class="article-kicker">CALCULATOR</p>
+            <h2>eDPI・振り向き計算機</h2>
+            <p>DPIとゲーム内感度を入れると、eDPIと「振り向き（180°）に必要なマウス移動距離」を計算します。</p>
+            <div class="calc-grid">
+              <label class="calc-field"><span>ゲーム</span>
+                <select id="calc-game">
+                  <option value="0.07">VALORANT</option>
+                  <option value="0.022">Apex Legends</option>
+                  <option value="0.022">CS2</option>
+                  <option value="0.0066">Overwatch 2</option>
+                </select>
+              </label>
+              <label class="calc-field"><span>マウスDPI</span>
+                <input type="number" id="calc-dpi" inputmode="numeric" min="100" max="32000" step="50" value="800">
+              </label>
+              <label class="calc-field"><span>ゲーム内感度</span>
+                <input type="number" id="calc-sens" inputmode="decimal" min="0.01" max="20" step="0.01" value="0.40">
+              </label>
+            </div>
+            <div class="calc-result" id="calc-result" aria-live="polite"></div>
+            <p class="calc-note">※ 振り向きは各ゲームの回転係数（yaw）に基づく理論値です。ゲーム側のウィンドウズ感度・アクセラレーションはオフを前提としています。VALORANTのプロのeDPI帯は<a href="pro-devices.html">プロ使用デバイス検索</a>の選手も参考にどうぞ。</p>
+          </div>
           <div class="article-card">
             <p class="article-kicker">BASICS</p>
             <h2>DPI・感度・eDPIの関係</h2>
@@ -187,6 +210,36 @@
         </article>
       </section>
     </main>
+    <script>
+    (function(){
+      var game=document.getElementById('calc-game');
+      var dpi=document.getElementById('calc-dpi');
+      var sens=document.getElementById('calc-sens');
+      var out=document.getElementById('calc-result');
+      if(!game||!dpi||!sens||!out) return;
+      // VALORANTプロのeDPI目安（出典: RaidGG。pro-devices.htmlと同じ調査に基づく）
+      var VAL_PROS=[{n:'Demon1',e:196},{n:'aspas',e:256},{n:'TenZ',e:320}];
+      function calc(){
+        var d=parseFloat(dpi.value), sv=parseFloat(sens.value), yaw=parseFloat(game.value);
+        if(!(d>0)||!(sv>0)){ out.innerHTML='<p class="calc-empty">DPIと感度を入力してください。</p>'; return; }
+        var edpi=d*sv;
+        var cm180=2.54*180/(d*sv*yaw);
+        var isVal=Math.abs(yaw-0.07)<1e-9;
+        var proLine='';
+        if(isVal){
+          var near=VAL_PROS.reduce(function(a,b){ return Math.abs(b.e-edpi)<Math.abs(a.e-edpi)?b:a; });
+          proLine='<small>VALORANTプロの目安: Demon1 196 / aspas 256 / TenZ 320 ─ あなたは '+near.n+' に近め</small>';
+        }
+        out.innerHTML='<div class="calc-figures">'
+          +'<div><b>'+(Math.round(edpi*10)/10)+'</b><span>eDPI</span></div>'
+          +'<div><b>'+(Math.round(cm180*10)/10)+'cm</b><span>振り向き(180°)</span></div>'
+          +'</div>'+proLine;
+      }
+      [game,dpi,sens].forEach(function(el){ el.addEventListener('input',calc); el.addEventListener('change',calc); });
+      calc();
+    })();
+    </script>
+
     <footer class="site-footer">
       <div>
         <a class="brand" href="index.html"><img class="brand-mark" src="assets/logo-icon.png" alt="GamespecLab" width="36" height="36" loading="eager" decoding="async" /><span>GamespecLab</span></a>
@@ -202,6 +255,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear60"></script>
+    <script src="script.js?v=gear61"></script>
   </body>
 </html>

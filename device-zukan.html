@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear62" />
+    <link rel="stylesheet" href="style.css?v=gear63" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -85,6 +85,7 @@
           <h1><span>デバイス図鑑</span></h1>
           <p class="lead">掲載中のゲーミングデバイス全51種をドット絵で一覧。カテゴリで絞り込み、価格で並び替えて、気になる1台からガイドへ。</p>
           <p class="lead"><a href="pro-devices.html">プロ使用デバイス検索</a>では、有名プロが実際に使う機材から逆引きできます。</p>
+          <p class="lead">迷いやすい2台は<a href="vs-gpx2-vs-viper-v3-pro.html">「GPX2 vs Viper V3 Pro」</a>など、<a href="site-map.html">個別の比較ページ</a>でも決着をつけています。</p>
         </div>
       </section>
       <section class="legal-section">
@@ -242,7 +243,7 @@
             return '<td>' + esc((d.specs || {})[k] || '—') + '</td>'; }).join('') + '</tr>';
         }).join('');
         var buyRow = '<tr><th scope="row">購入</th>' + items.map(function(d){
-          return '<td><a class="zukan-cmp-buy" href="' + d.link + '" target="_blank" rel="noopener sponsored">Amazonで見る</a></td>';
+          return '<td><a class="zukan-cmp-buy" href="' + d.link + '" target="_blank" rel="noopener sponsored" data-affiliate="zukan-compare-' + esc(d.name) + '">Amazonで見る</a></td>';
         }).join('') + '</tr>';
         cmpPanel.innerHTML = '<div class="zukan-cmp-head"><h2>スペック比較（' + esc(items[0].cat) + '）</h2>'
           + '<button type="button" class="zukan-cmp-close" id="zukan-cmp-close">閉じる</button></div>'
@@ -288,7 +289,7 @@
             + '<h2 class="zukan-name">' + esc(d.name) + '</h2>'
             + (d.price ? '<p class="zukan-price">' + esc(d.price) + '</p>' : '')
             + '<div class="zukan-links">'
-            + '<a class="zukan-buy" href="' + d.link + '" target="_blank" rel="noopener sponsored">Amazonで価格を見る</a>'
+            + '<a class="zukan-buy" href="' + d.link + '" target="_blank" rel="noopener sponsored" data-affiliate="zukan-card-' + esc(d.name) + '">Amazonで価格を見る</a>'
             + '<a class="zukan-guide" href="' + d.guide + '">' + esc(d.glabel) + '</a>'
             + '</div></article>';
         }).join('');
@@ -315,6 +316,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear62"></script>
+    <script src="script.js?v=gear63"></script>
   </body>
 </html>

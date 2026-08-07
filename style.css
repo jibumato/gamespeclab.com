@@ -7538,8 +7538,15 @@ body.has-cmp-bar .back-to-top { bottom: 108px; }
 .pro-user-chip {
   align-items: baseline; background: none; border: 1px solid var(--line); border-radius: 999px;
   color: var(--ink); cursor: pointer; display: inline-flex; font-size: 12.5px; font-weight: 700;
-  gap: 6px; padding: 5px 12px;
+  gap: 6px; padding: 5px 12px; text-decoration: none;
 }
+.pro-detail-link {
+  color: var(--cyan); display: inline-block; font-size: 12.5px; font-weight: 800;
+  margin-top: 2px; text-decoration: none;
+}
+.pro-detail-link:hover { text-decoration: underline; }
+.pro-dev-list-page li { padding: 4px 0; }
+.pro-dev-list-page .pro-dev-name { font-size: 14.5px; }
 .pro-user-chip:hover { border-color: var(--cyan); color: var(--cyan); }
 .pro-user-chip small { color: var(--muted); font-size: 10px; }
 .pro-note-card { margin-top: 18px; }

@@ -7544,6 +7544,43 @@ body.has-cmp-bar .back-to-top { bottom: 108px; }
   color: var(--cyan); display: inline-block; font-size: 12.5px; font-weight: 800;
   margin-top: 2px; text-decoration: none;
 }
+.pro-dev-row .pro-dev-buy {
+  background: var(--cyan); border-radius: 6px; color: #fff; flex: none;
+  font-size: 11px; font-weight: 800; padding: 4px 10px; text-decoration: none; white-space: nowrap;
+}
+.pro-dev-row .pro-dev-buy:hover { filter: brightness(1.08); }
+
+/* ---- A vs B 比較ページ ---- */
+.vs-grid { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.vs-side {
+  background: var(--panel); border: 1px solid var(--line); border-radius: 12px;
+  display: flex; flex-direction: column; gap: 8px; min-width: 0; padding: 16px;
+}
+.vs-side-tag {
+  background: rgba(114, 242, 255, 0.14); border-radius: 6px; color: var(--cyan);
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 10px;
+  font-weight: 900; padding: 3px 8px; width: fit-content;
+}
+.vs-side h3 { font-size: 17px; font-weight: 800; line-height: 1.35; margin: 0; }
+.vs-price { color: var(--cyan); font-size: 13px; font-weight: 800; margin: 0; }
+.vs-pro { color: var(--muted); font-size: 12px; margin: 0; }
+.vs-pro a { color: var(--cyan); }
+.vs-side-head {
+  color: var(--muted); font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 11px; font-weight: 800; margin: 4px 0 0;
+}
+.vs-list { display: grid; gap: 5px; list-style: none; margin: 0; padding: 0; }
+.vs-list li { color: var(--ink); font-size: 13px; line-height: 1.6; padding-left: 16px; position: relative; }
+.vs-list li::before { color: var(--cyan); content: "▸"; left: 0; position: absolute; }
+.vs-buy {
+  background: var(--cyan); border-radius: 8px; color: #fff; font-size: 13px; font-weight: 800;
+  margin-top: auto; padding: 10px 14px; text-align: center; text-decoration: none;
+}
+.vs-buy:hover { filter: brightness(1.08); }
+.vs-guide { color: var(--muted); font-size: 12px; text-align: center; text-decoration: none; }
+.vs-guide:hover { color: var(--cyan); }
+.vs-note { color: var(--muted); font-size: 12px; }
+.vs-verdict { border-color: var(--line-strong); }
 .pro-detail-link:hover { text-decoration: underline; }
 .pro-dev-list-page li { padding: 4px 0; }
 .pro-dev-list-page .pro-dev-name { font-size: 14.5px; }

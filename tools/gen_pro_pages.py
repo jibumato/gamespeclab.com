@@ -2,6 +2,7 @@
 # プロ選手の個別ページ (pro-<id>.html) を tools/pro_players.json から生成する。
 # 再実行しても安全（毎回上書き）。sitemap.xml / site-map.html への登録も冪等に行う。
 import json, re, html, sys, os
+from urllib.parse import quote, urlencode
 
 os.chdir(os.path.join(os.path.dirname(__file__), '..'))
 data = json.load(open('tools/pro_players.json', encoding='utf-8'))
@@ -55,11 +56,25 @@ def head_for(p):
     h = h[:i] + '<script type="application/ld+json">\n' + json.dumps(ld, ensure_ascii=False, indent=2) + '\n    </script>' + h[j:]
     return h
 
-def dev_line(d):
-    lookup = f'pro-devices.html?q={html.escape(__import__("urllib.parse", fromlist=["quote"]).quote(d[1]))}'
-    return (f'<li><span class="pro-dev-cat">{esc(CAT[d[0]])}</span>'
+AMAZON_TAG = 'jbmt-22'
+
+def amazon_url(name):
+    # 型番違いの誤リンクを避けるため、商品直リンクではなく検索結果へ送る
+    q = re.sub(r'[（(].*?[)）]', '', name).strip()
+    return 'https://www.amazon.co.jp/s?' + urlencode({'k': q, 'tag': AMAZON_TAG})
+
+def aff_slug(name):
+    t = re.sub(r'[（(].*?[)）]', '', name)
+    t = re.sub(r'[^0-9A-Za-z]+', '-', t).strip('-').lower()
+    return t[:40] or 'item'
+
+def dev_line(d, pid):
+    lookup = f'pro-devices.html?q={quote(d[1])}'
+    return (f'<li class="pro-dev-row"><span class="pro-dev-cat">{esc(CAT[d[0]])}</span>'
             f'<a class="pro-dev-name" href="{lookup}" title="この製品を使うプロを逆引き">{esc(d[1])}</a>'
-            + (f'<a class="pro-dev-guide" href="{d[2]}">選び方</a>' if d[2] else '') + '</li>')
+            + (f'<a class="pro-dev-guide" href="{d[2]}">選び方</a>' if d[2] else '')
+            + f'<a class="pro-dev-buy" href="{amazon_url(d[1])}" target="_blank" rel="sponsored noopener noreferrer"'
+              f' data-affiliate="pro-{pid}-{aff_slug(d[1])}">Amazonで探す</a></li>')
 
 def main_for(p):
     name = p['name']
@@ -118,9 +133,14 @@ def main_for(p):
           <div class="article-card">
             <p class="article-kicker">DEVICES</p>
             <h2>使用デバイス一覧</h2>
-            <ul class="pro-dev-list pro-dev-list-page">{''.join(dev_line(d) for d in p['dev'])}</ul>
+            <ul class="pro-dev-list pro-dev-list-page">{''.join(dev_line(d, p['id']) for d in p['dev'])}</ul>
             {note_html}
             <p class="pro-src">出典: {' / '.join(f'<a href="{s[1]}" target="_blank" rel="noopener nofollow">{esc(s[0])}</a>' for s in p['src'])}</p>
+          </div>
+          <div class="article-card affiliate-disclosure">
+            <p class="eyebrow"><span data-icon="ad"></span>広告・アフィリエイトについて</p>
+            <p>「Amazonで探す」はAmazonアソシエイトのリンクを含む広告です。リンク経由の購入で当サイトが収益を得る場合があります。掲載内容は選手の使用機材を出典つきで整理したものであり、メーカーからの依頼に基づくものではありません。型番違いを避けるため商品ページではなく検索結果へリンクしています。価格・在庫・仕様は各製品ページでご確認ください。</p>
+            <a class="ghost-link" href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記の詳細</a>
           </div>{settings_html}
           <div class="article-card">
             <p class="article-kicker">HOW TO USE</p>

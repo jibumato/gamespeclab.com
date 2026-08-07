@@ -1689,16 +1689,22 @@ function restoreResultScroll(selector, force = false) {
   });
 }
 
+// アフィリエイトリンクのクリック計測。
+// 図鑑の絞り込みや診断結果のように innerHTML で再描画される導線が多いため、
+// 要素ごとにリスナーを張らず document への委譲で捕捉する（再描画後も取りこぼさない）。
 function setupAffiliateTracking() {
-  document.querySelectorAll('[data-affiliate]').forEach((link) => {
-    if (link.dataset.tracked === 'true') return;
-    link.dataset.tracked = 'true';
-    link.addEventListener('click', () => {
-      trackEvent('affiliate_click', {
-        id: link.dataset.affiliate,
-        href: link.href,
-        text: link.textContent.trim().replace(/\s+/g, ' '),
-      });
+  if (document.documentElement.dataset.affiliateTracking === 'on') return;
+  document.documentElement.dataset.affiliateTracking = 'on';
+  document.addEventListener('click', (event) => {
+    const link = event.target.closest('[data-affiliate]');
+    if (!link) return;
+    const id = link.dataset.affiliate || '';
+    trackEvent('affiliate_click', {
+      id,
+      surface: id.split('-')[0] || 'unknown', // どの面が売れているかの集計キー
+      page: location.pathname.replace(/^\//, '') || 'index.html',
+      href: link.href,
+      text: link.textContent.trim().replace(/\s+/g, ' '),
     });
   });
 }
@@ -5557,6 +5563,9 @@ setupBackToTop();
 setupPrevResultLinks();
 setupPostResultActions();
 setupMbtiDirectoryToggle();
+// 全ページで有効化する（従来は renderPcQuiz 内でのみ呼ばれており、
+// pc-build.html 以外ではアフィリエイトクリックが計測されていなかった）
+setupAffiliateTracking();
 
 if (document.querySelector('#quiz-box')) {
   const restoredPartnerResult = answers.length === questions.length && savedPartnerHashMatches();

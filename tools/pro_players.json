@@ -899,6 +899,258 @@
     ]
    ],
    "note": "ロジクールで統一した構成。解像度はフルHD・240fps上限。"
+  },
+  {
+   "id": "dep",
+   "name": "Dep",
+   "team": "REJECT",
+   "game": "VALORANT",
+   "blurb": "日本を代表するVALORANTプレイヤー。2021年末からZETA DIVISIONで長く中心選手として活躍し、VCT 2022 Masters Reykjavík世界3位を経験した。現在はREJECTに所属する。",
+   "dev": [
+    [
+     "mouse",
+     "Pulsar X2N CrazyLight",
+     "gaming-mouse-guide.html"
+    ],
+    [
+     "kb",
+     "Pulsar PCMK 3HE 60（磁気軸）",
+     "gaming-keyboard-guide.html"
+    ],
+    [
+     "mon",
+     "BenQ ZOWIE XL2546K",
+     "gaming-monitor-guide.html"
+    ],
+    [
+     "pad",
+     "X-raypad Aqua Control+ Wave",
+     "gaming-mousepad-guide.html"
+    ]
+   ],
+   "settings": [],
+   "src": [
+    [
+     "GameLens",
+     "https://mediator-net.jp/players/valorant/dep/"
+    ],
+    [
+     "Better Buy",
+     "https://better-buy.jp/dep-device/"
+    ]
+   ],
+   "note": "Razer Viper V4 Proの併用も報告されている。"
+  },
+  {
+   "id": "something",
+   "name": "something",
+   "team": "VALORANT部門プロ",
+   "game": "VALORANT",
+   "blurb": "日本のVALORANTシーンを代表するデュエリスト。圧倒的なエイム力と積極的な仕掛けで知られ、国内トップクラスの実力を持つ。",
+   "dev": [
+    [
+     "mouse",
+     "Logicool G PRO X2 SUPERSTRIKE",
+     "gaming-mouse-guide.html"
+    ],
+    [
+     "kb",
+     "Pulsar PCMK 3HE TKL（磁気軸）",
+     "gaming-keyboard-guide.html"
+    ],
+    [
+     "mon",
+     "BenQ ZOWIE XL2586X",
+     "gaming-monitor-guide.html"
+    ],
+    [
+     "hs",
+     "HyperX Cloud III",
+     "gaming-headset-guide.html"
+    ],
+    [
+     "pad",
+     "Lethal Gaming Gear Saturn Pro",
+     "gaming-mousepad-guide.html"
+    ]
+   ],
+   "settings": [
+    [
+     "DPI",
+     "800"
+    ],
+    [
+     "ゲーム内感度",
+     "0.66"
+    ],
+    [
+     "eDPI",
+     "528"
+    ]
+   ],
+   "src": [
+    [
+     "Better Buy",
+     "https://better-buy.jp/something-device/"
+    ],
+    [
+     "FPS Loadout",
+     "https://www.fps-loadout.com/valorant-something/"
+    ]
+   ],
+   "note": "キーボードはWooting 80HE、マウスはLAMZU Maya Xの併用も報告されている。"
+  },
+  {
+   "id": "s1mple",
+   "name": "s1mple",
+   "team": "CS2部門プロ",
+   "game": "CS2",
+   "blurb": "HLTV年間世界1位を複数回獲得した、CS史上最高峰と評されるウクライナのレジェンド。AWPとライフルの両方を極めた万能型。",
+   "dev": [
+    [
+     "mouse",
+     "Logicool G PRO X SUPERLIGHT 2",
+     "gaming-mouse-guide.html"
+    ],
+    [
+     "kb",
+     "Logicool G715",
+     "gaming-keyboard-guide.html"
+    ],
+    [
+     "mon",
+     "BenQ ZOWIE XL2586X+",
+     "gaming-monitor-guide.html"
+    ]
+   ],
+   "settings": [
+    [
+     "DPI",
+     "400"
+    ],
+    [
+     "ゲーム内感度",
+     "3.09"
+    ],
+    [
+     "eDPI",
+     "1236"
+    ],
+    [
+     "解像度",
+     "1280×960（ストレッチ）"
+    ]
+   ],
+   "src": [
+    [
+     "Specs.gg",
+     "https://specs.gg/s1mple"
+    ],
+    [
+     "CS2Pulse",
+     "https://cs2pulse.com/players/s1mple/"
+    ]
+   ],
+   "note": "AWPerとしてはかなり高めの感度で知られる。"
+  },
+  {
+   "id": "niko",
+   "name": "NiKo",
+   "team": "CS2部門プロ",
+   "game": "CS2",
+   "blurb": "ボスニア出身のライフルの名手。長年トップティアで戦い続け、精密なエイムとクラッチ力で高い評価を受ける。",
+   "dev": [
+    [
+     "mouse",
+     "Razer DeathAdder V4 Pro",
+     "gaming-mouse-guide.html"
+    ],
+    [
+     "kb",
+     "Razer Huntsman V3 Pro TKL",
+     "gaming-keyboard-guide.html"
+    ],
+    [
+     "mon",
+     "BenQ ZOWIE XL2586X+",
+     "gaming-monitor-guide.html"
+    ]
+   ],
+   "settings": [
+    [
+     "DPI",
+     "800"
+    ],
+    [
+     "ゲーム内感度",
+     "0.7"
+    ],
+    [
+     "eDPI",
+     "560"
+    ],
+    [
+     "ポーリングレート",
+     "1000Hz"
+    ]
+   ],
+   "src": [
+    [
+     "Specs.gg",
+     "https://specs.gg/NiKo"
+    ],
+    [
+     "ProSettings",
+     "https://prosettings.net/players/niko/"
+    ]
+   ],
+   "note": "出典により感度0.9（eDPI 720）とする記載もある。ここでは新しい方の値を採用した。"
+  },
+  {
+   "id": "yukaf",
+   "name": "YukaF",
+   "team": "Fnatic",
+   "game": "Apex Legends",
+   "blurb": "Fnatic所属の日本人Apexプレイヤー。国内トップクラスのキーマウ使いとして知られ、配信でも高い人気を持つ。",
+   "dev": [
+    [
+     "mouse",
+     "WLMOUSE Beast X Mini Pro",
+     "gaming-mouse-guide.html"
+    ],
+    [
+     "kb",
+     "Wooting 60HE",
+     "gaming-keyboard-guide.html"
+    ],
+    [
+     "mon",
+     "BenQ ZOWIE XL2546K",
+     "gaming-monitor-guide.html"
+    ],
+    [
+     "pad",
+     "WALLHACK SP-004",
+     "gaming-mousepad-guide.html"
+    ]
+   ],
+   "settings": [
+    [
+     "ゲーム内感度",
+     "1.3"
+    ]
+   ],
+   "src": [
+    [
+     "Better Buy",
+     "https://better-buy.jp/yukaf-device/"
+    ],
+    [
+     "FPS Loadout",
+     "https://www.fps-loadout.com/apexlegends-yukaf/"
+    ]
+   ],
+   "note": "過去にはXtrfy M42やARTISAN 疾風 乙の使用も報告されている。"
   }
  ]
 }

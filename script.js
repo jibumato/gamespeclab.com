@@ -4085,10 +4085,10 @@ function getSenseGearPicks(sortedAbilities) {
 // デバイスガイドごとの「本命」製品。診断結果から具体的な1台＋Amazon導線を出す。
 const GEAR_PRODUCTS = {
   'gaming-monitor-guide.html': { name: 'LG UltraGear 27GS95QE-B', spec: '27型 / 240Hz / OLED', query: 'LG UltraGear 27GS95QE-B OLED' },
-  'gaming-mouse-guide.html': { name: 'Razer Viper V3 Pro', spec: '54g / 8000Hz / 無線', query: 'Razer Viper V3 Pro', pros: 'Ras / Faker（Faker Edition）', prosQuery: 'Viper V3 Pro' },
+  'gaming-mouse-guide.html': { name: 'Razer Viper V3 Pro', spec: '54g / 8000Hz / 無線', query: 'Razer Viper V3 Pro', pros: 'Ras / Faker（Faker Edition）/ Meiy', prosQuery: 'Viper V3 Pro' },
   'gaming-keyboard-guide.html': { name: 'Wooting 80HE', spec: '磁気軸 / ラピッドトリガー', query: 'Wooting 80HE', pros: 'TenZ（TenZ Edition）/ donk（Frost）', prosQuery: 'Wooting' },
   'gaming-headset-guide.html': { name: 'HyperX Cloud III', spec: '低遅延 / 定位◎', query: 'HyperX Cloud III' },
-  'gaming-mousepad-guide.html': { name: 'Logicool G640r', spec: '大型 / コントロール系', query: 'Logicool G640r マウスパッド', pros: 'aspas（G640 XL）', prosQuery: 'G640' },
+  'gaming-mousepad-guide.html': { name: 'Logicool G640r', spec: '大型 / コントロール系', query: 'Logicool G640r マウスパッド', pros: 'aspas（G640 XL）/ SPYGEA / Caps', prosQuery: 'G640' },
 };
 
 // 診断結果のギア項目。理由＋本命製品(Amazon)＋選び方ガイドへの導線をまとめる。

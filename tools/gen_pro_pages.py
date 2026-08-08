@@ -195,3 +195,34 @@ if m:
     s = s[:m.end()] + ins + s[m.end():]
     open('site-map.html', 'w', encoding='utf-8').write(s)
 print(f'site-map: {added} 件追加')
+
+
+# ---- device-zukan.html の「プロ使用n名」バッジを一次データから再生成 ----
+# バッジのリンク先は pro-devices.html?q=<query> の部分一致検索なので、
+# 件数もその検索と同じ基準（部分一致・大小文字無視）で数える。
+# query は他製品を巻き込まない distinctive な文字列にすること。
+ZUKAN_PRO_QUERY = {
+    'Logicool G PRO X SUPERLIGHT 2': 'G PRO X SUPERLIGHT 2',
+    'Razer Viper V3 Pro': 'Viper V3 Pro',
+    'BenQ ZOWIE XL2566K': 'XL2566K',
+    'Wooting 60HE / 80HE': 'Wooting',
+    'Logicool G PRO X TKL': 'G PRO X TKL',
+    'Logicool G840 / G640': 'G640',
+    'SteelSeries Apex Pro TKL Gen 3': 'Apex Pro TKL',
+}
+
+def sync_zukan_badges():
+    z = open('device-zukan.html', encoding='utf-8').read()
+    entries = []
+    for prod, q in sorted(ZUKAN_PRO_QUERY.items()):
+        n = sum(1 for p in PLAYERS if any(q.lower() in d[1].lower() for d in p['dev']))
+        if n:
+            entries.append(f"        {json.dumps(prod, ensure_ascii=False)}: {{q:{json.dumps(q, ensure_ascii=False)}, n:{n}}}")
+    block = "      var PRO_USE = {\n" + ",\n".join(entries) + "\n      };\n"
+    new = re.sub(r'      var PRO_USE = \{.*?\n      \};\n', block, z, count=1, flags=re.S)
+    if new == z and 'var PRO_USE' in z:
+        raise SystemExit('PRO_USE の置換に失敗')
+    open('device-zukan.html', 'w', encoding='utf-8').write(new)
+    print(f'図鑑バッジ: {len(entries)} 製品を同期')
+
+sync_zukan_badges()

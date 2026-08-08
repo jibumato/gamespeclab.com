@@ -221,7 +221,20 @@
      "gaming-mousepad-guide.html"
     ]
    ],
-   "settings": [],
+   "settings": [
+    [
+     "DPI",
+     "1600"
+    ],
+    [
+     "ゲーム内感度",
+     "0.136"
+    ],
+    [
+     "eDPI",
+     "217.6"
+    ]
+   ],
    "src": [
     [
      "FPS Loadout",
@@ -230,6 +243,10 @@
     [
      "ゆともゲーミング",
      "https://www.yutomo-gaming.jp/archives/269"
+    ],
+    [
+     "VALORANT情報局",
+     "https://ashiroblog.com/pro-device-settings/prosettings-lazvell/"
     ]
    ],
    "note": "VAXEE製品を軸にした構成。"
@@ -307,7 +324,28 @@
      "gaming-headset-guide.html"
     ]
    ],
-   "settings": [],
+   "settings": [
+    [
+     "DPI",
+     "400"
+    ],
+    [
+     "ゲーム内感度",
+     "2.3"
+    ],
+    [
+     "eDPI",
+     "920"
+    ],
+    [
+     "ポーリングレート",
+     "2000Hz"
+    ],
+    [
+     "Windows感度",
+     "6"
+    ]
+   ],
    "src": [
     [
      "Specs.gg",
@@ -316,6 +354,10 @@
     [
      "ONE Esports",
      "https://www.oneesports.gg/pro-gear/m0nesy-setup-pro-gear/"
+    ],
+    [
+     "csdb.gg",
+     "https://csdb.gg/player/m0nesy/"
     ]
    ],
    "note": ""
@@ -348,7 +390,24 @@
      "gaming-headset-guide.html"
     ]
    ],
-   "settings": [],
+   "settings": [
+    [
+     "DPI",
+     "400"
+    ],
+    [
+     "ゲーム内感度",
+     "2.00"
+    ],
+    [
+     "eDPI",
+     "800"
+    ],
+    [
+     "ポーリングレート",
+     "4000Hz"
+    ]
+   ],
    "src": [
     [
      "GmrPC",
@@ -357,6 +416,10 @@
     [
      "Specs.gg",
      "https://specs.gg/ZywOo"
+    ],
+    [
+     "CS2Pulse",
+     "https://cs2pulse.com/players/zywoo/"
     ]
    ],
    "note": "VAXEEマウスを愛用。"

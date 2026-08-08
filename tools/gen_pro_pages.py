@@ -9,6 +9,13 @@ data = json.load(open('tools/pro_players.json', encoding='utf-8'))
 UPDATED = data['updated']
 PLAYERS = data['players']
 CAT = {"mouse":"マウス","kb":"キーボード","mon":"モニター","hs":"ヘッドセット/イヤホン","pad":"マウスパッド"}
+# ゲーム別まとめページ（gen_game_pages.py が生成）への導線
+GAME_HUB = {
+    "VALORANT": ("valorant-pro-devices.html", "VALORANT"),
+    "Apex Legends": ("apex-pro-devices.html", "Apex Legends"),
+    "LoL": ("lol-pro-devices.html", "League of Legends"),
+    "CS2": ("cs2-pro-devices.html", "Counter-Strike 2"),
+}
 
 tpl = open('pro-devices.html', encoding='utf-8').read()
 HEAD = tpl[:tpl.find('<main id="main">')]
@@ -107,12 +114,17 @@ def main_for(p):
             <div class="article-pair-grid">{inner}</div>
           </div>'''
     chips = ''.join(f'<a class="pro-user-chip" href="pro-{q["id"]}.html">{esc(q["name"])}<small>{esc(q["team"])}</small></a>' for q in same_game)
+    hub = GAME_HUB.get(p['game'])
+    hub_html = (f'<p style="margin-top:12px"><a class="primary-link" href="{hub[0]}">'
+                f'<span data-icon="arrow"></span>{esc(hub[1])}プロの使用デバイスまとめ'
+                f'（使用率ランキング・感度一覧）</a></p>') if hub else ''
     related_html = f'''
           <div class="article-card">
             <p class="article-kicker">RELATED</p>
             <h2>同じタイトルのプロを見る</h2>
             <div class="pro-user-chips">{chips}</div>
-            <p style="margin-top:12px"><a class="primary-link" href="pro-devices.html"><span data-icon="arrow"></span>プロ使用デバイス検索で全選手を見る</a></p>
+            {hub_html}
+            <p style="margin-top:8px"><a class="primary-link" href="pro-devices.html"><span data-icon="arrow"></span>プロ使用デバイス検索で全選手を見る</a></p>
           </div>''' if same_game else f'''
           <div class="article-card">
             <p class="article-kicker">RELATED</p>
@@ -219,8 +231,10 @@ def sync_zukan_badges():
         if n:
             entries.append(f"        {json.dumps(prod, ensure_ascii=False)}: {{q:{json.dumps(q, ensure_ascii=False)}, n:{n}}}")
     block = "      var PRO_USE = {\n" + ",\n".join(entries) + "\n      };\n"
-    new = re.sub(r'      var PRO_USE = \{.*?\n      \};\n', block, z, count=1, flags=re.S)
-    if new == z and 'var PRO_USE' in z:
+    # 置換後の内容が同じでも（＝既に同期済みでも）正常。マッチ件数で失敗を判定する。
+    new, cnt = re.subn(r'      var PRO_USE = \{.*?\n      \};\n',
+                       lambda m: block, z, count=1, flags=re.S)
+    if not cnt:
         raise SystemExit('PRO_USE の置換に失敗')
     open('device-zukan.html', 'w', encoding='utf-8').write(new)
     print(f'図鑑バッジ: {len(entries)} 製品を同期')

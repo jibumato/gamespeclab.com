@@ -7649,6 +7649,20 @@ body.has-cmp-bar .back-to-top { bottom: 108px; }
   .prorank-count { margin-left: 0; }
 }
 
+/* ---- ラピッドトリガー特集 ---- */
+.rt-desc { color: var(--ink-dim, var(--ink)); font-size: 13px; line-height: 1.75; margin: 0; }
+.rt-caution {
+  background: var(--accent-soft, rgba(0, 0, 0, 0.03));
+  border-left: 3px solid var(--cyan);
+  border-radius: 0 8px 8px 0;
+  font-size: 13px;
+  line-height: 1.8;
+  margin: 14px 0 0;
+  padding: 12px 14px;
+}
+.prorank-row .prorank-name { border-bottom: 0; cursor: default; }
+.prorank-row a.prorank-name { border-bottom: 1px dashed var(--line); cursor: pointer; }
+
 /* ---- eDPI・振り向き計算機 ---- */
 .calc-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 14px 0; }
 .calc-field { display: grid; gap: 5px; }

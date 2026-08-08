@@ -7662,6 +7662,18 @@ body.has-cmp-bar .back-to-top { bottom: 108px; }
 }
 .prorank-row .prorank-name { border-bottom: 0; cursor: default; }
 .prorank-row a.prorank-name { border-bottom: 1px dashed var(--line); cursor: pointer; }
+.rt-spec { display: grid; gap: 4px; margin: 4px 0 0; }
+.rt-spec div { display: flex; flex-wrap: wrap; gap: 8px; font-size: 12.5px; line-height: 1.7; }
+.rt-spec dt { color: var(--muted); flex: none; min-width: 8.5em; }
+.rt-spec dd { margin: 0; min-width: 0; }
+.rt-model {
+  border: 1px solid var(--line);
+  border-radius: 10px;
+  margin-top: 14px;
+  padding: 13px 14px;
+}
+.rt-model-title { font-size: 14px; font-weight: 800; margin: 0 0 8px; }
+.rt-model-foot { color: var(--muted); font-size: 12.5px; line-height: 1.8; margin: 8px 0 0; }
 
 /* ---- eDPI・振り向き計算機 ---- */
 .calc-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 14px 0; }

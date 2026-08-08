@@ -362,6 +362,20 @@ def main_for(game, players):
 '''
 
 
+def sync_pro_devices_data():
+    """pro-devices.html の検索用DBを一次データから再生成する（手動同期のドリフト防止）。"""
+    s = open('pro-devices.html', encoding='utf-8').read()
+    rows = [{'name': p['name'], 'team': p['team'], 'game': p['game'], 'dev': p['dev'],
+             'src': p['src'], 'note': p['note'], 'id': p['id']} for p in PLAYERS]
+    payload = json.dumps(rows, ensure_ascii=False)
+    new, cnt = re.subn(r'(\s*var DATA = )\[.*?\](;\n)',
+                       lambda m: m.group(1) + payload + m.group(2), s, count=1, flags=re.S)
+    if not cnt:
+        raise SystemExit('pro-devices.html の DATA 置換に失敗')
+    open('pro-devices.html', 'w', encoding='utf-8').write(new)
+    print(f'pro-devices: 選手DB {len(rows)} 名を同期')
+
+
 def sync_hub_links(made):
     """pro-devices.html のタイトル別リンクを一次データから再生成する（人数のズレ防止）。"""
     s = open('pro-devices.html', encoding='utf-8').read()
@@ -429,3 +443,4 @@ if m:
 print(f'site-map: {added} 件追加')
 
 sync_hub_links(made)
+sync_pro_devices_data()

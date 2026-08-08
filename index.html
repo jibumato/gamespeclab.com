@@ -36,7 +36,7 @@
     <link rel="preload" as="image" href="assets/hero-masthead-mobile.webp?v=gear55" media="(max-width: 640px)" fetchpriority="high" />
     <link rel="preload" as="image" href="assets/hero-masthead.webp?v=gear55" media="(min-width: 641px)" fetchpriority="high" />
     <link rel="preload" as="image" href="assets/pipo-result.webp" type="image/webp" />
-    <link rel="stylesheet" href="style.css?v=gear65" />
+    <link rel="stylesheet" href="style.css?v=gear66" />
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
@@ -109,31 +109,38 @@
 
     <main id="main">
       <div class="gsl-masthead"><picture><source media="(max-width: 640px)" srcset="assets/hero-masthead-mobile.webp?v=gear55" width="1180" height="793" /><img src="assets/hero-masthead.webp?v=gear55" alt="GamespecLab ── あなたに最適な一台が見つかる。ゲーム環境を、科学する。" width="1983" height="793" loading="eager" fetchpriority="high" decoding="async" /></picture></div>
-      <!-- ===== HERO ===== -->
-      <section class="gh-hero">
-        <div class="gh-wrap gh-hero-inner">
-          <span class="gh-eyebrow"><span class="gh-dot"></span>Gaming Gear × 診断</span>
-          <h1>スペック表だけでは、<br>自分に<span class="gh-hl">合うか</span>は分からない。</h1>
-          <p class="gh-lead">レビューと8能力診断で、あなたのプレイに本当に噛み合うゲーミングデバイスを提案する専門サイト。マウスからモニターまで、選ぶ基準ごと手渡します。</p>
-          <div class="gh-hero-bar">
-            <div class="gh-cta-row">
-              <a class="gh-btn gh-diag-cta gh-rgb gh-glow" href="#flag"><span class="gh-diag-spark" data-icon="spark"></span>診断で選ぶ<span class="gh-diag-tag">目玉コンテンツ</span></a>
-              <a class="gh-btn gh-ghost" href="#cats"><span data-icon="mouse"></span>デバイスを探す</a>
-              <p class="gh-cta-note"><span data-icon="check"></span>無料・登録不要・診断は約1〜3分</p>
+      <!-- ===== FLAGSHIP DIAGNOSIS ===== -->
+      <section class="gh-section gh-flag" id="flag">
+        <div class="gh-wrap">
+          <div class="gh-sec-head">
+            <div>
+              <span class="gh-eyebrow"><span class="gh-dot"></span>★ Flagship</span>
+              <h1>診断で選ぶ ── あなた専用のデバイス提案</h1>
+              <p>プレイスタイルを8能力・16タイプで可視化し、合うギアの条件まで落とし込みます。診断そのものも無料で楽しめます。</p>
             </div>
-            <div class="gh-pipo">
-              <span class="gh-pipo-avatar"><img src="assets/pipo-result.webp" alt="相棒AI ピポ" width="960" height="640" decoding="async" fetchpriority="high" /></span>
-              <div class="gh-pipo-msg">
-                <span class="gh-pipo-role">相棒AI ピポ ─ Spec-Match Engine</span>
-                <p><b>スペックログ照合、準備完了。</b>まずどこを強化する？迷ったら診断からで大丈夫。</p>
-              </div>
-              <div class="gh-readout gh-mono">
-                <div>PRODUCTS <b>51</b></div>
-                <div>CATEGORIES <b>8</b></div>
-                <div>DIAGNOSIS <b>×4</b></div>
-                <div>PRICE <b>FREE</b></div>
-              </div>
-            </div>
+          </div>
+          <div class="gh-flow">
+            <div class="gh-step"><span class="gh-n">STEP 01</span><b>診断する</b><span>24問 / 約3分・無料</span></div>
+            <span class="gh-arrow"><span data-icon="arrow"></span></span>
+            <div class="gh-step"><span class="gh-n">STEP 02</span><b>プレイタイプ判定</b><span>強み・弱みをレーダー化</span></div>
+            <span class="gh-arrow"><span data-icon="arrow"></span></span>
+            <div class="gh-step"><span class="gh-n">STEP 03</span><b>おすすめデバイス</b><span>理由つきで本命を提案</span></div>
+          </div>
+          <div class="gh-diag-grid">
+            <a class="gh-diag gh-rgb" href="gamesense.html">
+              <span class="gh-hot">HOT</span>
+              <div class="gh-k"><span>GameSense Scan 8</span><span>24 Q</span></div>
+              <h3>ゲームセンスを8能力に分解</h3>
+              <p>状況認識・判断速度・空間把握などをレーダーチャート化。上位能力から、モニターやマウスの“効く1台”が見えます。</p>
+              <span class="gh-go">診断する<span data-icon="arrow"></span></span>
+            </a>
+            <a class="gh-diag gh-rgb" href="gamermbti.html">
+              <span class="gh-hot">HOT</span>
+              <div class="gh-k"><span>Gamer MBTI</span><span>16 Q</span></div>
+              <h3>ゲーム内プレイ人格を16タイプで</h3>
+              <p>判断・通話温度・役割から16タイプを判定。プレイ温度に合う入力デバイスや通話環境まで提案します。</p>
+              <span class="gh-go">診断する<span data-icon="arrow"></span></span>
+            </a>
           </div>
         </div>
       </section>
@@ -180,42 +187,6 @@
             <a class="gh-budget" href="device-zukan.html?b=4"><b>2〜3万円</b><span>主力ゾーン</span><em>14製品</em></a>
             <a class="gh-budget" href="device-zukan.html?b=5"><b>3〜5万円</b><span>ハイエンド</span><em>7製品</em></a>
             <a class="gh-budget" href="device-zukan.html?b=6"><b>5万円〜</b><span>本気の1台</span><em>7製品</em></a>
-          </div>
-        </div>
-      </section>
-
-      <!-- ===== FLAGSHIP DIAGNOSIS ===== -->
-      <section class="gh-section gh-flag" id="flag">
-        <div class="gh-wrap">
-          <div class="gh-sec-head">
-            <div>
-              <span class="gh-eyebrow"><span class="gh-dot"></span>★ Flagship</span>
-              <h2>診断で選ぶ ── あなた専用のデバイス提案</h2>
-              <p>プレイスタイルを8能力・16タイプで可視化し、合うギアの条件まで落とし込みます。診断そのものも無料で楽しめます。</p>
-            </div>
-          </div>
-          <div class="gh-flow">
-            <div class="gh-step"><span class="gh-n">STEP 01</span><b>診断する</b><span>24問 / 約3分・無料</span></div>
-            <span class="gh-arrow"><span data-icon="arrow"></span></span>
-            <div class="gh-step"><span class="gh-n">STEP 02</span><b>プレイタイプ判定</b><span>強み・弱みをレーダー化</span></div>
-            <span class="gh-arrow"><span data-icon="arrow"></span></span>
-            <div class="gh-step"><span class="gh-n">STEP 03</span><b>おすすめデバイス</b><span>理由つきで本命を提案</span></div>
-          </div>
-          <div class="gh-diag-grid">
-            <a class="gh-diag gh-rgb" href="gamesense.html">
-              <span class="gh-hot">HOT</span>
-              <div class="gh-k"><span>GameSense Scan 8</span><span>24 Q</span></div>
-              <h3>ゲームセンスを8能力に分解</h3>
-              <p>状況認識・判断速度・空間把握などをレーダーチャート化。上位能力から、モニターやマウスの“効く1台”が見えます。</p>
-              <span class="gh-go">診断する<span data-icon="arrow"></span></span>
-            </a>
-            <a class="gh-diag gh-rgb" href="gamermbti.html">
-              <span class="gh-hot">HOT</span>
-              <div class="gh-k"><span>Gamer MBTI</span><span>16 Q</span></div>
-              <h3>ゲーム内プレイ人格を16タイプで</h3>
-              <p>判断・通話温度・役割から16タイプを判定。プレイ温度に合う入力デバイスや通話環境まで提案します。</p>
-              <span class="gh-go">診断する<span data-icon="arrow"></span></span>
-            </a>
           </div>
         </div>
       </section>
@@ -374,6 +345,6 @@
       </nav>
     </footer>
 
-    <script src="script.js?v=gear65"></script>
+    <script src="script.js?v=gear66"></script>
   </body>
 </html>

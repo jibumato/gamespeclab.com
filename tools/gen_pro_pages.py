@@ -215,6 +215,7 @@ print(f'site-map: {added} 件追加')
 # query は他製品を巻き込まない distinctive な文字列にすること。
 ZUKAN_PRO_QUERY = {
     'Logicool G PRO X SUPERLIGHT 2': 'G PRO X SUPERLIGHT 2',
+    'Logicool G PRO X2 SUPERSTRIKE': 'SUPERSTRIKE',
     'Razer Viper V3 Pro': 'Viper V3 Pro',
     'BenQ ZOWIE XL2566K': 'XL2566K',
     'Wooting 60HE / 80HE': 'Wooting',

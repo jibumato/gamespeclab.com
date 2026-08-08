@@ -312,6 +312,16 @@ function trackEvent(name, detail = {}) {
   if (Array.isArray(window.dataLayer)) {
     window.dataLayer.push({ event: `gsl_${name}`, ...detail });
   }
+  // GA4へ直接送信する。dataLayer への push は GTM の流儀であり、
+  // gtag.js は event キー付きのオブジェクトを GA4 イベントに変換しないため、
+  // これが無いと GA4 側に一切届かない。
+  if (typeof window.gtag === 'function') {
+    // GA4のイベントパラメータ値は100文字までのため切り詰める
+    const params = Object.fromEntries(
+      Object.entries(detail).map(([key, value]) => [key, String(value).slice(0, 100)]),
+    );
+    window.gtag('event', `gsl_${name}`, params);
+  }
   try {
     const current = JSON.parse(localStorage.getItem(ANALYTICS_KEY) || '[]');
     localStorage.setItem(ANALYTICS_KEY, JSON.stringify([event, ...current].slice(0, 80)));

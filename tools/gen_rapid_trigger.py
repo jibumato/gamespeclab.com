@@ -54,10 +54,29 @@ KEYBOARDS = [
 MICE = [
     {"name": "Logicool G PRO X2 SUPERSTRIKE", "match": "SUPERSTRIKE",
      "sw": "ハプティック誘導トリガーシステム（HITS）", "price": "約2.6〜2.9万円",
+     "model": "G-PPD-004WL-STRK / G-PPD-004WL-STRKd",
+     "amazon_q": "Logicool G PRO X2 SUPERSTRIKE G-PPD-004WL-STRK",
      "desc": "2026年2月19日発売。ラピッドトリガーをマウスに載せた世界初の製品です。"
-             "アクチュエーションポイントを10段階、ラピッドトリガーを5段階で調整でき、"
-             "クリック反応は最大30ms速くなるとされています。重量は61g。"},
+             "メインクリックの押し込み量を連続的に検知し、アクチュエーションポイントを10段階、"
+             "ラピッドトリガーを5段階で調整できます。クリック反応は最大30ms速くなるとされています。",
+     "specs": [("重量", "約61g"), ("センサー", "HERO 2（最大44,000DPI）"),
+               ("ポーリングレート", "最大8,000Hz"),
+               ("接続", "LIGHTSPEED 2.4GHz / USB Type-C（POWERPLAY対応）"),
+               ("バッテリー", "最大約90時間"),
+               ("調整幅", "アクチュエーション10段階 / ラピッドトリガー5段階")]},
 ]
+
+# 型番の枝番はスペックではなく保証期間と販路の違い。買う側が迷う点なので明記する。
+MODEL_NOTE = '''
+            <div class="rt-model">
+              <p class="rt-model-title">型番が2つあります（性能は同じ）</p>
+              <ul class="article-list">
+                <li><strong>G-PPD-004WL-STRKd</strong><span>Amazon限定モデル。<b>1年間無償保証</b>のかわりに価格が抑えられており、実売は約2.65万円です。</span></li>
+                <li><strong>G-PPD-004WL-STRK</strong><span>通常モデル。<b>2年間無償保証</b>で、公式ストア価格は29,150円（税込）です。</span></li>
+              </ul>
+              <p class="rt-model-foot">マウス本体の性能・付属品はどちらも同一で、違うのは保証期間と価格だけです。
+              Amazonで買うなら末尾に「d」が付いたモデルが安く、長く保証を受けたいなら「d」なしを選ぶことになります。</p>
+            </div>'''
 
 SOURCES = [
     ("4Gamer（PRO X2 SUPERSTRIKE 発売告知）", "https://www.4gamer.net/games/023/G002336/20260127045/"),
@@ -93,6 +112,13 @@ def product_row(item, kind):
     if item['match']:
         lookup = (f'<a class="pro-dev-guide" href="pro-devices.html?q={quote(item["match"])}">'
                   f'使用プロを見る</a>')
+    model = (f'<p class="prorank-variant">型番: {esc(item["model"])}</p>'
+             if item.get('model') else '')
+    specs = ''
+    if item.get('specs'):
+        specs = ('<dl class="rt-spec">'
+                 + ''.join(f'<div><dt>{esc(k)}</dt><dd>{esc(v)}</dd></div>' for k, v in item['specs'])
+                 + '</dl>')
     return f'''
               <li class="prorank-row">
                 <div class="prorank-head">
@@ -100,12 +126,14 @@ def product_row(item, kind):
                   <span class="prorank-count">{esc(item['price'])}</span>
                 </div>
                 <p class="prorank-variant">検知方式: {esc(item['sw'])}</p>
+                {model}
                 <p class="rt-desc">{esc(item['desc'])}</p>
+                {specs}
                 {chips}
                 <div class="prorank-actions">
                   <a class="pro-dev-guide" href="{'gaming-keyboard-guide.html' if kind == 'kb' else 'gaming-mouse-guide.html'}">選び方</a>
                   {lookup}
-                  <a class="pro-dev-buy" href="{amazon_url(item['name'])}" target="_blank"
+                  <a class="pro-dev-buy" href="{amazon_url(item.get('amazon_q') or item['name'])}" target="_blank"
                      rel="sponsored noopener noreferrer"
                      data-affiliate="rt-{kind}-{aff_slug(item['name'])}">Amazonで探す</a>
                 </div>
@@ -180,6 +208,11 @@ FAQ = [
      f"{UPDATED}時点で当サイトが確認できたのは、ロジクールG PRO X2 SUPERSTRIKE の1機種のみです。"
      "「対応マウスおすすめ○選」といった記事も見かけますが、実際には非対応の製品が混ざっている場合があります。"
      "たとえばRazer Viper V3 Proは光学式スイッチを採用した製品で、ラピッドトリガーは搭載していません。"),
+    ("G-PPD-004WL-STRKd と G-PPD-004WL-STRK は何が違いますか？",
+     "マウス本体の性能・付属品は同一で、違うのは保証期間と価格だけです。"
+     "末尾に「d」が付く G-PPD-004WL-STRKd はAmazon限定モデルで、無償保証が1年になるかわりに"
+     "実売約2.65万円と安く設定されています。「d」なしの G-PPD-004WL-STRK は2年間無償保証で、"
+     "公式ストア価格は29,150円（税込）です。"),
     ("磁気式とアナログ光学式では、どちらが良いですか？",
      "どちらもキーの押し込み量を連続的に検知してラピッドトリガーを実現する方式で、優劣というより設計思想の違いです。"
      "製品数は磁気式のほうが多く、選択肢の広さを重視するなら磁気式が無難です。"),
@@ -232,7 +265,7 @@ def main_html():
             <p>メインクリックに「ハプティック誘導トリガーシステム（HITS）」を採用し、
             押し込み量を連続的に検知します。アクチュエーションポイントは10段階、ラピッドトリガーは5段階で調整でき、
             クリック反応は最大30ms速くなるとされています。</p>
-            <ul class="prorank-list">{mouse_rows}</ul>
+            <ul class="prorank-list">{mouse_rows}</ul>{MODEL_NOTE}
             <p class="rt-caution"><strong>注意:</strong> 「ラピッドトリガー対応マウスおすすめ○選」といった記事では、
             実際には非対応の製品が混ざっていることがあります。たとえば Razer Viper V3 Pro は光学式スイッチを採用した高性能マウスですが、
             ラピッドトリガーは搭載していません。{UPDATED}時点で当サイトが確認できた対応マウスは、上記1機種のみです。</p>
@@ -278,7 +311,7 @@ def main_html():
               <a class="pro-user-chip" href="gaming-keyboard-guide.html">ゲーミングキーボードの選び方<small>ランキングと比較</small></a>
               <a class="pro-user-chip" href="gaming-mouse-guide.html">ゲーミングマウスの選び方<small>ランキングと比較</small></a>
               <a class="pro-user-chip" href="gaming-tech-guide.html">デバイスの技術解説<small>磁気軸・8000Hzの仕組み</small></a>
-              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全51製品をスペック比較</small></a>
+              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全52製品をスペック比較</small></a>
             </div>
             <p class="pro-src">出典: {src}</p>
           </div>

@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear76" />
+    <link rel="stylesheet" href="style.css?v=gear77" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -205,12 +205,25 @@
       function esc(s){ var d=document.createElement('div'); d.textContent=s; return d.innerHTML; }
 
       function cmpCat(){ return compare.length ? DATA[compare[0]].cat : null; }
+      // 比較状態をURL(?cmp=製品名|製品名)に反映する。共有・再訪用。
+      // 製品名で持つのは、掲載追加でインデックスがずれても壊れないようにするため。
+      function syncCmpUrl(){
+        var params = new URLSearchParams(location.search);
+        if (compare.length >= 2) {
+          params.set('cmp', compare.map(function(i){ return DATA[i].name; }).join('|'));
+        } else {
+          params.delete('cmp');
+        }
+        var qs = params.toString();
+        history.replaceState(null, '', location.pathname + (qs ? '?' + qs : '') + location.hash);
+      }
       function toggleCompare(i){
         var pos = compare.indexOf(i);
         if (pos >= 0) compare.splice(pos, 1);
         else if (compare.length < MAX_CMP) compare.push(i);
         renderCmpBar();
         syncCmpChecks();
+        syncCmpUrl();
       }
       function renderCmpBar(){
         cmpBar.hidden = compare.length === 0;
@@ -251,12 +264,31 @@
           return '<td><a class="zukan-cmp-buy" href="' + d.link + '" target="_blank" rel="noopener sponsored" data-affiliate="zukan-compare-' + esc(d.name) + '">Amazonで見る</a></td>';
         }).join('') + '</tr>';
         cmpPanel.innerHTML = '<div class="zukan-cmp-head"><h2>スペック比較（' + esc(items[0].cat) + '）</h2>'
-          + '<button type="button" class="zukan-cmp-close" id="zukan-cmp-close">閉じる</button></div>'
+          + '<div class="zukan-cmp-head-actions">'
+          + '<button type="button" class="zukan-cmp-share" id="zukan-cmp-share">この比較のリンクをコピー</button>'
+          + '<button type="button" class="zukan-cmp-close" id="zukan-cmp-close">閉じる</button></div></div>'
           + '<div class="zukan-cmp-scroll"><table class="zukan-cmp-table"><thead>' + head + '</thead>'
           + '<tbody>' + priceRow + specRows + buyRow + '</tbody></table></div>';
         cmpPanel.hidden = false;
         document.getElementById('zukan-cmp-close').addEventListener('click', function(){
           cmpPanel.hidden = true; cmpPanel.innerHTML = '';
+        });
+        document.getElementById('zukan-cmp-share').addEventListener('click', function(){
+          var btn = this;
+          var url = 'https://gamespeclab.com/device-zukan.html?cmp='
+            + encodeURIComponent(items.map(function(d){ return d.name; }).join('|'));
+          var done = function(){
+            btn.textContent = 'コピーしました';
+            setTimeout(function(){ btn.textContent = 'この比較のリンクをコピー'; }, 1800);
+          };
+          if (navigator.clipboard && navigator.clipboard.writeText) {
+            navigator.clipboard.writeText(url).then(done, function(){ window.prompt('このURLをコピーしてください', url); });
+          } else {
+            window.prompt('このURLをコピーしてください', url);
+          }
+          if (typeof trackEvent === 'function') {
+            trackEvent('compare_share', { items: items.map(function(d){ return d.name; }).join(' | ') });
+          }
         });
         cmpPanel.scrollIntoView({ behavior: 'smooth', block: 'start' });
       }
@@ -270,7 +302,7 @@
       });
       document.getElementById('zukan-cmp-run').addEventListener('click', renderComparison);
       document.getElementById('zukan-cmp-reset').addEventListener('click', function(){
-        compare = []; renderCmpBar(); syncCmpChecks();
+        compare = []; renderCmpBar(); syncCmpChecks(); syncCmpUrl();
       });
       function render(){
         var bnd = BUDGETS[budget];
@@ -301,6 +333,27 @@
         syncCmpChecks();
       }
       render();
+      // 共有URL(?cmp=)で来たときは比較状態を復元して比較表まで開く
+      var cmpParam = urlParams.get('cmp');
+      if (cmpParam) {
+        cmpParam.split('|').slice(0, MAX_CMP).forEach(function(name){
+          var idx = -1;
+          DATA.forEach(function(d, i){ if (d.name === name) idx = i; });
+          if (idx >= 0 && d_cmp_ok(idx)) compare.push(idx);
+        });
+        if (compare.length >= 2) {
+          renderCmpBar();
+          syncCmpChecks();
+          renderComparison();
+        } else {
+          compare = [];
+        }
+      }
+      // 復元候補が比較可能か（specsあり・同一カテゴリ・未登録）を判定
+      function d_cmp_ok(idx){
+        if (!DATA[idx].specs || compare.indexOf(idx) >= 0) return false;
+        return !compare.length || DATA[compare[0]].cat === DATA[idx].cat;
+      }
       // 予算指定で来たときは結果まで自動スクロール
       if (budget > 0) {
         window.requestAnimationFrame(function(){
@@ -321,6 +374,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear76"></script>
+    <script src="script.js?v=gear77"></script>
   </body>
 </html>

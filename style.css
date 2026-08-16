@@ -7469,6 +7469,19 @@ body.gear-white .toc-box { background: var(--panel); box-shadow: 0 4px 16px rgba
   background: none; border: 1px solid var(--line); border-radius: 8px; color: var(--muted);
   cursor: pointer; font-size: 12.5px; font-weight: 700; padding: 6px 12px;
 }
+.zukan-cmp-head-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+.zukan-cmp-share {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 7px;
+  color: var(--cyan);
+  cursor: pointer;
+  font-size: 12px;
+  font-weight: 700;
+  padding: 6px 11px;
+}
+.zukan-cmp-share:hover { border-color: var(--cyan); }
+
 .zukan-cmp-scroll { min-width: 0; overflow-x: auto; }
 .zukan-cmp-table { border-collapse: collapse; min-width: 100%; }
 .zukan-cmp-table th, .zukan-cmp-table td {

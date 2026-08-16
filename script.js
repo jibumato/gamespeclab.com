@@ -220,6 +220,158 @@ function setupPrevResultLinks() {
   }
 }
 
+// ---- 診断結果のパーソナライズ帯 ----
+// 診断（ゲームセンス / ゲーマーMBTI）を完了した読者に、ガイド・図鑑側でも
+// 「自分の結果に基づく案内」を出す。未診断の読者には何も出さない。
+const PERSONAL_BAR_PAGES = new Set([
+  'gaming-monitor-guide.html',
+  'gaming-mouse-guide.html',
+  'gaming-keyboard-guide.html',
+  'gaming-headset-guide.html',
+  'gaming-mousepad-guide.html',
+  'device-zukan.html',
+]);
+const GUIDE_TO_ZUKAN_CAT = {
+  'gaming-monitor-guide.html': 'モニター',
+  'gaming-mouse-guide.html': 'マウス',
+  'gaming-keyboard-guide.html': 'キーボード',
+  'gaming-headset-guide.html': 'ヘッドセット',
+  'gaming-mousepad-guide.html': 'マウスパッド',
+};
+const PERSONAL_BAR_OFF_KEY = 'gsl-personal-bar-off';
+
+// 完了済みの診断から「タイプ名＋おすすめカテゴリ最大3件」を組み立てる。
+// 両方完了している場合はデバイス提案の解像度が高いゲームセンス側を使う。
+function getPersonalProfile() {
+  if (senseAnswers.length === senseQuestions.length) {
+    const keys = Object.keys(senseLabels);
+    const rawScores = getScores(senseAnswers, senseQuestions, 'sense', keys);
+    const maxScores = getMaxScores(senseQuestions, 'sense', keys);
+    const normalizedScores = normalizeScores(rawScores, maxScores, { floor: 38 });
+    const archetype = getSenseArchetype(normalizedScores);
+    const picks = [];
+    const used = new Set();
+    rankScores(normalizedScores).forEach(([key]) => {
+      if (picks.length >= 3) return;
+      const gear = SENSE_GEAR_MAP[key];
+      if (!gear || used.has(gear.guide)) return;
+      used.add(gear.guide);
+      picks.push(gear);
+    });
+    return {
+      source: 'sense',
+      label: archetype.name,
+      sub: `${senseLabels[archetype.primary]} × ${senseLabels[archetype.secondary]}`,
+      resultHref: 'gamesense.html',
+      resultLabel: 'ゲームセンス診断の結果',
+      picks,
+    };
+  }
+  if (gamerMbtiAnswers.length === mbtiQuestions.length) {
+    const keys = Object.keys(mbtiAxisLabels);
+    const scores = getScores(gamerMbtiAnswers, mbtiQuestions, 'mbti', keys);
+    const type = getGamerMbtiResult(scores);
+    const picks = [];
+    const used = new Set();
+    type.code.split('').forEach((letter) => {
+      if (picks.length >= 3) return;
+      const gear = MBTI_GEAR_MAP[letter];
+      if (!gear || used.has(gear.guide)) return;
+      used.add(gear.guide);
+      picks.push(gear);
+    });
+    return {
+      source: 'mbti',
+      label: type.title,
+      sub: type.code,
+      resultHref: 'gamermbti.html',
+      resultLabel: 'ゲーマーMBTIの結果',
+      picks,
+    };
+  }
+  return null;
+}
+
+function setupPersonalBar() {
+  const page = location.pathname.split('/').pop() || 'index.html';
+  if (!PERSONAL_BAR_PAGES.has(page)) return;
+  try {
+    if (localStorage.getItem(PERSONAL_BAR_OFF_KEY) === '1') return;
+  } catch (error) { /* プライベートモード等では表示だけ行う */ }
+  const host = document.querySelector('.article-body');
+  if (!host) return;
+  const profile = getPersonalProfile();
+  if (!profile || !profile.picks.length) return;
+
+  let body = '';
+  let placement = 'other';
+  if (page === 'device-zukan.html') {
+    placement = 'zukan';
+    const chips = profile.picks.map((p) => {
+      const cat = GUIDE_TO_ZUKAN_CAT[p.guide];
+      return `<button type="button" class="personal-bar-chip" data-personal-cat="${cat}">${icon(p.icon)}${cat}で絞り込む</button>`;
+    }).join('');
+    body = `
+      <p class="personal-bar-msg">診断結果から見ると、まずチェックすべきカテゴリはこちらです。</p>
+      <div class="personal-bar-chips">${chips}</div>`;
+  } else {
+    const hitIndex = profile.picks.findIndex((p) => p.guide === page);
+    if (hitIndex >= 0) {
+      placement = 'hit';
+      const hit = profile.picks[hitIndex];
+      const product = GEAR_PRODUCTS[page];
+      const prodLine = product ? `
+      <div class="personal-bar-prod">
+        <span><b>本命</b><strong>${product.name}</strong><small>${product.spec}</small></span>
+        <a class="personal-bar-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="personal-${page}">${icon('cart')}Amazonで見る</a>
+      </div>` : '';
+      body = `
+      <p class="personal-bar-msg">このカテゴリは、あなたの診断結果で<b>おすすめ${hitIndex + 1}番目</b>に挙がっています。</p>
+      <p class="personal-bar-reason">${hit.reason}</p>${prodLine}`;
+    } else {
+      placement = 'miss';
+      const top = profile.picks[0];
+      body = `
+      <p class="personal-bar-msg">このカテゴリも大切ですが、あなたの診断結果に最も効くのは<b>${top.title.replace('の選び方', '')}</b>です。</p>
+      <p class="personal-bar-reason">${top.reason}</p>
+      <p><a class="personal-bar-link" href="${top.guide}">${icon('arrow')}${top.title}を先に見る</a></p>`;
+    }
+  }
+
+  const bar = document.createElement('aside');
+  bar.className = 'personal-bar';
+  bar.setAttribute('aria-label', 'あなたの診断結果に基づく案内');
+  bar.innerHTML = `
+    <div class="personal-bar-head">
+      <span class="personal-bar-kicker">${icon('spark')}あなたの診断結果</span>
+      <span class="personal-bar-type"><b>${profile.label}</b><small>${profile.sub}</small></span>
+      <button type="button" class="personal-bar-close" aria-label="この案内を今後表示しない">×</button>
+    </div>
+    ${body}
+    <p class="personal-bar-foot"><a href="${profile.resultHref}">${profile.resultLabel}をもう一度見る</a></p>`;
+  host.prepend(bar);
+  trackEvent('personal_bar_show', { page, source: profile.source, placement });
+
+  bar.querySelector('.personal-bar-close').addEventListener('click', () => {
+    try { localStorage.setItem(PERSONAL_BAR_OFF_KEY, '1'); } catch (error) { /* noop */ }
+    bar.remove();
+    trackEvent('personal_bar_dismiss', { page });
+  });
+  bar.querySelectorAll('[data-personal-cat]').forEach((chip) => {
+    chip.addEventListener('click', () => {
+      const cat = chip.dataset.personalCat;
+      // 図鑑の既存カテゴリチップをそのまま押す（フィルタ状態の二重管理を避ける）
+      const target = Array.from(document.querySelectorAll('#zukan-chips .zukan-chip'))
+        .find((b) => b.textContent === cat);
+      if (target) {
+        target.click();
+        document.getElementById('zukan-grid')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+      trackEvent('personal_bar_click', { page, cat });
+    });
+  });
+}
+
 function setupTableOfContents() {
   const container = document.querySelector('.article-body');
   if (!container) return;
@@ -5571,6 +5723,7 @@ setupMenuDrawer();
 setupTableOfContents();
 setupBackToTop();
 setupPrevResultLinks();
+setupPersonalBar();
 setupPostResultActions();
 setupMbtiDirectoryToggle();
 // 全ページで有効化する（従来は renderPcQuiz 内でのみ呼ばれており、

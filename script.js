@@ -220,6 +220,138 @@ function setupPrevResultLinks() {
   }
 }
 
+// ---- サイト内横断検索 ----
+// 製品・プロ・ページを1つの検索窓から横断で探せるようにする。
+// ヘッダーへのボタン設置はJSで行い、127ページのHTML書き換えを不要にしている。
+// インデックス(search-index.json)は tools/gen_search_index.py が生成する。
+function setupSiteSearch() {
+  const header = document.querySelector('.site-header');
+  if (!header) return;
+
+  const btn = document.createElement('button');
+  btn.type = 'button';
+  btn.className = 'gsl-search-btn';
+  btn.setAttribute('aria-label', 'サイト内検索を開く');
+  btn.innerHTML = `${icon('search')}<span>検索</span>`;
+  header.insertBefore(btn, header.querySelector('.menu-toggle'));
+
+  let overlay = null;
+  let indexPromise = null;
+  let searchTimer = 0;
+
+  const loadIndex = () => {
+    if (!indexPromise) {
+      indexPromise = fetch('search-index.json')
+        .then((res) => (res.ok ? res.json() : []))
+        .catch(() => []);
+    }
+    return indexPromise;
+  };
+
+  const runSearch = (items, rawQuery) => {
+    const terms = rawQuery.toLowerCase().split(/\s+/).filter(Boolean);
+    if (!terms.length) return [];
+    const scored = [];
+    items.forEach((item) => {
+      const title = item.t.toLowerCase();
+      const haystack = `${title} ${item.s.toLowerCase()} ${(item.k || '').toLowerCase()}`;
+      if (!terms.every((term) => haystack.includes(term))) return;
+      let score = 0;
+      if (title.startsWith(terms[0])) score += 3;
+      else if (title.includes(terms[0])) score += 2;
+      // 製品・プロを記事より少し優先（指名検索の主対象のため）
+      if (item.c !== 'ページ') score += 1;
+      scored.push([score, item]);
+    });
+    scored.sort((a, b) => b[0] - a[0]);
+    return scored.slice(0, 20).map(([, item]) => item);
+  };
+
+  const close = () => {
+    if (overlay) {
+      overlay.remove();
+      overlay = null;
+      document.documentElement.classList.remove('search-open');
+    }
+  };
+
+  const renderResults = (listEl, results, query) => {
+    if (!query.trim()) {
+      listEl.innerHTML = '<p class="gsl-search-hint">製品名・選手名・記事名で検索できます（例: Viper, TenZ, 感度）</p>';
+      return;
+    }
+    if (!results.length) {
+      listEl.innerHTML = '<p class="gsl-search-hint">見つかりませんでした。別の言葉や短いキーワードで試してください。</p>';
+      return;
+    }
+    listEl.innerHTML = results.map((item) => `
+      <a class="gsl-search-item" href="${item.u}">
+        <span class="gsl-search-kind is-${item.c === '製品' ? 'prod' : item.c === 'プロ' ? 'pro' : 'page'}">${item.c}</span>
+        <span class="gsl-search-body"><b>${item.t}</b><small>${item.s}</small></span>
+      </a>`).join('');
+  };
+
+  const open = () => {
+    if (overlay) return;
+    overlay = document.createElement('div');
+    overlay.className = 'gsl-search-overlay';
+    overlay.innerHTML = `
+      <div class="gsl-search-panel" role="dialog" aria-modal="true" aria-label="サイト内検索">
+        <div class="gsl-search-row">
+          ${icon('search')}
+          <input type="search" class="gsl-search-input" placeholder="製品名・選手名・記事名で検索" aria-label="検索キーワード">
+          <button type="button" class="gsl-search-close" aria-label="検索を閉じる">×</button>
+        </div>
+        <div class="gsl-search-results"></div>
+      </div>`;
+    document.body.appendChild(overlay);
+    document.documentElement.classList.add('search-open');
+
+    const input = overlay.querySelector('.gsl-search-input');
+    const listEl = overlay.querySelector('.gsl-search-results');
+    renderResults(listEl, [], '');
+    input.focus();
+    loadIndex();
+
+    input.addEventListener('input', () => {
+      const query = input.value;
+      loadIndex().then((items) => {
+        if (!overlay) return;
+        renderResults(listEl, runSearch(items, query), query);
+      });
+      clearTimeout(searchTimer);
+      if (query.trim()) {
+        searchTimer = setTimeout(() => trackEvent('site_search', { q: query.trim() }), 900);
+      }
+    });
+    input.addEventListener('keydown', (event) => {
+      if (event.key === 'Enter') {
+        const first = listEl.querySelector('.gsl-search-item');
+        if (first) first.click();
+      }
+      if (event.key === 'Escape') close();
+    });
+    listEl.addEventListener('click', (event) => {
+      const item = event.target.closest('.gsl-search-item');
+      if (item) trackEvent('site_search_go', { q: input.value.trim(), url: item.getAttribute('href') });
+    });
+    overlay.querySelector('.gsl-search-close').addEventListener('click', close);
+    overlay.addEventListener('click', (event) => {
+      if (event.target === overlay) close();
+    });
+  };
+
+  btn.addEventListener('click', open);
+  document.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') close();
+    if (event.key === '/' && !overlay
+        && !/^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName || '')) {
+      event.preventDefault();
+      open();
+    }
+  });
+}
+
 // ---- 診断結果のパーソナライズ帯 ----
 // 診断（ゲームセンス / ゲーマーMBTI）を完了した読者に、ガイド・図鑑側でも
 // 「自分の結果に基づく案内」を出す。未診断の読者には何も出さない。
@@ -5723,6 +5855,7 @@ setupMenuDrawer();
 setupTableOfContents();
 setupBackToTop();
 setupPrevResultLinks();
+setupSiteSearch();
 setupPersonalBar();
 setupPostResultActions();
 setupMbtiDirectoryToggle();

@@ -18,19 +18,19 @@
     </script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="description" content="GamespecLab掲載の全ゲーミングデバイス51種をドット絵図鑑で一覧。カテゴリ絞り込み・価格順の並び替えに対応。マウスからモニター、チェアまで価格帯付きで比較できます。" />
+    <meta name="description" content="GamespecLab掲載の全ゲーミングデバイス52種をドット絵図鑑で一覧。カテゴリ絞り込み・価格順の並び替えに対応。マウスからモニター、チェアまで価格帯付きで比較できます。" />
     <meta name="theme-color" content="#04050d" />
     <meta property="og:site_name" content="GamespecLab" />
-    <meta property="og:title" content="デバイス図鑑【全51種】 | GamespecLab" />
-    <meta property="og:description" content="GamespecLabで利用している広告リンクとAmazonアソシエイトについて説明しています。" />
+    <meta property="og:title" content="デバイス図鑑【全52種】 | GamespecLab" />
+    <meta property="og:description" content="掲載中のゲーミングデバイス全52種をカテゴリ・予算で絞り込み、スペック比較や「プロ使用」バッジ付きで一覧できるドット絵図鑑です。" />
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://gamespeclab.com/device-zukan.html" />
     <meta property="og:image" content="https://gamespeclab.com/assets/og/index.png" />
     <meta name="twitter:card" content="summary_large_image" />
-    <meta name="twitter:title" content="デバイス図鑑【全51種】 | GamespecLab" />
-    <meta name="twitter:description" content="GamespecLabで利用している広告リンクとAmazonアソシエイトについて説明しています。" />
+    <meta name="twitter:title" content="デバイス図鑑【全52種】 | GamespecLab" />
+    <meta name="twitter:description" content="掲載中のゲーミングデバイス全52種をカテゴリ・予算で絞り込み、スペック比較や「プロ使用」バッジ付きで一覧できるドット絵図鑑です。" />
     <meta name="twitter:image" content="https://gamespeclab.com/assets/og/index.png" />
-    <title>デバイス図鑑【全51種】｜掲載ゲーミングデバイスを一覧・比較 | GamespecLab</title>
+    <title>デバイス図鑑【全52種】｜掲載ゲーミングデバイスを一覧・比較 | GamespecLab</title>
     <link rel="canonical" href="https://gamespeclab.com/device-zukan.html" />
     <script type="application/ld+json">
       {
@@ -38,9 +38,9 @@
         "@graph": [
           {
             "@type": "WebPage",
-            "name": "広告・アフィリエイト表記 | GamespecLab",
-            "url": "https://gamespeclab.com/affiliate-disclosure.html",
-            "description": "GamespecLabの広告・アフィリエイト表記ページです。",
+            "name": "デバイス図鑑【全52種】｜掲載ゲーミングデバイスを一覧・比較 | GamespecLab",
+            "url": "https://gamespeclab.com/device-zukan.html",
+            "description": "掲載中のゲーミングデバイス全52種をカテゴリ・予算で絞り込み、スペック比較できるドット絵図鑑です。",
             "isPartOf": {
               "@type": "WebSite",
               "name": "GamespecLab",
@@ -51,7 +51,7 @@
             "@type": "BreadcrumbList",
             "itemListElement": [
               {"@type": "ListItem", "position": 1, "name": "Home", "item": "https://gamespeclab.com/"},
-              {"@type": "ListItem", "position": 2, "name": "広告・アフィリエイト表記", "item": "https://gamespeclab.com/affiliate-disclosure.html"}
+              {"@type": "ListItem", "position": 2, "name": "デバイス図鑑", "item": "https://gamespeclab.com/device-zukan.html"}
             ]
           }
         ]
@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear74" />
+    <link rel="stylesheet" href="style.css?v=gear75" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -83,7 +83,7 @@
         <div class="legal-copy">
           <p class="eyebrow">DEVICE ZUKAN</p>
           <h1><span>デバイス図鑑</span></h1>
-          <p class="lead">掲載中のゲーミングデバイス全51種をドット絵で一覧。カテゴリで絞り込み、価格で並び替えて、気になる1台からガイドへ。</p>
+          <p class="lead">掲載中のゲーミングデバイス全52種をドット絵で一覧。カテゴリで絞り込み、価格で並び替えて、気になる1台からガイドへ。</p>
           <p class="lead"><a href="pro-devices.html">プロ使用デバイス検索</a>では、有名プロが実際に使う機材から逆引きできます。</p>
           <p class="lead">迷いやすい2台は<a href="vs-gpx2-vs-viper-v3-pro.html">「GPX2 vs Viper V3 Pro」</a>など、<a href="site-map.html">個別の比較ページ</a>でも決着をつけています。</p>
         </div>
@@ -159,9 +159,12 @@
       var cmpBar = document.getElementById('zukan-cmp-bar');
       var cmpSlots = document.getElementById('zukan-cmp-slots');
       var cmpPanel = document.getElementById('zukan-cmp-panel');
-      // URL ?b=N で予算バンドを事前選択
-      var bParam = parseInt((new URLSearchParams(location.search)).get('b'), 10);
+      // URL ?b=N で予算バンドを事前選択、?q= で検索語を事前入力（サイト内検索からの着地用）
+      var urlParams = new URLSearchParams(location.search);
+      var bParam = parseInt(urlParams.get('b'), 10);
       if (!isNaN(bParam) && bParam >= 1 && bParam < BUDGETS.length) budget = bParam;
+      var qParam = (urlParams.get('q') || '').trim();
+      if (qParam) { query = qParam.toLowerCase(); searchInput.value = qParam; }
       CATS.forEach(function(c){
         var b = document.createElement('button');
         b.type = 'button'; b.className = 'zukan-chip' + (c===cat?' is-on':'');
@@ -318,6 +321,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear74"></script>
+    <script src="script.js?v=gear75"></script>
   </body>
 </html>

@@ -7873,6 +7873,65 @@ html.search-open { overflow: hidden; }
 .gsl-search-body b { font-size: 13.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 .gsl-search-body small { color: var(--muted); font-size: 11.5px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
 
+/* ---- 30秒クイック提案 ---- */
+.qp-step { margin-bottom: 16px; }
+.qp-n { color: var(--cyan); font-family: var(--gh-mono, monospace); font-size: 11.5px; font-weight: 700; letter-spacing: 0.1em; }
+.qp-step h2 { font-size: 21px; font-weight: 800; margin: 6px 0 0; }
+.qp-chips { display: grid; gap: 10px; grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+.qp-chip {
+  background: none;
+  border: 1px solid var(--line);
+  border-radius: 11px;
+  color: var(--ink);
+  cursor: pointer;
+  display: grid;
+  gap: 3px;
+  padding: 15px 14px;
+  text-align: left;
+}
+.qp-chip:hover, .qp-chip:focus-visible { border-color: var(--cyan); color: var(--cyan); }
+.qp-chip b { font-size: 14.5px; }
+.qp-chip small { color: var(--muted); font-size: 11px; }
+.qp-back { margin: 14px 0 0; }
+.qp-back-btn { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 12.5px; padding: 4px 0; }
+.qp-back-btn:hover { color: var(--cyan); }
+.qp-result { display: grid; gap: 10px; }
+.qp-kicker { color: var(--cyan); font-size: 11.5px; font-weight: 800; letter-spacing: 0.08em; margin: 0; text-transform: uppercase; }
+.qp-name { font-size: clamp(20px, 4vw, 26px); font-weight: 800; margin: 0; }
+.qp-spec { color: var(--muted); font-size: 13px; margin: 0; }
+.qp-reason { font-size: 13.5px; line-height: 1.85; margin: 0; }
+.qp-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px; }
+.qp-buy {
+  background: var(--cyan);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 13px;
+  font-weight: 800;
+  padding: 10px 16px;
+}
+.qp-buy:hover { filter: brightness(1.08); }
+.qp-ghost {
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  color: var(--ink);
+  font-size: 12.5px;
+  font-weight: 700;
+  padding: 10px 14px;
+}
+.qp-ghost:hover { border-color: var(--cyan); color: var(--cyan); }
+.qp-deep {
+  background: var(--accent-soft, rgba(0, 178, 196, 0.06));
+  border-left: 3px solid var(--cyan);
+  border-radius: 0 8px 8px 0;
+  font-size: 12.5px;
+  line-height: 1.8;
+  margin-top: 6px;
+  padding: 11px 13px;
+}
+.qp-deep a { color: var(--cyan); font-weight: 700; }
+.qp-again { background: none; border: 0; color: var(--muted); cursor: pointer; font-size: 12px; justify-self: start; padding: 4px 0; text-decoration: underline; }
+.qp-again:hover { color: var(--cyan); }
+
 /* ---- eDPI・振り向き計算機 ---- */
 .calc-grid { display: grid; gap: 12px; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); margin: 14px 0; }
 .calc-field { display: grid; gap: 5px; }
@@ -8667,6 +8726,8 @@ body.gear-home::after { display: none; }
 .gh-step span { font-size: 12px; color: var(--gh-muted); }
 .gh-arrow { align-self: center; color: var(--gh-muted); flex: none; }
 .gh-arrow .ui-icon { height: 22px; width: 22px; }
+.gh-quick-note { color: var(--gh-ink-dim, var(--muted)); font-size: 13px; margin: -8px 0 22px; }
+.gh-quick-note a { color: var(--gh-accent, var(--cyan)); font-weight: 700; text-decoration: underline; }
 .gh-diag-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
 .gh-diag {
   background: var(--gh-panel); border-radius: var(--gh-radius); padding: 24px; display: grid; gap: 12px;

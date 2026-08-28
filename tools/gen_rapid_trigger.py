@@ -311,7 +311,7 @@ def main_html():
               <a class="pro-user-chip" href="gaming-keyboard-guide.html">ゲーミングキーボードの選び方<small>ランキングと比較</small></a>
               <a class="pro-user-chip" href="gaming-mouse-guide.html">ゲーミングマウスの選び方<small>ランキングと比較</small></a>
               <a class="pro-user-chip" href="gaming-tech-guide.html">デバイスの技術解説<small>磁気軸・8000Hzの仕組み</small></a>
-              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全52製品をスペック比較</small></a>
+              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全56製品をスペック比較</small></a>
             </div>
             <p class="pro-src">出典: {src}</p>
           </div>

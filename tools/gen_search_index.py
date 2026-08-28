@@ -58,6 +58,33 @@ for loc in locs:
 out = json.dumps(entries, ensure_ascii=False, separators=(',', ':'))
 open('search-index.json', 'w', encoding='utf-8').write(out)
 
+
+def sync_product_count():
+    """「全NN種／全NN製品」の表記を図鑑の実データに合わせる。
+
+    製品を足すたびに複数ファイルで数字がズレる事故を繰り返したため、
+    手書きをやめて一次データから同期する。生成スクリプト側の文字列も
+    直すので、再生成しても古い数字に戻らない。
+    """
+    n = len(DATA)
+    targets = ['device-zukan.html', 'index.html', 'quick-pick.html',
+               'rapid-trigger-guide.html',
+               'tools/gen_quick_pick.py', 'tools/gen_rapid_trigger.py']
+    changed = []
+    for path in targets:
+        if not os.path.exists(path):
+            continue
+        src = open(path, encoding='utf-8').read()
+        new = re.sub(r'全\d+(種|製品)', lambda m: f'全{n}{m.group(1)}', src)
+        new = re.sub(r'デバイス\d+種', f'デバイス{n}種', new)
+        if new != src:
+            open(path, 'w', encoding='utf-8').write(new)
+            changed.append(path)
+    print(f'製品数表記を全{n}に同期: {len(changed)}ファイル' + (f' ({", ".join(changed)})' if changed else ''))
+
+
+sync_product_count()
+
 kinds = {}
 for e in entries:
     kinds[e['c']] = kinds.get(e['c'], 0) + 1

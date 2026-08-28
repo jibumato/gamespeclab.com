@@ -151,7 +151,7 @@ def main_html():
             <h2>もっと自分に合わせたい人へ</h2>
             <div class="pro-user-chips">
               <a class="pro-user-chip" href="gamesense.html">ゲームセンス診断<small>24問・8能力を分析</small></a>
-              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全52製品をスペック比較</small></a>
+              <a class="pro-user-chip" href="device-zukan.html">デバイス図鑑<small>全56製品をスペック比較</small></a>
               <a class="pro-user-chip" href="pro-devices.html">プロ使用デバイス検索<small>26名から逆引き</small></a>
             </div>
           </div>

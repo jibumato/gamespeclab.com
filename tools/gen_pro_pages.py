@@ -221,6 +221,7 @@ ZUKAN_PRO_QUERY = {
     'Wooting 60HE / 80HE': 'Wooting',
     'Logicool G PRO X TKL': 'G PRO X TKL',
     'Logicool G840 / G640': 'G640',
+    'WALLHACK SP-004': 'WALLHACK',
     'SteelSeries Apex Pro TKL Gen 3': 'Apex Pro TKL',
 }
 

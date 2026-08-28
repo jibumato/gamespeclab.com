@@ -160,6 +160,41 @@ PAD_HAYATE = [
 ]
 
 
+# ---- ガラスマウスパッド（24×24 / 14px）----
+# 布パッドと一目で区別できるよう、冷たい色面に斜めの映り込みを入れる。
+GLASS_BASE = {
+    '.': CLEAR,
+    '#': LINE,
+    'G': (46, 60, 82, 255),     # ガラス面
+    'S': (132, 164, 196, 255),  # 映り込み
+}
+
+
+def glass_pad_grid(accent_row=None):
+    """ガラスパッドのグリッドを生成する。手で桁を数えると崩れるため組み立てで作る。"""
+    rows = ['.' * 24] * 6
+    rows.append('..' + '#' * 20 + '..')
+    for y in range(11):
+        inner = ['G'] * 18
+        d = 15 - y                       # 右上から左下へ流れる映り込み
+        for k in (d, d - 1):
+            if 0 <= k < 18:
+                inner[k] = 'S'
+        if accent_row is not None and y == accent_row:
+            for k in range(2, 6):        # ブランドマークに見立てた色帯
+                inner[k] = 'A'
+        rows.append('..#' + ''.join(inner) + '#..')
+    rows.append('..' + '#' * 20 + '..')
+    rows += ['.' * 24] * 5
+    return rows
+
+
+def glass_palette(accent):
+    p = dict(GLASS_BASE)
+    p['A'] = accent
+    return p
+
+
 def mon_palette(accent, accent_light, secondary):
     p = dict(MON_BASE)
     p['A'] = accent
@@ -193,6 +228,16 @@ TARGETS = [
 
     # マウスパッド
     ('assets/devices/p-pad-hayate.png', PAD_HAYATE, PAD_PALETTE, 14),
+
+    # ガラスマウスパッド（映り込みの向きは共通、ブランド帯の色と位置で描き分ける）
+    ('assets/devices/p-pad-skypad.png', glass_pad_grid(8),      # SkyPAD 3.0 XL
+     glass_palette((96, 176, 232, 255)), 14),
+    ('assets/devices/p-pad-superglide3.png', glass_pad_grid(9),  # Pulsar Superglide 3 Type S
+     glass_palette((0, 200, 160, 255)), 14),
+    ('assets/devices/p-pad-wallhack.png', glass_pad_grid(2),     # WALLHACK SP-004
+     glass_palette((228, 228, 236, 255)), 14),
+    ('assets/devices/p-pad-cm05.png', glass_pad_grid(7),         # ATTACK SHARK CM05
+     glass_palette((248, 168, 48, 255)), 14),
 ]
 
 

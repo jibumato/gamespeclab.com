@@ -160,6 +160,43 @@ PAD_HAYATE = [
 ]
 
 
+# ---- ガラスマウスパッド（24×24 / 14px）----
+# 布パッドと一目で区別できるよう、冷たい色面に映り込みを入れる。
+# 実表示は72px以下まで縮むため、小さなロゴ帯だけでは製品を見分けられない。
+# 面の色相と映り込みの模様の両方を変えて、縮小時にも判別できるようにする。
+def glass_pad_grid(pattern='diag'):
+    """ガラスパッドのグリッドを生成する。手で桁を数えると崩れるため組み立てで作る。"""
+    rows = ['.' * 24] * 6
+    rows.append('..' + '#' * 20 + '..')
+    for y in range(11):
+        inner = ['G'] * 18
+        if pattern == 'diag':            # 右上から左下へ一本流れる
+            for k in (15 - y, 14 - y):
+                if 0 <= k < 18:
+                    inner[k] = 'S'
+        elif pattern == 'double':        # 二本の平行な映り込み
+            for base in (16 - y, 8 - y):
+                for k in (base, base - 1):
+                    if 0 <= k < 18:
+                        inner[k] = 'S'
+        elif pattern == 'corner':        # 左上に寄せた大きな光
+            if y < 5:
+                for k in range(1, 6 - y):
+                    inner[k] = 'S'
+        elif pattern == 'dots':          # マイクロエッチングを表す点描
+            if y % 3 == 1:
+                for k in range(2, 18, 4):
+                    inner[k] = 'S'
+        rows.append('..#' + ''.join(inner) + '#..')
+    rows.append('..' + '#' * 20 + '..')
+    rows += ['.' * 24] * 5
+    return rows
+
+
+def glass_palette(surface, shine):
+    return {'.': CLEAR, '#': LINE, 'G': surface, 'S': shine}
+
+
 def mon_palette(accent, accent_light, secondary):
     p = dict(MON_BASE)
     p['A'] = accent
@@ -193,6 +230,19 @@ TARGETS = [
 
     # マウスパッド
     ('assets/devices/p-pad-hayate.png', PAD_HAYATE, PAD_PALETTE, 14),
+
+    # ガラスマウスパッド（面の色相＋映り込みの模様で描き分ける）
+    # 同じ Pulsar の Superglide 2 と 3 は青緑で揃え、模様で世代を分ける。
+    ('assets/devices/p-pad-skypad.png', glass_pad_grid('diag'),         # SkyPAD 3.0 XL
+     glass_palette((44, 62, 96, 255), (150, 190, 236, 255)), 14),
+    ('assets/devices/p-pad-superglide.png', glass_pad_grid('diag'),     # Pulsar Superglide 2
+     glass_palette((28, 70, 76, 255), (118, 200, 202, 255)), 14),
+    ('assets/devices/p-pad-superglide3.png', glass_pad_grid('double'),  # Pulsar Superglide 3
+     glass_palette((24, 78, 66, 255), (108, 222, 178, 255)), 14),
+    ('assets/devices/p-pad-wallhack.png', glass_pad_grid('corner'),     # WALLHACK SP-004
+     glass_palette((28, 30, 40, 255), (216, 222, 232, 255)), 14),
+    ('assets/devices/p-pad-cm05.png', glass_pad_grid('dots'),           # ATTACK SHARK CM05
+     glass_palette((64, 52, 38, 255), (240, 186, 112, 255)), 14),
 ]
 
 

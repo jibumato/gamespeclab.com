@@ -83,7 +83,43 @@ def sync_product_count():
     print(f'製品数表記を全{n}に同期: {len(changed)}ファイル' + (f' ({", ".join(changed)})' if changed else ''))
 
 
+def sync_budget_counts():
+    """トップの「予算から選ぶ」の件数を、図鑑の絞り込みと同じ計算で同期する。
+
+    図鑑側は BUDGETS の lo/hi で動的に絞り込むのに、トップは手書きだったため
+    製品を足すたびにズレていた。同じ定義を読んで数え直す。
+    """
+    zk = open('device-zukan.html', encoding='utf-8').read()
+    m = re.search(r'BUDGETS\s*=\s*\[(.*?)\];', zk, re.S)
+    if not m:
+        print('予算バンド: BUDGETS定義が見つからず未同期')
+        return
+    bands = []
+    for lo, hi in re.findall(r"lo:\s*(\d+),\s*hi:\s*(\d+|Infinity)", m.group(1)):
+        bands.append((int(lo), float('inf') if hi == 'Infinity' else int(hi)))
+
+    src = open('index.html', encoding='utf-8').read()
+
+    def fix(mt):
+        i = int(mt.group(1))
+        if i >= len(bands):
+            return mt.group(0)
+        lo, hi = bands[i]
+        # 図鑑と同じ判定（lo以上・hi未満）で数える
+        cnt = sum(1 for d in DATA if lo <= d.get('yen', 0) < hi)
+        return re.sub(r'<em>\d+製品</em>', f'<em>{cnt}製品</em>', mt.group(0))
+
+    new = re.sub(r'<a class="gh-budget" href="device-zukan\.html\?b=(\d)">.*?</a>',
+                 fix, src, flags=re.S)
+    if new != src:
+        open('index.html', 'w', encoding='utf-8').write(new)
+        print('予算バンドの件数を同期: index.html')
+    else:
+        print('予算バンドの件数: 変更なし')
+
+
 sync_product_count()
+sync_budget_counts()
 
 kinds = {}
 for e in entries:

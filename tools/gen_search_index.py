@@ -118,8 +118,38 @@ def sync_budget_counts():
         print('予算バンドの件数: 変更なし')
 
 
+def sync_category_counts():
+    """トップの「デバイスをカテゴリから探す」の「本命 N 製品」を図鑑の件数と同期する。
+
+    手書きだったため 15/12/10/9/8/7/6/5 という実態のない降順になっていた。
+    各ガイドの掲載数は図鑑のカテゴリ件数と一致するので、図鑑を正とする。
+    """
+    counts = {}
+    for d in DATA:
+        counts[d['cat']] = counts.get(d['cat'], 0) + 1
+
+    src = open('index.html', encoding='utf-8').read()
+
+    def fix(mt):
+        cat = mt.group(1)
+        if cat not in counts:
+            return mt.group(0)
+        return re.sub(r'(本命 <b>)\d+(</b>)', lambda m: f'{m.group(1)}{counts[cat]}{m.group(2)}', mt.group(0))
+
+    new, n = re.subn(r'<a class="gh-cat"[^>]*>.*?<h3>([^<]+)</h3>.*?</a>', fix, src, flags=re.S)
+    if n == 0:
+        print('カテゴリ件数: gh-cat が見つからず未同期')
+        return
+    if new != src:
+        open('index.html', 'w', encoding='utf-8').write(new)
+        print(f'カテゴリ件数を同期: index.html（{n}カテゴリ）')
+    else:
+        print(f'カテゴリ件数: 変更なし（{n}カテゴリ）')
+
+
 sync_product_count()
 sync_budget_counts()
+sync_category_counts()
 
 kinds = {}
 for e in entries:

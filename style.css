@@ -8691,7 +8691,8 @@ body.gear-home::after { display: none; }
 .gh-more:hover { text-decoration: underline; }
 
 /* ---- category grid ---- */
-.gh-cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+/* 9カテゴリなので3列。4列だと最終行に1枚だけ残る */
+.gh-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .gh-cat {
   position: relative; background: var(--gh-panel); border: 1px solid var(--gh-line); border-radius: var(--gh-radius);
   padding: 20px 18px; box-shadow: var(--gh-elev); text-decoration: none;

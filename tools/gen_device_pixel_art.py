@@ -245,6 +245,44 @@ def chair_palette(mesh, mesh_dark, foot):
     return p
 
 
+# トップの「デバイスをカテゴリから探す」用のカテゴリアイコン。
+# 既存の dev-*.png と同じ 24×24 / 14px・ダークボディ＋ティールの配色に揃える。
+CATEGORY_PALETTE = {
+    '.': CLEAR,
+    '#': LINE,
+    'A': (40, 46, 62, 255),      # ボディ
+    'C': (60, 70, 92, 255),      # ステム
+    'T': (14, 133, 124, 255),    # ティール（既存 dev-*.png と同じ）
+    't': (58, 214, 196, 255),    # ティール明
+}
+
+
+def earphone_grid():
+    """左右2つのイヤホン。頭部のドライバー面をティールで抜き、下にステムを伸ばす。"""
+    bud = [
+        '..####..',
+        '.#AAAA#.',
+        '#AATTAA#',
+        '#ATttTA#',
+        '#AATTAA#',
+        '#AAAAAA#',
+        '.#AAAA#.',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#tt#..',   # ステム先端のインジケーター
+        '..####..',
+    ]
+    rows = ['.' * 24] * 5
+    for line in bud:
+        # 左右に同じ絵を置く（x=2..9 と x=14..21、間は4マス空ける）
+        rows.append('..' + line + '....' + line + '..')
+    rows += ['.' * 24] * 5
+    return rows
+
+
 def mon_palette(accent, accent_light, secondary):
     p = dict(MON_BASE)
     p['A'] = accent
@@ -302,6 +340,9 @@ TARGETS = [
     # アーロンはヘッドレストが標準で付かないため、絵でもあえて省く
     ('assets/devices/p-chair-aeron.png', ergo_chair_grid(False),        # アーロンチェア
      chair_palette((78, 86, 100, 255), (50, 56, 68, 255), (112, 120, 136, 255)), 14),
+
+    # カテゴリアイコン（トップのカテゴリグリッド用。他の dev-*.png と同じ体裁）
+    ('assets/devices/dev-earphone.png', earphone_grid(), CATEGORY_PALETTE, 14),
 ]
 
 

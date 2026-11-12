@@ -30,7 +30,9 @@ jobs:
     runs-on: ubuntu-latest
     # secrets は if: で直接参照できないため、env を経由して判定する
     env:
-      HAS_CREATORS_CREDS: ${{ secrets.CREATORS_CLIENT_ID != '' }}
+      HAS_CREATORS_CREDS: ${{ secrets.CREATORS_CLIENT_ID != ''
+        && secrets.CREATORS_CLIENT_SECRET != ''
+        && secrets.CREATORS_PARTNER_TAG != '' }}
     steps:
       - uses: actions/checkout@v4
 

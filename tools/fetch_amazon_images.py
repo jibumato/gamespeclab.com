@@ -1,24 +1,22 @@
 #!/usr/bin/env python3
-"""PA-API 5.0 の GetItems で商品画像URLを取得し data/amazon-images.json に保存する。
+"""Creators API で商品画像URLを取得し data/amazon-images.json に保存する。
 
-Amazonアソシエイト運営規約では、商品画像を自サイトに保存して配信することは
-できない。PA-APIが返したURL（m.media-amazon.com）を直接参照する必要がある。
-そのため、このスクリプトは**画像URLだけ**を保存し、画像ファイルは取得しない。
+PA-API 5.0 は廃止され、後継の Creators API に置き換わった。旧APIのAWS SigV4
+署名は不要になり、OAuth 2.0 の client_credentials でトークンを取るだけになった。
 
-またPA-APIのデータは24時間までしかキャッシュできないため、GitHub Actions から
-日次で実行して保存内容を入れ替える前提で作っている。
+Amazonアソシエイト運営規約（JPプログラムポリシー ライセンス条項(h)）では、
+画像そのものの保存・キャッシュは禁止で、**画像へのリンクは最長24時間**しか
+保持できない。そのためこのスクリプトは画像URLだけを保存し、GitHub Actions の
+日次ワークフローで取り直す前提で作っている。
 
 認証情報は環境変数から読む（GitHub Secrets 経由。リポジトリには置かない）:
-  PAAPI_ACCESS_KEY / PAAPI_SECRET_KEY / PAAPI_PARTNER_TAG
+  CREATORS_CLIENT_ID / CREATORS_CLIENT_SECRET / CREATORS_PARTNER_TAG
 
 使い方:
   python3 tools/fetch_amazon_images.py            # 取得して保存
   python3 tools/fetch_amazon_images.py --dry-run  # 認証情報なしで対象ASINだけ確認
 """
 
-import datetime
-import hashlib
-import hmac
 import json
 import os
 import re
@@ -27,14 +25,14 @@ import time
 import urllib.error
 import urllib.request
 
-HOST = 'webservices.amazon.co.jp'
-REGION = 'us-west-2'          # 日本のマーケットプレイスは us-west-2
-SERVICE = 'ProductAdvertisingAPI'
-PATH = '/paapi5/getitems'
-TARGET = 'com.amazon.paapi5.v1.ProductAdvertisingAPIv1.GetItems'
+# 日本は FE リージョン（認証情報バージョン 3.3）。
+# APIのエンドポイントは全リージョン共通。
+TOKEN_URL = 'https://api.amazon.co.jp/auth/o2/token'
+API_URL = 'https://creatorsapi.amazon/catalog/v1/getItems'
 MARKETPLACE = 'www.amazon.co.jp'
-RESOURCES = ['Images.Primary.Medium', 'Images.Primary.Large', 'ItemInfo.Title']
-BATCH = 10                    # GetItems は1リクエストあたり最大10 ASIN
+SCOPE = 'creatorsapi::default'
+RESOURCES = ['images.primary.medium', 'images.primary.large', 'itemInfo.title']
+BATCH = 10                    # itemIds は1リクエストあたり最大10件
 OUT = 'data/amazon-images.json'
 
 
@@ -55,67 +53,63 @@ def asins_from_zukan(path='device-zukan.html'):
     return found
 
 
-def _sign(key, msg):
-    return hmac.new(key, msg.encode('utf-8'), hashlib.sha256).digest()
-
-
-def _signing_key(secret, datestamp):
-    k = _sign(('AWS4' + secret).encode('utf-8'), datestamp)
-    k = _sign(k, REGION)
-    k = _sign(k, SERVICE)
-    return _sign(k, 'aws4_request')
-
-
-def build_request(asins, access_key, secret_key, partner_tag, now=None):
-    """SigV4 で署名したリクエストを組み立てる（送信はしない。テストしやすいよう分離）。"""
-    payload = json.dumps({
-        'ItemIds': asins,
-        'Resources': RESOURCES,
-        'PartnerTag': partner_tag,
-        'PartnerType': 'Associates',
-        'Marketplace': MARKETPLACE,
-    }, ensure_ascii=False).encode('utf-8')
-
-    now = now or datetime.datetime.now(datetime.timezone.utc)
-    amzdate = now.strftime('%Y%m%dT%H%M%SZ')
-    datestamp = now.strftime('%Y%m%d')
-
-    headers = {
-        'content-encoding': 'amz-1.0',
-        'content-type': 'application/json; charset=utf-8',
-        'host': HOST,
-        'x-amz-date': amzdate,
-        'x-amz-target': TARGET,
-    }
-    signed = ';'.join(sorted(headers))
-    canonical_headers = ''.join('%s:%s\n' % (k, headers[k]) for k in sorted(headers))
-    canonical = '\n'.join([
-        'POST', PATH, '', canonical_headers, signed,
-        hashlib.sha256(payload).hexdigest(),
-    ])
-    scope = '%s/%s/%s/aws4_request' % (datestamp, REGION, SERVICE)
-    to_sign = '\n'.join([
-        'AWS4-HMAC-SHA256', amzdate, scope,
-        hashlib.sha256(canonical.encode('utf-8')).hexdigest(),
-    ])
-    sig = hmac.new(_signing_key(secret_key, datestamp),
-                   to_sign.encode('utf-8'), hashlib.sha256).hexdigest()
-    headers['Authorization'] = (
-        'AWS4-HMAC-SHA256 Credential=%s/%s, SignedHeaders=%s, Signature=%s'
-        % (access_key, scope, signed, sig))
-    return payload, headers
-
-
-def get_items(asins, access_key, secret_key, partner_tag):
-    payload, headers = build_request(asins, access_key, secret_key, partner_tag)
-    req = urllib.request.Request('https://%s%s' % (HOST, PATH),
-                                 data=payload, headers=headers, method='POST')
+def _post(url, payload, headers):
+    body = json.dumps(payload, ensure_ascii=False).encode('utf-8')
+    req = urllib.request.Request(url, data=body, headers=headers, method='POST')
     try:
         with urllib.request.urlopen(req, timeout=30) as r:
             return json.loads(r.read().decode('utf-8'))
     except urllib.error.HTTPError as e:
-        body = e.read().decode('utf-8', 'replace')[:800]
-        raise SystemExit('PA-API が %s を返した:\n%s' % (e.code, body))
+        detail = e.read().decode('utf-8', 'replace')[:800]
+        hint = ''
+        if e.code in (401, 403):
+            hint = ('\nヒント: Creators API は「直近30日で10件の適格販売」が'
+                    '利用条件。条件を割ると権限が外れる。')
+        raise SystemExit('%s が %s を返した:\n%s%s' % (url, e.code, detail, hint))
+
+
+def get_token(client_id, client_secret):
+    """client_credentials でアクセストークンを取る。有効期限は1時間。
+
+    リフレッシュトークンは発行されない（必要になれば取り直すだけ）。
+    ブラウザ同意も不要なので、無人のCIで素直に動く。
+    """
+    res = _post(TOKEN_URL, {
+        'grant_type': 'client_credentials',
+        'client_id': client_id,
+        'client_secret': client_secret,
+        'scope': SCOPE,
+    }, {'Content-Type': 'application/json'})
+    token = res.get('access_token')
+    if not token:
+        raise SystemExit('アクセストークンを取得できなかった: %s' % str(res)[:300])
+    return token
+
+
+def get_items(asins, token, partner_tag):
+    return _post(API_URL, {
+        'itemIds': asins,
+        'itemIdType': 'ASIN',
+        'marketplace': MARKETPLACE,
+        'partnerTag': partner_tag,
+        'resources': RESOURCES,
+    }, {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token,
+        # x-marketplace は PA-API には無かった必須ヘッダ。
+        # 付け忘れが移行時の典型的な失敗要因として挙げられている。
+        'x-marketplace': MARKETPLACE,
+    })
+
+
+def items_of(res):
+    """レスポンスから商品配列を取り出す。包みの形が変わっても拾えるようにする。"""
+    if isinstance(res.get('items'), list):
+        return res['items']
+    nested = res.get('itemsResult') or {}
+    if isinstance(nested.get('items'), list):
+        return nested['items']
+    return []
 
 
 def main():
@@ -129,14 +123,16 @@ def main():
         print('\n--dry-run のため送信しません')
         return
 
-    access = os.environ.get('PAAPI_ACCESS_KEY', '')
-    secret = os.environ.get('PAAPI_SECRET_KEY', '')
-    tag = os.environ.get('PAAPI_PARTNER_TAG', '')
-    missing = [n for n, v in [('PAAPI_ACCESS_KEY', access),
-                              ('PAAPI_SECRET_KEY', secret),
-                              ('PAAPI_PARTNER_TAG', tag)] if not v]
+    cid = os.environ.get('CREATORS_CLIENT_ID', '')
+    sec = os.environ.get('CREATORS_CLIENT_SECRET', '')
+    tag = os.environ.get('CREATORS_PARTNER_TAG', '')
+    missing = [n for n, v in [('CREATORS_CLIENT_ID', cid),
+                              ('CREATORS_CLIENT_SECRET', sec),
+                              ('CREATORS_PARTNER_TAG', tag)] if not v]
     if missing:
         raise SystemExit('環境変数が未設定: ' + ', '.join(missing))
+
+    token = get_token(cid, sec)
 
     # 取得できなかったASINは前回値を残す。一時的な失敗で写真が
     # 一斉に消えるのを避けるため、上書きではなくマージする。
@@ -150,26 +146,27 @@ def main():
     problems = []
     for i in range(0, len(keys), BATCH):
         chunk = keys[i:i + BATCH]
-        res = get_items(chunk, access, secret, tag)
-        for item in res.get('ItemsResult', {}).get('Items', []):
-            asin = item.get('ASIN')
-            primary = item.get('Images', {}).get('Primary', {})
-            med = primary.get('Medium', {}).get('URL')
-            lar = primary.get('Large', {}).get('URL')
-            if not med:
-                problems.append('%s 画像なし' % asin)
+        res = get_items(chunk, token, tag)
+        for item in items_of(res):
+            asin = item.get('asin') or item.get('ASIN')
+            primary = (item.get('images') or {}).get('primary') or {}
+            med = (primary.get('medium') or {}).get('url')
+            lar = (primary.get('large') or {}).get('url')
+            if not asin or not med:
+                problems.append('%s 画像なし' % (asin or '(ASIN不明)'))
                 continue
             store[asin] = {
                 'medium': med,
                 'large': lar or med,
-                'title': item.get('ItemInfo', {}).get('Title', {}).get('DisplayValue', ''),
+                'title': ((item.get('itemInfo') or {}).get('title') or {}).get('displayValue', ''),
                 'name': targets.get(asin, ''),
             }
             ok += 1
-        for err in res.get('Errors', []) or []:
-            problems.append('%s %s' % (err.get('Code'), err.get('Message', '')[:120]))
+        for err in res.get('errors') or res.get('Errors') or []:
+            problems.append('%s %s' % (err.get('code') or err.get('Code'),
+                                       (err.get('message') or err.get('Message') or '')[:120]))
         if i + BATCH < len(keys):
-            time.sleep(1.1)       # PA-API の既定レートは 1req/sec
+            time.sleep(1.1)
 
     # 図鑑から消えたASINは保存先からも落とす
     for gone in [a for a in store if a not in targets]:

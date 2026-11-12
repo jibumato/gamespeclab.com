@@ -85,6 +85,14 @@ IMG_RE = re.compile(r'<img\s[^>]*>')
 ATTR_RE = re.compile(r'(\s[a-zA-Z-]+)="([^"]*)"')
 PIXEL_PATH = re.compile(r'^(assets/devices/p-[a-z0-9-]+\.png)(\?v=[a-z0-9]+)?$')
 
+# 写真が読めなかったときドット絵へ戻す。this.onerror=null で、
+# 戻した先も読めない場合の無限ループを止める。
+# script.js 側のハンドラがキャプチャ段階で先に走り、data-fallback を
+# 外してから src を差し替える。その後にこちらが走るため、属性が
+# 消えていたら何もしない（undefined を src に入れると逆に壊れる）。
+ONERROR = ("this.onerror=null;var f=this.dataset.fallback;"
+           "if(f){this.classList.remove('is-photo');this.src=f}")
+
 
 def _attrs(tag):
     """属性を順序を保ったまま取り出す。"""
@@ -126,12 +134,16 @@ def rebuild_img(tag, table, by_name, version=''):
 
     out = []
     for key, val in _attrs(tag):
-        if key == 'data-fallback':
+        if key in ('data-fallback', 'onerror'):
             continue                    # 下で付け直す
         if key == 'src':
             out.append(('src', url or pixel))
             if url:
                 out.append(('data-fallback', pixel))
+                # onerror は解析時に登録されるので、script.js の到着が
+                # 遅れても取りこぼさない。script.js 側のハンドラは、
+                # ここを通らない経路のための保険として残してある。
+                out.append(('onerror', ONERROR))
         elif key == 'class':
             names = [c for c in val.split() if c != 'is-photo']
             if url:

@@ -1,3 +1,16 @@
+// Amazonの商品写真が読めなかったらドット絵に戻す。画像URLはAmazon側の都合で
+// 切れうるので、取得済みのURLをそのまま信用せず保険をかけておく。
+// img の error はバブルしないため、キャプチャ段階で拾う。
+window.addEventListener('error', function (event) {
+  const el = event.target;
+  if (!el || el.tagName !== 'IMG') return;
+  const fallback = el.getAttribute('data-fallback');
+  if (!fallback) return;
+  el.removeAttribute('data-fallback');
+  el.classList.remove('is-photo');
+  el.src = fallback;
+}, true);
+
 const AMAZON_ASSOCIATE_TAG = 'jbmt-22';
 const ANALYTICS_KEY = 'gamespecLabEvents';
 const QUIZ_STATE_PREFIX = 'gamespecLabQuizState:';
@@ -5994,16 +6007,3 @@ function triggerKonamiEasterEgg() {
     window.setTimeout(() => toast.remove(), 400);
   }, 3200);
 }
-
-// Amazonの商品写真が読めなかったらドット絵に戻す。画像URLはAmazon側の都合で
-// 切れうるので、取得済みのURLをそのまま信用せず保険をかけておく。
-// img の error はバブルしないため、キャプチャ段階で拾う。
-window.addEventListener('error', function (event) {
-  const el = event.target;
-  if (!el || el.tagName !== 'IMG') return;
-  const fallback = el.getAttribute('data-fallback');
-  if (!fallback) return;
-  el.removeAttribute('data-fallback');
-  el.classList.remove('is-photo');
-  el.src = fallback;
-}, true);

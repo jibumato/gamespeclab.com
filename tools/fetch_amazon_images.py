@@ -48,8 +48,9 @@ def asins_from_zukan(path='device-zukan.html'):
     for d in json.loads(m.group(1)):
         am = re.search(r'/dp/([A-Z0-9]{10})', d.get('link', ''))
         if am:
-            # 同じASINが複数製品から参照されることはない想定だが、
-            # 先勝ちにして名前の取り違えを防ぐ
+            # 同じASINを複数製品が参照することがある（例: B0BLVB63JH は
+            # マウスパッドとデスクの両方に G840 として載っている）。同一商品
+            # なので写真は共通でよく、名前だけ先勝ちにしておく。
             found.setdefault(am.group(1), d['name'])
     return found
 

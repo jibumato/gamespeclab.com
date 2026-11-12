@@ -63,6 +63,10 @@ def check_markup():
                 continue
             if 'is-photo' not in tag:
                 problems.append('%s: 写真にis-photoが無い %s' % (name, tag[:110]))
+            # onerror が無いと、script.js の到着が遅れたときに
+            # 画像が壊れたまま残る
+            if 'onerror=' not in tag:
+                problems.append('%s: 写真にonerrorが無い %s' % (name, tag[:110]))
             fb = re.search(r'data-fallback="([^"?]+)', tag)
             if fb and not os.path.exists(fb.group(1)):
                 problems.append('%s: フォールバック画像が無い %s' % (name, fb.group(1)))

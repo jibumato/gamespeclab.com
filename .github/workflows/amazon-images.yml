@@ -1,0 +1,52 @@
+# Amazonアソシエイト運営規約では、PA-APIから取得したデータを24時間を超えて
+# 保持できない。商品画像URLを日次で取り直し、変化があればコミットする。
+# push されると Cloudflare Pages が自動でデプロイする。
+name: Amazon商品画像の日次更新
+
+on:
+  schedule:
+    # 毎日 04:20 JST（UTC 19:20）。アクセスの少ない時間帯に寄せている。
+    - cron: '20 19 * * *'
+  workflow_dispatch:
+
+# 同時に走らせない（コミットが競合するため）
+concurrency:
+  group: amazon-images
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: PA-APIから画像URLを取得
+        env:
+          PAAPI_ACCESS_KEY: ${{ secrets.PAAPI_ACCESS_KEY }}
+          PAAPI_SECRET_KEY: ${{ secrets.PAAPI_SECRET_KEY }}
+          PAAPI_PARTNER_TAG: ${{ secrets.PAAPI_PARTNER_TAG }}
+        run: python3 tools/fetch_amazon_images.py
+
+      - name: HTMLに反映
+        run: python3 tools/apply_amazon_images.py
+
+      - name: 反映結果を検査
+        run: python3 tools/check_amazon_images.py
+
+      - name: 差分があればコミット
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "変更なし"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "Amazon商品画像URLを更新
+
+          PA-APIから取得した画像URLを反映。規約上24時間を超えて保持できない
+          ため、日次ワークフローで取り直している。"
+          git push

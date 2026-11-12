@@ -1,52 +1,62 @@
 # Amazon商品写真の自動更新
 
 図鑑とガイドの商品画像を、ドット絵からAmazonの商品写真へ切り替えるための仕組み。
-商品画像URLを取得し、HTMLに反映する。
+Creators API から画像URLを取得し、HTMLに反映する。
 
-> **未解決：取得部分は動かない可能性が高い（2026-11）**
+> **現状：未稼働。利用条件を満たす必要がある（2026-11時点）**
 >
-> PA-API 5.0 は 2026-04-30 に非推奨、2026-05-15 に停止したとの情報があり
-> （Amazonの開発者ページを含む複数の情報源）、現在は403を返すとされる。
-> 後継の Creators API は認証が AWS キーから OAuth 2.0 に変わるため、
-> `tools/fetch_amazon_images.py` の SigV4 署名はそのままでは使えない。
-> さらに Creators API は「直近30日で10件の適格販売」が利用条件という情報がある。
->
-> **影響は取得スクリプト1本に閉じている。** 反映（`apply`）・検査（`check`）・
-> CSS・フォールバック・図鑑の描画は、入力が `{ASIN: {medium, large}}` の形で
-> ありさえすれば取得元を問わないため、そのまま使える。
-> 以下のPA-APIを前提にした記述は、取得手段が確定したら書き換える。
+> Creators API の利用には **直近30日間で10件の適格販売** が必要（公式 Prerequisites）。
+> 条件を満たして認証情報を発行するまで、画像URLは取得できない。
+> その間サイトは従来どおりドット絵を表示し続ける（`data/amazon-images.json` が
+> 無ければ何も変わらない作りになっている）。
 
 ## なぜこの作りなのか
 
 Amazonアソシエイト運営規約の都合で、実装方法がほぼ一通りに決まる。
 
 1. **商品画像を自サイトに保存して配信してはいけない。**
-   PA-APIが返した `m.media-amazon.com` のURLを `src` に直接入れる（ホットリンク）。
-   画像のバイトは常にAmazonから配信される。`assets/` にJPEGを置くのは規約違反なので、
-   `tools/check_amazon_images.py` が検出したら失敗する。
-2. **PA-APIのデータは24時間を超えて保持できない。**
-   このサイトは静的なので、GitHub Actions で日次に取り直してコミットし直す。
-3. **PA-APIはアソシエイトの本審査通過が前提。**
-   さらに、直近の売上が途切れるとアクセスが停止されることがある。止まった場合は
-   ワークフローが失敗するので、Actionsのログで気づける。
+   JPプログラムポリシー ライセンス条項(h)は「画像で構成されるプロダクト広告
+   コンテンツを保存またはキャッシュしてはいけません」と定める。APIが返した
+   `m.media-amazon.com` のURLを `src` に直接入れる（ホットリンク）。
+   `assets/` にJPEGを置くのは違反なので `tools/check_amazon_images.py` が検出して止める。
+2. **画像へのリンクは最長24時間しか保持できない**（同条項(h)）。
+   静的サイトなので、GitHub Actions で日次に取り直してコミットし直す。
+3. **画像の改変は「比率を維持したリサイズ」だけ**（同 §170(a)）。
+   `object-fit: contain` で比率を保ち、角丸は当てない。トリミング・合成・
+   オーバーレイは不可。
+4. **価格・レビューはAPI経由でしか出せない**（§153 / §189）。
+   いまは価格を手書きの帯域表記で出しているので、この仕組みでは画像だけ扱う。
+
+## 前提条件
+
+| 条件 | 内容 |
+|---|---|
+| アソシエイト本登録 | 最終承認済みであること |
+| 適格販売 | **直近30日間で10件以上**（公式 Prerequisites） |
+| 登録者 | プライマリアカウント所有者のみ |
+| 上限 | 1ストアあたりアプリ2つ、1アプリあたり認証情報2セット |
+
+公式ドキュメント内に矛盾があり、API Rates ページは「30日間連続で適格販売が
+0件なら失効、発送後2日以内に復帰」と書いている。どちらが実際の判定かは
+断定できないため、10件/30日を満たし続ける前提で考えておくのが安全。
 
 ## 初回セットアップ
 
-### 1. PA-APIの認証情報を発行する
+### 1. Creators API に登録して認証情報を発行する
 
-アソシエイト・セントラル → ツール → Product Advertising API から
-アクセスキーとシークレットキーを発行する。シークレットキーは発行時にしか
-表示されないので、その場で控える。
+アソシエイト・セントラル → Creators API の登録ページから申請し、
+Credential ID と Credential Secret を発行する。日本は **FE リージョン
+（認証情報バージョン 3.3）**。
 
 ### 2. GitHub Secrets に登録する
 
-リポジトリの Settings → Secrets and variables → Actions → New repository secret で3つ登録する。
+リポジトリの Settings → Secrets and variables → Actions → New repository secret。
 
 | Secret名 | 値 |
 |---|---|
-| `PAAPI_ACCESS_KEY` | アクセスキー |
-| `PAAPI_SECRET_KEY` | シークレットキー |
-| `PAAPI_PARTNER_TAG` | `jbmt-22` |
+| `CREATORS_CLIENT_ID` | Credential ID |
+| `CREATORS_CLIENT_SECRET` | Credential Secret |
+| `CREATORS_PARTNER_TAG` | `jbmt-22` |
 
 認証情報はリポジトリにも環境変数ファイルにも置かない。Secretsだけに置く。
 
@@ -54,15 +64,39 @@ Amazonアソシエイト運営規約の都合で、実装方法がほぼ一通�
 
 Actions → 「Amazon商品画像の日次更新」 → Run workflow。
 成功すると `data/amazon-images.json` とHTMLの差分がコミットされ、
-Cloudflare Pages が自動でデプロイする。
+Cloudflare Pages が自動でデプロイする。以降は毎日 04:20 JST に自動実行。
 
-以降は毎日 04:20 JST に自動実行される。
+失敗した場合はログを見る。401/403 なら利用条件（10件/30日）を割っている
+可能性が高く、スクリプトがその旨をヒントとして出す。
+
+## API の呼び方（実装済みの内容）
+
+認証は OAuth 2.0 の `client_credentials`。リフレッシュトークンは発行されず、
+ブラウザ同意も不要なので、無人のCIで素直に動く。
+
+```
+POST https://api.amazon.co.jp/auth/o2/token
+  {"grant_type":"client_credentials","client_id":…,"client_secret":…,
+   "scope":"creatorsapi::default"}
+  → {"access_token":…, "expires_in":3600}
+
+POST https://creatorsapi.amazon/catalog/v1/getItems
+  Authorization: Bearer <token>
+  x-marketplace: www.amazon.co.jp          ← PA-APIに無かった必須ヘッダ
+  {"itemIds":[…最大10件…],"itemIdType":"ASIN",
+   "marketplace":"www.amazon.co.jp","partnerTag":"jbmt-22",
+   "resources":["images.primary.medium","images.primary.large","itemInfo.title"]}
+```
+
+レスポンスのフィールドは lowerCamelCase（PA-API の PascalCase から変更）。
+画像は `images.primary.medium.url` に入り、ホストは `m.media-amazon.com` のまま。
+サイズはURLの `_SLxxx_` で決まる（small=75px、medium=160px、large=500px）。
 
 ## 構成
 
 | ファイル | 役割 |
 |---|---|
-| `tools/fetch_amazon_images.py` | PA-APIのGetItemsを叩き、画像URLを `data/amazon-images.json` に保存 |
+| `tools/fetch_amazon_images.py` | Creators API を叩き、画像URLを `data/amazon-images.json` に保存 |
 | `tools/apply_amazon_images.py` | JSONの内容を図鑑とガイドのHTMLに反映 |
 | `tools/check_amazon_images.py` | 反映結果を検査。問題があればワークフローを止める |
 | `.github/workflows/amazon-images.yml` | 上の3つを日次で回し、差分があればコミット |
@@ -84,13 +118,17 @@ python3 tools/check_amazon_images.py             # 検査
 ```html
 <img class="device-pick-thumb is-photo"
      src="https://m.media-amazon.com/images/I/xxxx._SL160_.jpg"
-     data-fallback="assets/devices/p-mouse-gpx2.png?v=gear81" ...>
+     data-fallback="assets/devices/p-mouse-gpx2.png?v=gear21"
+     onerror="this.onerror=null;var f=this.dataset.fallback;if(f){…;this.src=f}" ...>
 ```
 
-- `is-photo` … ドット絵用の `image-rendering: pixelated` を打ち消し、白背景の写真を
-  タイルとして収める（`style.css`）
-- `data-fallback` … 画像が読めなかったときに戻すドット絵。`script.js` のグローバル
-  error ハンドラが拾って差し替える。Amazon側の都合でURLが切れても絵が消えない
+- `is-photo` … ドット絵用の `image-rendering: pixelated` を打ち消し、
+  比率を保ったまま白背景のタイルに収める（`style.css`）
+- `onerror` … 画像が読めなければドット絵に戻す。**解析時に登録される**ので、
+  `script.js` の到着が遅れても取りこぼさない
+- `script.js` 側にも同じ働きのグローバルハンドラがあり、`onerror` を通らない
+  経路の保険になっている。こちらはキャプチャ段階で先に走って `data-fallback`
+  を外すため、`onerror` 側は属性が無ければ何もしないようにしてある
 
 写真が取れなかった製品は従来どおりドット絵のまま。`data/amazon-images.json` が
 空または無い場合、`apply` は全てをドット絵に戻す（自己修復する）。
@@ -98,7 +136,7 @@ python3 tools/check_amazon_images.py             # 検査
 ## 写真が出ない製品
 
 図鑑60製品のうち、Amazonの商品ページ（`/dp/ASIN`）を指していない12製品には
-写真が出ない。内訳は次のとおり。
+写真が出ない。
 
 **総称枠（単一の商品が存在しないので、写真は出せない）**
 
@@ -125,9 +163,13 @@ python3 tools/check_amazon_images.py             # 検査
 ## 注意
 
 - `data/amazon-images.json` はコミットする（gitignoreしない）。これが無いと
-  ビルド時にHTMLがドット絵に戻る
+  HTMLがドット絵に戻る。なお画像URLがgit履歴に24時間を超えて残る点は、
+  規約が制限しているのが「表示に使うコンテンツの保持」であり履歴の保存とは
+  別と解しているが、気になる場合はワークフローで履歴を潰す運用も取れる
 - ASIN `B0BLVB63JH` は「Logicool G840 / G640」（マウスパッド）と
   「ロジクール G G840」（デスク）の2製品が共有している。同一商品なので
   同じ写真が出る。二重掲載を整理するなら図鑑側の編集が必要
-- 価格は手書きの帯域表記のまま。PA-APIから実価格も取れるが、24時間ルールと
-  在庫切れ時の表示を考える必要があるため、今は画像だけに留めている
+- API を使わずにAmazonの商品画像を表示する手段は実質無い。SiteStripe の
+  画像リンク生成は2023年12月に終了しており（二次情報）、残るテキストリンクに
+  画像は含まれない。条件を満たせない間は、ドット絵を使い続けるか、
+  自前で撮影した画像に切り替えるかの二択になる

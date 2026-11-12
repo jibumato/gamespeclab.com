@@ -1,5 +1,6 @@
-# Amazonアソシエイト運営規約では、PA-APIから取得したデータを24時間を超えて
-# 保持できない。商品画像URLを日次で取り直し、変化があればコミットする。
+# Amazonアソシエイト運営規約では、商品画像へのリンクを24時間を超えて
+# 保持できない（画像そのものの保存は禁止）。日次で取り直し、変化が
+# あればコミットする。
 # push されると Cloudflare Pages が自動でデプロイする。
 name: Amazon商品画像の日次更新
 
@@ -23,11 +24,11 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - name: PA-APIから画像URLを取得
+      - name: Creators APIから画像URLを取得
         env:
-          PAAPI_ACCESS_KEY: ${{ secrets.PAAPI_ACCESS_KEY }}
-          PAAPI_SECRET_KEY: ${{ secrets.PAAPI_SECRET_KEY }}
-          PAAPI_PARTNER_TAG: ${{ secrets.PAAPI_PARTNER_TAG }}
+          CREATORS_CLIENT_ID: ${{ secrets.CREATORS_CLIENT_ID }}
+          CREATORS_CLIENT_SECRET: ${{ secrets.CREATORS_CLIENT_SECRET }}
+          CREATORS_PARTNER_TAG: ${{ secrets.CREATORS_PARTNER_TAG }}
         run: python3 tools/fetch_amazon_images.py
 
       - name: HTMLに反映

@@ -5479,21 +5479,27 @@ body.gamer-mbti-result-ready .post-result-lab {
 }
 
 /* Amazonの商品写真。ドット絵用の pixelated を打ち消し、白背景の写真が
-   タイルとして収まるようにする（規約上、画像はAmazonから直接配信される） */
+   タイルとして収まるようにする（規約上、画像はAmazonから直接配信される）。
+
+   JPプログラムポリシー §170(a) は、商品画像の改変を「当初の比率を維持した
+   リサイズ」だけ認めている。そのため object-fit は contain に固定し、
+   角丸は当てない（border-radius は画像の角を削る＝改変にあたりうる）。
+   背景と余白は画像の外側なので問題ない。 */
 .device-pick-thumb.is-photo,
 .gear-link-thumb.is-photo,
 .zukan-img.is-photo {
   image-rendering: auto;
   object-fit: contain;
   background: #fff;
+  border-radius: 0;
 }
 .device-pick-thumb.is-photo {
   padding: 4px;
   border-color: rgba(14, 133, 124, 0.18);
   filter: none;
 }
-.gear-link-thumb.is-photo { border-radius: 6px; padding: 2px; }
-.zukan-img.is-photo { border-radius: 10px; padding: 3px; }
+.gear-link-thumb.is-photo { padding: 2px; }
+.zukan-img.is-photo { padding: 3px; }
 
 /* ---- social proof: achievement badges (A) ---- */
 .device-pick-title { flex-wrap: wrap; }

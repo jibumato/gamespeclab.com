@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Creators API で商品画像URLを取得し data/amazon-images.json に保存する。
+"""Creators API で商品画像URLを取得し data/product-photos.json に保存する。
 
 PA-API 5.0 は廃止され、後継の Creators API に置き換わった。旧APIのAWS SigV4
 署名は不要になり、OAuth 2.0 の client_credentials でトークンを取るだけになった。
@@ -13,8 +13,8 @@ Amazonアソシエイト運営規約（JPプログラムポリシー ライセ�
   CREATORS_CLIENT_ID / CREATORS_CLIENT_SECRET / CREATORS_PARTNER_TAG
 
 使い方:
-  python3 tools/fetch_amazon_images.py            # 取得して保存
-  python3 tools/fetch_amazon_images.py --dry-run  # 認証情報なしで対象ASINだけ確認
+  python3 tools/fetch_amazon_photos.py            # 取得して保存
+  python3 tools/fetch_amazon_photos.py --dry-run  # 認証情報なしで対象ASINだけ確認
 """
 
 import json
@@ -33,11 +33,20 @@ MARKETPLACE = 'www.amazon.co.jp'
 SCOPE = 'creatorsapi::default'
 RESOURCES = ['images.primary.medium', 'images.primary.large', 'itemInfo.title']
 BATCH = 10                    # itemIds は1リクエストあたり最大10件
-OUT = 'data/amazon-images.json'
+OUT = 'data/product-photos.json'
 
 
-def asins_from_zukan(path='device-zukan.html'):
-    """図鑑の DATA から ASIN を拾う。製品名も一緒に返して突き合わせに使う。"""
+def targets_from_zukan(path='device-zukan.html'):
+    """図鑑の DATA から ASIN を拾う。
+
+    保存先のキーは製品のドット絵ファイル名（拡張子なし）に揃える。
+    メーカー公式画像を使う経路と同じキーにしておくことで、どちらの
+    出どころでも apply 側が同じように扱える。
+
+    同じASINを複数製品が参照することがある（例: B0BLVB63JH は
+    マウスパッドとデスクの両方に G840 として載っている）。同一商品なので
+    写真は共通でよく、ASINごとに参照する製品キーの一覧を持たせる。
+    """
     src = open(path, encoding='utf-8').read()
     m = re.search(r'var DATA\s*=\s*(\[.*?\]);', src, re.S)
     if not m:
@@ -45,11 +54,10 @@ def asins_from_zukan(path='device-zukan.html'):
     found = {}
     for d in json.loads(m.group(1)):
         am = re.search(r'/dp/([A-Z0-9]{10})', d.get('link', ''))
-        if am:
-            # 同じASINを複数製品が参照することがある（例: B0BLVB63JH は
-            # マウスパッドとデスクの両方に G840 として載っている）。同一商品
-            # なので写真は共通でよく、名前だけ先勝ちにしておく。
-            found.setdefault(am.group(1), d['name'])
+        img = d.get('img') or ''
+        if am and img:
+            key = os.path.splitext(os.path.basename(img))[0]
+            found.setdefault(am.group(1), []).append((key, d['name']))
     return found
 
 
@@ -114,12 +122,13 @@ def items_of(res):
 
 def main():
     dry = '--dry-run' in sys.argv
-    targets = asins_from_zukan()
+    targets = targets_from_zukan()
     print('対象ASIN: %d件' % len(targets))
 
     if dry:
-        for a, name in sorted(targets.items(), key=lambda kv: kv[1]):
-            print('  %s  %s' % (a, name))
+        for a in sorted(targets, key=lambda k: targets[k][0][1]):
+            for key, name in targets[a]:
+                print('  %s  %-22s %s' % (a, key, name))
         print('\n--dry-run のため送信しません')
         return
 
@@ -155,21 +164,34 @@ def main():
             if not asin or not med:
                 problems.append('%s 画像なし' % (asin or '(ASIN不明)'))
                 continue
-            store[asin] = {
-                'medium': med,
-                'large': lar or med,
-                'title': ((item.get('itemInfo') or {}).get('title') or {}).get('displayValue', ''),
-                'name': targets.get(asin, ''),
-            }
-            ok += 1
+            title = ((item.get('itemInfo') or {}).get('title') or {}).get('displayValue', '')
+            for key, name in targets.get(asin, []):
+                # メーカー公式画像を置いてある製品はそちらを優先する。
+                # 自サイトに置ける分、24時間の保持制限も受けない。
+                existing = store.get(key) or {}
+                if existing.get('src', '').startswith('assets/'):
+                    problems.append('%s はメーカー画像があるため据え置き' % key)
+                    continue
+                store[key] = {
+                    'src': med,
+                    'large': lar or med,
+                    'title': title,
+                    'name': name,
+                    'source': 'creators-api',
+                    'asin': asin,
+                }
+                ok += 1
         for err in res.get('errors') or res.get('Errors') or []:
             problems.append('%s %s' % (err.get('code') or err.get('Code'),
                                        (err.get('message') or err.get('Message') or '')[:120]))
         if i + BATCH < len(keys):
             time.sleep(1.1)
 
-    # 図鑑から消えたASINは保存先からも落とす
-    for gone in [a for a in store if a not in targets]:
+    # 図鑑から消えた製品のうち、Amazon由来のものは保存先からも落とす
+    # （メーカー公式画像は図鑑と無関係に手で足すこともあるので残す）
+    live = {k for v in targets.values() for k, _ in v}
+    for gone in [k for k, r in store.items()
+                 if k not in live and r.get('source') == 'creators-api']:
         del store[gone]
         problems.append('%s は図鑑に無いため削除' % gone)
 

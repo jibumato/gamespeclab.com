@@ -1,0 +1,63 @@
+# 商品写真をHTMLに反映する。出どころは2通りある。
+#
+#   1. メーカー公式の製品画像（assets/devices/photos/ 配下に置いたもの）
+#      日次更新は不要。画像を足したときに手動で回せばよい。
+#   2. Amazon Creators API が返す画像URL
+#      規約上、画像へのリンクを24時間を超えて保持できないため、
+#      こちらを使うなら日次で取り直す必要がある。
+#
+# push されると Cloudflare Pages が自動でデプロイする。
+name: 商品写真の反映
+
+on:
+  workflow_dispatch:
+  # Creators API を使い始めたらこの schedule を有効にする。
+  # 利用条件（直近30日で10件の適格販売）を満たすまでは、取得が必ず
+  # 失敗して毎日通知が飛ぶだけなので止めてある。
+  # schedule:
+  #   - cron: '20 19 * * *'   # 毎日 04:20 JST
+
+# 同時に走らせない（コミットが競合するため）
+concurrency:
+  group: product-photos
+  cancel-in-progress: false
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    # secrets は if: で直接参照できないため、env を経由して判定する
+    env:
+      HAS_CREATORS_CREDS: ${{ secrets.CREATORS_CLIENT_ID != '' }}
+    steps:
+      - uses: actions/checkout@v4
+
+      # 認証情報が無いうちは飛ばす。メーカー公式画像だけで運用している
+      # 間も、このワークフローが反映と検査に使えるようにしておく。
+      - name: Creators APIから画像URLを取得
+        if: env.HAS_CREATORS_CREDS == 'true'
+        env:
+          CREATORS_CLIENT_ID: ${{ secrets.CREATORS_CLIENT_ID }}
+          CREATORS_CLIENT_SECRET: ${{ secrets.CREATORS_CLIENT_SECRET }}
+          CREATORS_PARTNER_TAG: ${{ secrets.CREATORS_PARTNER_TAG }}
+        run: python3 tools/fetch_amazon_photos.py
+
+      - name: HTMLに反映
+        run: python3 tools/apply_product_photos.py
+
+      - name: 反映結果を検査
+        run: python3 tools/check_product_photos.py
+
+      - name: 差分があればコミット
+        run: |
+          if [ -z "$(git status --porcelain)" ]; then
+            echo "変更なし"
+            exit 0
+          fi
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -m "商品写真の反映を更新"
+          git push

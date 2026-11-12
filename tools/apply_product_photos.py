@@ -1,14 +1,18 @@
 #!/usr/bin/env python3
-"""data/amazon-images.json の画像URLを図鑑とガイドのHTMLに反映する。
+"""data/product-photos.json の商品写真を図鑑とガイドのHTMLに反映する。
 
-画像はダウンロードせず、PA-APIが返したURLをそのまま src に入れる
-（Amazonアソシエイト運営規約で自サイト保存が禁じられているため）。
-URLが切れたときにドット絵へ戻せるよう、元のパスを data-fallback に残す。
-script.js がこの属性を見て差し替える。
+写真の出どころは2通りあり、どちらも同じ形で扱う。
 
-JSONが無い・空のときは何もしない。PA-APIを動かす前のブランチでも安全に
-走るようにしてある（GitHub Actions の初回実行で中身が入る）。
+1. メーカー公式の製品画像を自サイトに置いたもの（src がリポジトリ内のパス）
+2. Amazon の Creators API が返した画像URL（src が m.media-amazon.com）
+   こちらは規約で自サイト保存が禁じられているため直接参照する
 
+写真が出せないときドット絵へ戻せるよう、元のパスを data-fallback に残す。
+
+キーは製品のドット絵ファイル名（拡張子なし。例 p-mouse-gpx2）。ASINを
+キーにすると、Amazonの商品ページを持たない12製品を扱えないため。
+
+JSONが無い・空のときは全てドット絵に戻る（自己修復する）。
 2回続けて実行しても差分が出ないこと（冪等）が要件。
 """
 
@@ -17,7 +21,7 @@ import os
 import re
 import sys
 
-STORE = 'data/amazon-images.json'
+STORE = 'data/product-photos.json'
 ZUKAN = 'device-zukan.html'
 
 
@@ -36,9 +40,17 @@ def zukan_data(src):
     return m, json.loads(m.group(2))
 
 
-def asin_of(link):
-    m = re.search(r'/dp/([A-Z0-9]{10})', link or '')
-    return m.group(1) if m else None
+def key_of(d):
+    """製品のキー。ドット絵ファイル名（拡張子なし）を使う。"""
+    img = d.get('img') or ''
+    return os.path.splitext(os.path.basename(img))[0] if img else ''
+
+
+def photo_src(rec):
+    """保存レコードから表示に使うURL/パスを取り出す。"""
+    if not rec:
+        return ''
+    return rec.get('src') or rec.get('medium') or ''  
 
 
 def update_zukan(store):
@@ -47,9 +59,9 @@ def update_zukan(store):
     m, data = zukan_data(src)
     hit = 0
     for d in data:
-        rec = store.get(asin_of(d.get('link')) or '')
-        if rec and rec.get('medium'):
-            d['photo'] = rec['medium']
+        url = photo_src(store.get(key_of(d)))
+        if url:
+            d['photo'] = url
             hit += 1
         else:
             d.pop('photo', None)      # 取得できなくなったら写真を外す
@@ -72,9 +84,9 @@ def lookup_tables(store):
     for d in data:
         if d.get('img'):
             by_name[d['name']] = d['img']
-            rec = store.get(asin_of(d.get('link')) or '')
-            if rec and rec.get('medium'):
-                table[d['img']] = rec['medium']
+            url = photo_src(store.get(key_of(d)))
+            if url:
+                table[d['img']] = url
     return table, by_name
 
 
@@ -167,7 +179,7 @@ def update_guides(table, by_name):
         new = IMG_RE.sub(lambda mt: rebuild_img(mt.group(0), table, by_name, version), src)
         if new != src:
             open(name, 'w', encoding='utf-8').write(new)
-            touched[name] = new.count('m.media-amazon.com')
+            touched[name] = sum(1 for t in IMG_RE.findall(new) if 'data-fallback=' in t)
     return touched
 
 

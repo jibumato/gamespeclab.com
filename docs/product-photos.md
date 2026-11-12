@@ -1,24 +1,38 @@
-# Amazon商品写真の自動更新
+# 商品写真の反映
 
-図鑑とガイドの商品画像を、ドット絵からAmazonの商品写真へ切り替えるための仕組み。
-Creators API から画像URLを取得し、HTMLに反映する。
+図鑑とガイドの商品画像を、ドット絵から商品写真へ切り替えるための仕組み。
+写真の出どころは2通りあり、どちらも同じストア（`data/product-photos.json`）で
+扱う。
 
-> **現状：未稼働。利用条件を満たす必要がある（2026-11時点）**
+| | メーカー公式画像 | Amazon Creators API |
+|---|---|---|
+| 置き場所 | `assets/devices/photos/` に自前ホスティング | `m.media-amazon.com` を直接参照 |
+| 対象 | **全60製品**（ASIN不要） | ASINのある48製品 |
+| 更新 | 不要（画像を足したときだけ） | 24時間ごとに取り直し必須 |
+| 条件 | ブランドごとの利用許諾 | 直近30日で10件の適格販売 |
+
+両方に写真がある製品は**メーカー公式画像を優先**する。自サイトに置ける分、
+24時間の保持制限を受けず、画像が消える心配もないため。
+
+> **現状（2026-11）**
 >
-> Creators API の利用には **直近30日間で10件の適格販売** が必要（公式 Prerequisites）。
-> 条件を満たして認証情報を発行するまで、画像URLは取得できない。
-> その間サイトは従来どおりドット絵を表示し続ける（`data/amazon-images.json` が
-> 無ければ何も変わらない作りになっている）。
+> - Creators API は利用条件（直近30日で10件の適格販売）を満たしておらず**使えない**。
+>   そのため日次スケジュールはワークフロー内でコメントアウトしてある。
+> - メーカー公式画像は、ブランドごとの利用条件を確認中。許諾が取れたブランドから
+>   順に `assets/devices/photos/` に置いていく。
+> - ストアが空の間、サイトは従来どおりドット絵を表示する。
 
 ## なぜこの作りなのか
 
-Amazonアソシエイト運営規約の都合で、実装方法がほぼ一通りに決まる。
+Amazon由来の画像を使う場合、運営規約の都合で実装方法がほぼ一通りに決まる。
+（メーカー公式画像を自前ホスティングする場合、以下1〜3はAmazonの規約の
+話なので適用されない。代わりに各ブランドの利用条件に従う）
 
 1. **商品画像を自サイトに保存して配信してはいけない。**
    JPプログラムポリシー ライセンス条項(h)は「画像で構成されるプロダクト広告
    コンテンツを保存またはキャッシュしてはいけません」と定める。APIが返した
    `m.media-amazon.com` のURLを `src` に直接入れる（ホットリンク）。
-   `assets/` にJPEGを置くのは違反なので `tools/check_amazon_images.py` が検出して止める。
+   `assets/` にJPEGを置くのは違反なので `tools/check_product_photos.py` が検出して止める。
 2. **画像へのリンクは最長24時間しか保持できない**（同条項(h)）。
    静的サイトなので、GitHub Actions で日次に取り直してコミットし直す。
 3. **画像の改変は「比率を維持したリサイズ」だけ**（同 §170(a)）。
@@ -27,7 +41,31 @@ Amazonアソシエイト運営規約の都合で、実装方法がほぼ一通�
 4. **価格・レビューはAPI経由でしか出せない**（§153 / §189）。
    いまは価格を手書きの帯域表記で出しているので、この仕組みでは画像だけ扱う。
 
-## 前提条件
+## メーカー公式画像を追加する
+
+1. ブランドのプレスキット/ブランドアセットで利用条件を確認する。
+   収益化しているレビューサイトでの利用が認められるかを必ず見る。
+2. 画像を `assets/devices/photos/<ドット絵と同じ名前>` に置く
+   （例: `assets/devices/photos/p-mouse-gpx2.webp`）
+3. `data/product-photos.json` にレコードを足す
+
+```json
+{
+  "p-mouse-gpx2": {
+    "src": "assets/devices/photos/p-mouse-gpx2.webp",
+    "credit": "Logicool",
+    "source": "https://gaming.logicool.co.jp/..."
+  }
+}
+```
+
+4. `python3 tools/apply_product_photos.py && python3 tools/check_product_photos.py`
+
+`credit` と `source` は表示には使っていないが、どのブランドの素材をどこから
+持ってきたかを後から辿れるように必ず書く。許諾条件に帰属表示が含まれる
+場合は、表示方法を別途決める必要がある。
+
+## Creators API を使う場合の前提条件
 
 | 条件 | 内容 |
 |---|---|
@@ -63,7 +101,7 @@ Credential ID と Credential Secret を発行する。日本は **FE リージ�
 ### 3. ワークフローを手動で1回動かす
 
 Actions → 「Amazon商品画像の日次更新」 → Run workflow。
-成功すると `data/amazon-images.json` とHTMLの差分がコミットされ、
+成功すると `data/product-photos.json` とHTMLの差分がコミットされ、
 Cloudflare Pages が自動でデプロイする。以降は毎日 04:20 JST に自動実行。
 
 失敗した場合はログを見る。401/403 なら利用条件（10件/30日）を割っている
@@ -96,17 +134,17 @@ POST https://creatorsapi.amazon/catalog/v1/getItems
 
 | ファイル | 役割 |
 |---|---|
-| `tools/fetch_amazon_images.py` | Creators API を叩き、画像URLを `data/amazon-images.json` に保存 |
-| `tools/apply_amazon_images.py` | JSONの内容を図鑑とガイドのHTMLに反映 |
-| `tools/check_amazon_images.py` | 反映結果を検査。問題があればワークフローを止める |
-| `.github/workflows/amazon-images.yml` | 上の3つを日次で回し、差分があればコミット |
+| `tools/fetch_amazon_photos.py` | Creators API を叩き、画像URLを `data/product-photos.json` に保存 |
+| `tools/apply_product_photos.py` | JSONの内容を図鑑とガイドのHTMLに反映 |
+| `tools/check_product_photos.py` | 反映結果を検査。問題があればワークフローを止める |
+| `.github/workflows/product-photos.yml` | 上の3つを日次で回し、差分があればコミット |
 
 `fetch` は認証情報が要るが、`apply` と `check` はローカルでも動く。
 
 ```bash
-python3 tools/fetch_amazon_images.py --dry-run   # 対象ASINの確認（認証不要）
-python3 tools/apply_amazon_images.py             # 反映
-python3 tools/check_amazon_images.py             # 検査
+python3 tools/fetch_amazon_photos.py --dry-run   # 対象ASINの確認（認証不要）
+python3 tools/apply_product_photos.py             # 反映
+python3 tools/check_product_photos.py             # 検査
 ```
 
 `apply` は2回続けて実行しても差分が出ない（冪等）。
@@ -130,7 +168,7 @@ python3 tools/check_amazon_images.py             # 検査
   経路の保険になっている。こちらはキャプチャ段階で先に走って `data-fallback`
   を外すため、`onerror` 側は属性が無ければ何もしないようにしてある
 
-写真が取れなかった製品は従来どおりドット絵のまま。`data/amazon-images.json` が
+写真が取れなかった製品は従来どおりドット絵のまま。`data/product-photos.json` が
 空または無い場合、`apply` は全てをドット絵に戻す（自己修復する）。
 
 ## 写真が出ない製品
@@ -162,7 +200,7 @@ python3 tools/check_amazon_images.py             # 検査
 
 ## 注意
 
-- `data/amazon-images.json` はコミットする（gitignoreしない）。これが無いと
+- `data/product-photos.json` はコミットする（gitignoreしない）。これが無いと
   HTMLがドット絵に戻る。なお画像URLがgit履歴に24時間を超えて残る点は、
   規約が制限しているのが「表示に使うコンテンツの保持」であり履歴の保存とは
   別と解しているが、気になる場合はワークフローで履歴を潰す運用も取れる

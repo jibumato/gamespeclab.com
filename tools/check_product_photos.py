@@ -33,6 +33,16 @@ def is_allowed(src):
     return src.startswith(PHOTO_DIR) or src.startswith('https://' + AMAZON_HOST + '/')
 
 
+def is_photo_src(src):
+    """写真を指す src かどうか（キャッシュバスター付きも拾う）。"""
+    return src.startswith(PHOTO_DIR) or AMAZON_HOST in src
+
+
+def local_path(src):
+    """自前ホスティングの写真の実ファイルパス。該当しなければ空。"""
+    return src.split('?')[0] if src.startswith(PHOTO_DIR) else ''
+
+
 def photo_src(rec):
     return (rec or {}).get('src') or (rec or {}).get('medium') or ''
 
@@ -48,9 +58,22 @@ def check_store():
             problems.append('%s に写真のパスが無い' % key)
         elif not is_allowed(src):
             problems.append('%s の写真が許可外を指している: %s' % (key, src[:90]))
-        elif src.startswith(PHOTO_DIR) and not os.path.exists(src):
+        elif local_path(src) and not os.path.exists(local_path(src)):
             problems.append('%s の写真ファイルが無い: %s' % (key, src))
+
+    # 図鑑のどの製品にも結びつかないキーは、まず打ち間違い。
+    # 黙って写真が出ないまま緑になるのを防ぐ。
+    known = zukan_keys()
+    for key in sorted(set(store) - known):
+        problems.append('%s は図鑑のどの製品とも一致しない（キーの打ち間違い？）' % key)
     return store
+
+
+def zukan_keys():
+    src = open(ZUKAN, encoding='utf-8').read()
+    data = json.loads(re.search(r'var DATA = (\[.*?\]);', src, re.S).group(1))
+    return {os.path.splitext(os.path.basename(d['img']))[0]
+            for d in data if d.get('img')}
 
 
 def check_no_saved_amazon_photos():
@@ -66,7 +89,7 @@ def check_no_saved_amazon_photos():
     for key, rec in store.items():
         src = photo_src(rec)
         origin = (rec or {}).get('source', '')
-        if src.startswith(PHOTO_DIR) and AMAZON_HOST in origin:
+        if local_path(src) and AMAZON_HOST in origin:
             problems.append('%s はAmazon由来の画像を保存している: %s' % (key, src))
 
 
@@ -92,12 +115,19 @@ def check_markup():
             if host and host.group(1) != AMAZON_HOST:
                 problems.append('%s: 外部画像 %s' % (name, host.group(1)))
 
-            if 'data-fallback=' not in tag:
+            # 写真かどうかは src で判定する。data-fallback の有無で
+            # 判定すると、属性が消えた写真が検査をすり抜けてしまう。
+            if not is_photo_src(src):
                 continue
             photos += 1
             if not is_allowed(src):
                 problems.append('%s: 写真が許可外 %s' % (name, src[:90]))
-            if 'is-photo' not in tag:
+            if 'data-fallback=' not in tag:
+                problems.append('%s: 写真にdata-fallbackが無い %s' % (name, tag[:110]))
+            # class属性だけを見る。onerror の中にも is-photo という文字列が
+            # 入っているため、タグ全体で探すと必ず一致してしまう。
+            cls = re.search(r'\sclass="([^"]*)"', tag)
+            if not cls or 'is-photo' not in cls.group(1).split():
                 problems.append('%s: 写真にis-photoが無い %s' % (name, tag[:110]))
             # onerror が無いと、script.js の到着が遅れたときに
             # 画像が壊れたまま残る

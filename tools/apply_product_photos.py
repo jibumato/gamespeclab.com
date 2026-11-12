@@ -16,6 +16,7 @@ JSONが無い・空のときは全てドット絵に戻る（自己修復する�
 2回続けて実行しても差分が出ないこと（冪等）が要件。
 """
 
+import hashlib
 import json
 import os
 import re
@@ -61,7 +62,7 @@ def update_zukan(store):
     for d in data:
         url = photo_src(store.get(key_of(d)))
         if url:
-            d['photo'] = url
+            d['photo'] = busted(url)
             hit += 1
         else:
             d.pop('photo', None)      # 取得できなくなったら写真を外す
@@ -86,7 +87,7 @@ def lookup_tables(store):
             by_name[d['name']] = d['img']
             url = photo_src(store.get(key_of(d)))
             if url:
-                table[d['img']] = url
+                table[d['img']] = busted(url)
     return table, by_name
 
 
@@ -122,6 +123,31 @@ def site_version():
     return '?v=' + m.group(1) if m else ''
 
 
+PHOTO_DIR = 'assets/devices/photos/'
+
+
+def is_photo_src(src):
+    """写真を指す src かどうか（自前ホスティング / Amazon直参照）。"""
+    return src.startswith(PHOTO_DIR) or 'm.media-amazon.com' in src
+
+
+def busted(url):
+    """自前ホスティングの写真に内容ハッシュを付ける。
+
+    assets は immutable 配信なので、同名のまま画像を差し替えると再訪者に
+    古い絵が最長1年残る。内容から導くので、差し替えたときだけ変わる。
+    Amazon直参照のURLは向こうが管理しているので触らない。
+    """
+    if not url.startswith(PHOTO_DIR):
+        return url
+    path = url.split('?')[0]
+    try:
+        digest = hashlib.sha1(open(path, 'rb').read()).hexdigest()[:8]
+    except OSError:
+        return path                      # 実ファイルが無い場合は check が弾く
+    return '%s?v=%s' % (path, digest)
+
+
 def rebuild_img(tag, table, by_name, version=''):
     a = dict(_attrs(tag))
     src = a.get('src', '')
@@ -134,7 +160,9 @@ def rebuild_img(tag, table, by_name, version=''):
         if PIXEL_PATH.match(cand or ''):
             pixel = cand
             break
-    if not pixel and 'm.media-amazon.com' in src:
+    if not pixel and is_photo_src(src):
+        # data-fallback が失われた写真。alt の製品名からドット絵を引き直す。
+        # Amazon直参照でも自前ホスティングでも同じように戻せるようにする。
         recovered = by_name.get(a.get('alt', '').strip(), '')
         if recovered:
             pixel = recovered + version

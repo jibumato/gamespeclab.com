@@ -100,9 +100,12 @@ Credential ID と Credential Secret を発行する。日本は **FE リージ�
 
 ### 3. ワークフローを手動で1回動かす
 
-Actions → 「Amazon商品画像の日次更新」 → Run workflow。
+Actions → 「商品写真の反映」 → Run workflow。
 成功すると `data/product-photos.json` とHTMLの差分がコミットされ、
-Cloudflare Pages が自動でデプロイする。以降は毎日 04:20 JST に自動実行。
+Cloudflare Pages が自動でデプロイする。
+
+Amazon由来の画像は24時間を超えて保持できないため、Creators API を使い
+始めたらワークフロー内の `schedule` のコメントを外して日次実行にする。
 
 失敗した場合はログを見る。401/403 なら利用条件（10件/30日）を割っている
 可能性が高く、スクリプトがその旨をヒントとして出す。
@@ -137,7 +140,7 @@ POST https://creatorsapi.amazon/catalog/v1/getItems
 | `tools/fetch_amazon_photos.py` | Creators API を叩き、画像URLを `data/product-photos.json` に保存 |
 | `tools/apply_product_photos.py` | JSONの内容を図鑑とガイドのHTMLに反映 |
 | `tools/check_product_photos.py` | 反映結果を検査。問題があればワークフローを止める |
-| `.github/workflows/product-photos.yml` | 上の3つを日次で回し、差分があればコミット |
+| `.github/workflows/product-photos.yml` | 上の3つを回し、差分があればコミット（現在は手動実行のみ） |
 
 `fetch` は認証情報が要るが、`apply` と `check` はローカルでも動く。
 

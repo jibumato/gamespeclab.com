@@ -323,7 +323,9 @@
             + '<span class="zukan-cat">' + esc(d.cat) + '</span>'
             + (pro ? '<a class="zukan-pro" href="pro-devices.html?q=' + encodeURIComponent(pro.q) + '" title="この製品を使うプロを見る">プロ使用' + pro.n + '名</a>' : '')
             + (d.specs ? '<label class="zukan-cmp-toggle"><input type="checkbox" data-cmp="' + d._i + '">比較</label>' : '')
-            + '<img class="zukan-img" src="' + d.img + '?v=gear80" alt="' + esc(d.name) + '" width="72" height="72" loading="lazy" decoding="async">'
+            + '<img class="zukan-img' + (d.photo ? ' is-photo' : '') + '" src="' + (d.photo || d.img + '?v=gear81') + '"'
+            + (d.photo ? ' data-fallback="' + d.img + '?v=gear81"' : '')
+            + ' alt="' + esc(d.name) + '" width="72" height="72" loading="lazy" decoding="async">'
             + '<h2 class="zukan-name">' + esc(d.name) + '</h2>'
             + (d.price ? '<p class="zukan-price">' + esc(d.price) + '</p>' : '')
             + '<div class="zukan-links">'

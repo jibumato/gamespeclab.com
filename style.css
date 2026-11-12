@@ -5478,6 +5478,23 @@ body.gamer-mbti-result-ready .post-result-lab {
   vertical-align: middle;
 }
 
+/* Amazonの商品写真。ドット絵用の pixelated を打ち消し、白背景の写真が
+   タイルとして収まるようにする（規約上、画像はAmazonから直接配信される） */
+.device-pick-thumb.is-photo,
+.gear-link-thumb.is-photo,
+.zukan-img.is-photo {
+  image-rendering: auto;
+  object-fit: contain;
+  background: #fff;
+}
+.device-pick-thumb.is-photo {
+  padding: 4px;
+  border-color: rgba(14, 133, 124, 0.18);
+  filter: none;
+}
+.gear-link-thumb.is-photo { border-radius: 6px; padding: 2px; }
+.zukan-img.is-photo { border-radius: 10px; padding: 3px; }
+
 /* ---- social proof: achievement badges (A) ---- */
 .device-pick-title { flex-wrap: wrap; }
 .device-badge {

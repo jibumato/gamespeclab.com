@@ -3,7 +3,10 @@
 # 3問（カテゴリ→予算→プレイスタイル）で、既存ガイドの「編集部の結論」と
 # 図鑑の掲載製品から1台を提案する。本診断（24問）への入口も兼ねる。
 # 再実行しても安全。sitemap.xml / site-map.html への登録も冪等に行う。
-import json, re, html, os
+import json, re, html, os, sys
+
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from affiliate import RAKUTEN_HGC  # 楽天のIDはここから取る（直書きしない）
 
 os.chdir(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -138,7 +141,7 @@ def main_html():
           </div>
           <div class="article-card affiliate-disclosure">
             <p class="eyebrow"><span data-icon="ad"></span>広告・アフィリエイトについて</p>
-            <p>提案結果の「Amazonで見る」はAmazonアソシエイトのリンクを含む広告です。リンク経由の購入で当サイトが収益を得る場合があります。提案は各ガイドの編集部検証と同じ基準で行っており、メーカーからの依頼に基づくものではありません。価格・在庫・仕様は各製品ページでご確認ください。</p>
+            <p>提案結果の「Amazonで見る」「楽天で見る」は、Amazonアソシエイト・楽天アフィリエイトのリンクを含む広告です。リンク経由の購入で当サイトが収益を得る場合があります。提案は各ガイドの編集部検証と同じ基準で行っており、メーカーからの依頼に基づくものではありません。価格・在庫・仕様は各製品ページでご確認ください。</p>
             <a class="ghost-link" href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記の詳細</a>
           </div>
           <div class="article-card">
@@ -199,7 +202,11 @@ def main_html():
         var cat = PICKS[state.cat];
         var pick = cat[state.budget][state.style];
         var name = pick[0], spec = pick[1], reason = pick[2];
-        var amazon = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(name.replace(/[（(].*?[)）]/g, '').trim()) + '&tag=jbmt-22';
+        var kw = name.replace(/[（(].*?[)）]/g, '').trim();
+        var amazon = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(kw) + '&tag=jbmt-22';
+        // 楽天は製品名で楽天市場を検索した結果へ（店舗ごとの商品ページは切れやすい）
+        var rtarget = encodeURIComponent('https://search.rakuten.co.jp/search/mall/' + encodeURIComponent(kw) + '/');
+        var rakuten = '{RAKUTEN_HGC}?pc=' + rtarget + '&m=' + rtarget;
         var zukan = 'device-zukan.html?q=' + encodeURIComponent(name);
         app.innerHTML = '<div class="qp-result">'
           + '<p class="qp-kicker">あなたへの提案</p>'
@@ -208,6 +215,7 @@ def main_html():
           + '<p class="qp-reason">' + reason + '</p>'
           + '<div class="qp-actions">'
           + '<a class="qp-buy" href="' + amazon + '" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="quick-' + state.cat + '-' + state.budget + '-' + state.style + '">Amazonで見る</a>'
+          + '<a class="qp-buy is-rakuten" href="' + rakuten + '" target="_blank" rel="nofollow sponsored noopener" data-affiliate="quick-' + state.cat + '-' + state.budget + '-' + state.style + '-rakuten">楽天で見る</a>'
           + '<a class="qp-ghost" href="' + zukan + '">図鑑でスペックを見る</a>'
           + '<a class="qp-ghost" href="' + cat.guide + '">' + cat.label + 'の選び方を読む</a>'
           + '</div>'

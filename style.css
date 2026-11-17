@@ -9524,3 +9524,89 @@ a.ctx-guide-link [data-icon] {
   height: 14px;
   width: 14px;
 }
+
+/* 楽天のボタン（tools/apply_rakuten_links.py と script.js が付ける）。
+   Amazonのボタンと同じ class を持たせて形と配置を揃え、色だけ楽天の赤に
+   変えて見分けられるようにする。各ボタンの class（.verdict-buy など）に
+   負けないよう a. を付けて詳細度を上げ、ファイル末尾に置いている。 */
+a.is-rakuten {
+  background: #bf0000;
+  border-color: #bf0000;
+  box-shadow: none;
+  color: #fff;
+}
+a.is-rakuten:hover,
+a.is-rakuten:focus-visible {
+  background: #a00000;
+  border-color: #a00000;
+  color: #fff;
+}
+/* 表の中の小さいボタンは横に並ぶので、くっつかないよう間を空ける */
+a.gh-buy-sm.is-rakuten,
+a.zukan-cmp-buy.is-rakuten {
+  margin-left: 4px;
+}
+
+/* カード全体がAmazonへのリンクになっている型（.gear-link-list）では
+   リンクを入れ子にできないので、カードの直下に細い帯として置く。
+   .gear-link-list a の「カード」指定を打ち消している。 */
+.gear-link-list a.gear-link-rakuten {
+  align-items: center;
+  background: transparent;
+  /* 既定は暗い背景。楽天の赤 #bf0000 は暗い背景では読めないので明るめの赤にし、
+     明るいページ（body.gear-white）だけ楽天の赤に戻す */
+  border: 1px solid rgba(255, 138, 138, 0.4);
+  color: #ff8a8a;
+  display: flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 6px;
+  justify-content: flex-end;
+  margin-top: -6px;
+  padding: 7px 12px;
+}
+.gear-link-list a.gear-link-rakuten span {
+  display: inline-flex;
+  font-size: inherit;
+}
+.gear-link-list a.gear-link-rakuten:hover {
+  background: rgba(255, 138, 138, 0.08);
+}
+body.gear-white .gear-link-list a.gear-link-rakuten {
+  border-color: rgba(191, 0, 0, 0.35);
+  color: #bf0000;
+}
+body.gear-white .gear-link-list a.gear-link-rakuten:hover {
+  background: rgba(191, 0, 0, 0.06);
+}
+/* PC構成提案のカード（.affiliate-card）。カード下部のAmazonボタンの下に置く */
+a.affiliate-rakuten {
+  align-items: center;
+  color: #ff8a8a;
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 6px;
+  margin-top: 8px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+body.gear-white a.affiliate-rakuten {
+  color: #bf0000;
+}
+/* 診断結果の本命カード（.gear-rec-buy）は .gear-link-list の中にあり、
+   グラデーション背景の指定（.gear-link-list .gear-rec-buy、明るいページでは
+   body.gear-white …）の方が a.is-rakuten より詳細度が高い。ここで上書きする */
+body .gear-link-list a.gear-rec-buy.is-rakuten {
+  background: #bf0000;
+  border-color: #bf0000;
+  color: #fff;
+}
+body .gear-link-list a.gear-rec-buy.is-rakuten .ui-icon {
+  color: #fff;
+}
+/* PC構成提案の「なぜあなた向け？」。.affiliate-reason p は暗い背景向けの
+   白っぽい文字色のままで、明るいページ（pc-build.html）ではほぼ見えなかった */
+body.gear-white .affiliate-reason p {
+  color: var(--muted);
+}

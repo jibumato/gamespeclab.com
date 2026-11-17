@@ -335,7 +335,7 @@ def main_for(game, players):
         <div class="article-body">{ranks}
           <div class="article-card affiliate-disclosure">
             <p class="eyebrow"><span data-icon="ad"></span>広告・アフィリエイトについて</p>
-            <p>「Amazonで探す」はAmazonアソシエイトのリンクを含む広告です。リンク経由の購入で当サイトが収益を得る場合があります。掲載内容は選手の使用機材を出典つきで整理したものであり、メーカーからの依頼に基づくものではありません。型番違いを避けるため商品ページではなく検索結果へリンクしています。価格・在庫・仕様は各製品ページでご確認ください。</p>
+            <p>「Amazonで探す」「楽天で探す」は、Amazonアソシエイト・楽天アフィリエイトのリンクを含む広告です。リンク経由の購入で当サイトが収益を得る場合があります。掲載内容は選手の使用機材を出典つきで整理したものであり、メーカーからの依頼に基づくものではありません。型番違いを避けるため商品ページではなく検索結果へリンクしています。価格・在庫・仕様は各製品ページでご確認ください。</p>
             <a class="ghost-link" href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記の詳細</a>
           </div>{settings_block(game, players)}{roster_block(game, players)}
           <div class="article-card">

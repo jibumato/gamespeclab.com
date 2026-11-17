@@ -12,6 +12,9 @@ window.addEventListener('error', function (event) {
 }, true);
 
 const AMAZON_ASSOCIATE_TAG = 'jbmt-22';
+// 楽天アフィリエイトのID。正は tools/affiliate.py で、
+// tools/apply_rakuten_links.py がここと一致しているかを検査する。
+const RAKUTEN_AFFILIATE_ID = '599f973b.374c4c97.599f973c.7d69e558';
 const ANALYTICS_KEY = 'gamespecLabEvents';
 const QUIZ_STATE_PREFIX = 'gamespecLabQuizState:';
 
@@ -469,6 +472,7 @@ function setupPersonalBar() {
       <div class="personal-bar-prod">
         <span><b>本命</b><strong>${product.name}</strong><small>${product.spec}</small></span>
         <a class="personal-bar-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="personal-${page}">${icon('cart')}Amazonで見る</a>
+        <a class="personal-bar-buy is-rakuten" href="${rakutenSearchUrl(product.query)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="personal-${page}-rakuten">${icon('cart')}楽天で見る</a>
       </div>` : '';
       body = `
       <p class="personal-bar-msg">このカテゴリは、あなたの診断結果で<b>おすすめ${hitIndex + 1}番目</b>に挙がっています。</p>
@@ -596,6 +600,23 @@ function setupMenuDrawer() {
 function amazonSearchUrl(query) {
   const params = new URLSearchParams({ k: query, tag: AMAZON_ASSOCIATE_TAG });
   return `https://www.amazon.co.jp/s?${params.toString()}`;
+}
+
+// 楽天は製品名で楽天市場を検索した結果へ飛ばす。店舗ごとの商品ページは
+// 売り切れ・出品停止で切れやすいため。
+function rakutenSearchUrl(query) {
+  const target = encodeURIComponent(`https://search.rakuten.co.jp/search/mall/${encodeURIComponent(query.trim())}/`);
+  return `https://hb.afl.rakuten.co.jp/hgc/${RAKUTEN_AFFILIATE_ID}/?pc=${target}&m=${target}`;
+}
+
+// Amazon検索リンクから検索語を取り出して、楽天の同じ検索に変える
+function rakutenFromAmazon(href) {
+  try {
+    const k = new URL(href).searchParams.get('k');
+    return k ? rakutenSearchUrl(k) : '';
+  } catch (error) {
+    return '';
+  }
 }
 
 function trackEvent(name, detail = {}) {
@@ -4397,6 +4418,7 @@ function renderGearItem(gear) {
       <div class="gear-rec-prod">
         <span class="gear-rec-name"><b>本命</b><strong>${product.name}</strong><small>${product.spec}</small></span>${prosLine}
         <a class="gear-rec-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="gear-${gear.guide}">${icon('cart')}Amazonで見る</a>
+        <a class="gear-rec-buy is-rakuten" href="${rakutenSearchUrl(product.query)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="gear-${gear.guide}-rakuten">${icon('cart')}楽天で見る</a>
       </div>` : '';
   return `
     <div class="gear-rec">
@@ -4409,7 +4431,7 @@ function renderGearItem(gear) {
   `;
 }
 
-const GEAR_AFF_NOTE = '<p class="gear-aff-note">※「Amazonで見る」はAmazonアソシエイトのリンクを含みます。価格・在庫・仕様は各製品ページでご確認ください。</p>';
+const GEAR_AFF_NOTE = '<p class="gear-aff-note">※「Amazonで見る」「楽天で見る」は、Amazonアソシエイト・楽天アフィリエイトのリンクを含みます。価格・在庫・仕様は各製品ページでご確認ください。</p>';
 
 function renderSenseGearList(sortedAbilities) {
   const list = document.querySelector('#sense-gear-list');
@@ -5313,7 +5335,7 @@ function getAffiliateReason(slot, build) {
 
 function renderAffiliate(build) {
   return `
-    <p class="affiliate-disclosure">当サイトはAmazonアソシエイトとして、適格販売により収入を得ています。</p>
+    <p class="affiliate-disclosure">当サイトはAmazonアソシエイトとして適格販売により収入を得ています。楽天アフィリエイトにも参加しています。</p>
     <div class="affiliate-grid">
       ${build.affiliateSlots.map((slot) => `
         <article class="affiliate-card">
@@ -5328,6 +5350,7 @@ function renderAffiliate(build) {
             <span>${icon('external')}${slot.cta}</span>
             <small>${icon('link')}Amazon.co.jpで確認</small>
           </a>
+          ${rakutenFromAmazon(slot.href) ? `<a class="affiliate-rakuten" href="${rakutenFromAmazon(slot.href)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="${slot.id}-rakuten">${icon('cart')}楽天市場で探す</a>` : ''}
         </article>
       `).join('')}
     </div>

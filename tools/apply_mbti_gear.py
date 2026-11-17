@@ -100,7 +100,7 @@ def card(t):
         f'                <em>{em}</em>\n'
         '              </a>\n'
         '            </div>\n'
-        '            <p class="compare-hint">※リンクはAmazonアソシエイト（広告）を利用しています。詳しくは<a href="affiliate-disclosure.html">広告表記</a>へ。</p>\n'
+        '            <p class="compare-hint">※リンクはAmazonアソシエイト・楽天アフィリエイト（広告）を利用しています。詳しくは<a href="affiliate-disclosure.html">広告表記</a>へ。</p>\n'
         '          </div>\n'
     )
 

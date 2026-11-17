@@ -124,7 +124,7 @@ def build(pair):
           </div>
           <div class="article-card affiliate-disclosure">
             <p class="eyebrow"><span data-icon="ad"></span>広告・アフィリエイトについて</p>
-            <p>本ページの購入リンクにはAmazonアソシエイトを利用しています。リンク経由の購入で当サイトが収益を得る場合があります。比較は編集部による用途別の整理であり、特定メーカーからの依頼に基づくものではありません。価格・在庫・仕様は各製品ページでご確認ください。</p>
+            <p>本ページの購入リンクにはAmazonアソシエイト・楽天アフィリエイトを利用しています。リンク経由の購入で当サイトが収益を得る場合があります。比較は編集部による用途別の整理であり、特定メーカーからの依頼に基づくものではありません。価格・在庫・仕様は各製品ページでご確認ください。</p>
             <a class="ghost-link" href="affiliate-disclosure.html"><span data-icon="ad"></span>広告・アフィリエイト表記の詳細</a>
           </div>
           <div class="article-card">

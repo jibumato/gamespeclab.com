@@ -35,7 +35,7 @@ RUNTIME_CONTAINERS = (
 EXCLUDE = {'affiliate-disclosure.html', 'privacy.html', 'disclaimer.html', 'about.html'}
 
 NOTICE = ('<p class="pr-notice"><span class="pr-badge">PR</span>'
-          '本ページはプロモーション（Amazonアソシエイトの広告リンク）を含みます。'
+          '本ページはプロモーション（Amazonアソシエイト・楽天アフィリエイトの広告リンク）を含みます。'
           '<a href="affiliate-disclosure.html">広告表記</a></p>')
 
 NOTICE_RE = re.compile(r'\s*<p class="pr-notice">.*?</p>', re.S)

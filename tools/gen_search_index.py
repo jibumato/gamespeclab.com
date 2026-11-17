@@ -151,10 +151,16 @@ sync_product_count()
 sync_budget_counts()
 sync_category_counts()
 
-# 冒頭の広告表記。生成スクリプトが作り直したページから消えていても、
-# 最後に必ず走るここで入れ直す。
+# 楽天リンクと冒頭の広告表記。生成スクリプトが作り直したページから
+# 消えていても、最後に必ず走るここで入れ直す。
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import apply_rakuten_links
+_rk_stats, _rk_problems = apply_rakuten_links.apply()
+os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+print('楽天リンク: %(links)d本（%(pages)dページ）／図鑑 %(zukan)d製品' % _rk_stats)
+if _rk_problems:
+    raise SystemExit('楽天リンクの問題:\n  ' + '\n  '.join(_rk_problems))
 import apply_pr_notice
 _pr_pages, _pr_problems = apply_pr_notice.apply()
 os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))

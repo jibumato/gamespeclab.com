@@ -5478,6 +5478,29 @@ body.gamer-mbti-result-ready .post-result-lab {
   vertical-align: middle;
 }
 
+/* Amazonの商品写真。ドット絵用の pixelated を打ち消し、白背景の写真が
+   タイルとして収まるようにする（規約上、画像はAmazonから直接配信される）。
+
+   JPプログラムポリシー §170(a) は、商品画像の改変を「当初の比率を維持した
+   リサイズ」だけ認めている。そのため object-fit は contain に固定し、
+   角丸は当てない（border-radius は画像の角を削る＝改変にあたりうる）。
+   背景と余白は画像の外側なので問題ない。 */
+.device-pick-thumb.is-photo,
+.gear-link-thumb.is-photo,
+.zukan-img.is-photo {
+  image-rendering: auto;
+  object-fit: contain;
+  background: #fff;
+  border-radius: 0;
+}
+.device-pick-thumb.is-photo {
+  padding: 4px;
+  border-color: rgba(14, 133, 124, 0.18);
+  filter: none;
+}
+.gear-link-thumb.is-photo { padding: 2px; }
+.zukan-img.is-photo { padding: 3px; }
+
 /* ---- social proof: achievement badges (A) ---- */
 .device-pick-title { flex-wrap: wrap; }
 .device-badge {
@@ -8691,7 +8714,8 @@ body.gear-home::after { display: none; }
 .gh-more:hover { text-decoration: underline; }
 
 /* ---- category grid ---- */
-.gh-cat-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+/* 9カテゴリなので3列。4列だと最終行に1枚だけ残る */
+.gh-cat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
 .gh-cat {
   position: relative; background: var(--gh-panel); border: 1px solid var(--gh-line); border-radius: var(--gh-radius);
   padding: 20px 18px; box-shadow: var(--gh-elev); text-decoration: none;
@@ -9443,4 +9467,60 @@ body.gear-white .gear-link-list a em {
   background: rgba(74, 143, 42, 0.08);
   border-left-color: var(--lime);
   color: #2f5c1a;
+}
+
+/* 冒頭の広告表記（tools/apply_pr_notice.py が h1 の直後に入れる）。
+   ダーク基調のページと、トップの明るいカードの両方に置かれるため、
+   色は固定せず親の文字色から作る。.legal-copy p の 16px/muted に
+   負けないよう p.pr-notice で指定し、ファイル末尾に置いている。 */
+p.pr-notice {
+  color: inherit;
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 0 0;
+  opacity: .78;
+}
+/* 文と同じ行に流す。flex にすると長い文が1要素として折り返し、
+   バッジ・文・リンクが縦に3段積みになる */
+p.pr-notice .pr-badge {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1;
+  margin-right: 6px;
+  padding: 2px 4px;
+  vertical-align: 1px;
+}
+p.pr-notice a {
+  color: inherit;
+  display: inline;
+  margin-left: 4px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* 上達・診断系記事の項目に添える、デバイスガイドへの文脈リンク
+   （tools/apply_skill_gear_links.py）。項目は1列のgridなので新しい行に
+   入る。幅いっぱいに伸びないよう justify-self: start にしている。
+   --cyan はテーマごとに定義し直されるので、明暗どちらでも読める。 */
+/* .article-pair-grid a（白・下線なし）に負けないよう a. を付けて詳細度を揃え、後に置く */
+a.ctx-guide-link {
+  align-items: center;
+  color: var(--cyan);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 4px;
+  justify-self: start;
+  margin-top: 2px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+a.ctx-guide-link [data-icon] {
+  height: 14px;
+  width: 14px;
 }

@@ -19,6 +19,7 @@ python3 tools/gen_vs_pages.py       # → vs-*.html
 python3 tools/fill_zukan_specs.py   # 図鑑のspecs欠落を補完（既存値は上書きしない）
 python3 tools/gen_device_pixel_art.py  # 製品ドット絵
 python3 tools/gen_search_index.py   # 最後に必ず実行（全ページを走査するため）
+                                    # 冒頭の広告表記（apply_pr_notice.py）もここで入れ直す
 ```
 
 `gen_pro_pages.py` → `gen_game_pages.py` の順は必須です。後者は前者が更新した `pro-devices.html` をテンプレートとして読みます。
@@ -43,7 +44,7 @@ python3 tools/gen_xxx.py && python3 tools/gen_xxx.py && git diff --stat
 
 **3. キャッシュバスターを更新する**
 
-`style.css` か `script.js` を変更したら、全HTMLの版数を上げます。現在は `gear77`。
+`style.css` か `script.js` を変更したら、全HTMLの版数を上げます。現在値は `grep -o 'style.css?v=gear[0-9]*' index.html` で確認してください（ここに数値を書くと古くなるため書きません）。
 
 ```bash
 N=78  # 現在値+1

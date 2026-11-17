@@ -197,6 +197,92 @@ def glass_palette(surface, shine):
     return {'.': CLEAR, '#': LINE, 'G': surface, 'S': shine}
 
 
+# ---- エルゴノミクスチェア（24×24 / 14px）----
+# ゲーミングチェア（p-chair-gtplayer）はレーシング風の一本帯だが、
+# エルゴノミクス系はメッシュ背が特徴なので市松模様で描き分ける。
+# ヘッドレストの有無も製品の実際の仕様に合わせる（アーロンは標準で非搭載）。
+CHAIR_BASE = {
+    '.': CLEAR,
+    '#': LINE,
+    'A': (40, 46, 62, 255),     # 座面の濃い面
+    'C': (60, 70, 92, 255),     # 座面の明るい面
+}
+
+
+def ergo_chair_grid(headrest=True):
+    """エルゴノミクスチェアのグリッド。既存チェアのシルエットを踏襲する。"""
+    rows = []
+    if headrest:
+        rows.append('.' * 9 + '#' * 6 + '.' * 9)
+        rows.append('.' * 9 + '#' + 'H' * 4 + '#' + '.' * 9)
+    else:
+        rows += ['.' * 24] * 2
+    rows.append('.' * 8 + '#' * 8 + '.' * 8)
+    for y in range(6):           # 背もたれ上段（幅広）
+        mesh = ''.join('M' if (x + y) % 2 == 0 else 'm' for x in range(6))
+        rows.append('.' * 7 + '##' + mesh + '##' + '.' * 7)
+    for y in range(6, 10):       # 背もたれ下段（幅狭）
+        mesh = ''.join('M' if (x + y) % 2 == 0 else 'm' for x in range(6))
+        rows.append('.' * 8 + '#' + mesh + '#' + '.' * 8)
+    rows.append('.' * 8 + '#' * 8 + '.' * 8)
+    rows.append('.' * 7 + '#' + 'C' * 8 + '#' + '.' * 7)
+    rows.append('.' * 7 + '#' + 'A' * 8 + '#' + '.' * 7)
+    rows.append('.' * 7 + '#' * 10 + '.' * 7)
+    rows += ['.' * 11 + '##' + '.' * 11] * 2
+    rows.append('.' * 24)
+    rows.append('.' * 7 + 'D#AA..AA#D' + '.' * 7)
+    rows.append('.' * 11 + '##' + '.' * 11)
+    rows += ['.' * 24] * 2
+    return rows
+
+
+def chair_palette(mesh, mesh_dark, foot):
+    p = dict(CHAIR_BASE)
+    p['M'] = mesh
+    p['m'] = mesh_dark
+    p['H'] = mesh
+    p['D'] = foot
+    return p
+
+
+# トップの「デバイスをカテゴリから探す」用のカテゴリアイコン。
+# 既存の dev-*.png と同じ 24×24 / 14px・ダークボディ＋ティールの配色に揃える。
+CATEGORY_PALETTE = {
+    '.': CLEAR,
+    '#': LINE,
+    'A': (40, 46, 62, 255),      # ボディ
+    'C': (60, 70, 92, 255),      # ステム
+    'T': (14, 133, 124, 255),    # ティール（既存 dev-*.png と同じ）
+    't': (58, 214, 196, 255),    # ティール明
+}
+
+
+def earphone_grid():
+    """左右2つのイヤホン。頭部のドライバー面をティールで抜き、下にステムを伸ばす。"""
+    bud = [
+        '..####..',
+        '.#AAAA#.',
+        '#AATTAA#',
+        '#ATttTA#',
+        '#AATTAA#',
+        '#AAAAAA#',
+        '.#AAAA#.',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#CC#..',
+        '..#tt#..',   # ステム先端のインジケーター
+        '..####..',
+    ]
+    rows = ['.' * 24] * 5
+    for line in bud:
+        # 左右に同じ絵を置く（x=2..9 と x=14..21、間は4マス空ける）
+        rows.append('..' + line + '....' + line + '..')
+    rows += ['.' * 24] * 5
+    return rows
+
+
 def mon_palette(accent, accent_light, secondary):
     p = dict(MON_BASE)
     p['A'] = accent
@@ -243,6 +329,20 @@ TARGETS = [
      glass_palette((28, 30, 40, 255), (216, 222, 232, 255)), 14),
     ('assets/devices/p-pad-cm05.png', glass_pad_grid('dots'),           # ATTACK SHARK CM05
      glass_palette((64, 52, 38, 255), (240, 186, 112, 255)), 14),
+
+    # エルゴノミクスチェア（メッシュの色とヘッドレストの有無で描き分ける）
+    ('assets/devices/p-chair-flexispot.png', ergo_chair_grid(True),     # FlexiSpot C7
+     chair_palette((46, 86, 140, 255), (30, 58, 98, 255), (70, 118, 176, 255)), 14),
+    ('assets/devices/p-chair-cofo.png', ergo_chair_grid(True),          # COFO Chair Premium
+     chair_palette((150, 158, 172, 255), (96, 104, 120, 255), (186, 192, 204, 255)), 14),
+    ('assets/devices/p-chair-ergohuman.png', ergo_chair_grid(True),     # エルゴヒューマン Pro2
+     chair_palette((150, 44, 52, 255), (102, 30, 36, 255), (196, 70, 78, 255)), 14),
+    # アーロンはヘッドレストが標準で付かないため、絵でもあえて省く
+    ('assets/devices/p-chair-aeron.png', ergo_chair_grid(False),        # アーロンチェア
+     chair_palette((78, 86, 100, 255), (50, 56, 68, 255), (112, 120, 136, 255)), 14),
+
+    # カテゴリアイコン（トップのカテゴリグリッド用。他の dev-*.png と同じ体裁）
+    ('assets/devices/dev-earphone.png', earphone_grid(), CATEGORY_PALETTE, 14),
 ]
 
 

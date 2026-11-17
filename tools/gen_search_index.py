@@ -151,6 +151,17 @@ sync_product_count()
 sync_budget_counts()
 sync_category_counts()
 
+# 冒頭の広告表記。生成スクリプトが作り直したページから消えていても、
+# 最後に必ず走るここで入れ直す。
+import sys
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+import apply_pr_notice
+_pr_pages, _pr_problems = apply_pr_notice.apply()
+os.chdir(os.path.join(os.path.dirname(os.path.abspath(__file__)), '..'))
+print(f'広告表記（冒頭）: {len(_pr_pages)}ページ')
+if _pr_problems:
+    raise SystemExit('広告表記の問題:\n  ' + '\n  '.join(_pr_problems))
+
 kinds = {}
 for e in entries:
     kinds[e['c']] = kinds.get(e['c'], 0) + 1

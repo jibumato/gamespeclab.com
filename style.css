@@ -9468,3 +9468,59 @@ body.gear-white .gear-link-list a em {
   border-left-color: var(--lime);
   color: #2f5c1a;
 }
+
+/* 冒頭の広告表記（tools/apply_pr_notice.py が h1 の直後に入れる）。
+   ダーク基調のページと、トップの明るいカードの両方に置かれるため、
+   色は固定せず親の文字色から作る。.legal-copy p の 16px/muted に
+   負けないよう p.pr-notice で指定し、ファイル末尾に置いている。 */
+p.pr-notice {
+  color: inherit;
+  display: block;
+  font-size: 12px;
+  line-height: 1.6;
+  margin: 10px 0 0;
+  opacity: .78;
+}
+/* 文と同じ行に流す。flex にすると長い文が1要素として折り返し、
+   バッジ・文・リンクが縦に3段積みになる */
+p.pr-notice .pr-badge {
+  border: 1px solid currentColor;
+  border-radius: 3px;
+  display: inline-block;
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  line-height: 1;
+  margin-right: 6px;
+  padding: 2px 4px;
+  vertical-align: 1px;
+}
+p.pr-notice a {
+  color: inherit;
+  display: inline;
+  margin-left: 4px;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+/* 上達・診断系記事の項目に添える、デバイスガイドへの文脈リンク
+   （tools/apply_skill_gear_links.py）。項目は1列のgridなので新しい行に
+   入る。幅いっぱいに伸びないよう justify-self: start にしている。
+   --cyan はテーマごとに定義し直されるので、明暗どちらでも読める。 */
+/* .article-pair-grid a（白・下線なし）に負けないよう a. を付けて詳細度を揃え、後に置く */
+a.ctx-guide-link {
+  align-items: center;
+  color: var(--cyan);
+  display: inline-flex;
+  font-size: 13px;
+  font-weight: 700;
+  gap: 4px;
+  justify-self: start;
+  margin-top: 2px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+a.ctx-guide-link [data-icon] {
+  height: 14px;
+  width: 14px;
+}

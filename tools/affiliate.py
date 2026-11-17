@@ -18,8 +18,29 @@ RAKUTEN_ID = '599f973b.374c4c97.599f973c.7d69e558'
 RAKUTEN_HGC = 'https://hb.afl.rakuten.co.jp/hgc/%s/' % RAKUTEN_ID
 
 
-def rakuten_search_url(keyword):
+# 楽天の検索は「語をすべて含む商品」を探すため、説明的な語や「A / B」の
+# 併記が混ざると何もヒットしない。そうした検索語だけ、楽天用に置き換える。
+# Amazon側の検索語や図鑑の製品名は変えない。
+RAKUTEN_KEYWORD_FIX = {
+    'HyperX Cloud Stinger 2 など有線軽量機': 'HyperX Cloud Stinger 2',
+    'Logicool G840 / G640': 'Logicool G840',
+    '磁気軸エントリー': '磁気軸 ラピッドトリガー キーボード',
+    '1万円台のフルHD 180〜200Hz': 'ゲーミングモニター フルHD 180Hz',
+    'Wooting 60HE / 80HE': 'Wooting',
+    'ARTISAN 疾風甲/乙': 'ARTISAN 疾風',
+    'ZOWIE × donk エディション': 'ZOWIE donk',
+    'ATTACK SHARK × MAMBASNAKE CM05': 'ATTACK SHARK CM05',
+    '玄人志向 KRPW-GA750W/90+': '玄人志向 KRPW-GA750W',
+}
+
+
+def rakuten_keyword(keyword):
     keyword = re.sub(r'\s+', ' ', keyword).strip()
+    return RAKUTEN_KEYWORD_FIX.get(keyword, keyword)
+
+
+def rakuten_search_url(keyword):
+    keyword = rakuten_keyword(keyword)
     target = 'https://search.rakuten.co.jp/search/mall/%s/' % urllib.parse.quote(keyword, safe='')
     enc = urllib.parse.quote(target, safe='')
     return '%s?pc=%s&m=%s' % (RAKUTEN_HGC, enc, enc)

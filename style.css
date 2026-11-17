@@ -9529,14 +9529,18 @@ a.ctx-guide-link [data-icon] {
    Amazonのボタンと同じ class を持たせて形と配置を揃え、色だけ楽天の赤に
    変えて見分けられるようにする。各ボタンの class（.verdict-buy など）に
    負けないよう a. を付けて詳細度を上げ、ファイル末尾に置いている。 */
-a.is-rakuten {
+/* 既存のボタン指定には詳細度 0,2,0〜0,2,1 のものがある（.pro-dev-row .pro-dev-buy、
+   .prorank-actions .pro-dev-buy、body.gear-white .primary-link、.gh-table .gh-buy-sm）。
+   a.is-rakuten（0,1,1）では負けて197本がAmazonと同じ緑のままだったので、
+   body と class の重ね書きで 0,2,2（hover は 0,3,2）まで上げている */
+body a.is-rakuten.is-rakuten {
   background: #bf0000;
   border-color: #bf0000;
   box-shadow: none;
   color: #fff;
 }
-a.is-rakuten:hover,
-a.is-rakuten:focus-visible {
+body a.is-rakuten.is-rakuten:hover,
+body a.is-rakuten.is-rakuten:focus-visible {
   background: #a00000;
   border-color: #a00000;
   color: #fff;
@@ -9545,6 +9549,20 @@ a.is-rakuten:focus-visible {
 a.gh-buy-sm.is-rakuten,
 a.zukan-cmp-buy.is-rakuten {
   margin-left: 4px;
+}
+/* 表のセルが狭いと楽天ボタンが下の行に落ち、margin-left の分だけずれる。
+   どちらの表も横スクロールする作りなので、2つのボタンは横並びに固定する */
+td:has(> a.gh-buy-sm.is-rakuten),
+td:has(> a.zukan-cmp-buy.is-rakuten) {
+  white-space: nowrap;
+}
+/* 診断結果の本命カード。ボタンを2つにしたら、製品名の横に収まるカードと
+   次の行に落ちるカードが混ざったので、ボタンは常に独立した1行にする */
+.gear-rec-buys {
+  display: flex;
+  flex-basis: 100%;
+  flex-wrap: wrap;
+  gap: 8px;
 }
 
 /* カード全体がAmazonへのリンクになっている型（.gear-link-list）では

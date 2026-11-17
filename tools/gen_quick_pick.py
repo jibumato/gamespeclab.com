@@ -6,7 +6,7 @@
 import json, re, html, os, sys
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from affiliate import RAKUTEN_HGC  # 楽天のIDはここから取る（直書きしない）
+from affiliate import RAKUTEN_HGC, RAKUTEN_KEYWORD_FIX  # 楽天のIDと検索語の置き換えはここから取る（直書きしない）
 
 os.chdir(os.path.join(os.path.dirname(__file__), '..'))
 
@@ -125,6 +125,7 @@ def head_for(HEAD):
 def main_html():
     faq_inner = ''.join(f'<div><strong>{esc(q)}</strong><p>{esc(a)}</p></div>' for q, a in FAQ)
     picks_json = json.dumps(PICKS, ensure_ascii=False)
+    rk_fix_json = json.dumps(RAKUTEN_KEYWORD_FIX, ensure_ascii=False)
     return f'''<main id="main">
       <section class="legal-hero">
         <div class="legal-copy">
@@ -164,6 +165,7 @@ def main_html():
     <script>
     (function(){{
       var PICKS = {picks_json};
+      var RK_FIX = {rk_fix_json};
       var BUDGETS = [["low","〜1万円"],["mid","1〜3万円"],["high","3万円〜"]];
       var STYLES = [["fps","競技FPSが中心"],["mix","いろいろなゲームを遊ぶ"]];
       var app = document.getElementById('qp-app');
@@ -205,7 +207,8 @@ def main_html():
         var kw = name.replace(/[（(].*?[)）]/g, '').trim();
         var amazon = 'https://www.amazon.co.jp/s?k=' + encodeURIComponent(kw) + '&tag=jbmt-22';
         // 楽天は製品名で楽天市場を検索した結果へ（店舗ごとの商品ページは切れやすい）
-        var rtarget = encodeURIComponent('https://search.rakuten.co.jp/search/mall/' + encodeURIComponent(kw) + '/');
+        var rkw = RK_FIX[kw] || kw;  // 楽天でヒットしない検索語の置き換え（tools/affiliate.py）
+        var rtarget = encodeURIComponent('https://search.rakuten.co.jp/search/mall/' + encodeURIComponent(rkw) + '/');
         var rakuten = '{RAKUTEN_HGC}?pc=' + rtarget + '&m=' + rtarget;
         var zukan = 'device-zukan.html?q=' + encodeURIComponent(name);
         app.innerHTML = '<div class="qp-result">'

@@ -4417,8 +4417,10 @@ function renderGearItem(gear) {
   const prodBlock = product ? `
       <div class="gear-rec-prod">
         <span class="gear-rec-name"><b>本命</b><strong>${product.name}</strong><small>${product.spec}</small></span>${prosLine}
-        <a class="gear-rec-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="gear-${gear.guide}">${icon('cart')}Amazonで見る</a>
-        <a class="gear-rec-buy is-rakuten" href="${rakutenSearchUrl(product.query)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="gear-${gear.guide}-rakuten">${icon('cart')}楽天で見る</a>
+        <div class="gear-rec-buys">
+          <a class="gear-rec-buy" href="${amazonSearchUrl(product.query)}" target="_blank" rel="sponsored noopener noreferrer" data-affiliate="gear-${gear.guide}">${icon('cart')}Amazonで見る</a>
+          <a class="gear-rec-buy is-rakuten" href="${rakutenSearchUrl(product.query)}" target="_blank" rel="nofollow sponsored noopener" data-affiliate="gear-${gear.guide}-rakuten">${icon('cart')}楽天で見る</a>
+        </div>
       </div>` : '';
   return `
     <div class="gear-rec">
@@ -5446,7 +5448,7 @@ function renderAffiliateWaitingCard() {
       <div class="mini-guide-list">
         <span>${icon('check')}予算と遊びたいゲームから絞り込み</span>
         <span>${icon('check')}高FPS、画質、配信など目的別に整理</span>
-        <span>${icon('check')}Amazonアソシエイト表記も同じ画面で確認</span>
+        <span>${icon('check')}Amazonアソシエイト・楽天アフィリエイトの表記も同じ画面で確認</span>
       </div>
     </article>
   `;

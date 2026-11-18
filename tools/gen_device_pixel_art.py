@@ -29,6 +29,42 @@ MOUSE_PALETTE = {
     'c': (20, 198, 222, 255),   # アクセント明
 }
 
+# Razer Viper V4 Pro
+# 既存の V3 Pro（p-mouse-viper.png、白い本体＋緑のライン）と同じシルエットにし、
+# 日本で主力のブラックモデルに合わせて本体を黒にして描き分ける。
+VIPER_V4 = [
+    '.....................',
+    '.....................',
+    '.....................',
+    '........#####........',
+    '.......#WW#WW#.......',
+    '......#WWWLWWW#......',
+    '.....#WWBBLBBBB#.....',
+    '.....#WWBBLBBBB#.....',
+    '.....#WWBB#BBBB#.....',
+    '.....#cBBB#BBBB#.....',
+    '.....#BBBBCBBBB#.....',
+    '.....#BBBBCBBBB#.....',
+    '.....#BBBBCBBBB#.....',
+    '.....#BBBBCBBBB#.....',
+    '......#BBBCBBB#......',
+    '......#BBBBBBB#......',
+    '.......#BBBBB#.......',
+    '.....................',
+    '.....................',
+    '.....................',
+    '.....................',
+]
+VIPER_V4_PALETTE = {
+    '.': CLEAR,
+    '#': LINE,
+    'B': (44, 46, 54, 255),     # 本体（ブラック）
+    'L': (58, 60, 70, 255),     # 本体ライト
+    'W': (78, 82, 94, 255),     # ハイライト
+    'C': (68, 214, 44, 255),    # Razer グリーン（V3 Pro と同じ）
+    'c': (88, 234, 70, 255),    # グリーン明
+}
+
 # Logicool G PRO X2 SUPERSTRIKE
 # 同シリーズのシルエットを踏襲しつつ、この製品の特徴である
 # 「メインクリックのラピッドトリガー」を示すため左右クリック面をアクセント色にする。
@@ -348,6 +384,7 @@ def mon_palette(accent, accent_light, secondary):
 TARGETS = [
     # マウス
     ('assets/devices/p-mouse-superstrike.png', SUPERSTRIKE, MOUSE_PALETTE, 16),
+    ('assets/devices/p-mouse-viperv4.png', VIPER_V4, VIPER_V4_PALETTE, 16),
 
     # モニター（同じ絵が使い回されていた機種を、機種ごとの配色で描き分ける）
     ('assets/devices/p-mon-asrock.png', MON_STD,            # ASRock PG25FFT

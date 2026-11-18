@@ -59,7 +59,7 @@
     </script>
     <link rel="icon" type="image/png" href="favicon.png" />
     <link rel="preload" as="image" href="assets/diagnosis-sync-bg.webp" type="image/webp" fetchpriority="high" />
-    <link rel="stylesheet" href="style.css?v=gear85" />
+    <link rel="stylesheet" href="style.css?v=gear86" />
   </head>
   <body class="gear-white">
     <a class="skip-link" href="#main">メインコンテンツへスキップ</a>
@@ -91,14 +91,34 @@
           <h2>取得する情報</h2>
           <ul>
             <li>現在、氏名、住所、メールアドレスなどの個人情報を入力する機能はありません。</li>
-            <li>診断の回答内容、診断結果、広告リンクの利用状況は、ブラウザ上の表示や使いやすさの確認のために利用されます。</li>
+            <li>診断の回答内容は、結果を表示するためにブラウザの中だけで使われ、外部へは送られません。</li>
+            <li>診断の結果の種類（タイプ名など）、サイト内検索で入力した語、購入リンクやシェアボタンのクリックなどは、サイトの改善のためのアクセス解析として、後述のとおり Google アナリティクスに送られます。</li>
           </ul>
         </article>
         <article class="legal-card">
           <h2>ローカル保存について</h2>
           <ul>
             <li>広告リンクの利用状況は、ブラウザのlocalStorageに保存されます。</li>
-            <li>この情報はユーザーのブラウザ内に保存され、当サイトのサーバーへ送信する仕組みは現在ありません。</li>
+            <li>診断の途中経過や広告リンクの利用状況は、ユーザーのブラウザ内に保存され、保存したものがそのまま外部へ送られることはありません。</li>
+            <li>当サイトには、会員登録やお問い合わせ入力など、ユーザーの情報を当サイトのサーバーへ送る機能はありません。</li>
+          </ul>
+        </article>
+        <article class="legal-card">
+          <h2>アクセス解析について</h2>
+          <ul>
+            <li>当サイトは、アクセス状況の把握とサイトの改善のために、Google LLC の「Google アナリティクス 4（GA4）」と「Google タグマネージャー」を利用しています。</li>
+            <li>これらは Cookie（_ga で始まるものなど）を使って、訪問者を区別しながらアクセス情報を収集します。収集されるのは、閲覧したページ、滞在時間、流入元、おおよその地域、端末やブラウザの種類などです。</li>
+            <li>当サイト独自に、次の操作も記録しています。
+              <ul>
+                <li>診断の開始と完了、およびその結果の種類（タイプ名など。回答の中身は含みません）</li>
+                <li>サイト内検索で入力した語</li>
+                <li>購入リンク（Amazon・楽天）やシェアボタンのクリック</li>
+                <li>図鑑の比較で選んだ製品名</li>
+              </ul>
+            </li>
+            <li>氏名・住所・メールアドレスなど、個人を特定できる情報を当サイトから送ることはありません。サイト内検索の欄には、個人情報を入力しないでください。</li>
+            <li>収集した情報は Google のプライバシーポリシーに従って取り扱われます。詳しくは「<a href="https://policies.google.com/technologies/partner-sites" target="_blank" rel="noopener noreferrer">Google のサービスを使用するサイトやアプリから収集した情報の Google による使用</a>」をご覧ください。</li>
+            <li>収集を望まない場合は、ブラウザの設定で Cookie を無効にするか、<a href="https://tools.google.com/dlpage/gaoptout" target="_blank" rel="noopener noreferrer">Google アナリティクス オプトアウト アドオン</a>を利用してください。無効にしても、サイトの閲覧や診断は通常どおり利用できます。</li>
           </ul>
         </article>
         <article class="legal-card">
@@ -106,7 +126,13 @@
           <ul>
             <li>Amazonアソシエイトリンクをクリックすると、Amazon.co.jpへ移動します。移動後の情報の取り扱いはAmazonの規約とプライバシーポリシーに従います。</li>
             <li>楽天アフィリエイトのリンクをクリックすると、楽天市場へ移動します。移動後の情報の取り扱いは楽天グループの規約とプライバシーポリシーに従います。</li>
-            <li>今後、アクセス解析を導入する場合は、このページに利用サービスと目的を追記します。</li>
+            <li>Amazon・楽天のリンクを経由した購入を当サイトの紹介成果として計測するため、リンク先のサイトで Cookie などが使われることがあります。</li>
+          </ul>
+        </article>
+        <article class="legal-card">
+          <h2>改定履歴</h2>
+          <ul>
+            <li>2026年11月17日：アクセス解析（Google アナリティクス・Google タグマネージャー）と、楽天アフィリエイトに関する記載を追加しました。</li>
           </ul>
         </article>
       </section>
@@ -123,6 +149,6 @@
         <a href="site-map.html"><span data-icon="list"></span>サイトマップ</a>
       </nav>
     </footer>
-    <script src="script.js?v=gear85"></script>
+    <script src="script.js?v=gear86"></script>
   </body>
 </html>

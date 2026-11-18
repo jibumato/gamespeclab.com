@@ -56,6 +56,7 @@ PAGES = [
     ("gaming-desk-setup-guide", "DESK SETUP", "ゲーミングデスク環境の作り方", "#5fd0e0"),
     ("pro-gamer-practice-guide", "PRO PRACTICE", "プロゲーマーの練習方法・共通点", "#e0b94a"),
     ("gaming-chair-guide", "GAMING CHAIR", "ゲーミングチェアの選び方", "#ff9bc0"),
+    ("vape-guide", "NICOTINE-FREE VAPE", "ニコチンなし電子タバコの選び方", "#9fb4c8"),
     ("gaming-earphone-guide", "GAMING EARPHONE", "ゲーミングイヤホンの選び方", "#7fe0c4"),
     ("game-streaming-start-guide", "GAME STREAMING", "ゲーム配信の始め方", "#5fd0e0"),
     ("discord-setup-guide", "DISCORD GUIDE", "Discordの使い方・設定", "#7f8cff"),
@@ -323,6 +324,7 @@ SLUG_MOTIF = {
     "steam-beginner-guide": "gamepad",
     "gaming-pc-setup-guide": "pc",
     "game-motivation-guide": "flame",
+    "vape-guide": "book",
 }
 
 

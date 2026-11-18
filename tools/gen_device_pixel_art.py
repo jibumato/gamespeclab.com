@@ -283,6 +283,57 @@ def earphone_grid():
     return rows
 
 
+def _vape_canvas():
+    return [['.'] * 24 for _ in range(24)]
+
+
+def _box(g, x0, y0, x1, y1, fill):
+    """輪郭つきの箱。外周を '#'、内側を fill で塗る（端の値を含む）。"""
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            edge = y in (y0, y1) or x in (x0, x1)
+            g[y][x] = '#' if edge else fill
+
+
+def _fill(g, x0, y0, x1, y1, ch):
+    for y in range(y0, y1 + 1):
+        for x in range(x0, x1 + 1):
+            g[y][x] = ch
+
+
+def vape_grid(kind):
+    """ニコチンなし電子タバコ。形の違いで3種類を描き分ける。
+
+    pen  : 細身のスティック型（上にカートリッジ、下に本体）
+    bar  : 使い捨ての板状ボディ（上に細い吸い口）
+    pod  : リキッドの残量窓が見えるポッド型
+    """
+    g = _vape_canvas()
+    if kind == 'pen':
+        _box(g, 10, 1, 13, 3, 'C')        # 吸い口
+        _box(g, 9, 3, 14, 9, 'C')         # カートリッジ
+        _fill(g, 11, 5, 12, 7, 'T')       # カートリッジの窓
+        _box(g, 9, 9, 14, 22, 'A')        # 本体
+        _fill(g, 11, 19, 12, 19, 't')     # LED
+    elif kind == 'bar':
+        _box(g, 9, 1, 14, 4, 'C')         # 吸い口
+        _box(g, 6, 4, 17, 22, 'A')        # ボディ
+        _fill(g, 7, 9, 16, 11, 'T')       # 帯
+        _fill(g, 11, 19, 12, 19, 't')     # LED
+    else:  # pod
+        _box(g, 10, 1, 13, 3, 'C')        # 吸い口
+        _box(g, 7, 3, 16, 10, 'C')        # ポッド
+        _fill(g, 9, 5, 14, 8, 'T')        # 残量窓
+        _fill(g, 10, 6, 13, 7, 't')       # リキッド
+        _box(g, 7, 10, 16, 22, 'A')       # 本体
+        _fill(g, 11, 15, 12, 16, 'C')     # ボタン
+    return [''.join(r) for r in g]
+
+
+def vape_palette(body, cap, accent, accent_light):
+    return {'.': CLEAR, '#': LINE, 'A': body, 'C': cap, 'T': accent, 't': accent_light}
+
+
 def mon_palette(accent, accent_light, secondary):
     p = dict(MON_BASE)
     p['A'] = accent
@@ -341,8 +392,17 @@ TARGETS = [
     ('assets/devices/p-chair-aeron.png', ergo_chair_grid(False),        # アーロンチェア
      chair_palette((78, 86, 100, 255), (50, 56, 68, 255), (112, 120, 136, 255)), 14),
 
+    # ニコチンなし電子タバコ（形の違いで描き分け、配色も機種ごとに変える）
+    ('assets/devices/p-vape-drvape3.png', vape_grid('pen'),          # DR.VAPE Model 3
+     vape_palette((34, 38, 50, 255), (92, 104, 128, 255), (64, 120, 230, 255), (120, 168, 250, 255)), 14),
+    ('assets/devices/p-vape-nicoco.png', vape_grid('bar'),           # NICOCO 使い捨て
+     vape_palette((70, 150, 120, 255), (200, 214, 208, 255), (236, 240, 238, 255), (160, 240, 200, 255)), 14),
+    ('assets/devices/p-vape-caliburn.png', vape_grid('pod'),         # UWELL Caliburn G4
+     vape_palette((78, 84, 96, 255), (40, 44, 54, 255), (200, 120, 40, 255), (246, 170, 80, 255)), 14),
+
     # カテゴリアイコン（トップのカテゴリグリッド用。他の dev-*.png と同じ体裁）
     ('assets/devices/dev-earphone.png', earphone_grid(), CATEGORY_PALETTE, 14),
+    ('assets/devices/dev-vape.png', vape_grid('pod'), CATEGORY_PALETTE, 14),
 ]
 
 

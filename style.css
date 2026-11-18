@@ -7510,7 +7510,10 @@ body.gear-white .toc-box { background: var(--panel); box-shadow: 0 4px 16px rgba
 .zukan-cmp-table th, .zukan-cmp-table td {
   border-bottom: 1px solid var(--line); font-size: 13px; padding: 9px 12px; text-align: left; vertical-align: top;
 }
-.zukan-cmp-table thead th { color: var(--cyan); font-weight: 800; white-space: nowrap; }
+/* 製品名は折り返してよい。nowrap だと「NICOCO 使い捨て電子タバコ（5本セット）」の
+   ような長い名前で表が枠からはみ出した。左端の「項目」列だけは折り返さない */
+.zukan-cmp-table thead th { color: var(--cyan); font-weight: 800; min-width: 8em; white-space: normal; }
+.zukan-cmp-table thead th:first-child { min-width: 0; white-space: nowrap; }
 .zukan-cmp-table tbody th { color: var(--muted); font-weight: 700; white-space: nowrap; }
 .zukan-cmp-buy {
   background: var(--cyan); border-radius: 6px; color: #fff; display: inline-block;
